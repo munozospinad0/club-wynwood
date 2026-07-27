@@ -83,7 +83,7 @@
 
   /* callouts on hero */
   .co{position:absolute;z-index:5;display:none;align-items:center}
-  @media(min-width:820px){.co{display:flex}}
+  @media(min-width:820px){:root[data-mode="night"] .co{display:flex}}
   .co .dot{width:7px;height:7px;border-radius:50%;background:var(--glow);box-shadow:0 0 9px var(--glow);flex:0 0 auto}
   .co .ln{height:1px;background:#F0D6A2cc}
   .co .lbl{font-family:var(--mono);font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;color:#FDF9F0;background:#0b0e11cc;padding:3px 7px;white-space:nowrap}
@@ -154,6 +154,7 @@
   @media(max-width:820px){.specstrip{grid-template-columns:1fr 1fr}}
   .specstrip>div{padding:24px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
   .specstrip>div:nth-child(4n){border-right:0}
+  @media(max-width:820px){.specstrip>div:nth-child(2n){border-right:0}}
   .specstrip .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);margin-bottom:10px}
   .specstrip .val{font-family:var(--cond);font-size:26px;line-height:1;color:var(--ink)}
   .specstrip .val.tc{font-family:var(--body);font-size:14px;color:var(--muted);line-height:1.4}
@@ -222,6 +223,39 @@
   .reveal{opacity:0;transform:translateY(20px)}
   .reveal.in{opacity:1;transform:none;transition:opacity .8s ease,transform .8s cubic-bezier(.2,.7,.2,1)}
   @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1!important;transform:none!important}.hero .glow{opacity:1}}
+
+  /* ---- responsive fine-tuning ---- */
+  @media(max-width:900px){
+    .blk{padding:78px 0}
+    .rain .wrap{padding:74px 40px}
+    .form-sec .wrap{padding:78px 40px}
+    .rain .stat{gap:30px}
+  }
+  @media(max-width:600px){
+    .wrap{padding:0 20px}
+    .rain .wrap,.form-sec .wrap{padding:64px 20px}
+    .blk{padding:64px 0}
+    .brand span{display:none}
+    .nav-r{gap:7px}
+    .toggle,.lang{padding:7px 9px;letter-spacing:.06em}
+    .hero{min-height:86svh}
+    .hero .tagcorner{display:none}
+    .hero h1{max-width:none;font-size:29px;line-height:1.08}
+    .hero .wrap{padding-bottom:6vh}
+    .hero .eyebrow{margin-bottom:14px;letter-spacing:.1em}
+    .hero .beats{margin:20px 0 20px}
+    .hero .beat{padding:11px 14px 11px 0;margin-right:14px;border-right:0}
+    .hero .beat .n{font-size:23px}
+    .hero .cta-row{gap:12px 16px}
+    .btn{padding:13px 18px;font-size:11px}
+    .sec-h .no{font-size:24px}
+    .rain .stat{gap:22px 34px}
+  }
+  @media(max-width:380px){
+    .hero h1{font-size:26px}
+    .hero .beat .n{font-size:21px}
+    .btn{padding:12px 15px}
+  }
 </style>
 
 <div id="prog"></div>
@@ -303,20 +337,20 @@
           <g transform="translate(28,372)"><line class="planline" x1="0" y1="0" x2="90" y2="0"/><line class="plantick" x1="0" y1="-4" x2="0" y2="4"/><line class="plantick" x1="90" y1="-4" x2="90" y2="4"/><text class="planmeta" x="45" y="-7" text-anchor="middle">~50 ft</text></g>
           <!-- zones -->
           <rect class="zone" data-zone="jardin" x="20" y="24" width="360" height="200"/>
-          <text class="zlabel" x="30" y="44"><tspan class="es">JARDÍN ABIERTO</tspan></text>
+          <text class="zlabel" x="30" y="44"><tspan class="es">JARDÍN ABIERTO</tspan><tspan class="en">OPEN GARDEN</tspan></text>
           <rect class="zone" data-zone="palapa" x="200" y="150" width="240" height="150"/>
           <text class="zlabel" x="212" y="170">PALAPA</text>
           <rect class="zone" data-zone="cabanas" x="20" y="234" width="170" height="66"/>
-          <text class="zlabel" x="30" y="252"><tspan class="es">CABAÑAS</tspan></text>
+          <text class="zlabel" x="30" y="252"><tspan class="es">CABAÑAS</tspan><tspan class="en">CABANAS</tspan></text>
           <rect class="zone" data-zone="mural" x="20" y="24" width="360" height="0"/>
           <rect class="zone" data-zone="servicio" x="450" y="24" width="150" height="130"/>
-          <text class="zlabel" x="460" y="44"><tspan class="es">SERVICIO</tspan></text>
+          <text class="zlabel" x="460" y="44"><tspan class="es">SERVICIO</tspan><tspan class="en">SERVICE</tspan></text>
           <rect class="zone" data-zone="loadin" x="450" y="300" width="150" height="76"/>
           <text class="zlabel" x="460" y="320">LOAD-IN</text>
           <!-- mural wall (top edge) -->
           <line x1="20" y1="24" x2="380" y2="24" stroke="var(--amber)" stroke-width="3" opacity=".55"/>
-          <text class="planmeta" x="200" y="18" text-anchor="middle"><tspan class="es">MURO CON MURAL</tspan></text>
-          <text class="planmeta" x="612" y="392" text-anchor="end"><tspan class="es">Esquemático · cotas medidas en sitio</tspan></text>
+          <text class="planmeta" x="200" y="18" text-anchor="middle"><tspan class="es">MURO CON MURAL</tspan><tspan class="en">MURAL WALL</tspan></text>
+          <text class="planmeta" x="612" y="392" text-anchor="end"><tspan class="es">Esquemático · cotas medidas en sitio</tspan><tspan class="en">Schematic · measured on site</tspan></text>
         </svg>
         <div class="zdetail" id="zdetail"><span class="es">Toca una zona para ver su función.</span><span class="en">Tap a zone to see its role.</span></div>
       </div>

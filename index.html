@@ -217,6 +217,49 @@
   .close h2 em{font-style:italic;color:var(--glow)}
   .close p{position:relative;color:#C7C6B8;max-width:44ch;margin:0 auto 28px;font-size:16px}
   .close .cta-row{position:relative;justify-content:center}
+  /* === VIDEO ANIMADO === */
+  .video-sec{background:var(--bg-2)}
+  .vp{position:relative;aspect-ratio:16/9;background:#0b0e08;border:1px solid var(--line);overflow:hidden;border-radius:6px;box-shadow:var(--shadow)}
+  .vscene{position:absolute;inset:0;opacity:0;transition:opacity .9s ease;display:flex;align-items:center}
+  .vscene.active{opacity:1}
+  .vbg{position:absolute;inset:0;overflow:hidden}
+  .vbg img{width:100%;height:100%;object-fit:cover;transform:scale(1.1)}
+  .vscene.active .vbg img{animation:vken 8s ease-out forwards}
+  @keyframes vken{from{transform:scale(1.18) translate(2%,-1.5%)}to{transform:scale(1.04)}}
+  .vin{position:relative;z-index:4;padding:clamp(26px,5vw,66px);max-width:92%}
+  .vscene .up{opacity:0;transform:translateY(28px)}
+  .vscene.active .up{opacity:1;transform:none;transition:opacity .8s ease,transform .9s cubic-bezier(.2,.7,.2,1)}
+  .vscene.active .d1{transition-delay:.2s}.vscene.active .d2{transition-delay:.44s}.vscene.active .d3{transition-delay:.68s}.vscene.active .d4{transition-delay:.92s}
+  .veye{font-family:var(--mono);font-size:clamp(10px,1.3vw,13px);letter-spacing:.2em;text-transform:uppercase;color:var(--glow);margin-bottom:14px}
+  .vwm{font-family:var(--display);font-size:clamp(30px,6.4vw,76px);line-height:1;color:#FDF9F0}
+  .vwm em{font-style:italic;color:var(--glow)}
+  .vsub{font-family:var(--mono);font-size:clamp(11px,1.5vw,15px);letter-spacing:.05em;color:#EAD9BC;margin-top:16px}
+  .vbig{font-family:var(--display);font-size:clamp(25px,5vw,58px);line-height:1.05;color:#FDF9F0}
+  .vbig em{font-style:italic;color:var(--glow)}
+  .s1 .vscrim{position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,14,8,.82),rgba(10,14,8,.2) 70%),linear-gradient(0deg,rgba(10,14,8,.55),transparent 50%)}
+  .s2{background:#100d17}
+  .s2 .neon{position:absolute;inset:0;background:radial-gradient(52% 62% at 18% 24%,color-mix(in srgb,var(--neon-a) 42%,transparent),transparent 64%),radial-gradient(56% 66% at 86% 92%,color-mix(in srgb,var(--neon-b) 36%,transparent),transparent 64%);animation:neonb 5s ease-in-out infinite}
+  .s2 .gword{font-family:var(--cond);font-size:clamp(32px,8vw,88px);line-height:.98;text-transform:uppercase}
+  .s2 .gc{color:var(--neon-a);text-shadow:0 0 20px color-mix(in srgb,var(--neon-a) 65%,transparent)}
+  .s2 .gm{color:var(--neon-b);text-shadow:0 0 20px color-mix(in srgb,var(--neon-b) 65%,transparent)}
+  .s3 .vscrim{position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,11,6,.84),rgba(8,11,6,.15) 72%),linear-gradient(0deg,rgba(8,11,6,.55),transparent 50%)}
+  .s3 .vglow{position:absolute;inset:0;background:radial-gradient(45% 45% at 62% 66%,rgba(242,181,99,.36),transparent 70%);mix-blend-mode:screen;animation:neonb 5s ease-in-out infinite}
+  .s3 .vfest{position:absolute;top:6px;left:0;right:0;height:30px;z-index:3;color:var(--glow)}
+  .s4{background:var(--panel)}
+  .s4 .vglow{position:absolute;inset:0;background:radial-gradient(50% 82% at 50% 112%,rgba(242,181,99,.32),transparent 66%);animation:neonb 5s ease-in-out infinite}
+  .vpill{display:inline-flex;align-items:center;gap:9px;margin-top:22px;font-family:var(--mono);font-size:13px;letter-spacing:.05em;text-transform:uppercase;background:var(--amber-2);color:#20160B;padding:12px 20px;font-weight:700;text-decoration:none}
+  .vui{position:absolute;left:0;right:0;bottom:0;z-index:6;display:flex;align-items:center;gap:14px;padding:14px 18px;background:linear-gradient(0deg,rgba(6,8,5,.7),transparent)}
+  .vplay{flex:0 0 auto;width:34px;height:34px;border-radius:50%;border:1px solid #ffffff44;background:#ffffff1a;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+  .vplay svg{width:13px;height:13px;fill:#fff}
+  .vbarw{flex:1;height:3px;background:#ffffff2e;overflow:hidden;border-radius:2px}
+  .vfill{height:100%;width:0;background:var(--glow)}
+  @keyframes fillbar{from{width:0}to{width:100%}}
+  .vdots{display:flex;gap:7px;flex:0 0 auto}
+  .vdots b{width:7px;height:7px;border-radius:50%;background:#ffffff40;cursor:pointer;transition:.25s}
+  .vdots b.on{background:var(--glow);width:18px;border-radius:4px}
+  .vp.paused .vscene.active *{animation-play-state:paused!important}
+  .vp.paused .vfill{animation-play-state:paused!important}
+
   .reveal{opacity:0;transform:translateY(20px)}
   .reveal.in{opacity:1;transform:none;transition:opacity .8s,transform .8s cubic-bezier(.2,.7,.2,1)}
   @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal,.hero .anim,.exp .card,.who .wcard{opacity:1!important;transform:none!important}.hero .glow{opacity:1}.scrollcue{display:none}}
@@ -276,6 +319,57 @@
         <figure class="card dark" style="margin:0;background:#241a10"><div class="ov" style="background:radial-gradient(70% 70% at 30% 30%,rgba(242,181,99,.22),transparent)"></div><div class="ico" style="color:var(--glow)"><svg viewBox="0 0 24 24"><path d="M6 4h12l-4.2 6.4V19M13.8 10.4 18 4M9.5 19h5"/></svg></div><div class="lab" style="color:#FBF6EC"><div class="tag" style="color:var(--glow)">Bar</div><h3><span class="es">Bar de licores + comida</span><span class="en">Full bar + food</span></h3></div></figure>
       </div>
       <p class="k reveal" style="margin-top:18px;color:var(--faint)"><span class="es">Fotos de los juegos y del evento en vivo — próximamente. Los juegos y su inclusión por paquete se confirman en la visita.</span><span class="en">Photos of the games and live events — coming soon. Games and package inclusions confirmed on the visit.</span></p>
+    </div>
+  </section>
+
+  <!-- VIDEO ANIMADO -->
+  <section class="blk video-sec">
+    <div class="wrap">
+      <div class="sec-h reveal">
+        <div class="eyebrow"><span class="es">Club Wynwood en 20 segundos</span><span class="en">Club Wynwood in 20 seconds</span></div>
+        <h2><span class="es">El lugar, <em>en movimiento</em>.</span><span class="en">The place, <em>in motion</em>.</span></h2>
+      </div>
+      <div class="vp reveal" id="vp">
+        <div class="vscene s1 active">
+          <div class="vbg"><img id="vimg1" alt=""></div><div class="vscrim"></div>
+          <div class="vin">
+            <div class="veye up d1">Wynwood, Miami</div>
+            <div class="vwm up d2">Club <em>Wynwood</em></div>
+            <div class="vsub up d3"><span class="es">Jardín tropical de eventos</span><span class="en">Tropical event garden</span></div>
+          </div>
+        </div>
+        <div class="vscene s2">
+          <div class="neon"></div>
+          <div class="vin">
+            <div class="veye up d1"><span class="es">El parque de juegos</span><span class="en">The games playground</span></div>
+            <div class="gword gc up d2">Laser tag</div>
+            <div class="gword gm up d3">VR · Arcade</div>
+            <div class="gword gc up d4"><span class="es">Bowling y más</span><span class="en">Bowling &amp; more</span></div>
+          </div>
+        </div>
+        <div class="vscene s3">
+          <div class="vbg"><img id="vimg3" alt=""></div><div class="vscrim"></div><div class="vglow"></div>
+          <svg class="vfest festoon" viewBox="0 0 1200 30" preserveAspectRatio="none"><path class="wire" d="M0 5 Q150 26 300 7 T600 7 T900 7 T1200 5"/></svg>
+          <div class="vin">
+            <div class="veye up d1"><span class="es">Y de noche</span><span class="en">And at night</span></div>
+            <div class="vbig up d2"><span class="es">Y un bar, bajo las <em>luces</em>.</span><span class="en">And a bar, under the <em>lights</em>.</span></div>
+            <div class="vsub up d3"><span class="es">Cabañas · tiki techado · luces de verbena</span><span class="en">Cabanas · covered tiki · festoon lights</span></div>
+          </div>
+        </div>
+        <div class="vscene s4">
+          <div class="vglow"></div>
+          <div class="vin">
+            <div class="vbig up d1"><span class="es">Jardín + juegos + bar.</span><span class="en">Garden + games + bar.</span></div>
+            <div class="vbig up d2" style="color:var(--glow)"><span class="es">Un solo lugar.</span><span class="en">One place.</span></div>
+            <a class="vpill up d3" href="#visita"><span class="es">Solicitá tu visita</span><span class="en">Request your visit</span> →</a>
+          </div>
+        </div>
+        <div class="vui">
+          <button class="vplay" id="vplay" aria-label="Play / Pausa"><svg id="vicon" viewBox="0 0 24 24"><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></button>
+          <div class="vbarw"><div class="vfill" id="vfill"></div></div>
+          <div class="vdots" id="vdots"><b class="on"></b><b></b><b></b><b></b></div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -423,8 +517,7 @@
     function heroReady(){var h=document.getElementById('top');if(h)h.classList.add('ready');}
     addEventListener('load',function(){setTimeout(heroReady,60);});if(document.readyState==='complete')heroReady();
     // bombillas de la verbena
-    var fw=document.querySelector('.festoon');
-    if(fw){var wp=fw.querySelector('.wire'),Ln=wp.getTotalLength();for(var i=1;i<28;i++){var pt=wp.getPointAtLength(Ln*i/28),c=document.createElementNS('http://www.w3.org/2000/svg','circle');c.setAttribute('cx',pt.x);c.setAttribute('cy',pt.y+3);c.setAttribute('r',2.7);c.setAttribute('class','bulb');c.style.animationDelay=(i*0.1).toFixed(2)+'s';fw.appendChild(c);}}
+    document.querySelectorAll('.festoon').forEach(function(fw){var wp=fw.querySelector('.wire');if(!wp)return;var Ln=wp.getTotalLength();for(var i=1;i<28;i++){var pt=wp.getPointAtLength(Ln*i/28),c=document.createElementNS('http://www.w3.org/2000/svg','circle');c.setAttribute('cx',pt.x);c.setAttribute('cy',pt.y+3);c.setAttribute('r',2.7);c.setAttribute('class','bulb');c.style.animationDelay=(i*0.1).toFixed(2)+'s';fw.appendChild(c);}});
     // números que cuentan
     function countUp(el){var to=+el.dataset.to,t0=null;if(reduce){el.textContent=to.toLocaleString('es-ES');return;}function s(ts){if(!t0)t0=ts;var pr=Math.min((ts-t0)/1500,1),k=1-Math.pow(1-pr,3);el.textContent=Math.round(to*k).toLocaleString('es-ES');if(pr<1)requestAnimationFrame(s);}requestAnimationFrame(s);}
     if('IntersectionObserver' in window){
@@ -458,5 +551,25 @@
         .then(function(r){ if(!r.ok) throw new Error('bad'); track(); f.classList.add('done'); document.getElementById('visita').scrollIntoView({behavior:'smooth',block:'start'}); })
         .catch(function(){ btn.disabled=false; fmsg.className='fmsg err'; fmsg.textContent=L('No se pudo enviar. Abrimos tu correo…','Could not send. Opening your email…'); setTimeout(function(){mailtoFallback(data);},900); });
     });
+    // === VIDEO ANIMADO ===
+    (function(){
+      var vp=document.getElementById('vp'); if(!vp)return;
+      var vi1=document.getElementById('vimg1'), vi3=document.getElementById('vimg3');
+      var hd=document.querySelector('.hero .day img'), hn=document.querySelector('.hero .night img');
+      if(hd&&vi1)vi1.src=hd.getAttribute('src'); if(hn&&vi3)vi3.src=hn.getAttribute('src');
+      var scenes=[].slice.call(vp.querySelectorAll('.vscene'));
+      var dots=[].slice.call(vp.querySelectorAll('#vdots b'));
+      var fill=document.getElementById('vfill'), icon=document.getElementById('vicon');
+      var durs=[5200,6000,5600,6400], idx=0, tid=null, paused=false, sStart=0, rem=0;
+      function setIcon(p){icon.innerHTML=p?'<path d="M8 5v14l11-7z"/>':'<rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/>';}
+      function startFill(ms){fill.style.animation='none';void fill.offsetWidth;fill.style.animation='fillbar '+ms+'ms linear forwards';}
+      function show(i){idx=i;scenes.forEach(function(s,k){s.classList.toggle('active',k===i);});dots.forEach(function(d,k){d.classList.toggle('on',k===i);});startFill(durs[i]);sStart=Date.now();rem=durs[i];clearTimeout(tid);tid=setTimeout(function(){show((idx+1)%scenes.length);},durs[i]);}
+      function pause(){paused=true;clearTimeout(tid);rem=Math.max(0,durs[idx]-(Date.now()-sStart));vp.classList.add('paused');setIcon(true);}
+      function resume(){paused=false;vp.classList.remove('paused');setIcon(false);sStart=Date.now()-(durs[idx]-rem);clearTimeout(tid);tid=setTimeout(function(){show((idx+1)%scenes.length);},rem);}
+      document.getElementById('vplay').addEventListener('click',function(){paused?resume():pause();});
+      dots.forEach(function(d,k){d.addEventListener('click',function(){var w=paused;show(k);if(w)pause();});});
+      if(reduce){vp.classList.add('paused');setIcon(true);paused=true;return;}
+      show(0);
+    })();
   })();
 </script>

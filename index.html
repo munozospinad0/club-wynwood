@@ -116,7 +116,7 @@
   @media(max-width:900px){.split{grid-template-columns:1fr;gap:36px}}
 
   .about{background:var(--off)}
-  .lower{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,1fr);gap:64px;align-items:start;margin-top:76px}
+  .lower{display:grid;grid-template-columns:minmax(0,1.32fr) minmax(0,1fr);gap:48px;align-items:start;margin-top:76px}
   @media(max-width:900px){.lower{grid-template-columns:1fr;gap:44px;margin-top:48px}}
   .fgrid{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid var(--line);border-left:1px solid var(--line)}
   .fcard{border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:26px 24px 30px}
@@ -131,10 +131,19 @@
   .z-fill{fill:#FFFFFF}
   .plan.hl-jardin #z-jardin .z-fill,.plan.hl-todo #z-jardin .z-fill{fill:#E1DFD7}
   .plan.hl-tiki #z-tiki .z-fill,.plan.hl-todo #z-tiki .z-fill{fill:#E1DFD7}
-  .stroke{stroke:#ADAAA2;stroke-width:1.3;stroke-linejoin:round;stroke-linecap:round}
-  .stroke.thin{stroke:#D3D0C8;stroke-width:.9}
-  .stroke.dark{stroke:#8A867E}
-  .palm path{fill:none;stroke-width:1.5}
+  /* jerarquía de línea: silueta > estructura > pauta. Es lo que hace que una
+     axonometría se lea como dibujo técnico y no como wireframe. */
+  .stroke{stroke:#A6A39B;stroke-width:1.35;stroke-linejoin:round;stroke-linecap:round}
+  .stroke.sil{stroke-width:1.7;stroke:#8F8B83}
+  .stroke.thin{stroke:#D2CFC7;stroke-width:.8}
+  .stroke.hair{stroke:#C6C3BB;stroke-width:.7}
+  .stroke.dark{stroke:#7E7A72}
+  .sh{fill:#E9E7E0}            /* sombra proyectada */
+  .deck{fill:#F1EFE9}          /* tarima bajo el tiki */
+  .wall{fill:#EFEDE7} .wall.b{fill:#E5E3DB}
+  .palm .frond{fill:none;stroke-width:1.35}
+  .palm .trunk{fill:#FFFFFF;stroke-width:1.2}
+  .palm .nut{fill:#FFFFFF;stroke-width:1}
   .chip rect.k{fill:#0A0A0A}
   .chip text.w{fill:#FFFFFF;font-family:var(--sans);font-size:19px;font-weight:400;letter-spacing:-.01em}
   .chip rect.p{fill:#FFFFFF;stroke:#0A0A0A;stroke-width:1.2}
@@ -322,86 +331,146 @@
         <!-- ===== PLANO ISOMÉTRICO ===== -->
         <div class="rv">
           <div class="plan" id="plan">
-            <svg viewBox="-175 -35 565 335" role="img" aria-label="Esquema isométrico de Club Wynwood: jardín al aire libre y tiki hut techado">
-              <!-- ---- muros perimetrales con murales (h=18) ---- -->
-              <polygon class="stroke thin" fill="#EFEDE7" points="0,-18 259.8,132 259.8,150 0,0"/>
-              <polygon class="stroke thin" fill="#E7E5DE" points="0,-18 -155.9,72 -155.9,90 0,0"/>
+            <svg viewBox="-180 -45 570 358" role="img" aria-label="Axonometría de Club Wynwood: jardín al aire libre, cabañas y tiki hut techado">
+              <defs>
+                <!-- PALMERA: tronco cónico + corona de 8 hojas + cocos -->
+                <g id="palm" class="palm">
+                  <ellipse class="sh" cx="-4" cy="2" rx="13" ry="6.5"/>
+                  <path class="stroke trunk" d="M-3,0 C-4.5,-20 0.5,-38 -1,-56 L4.5,-56 C6,-38 3,-20 4,0 Z"/>
+                  <g class="stroke dark frond">
+                    <path d="M2,-56 C12,-64 22,-65 30,-57"/>
+                    <path d="M2,-56 C12,-68 20,-75 24,-81"/>
+                    <path d="M2,-56 C7,-72 10,-80 8,-87"/>
+                    <path d="M2,-56 C-2,-74 -6,-81 -12,-85"/>
+                    <path d="M2,-56 C-8,-69 -16,-73 -25,-75"/>
+                    <path d="M2,-56 C-9,-63 -19,-63 -28,-57"/>
+                    <path d="M2,-56 C-6,-55 -14,-51 -20,-43"/>
+                    <path d="M2,-56 C10,-55 18,-51 24,-43"/>
+                  </g>
+                  <g class="stroke dark nut">
+                    <circle cx="-1.5" cy="-52" r="2"/><circle cx="3.5" cy="-51" r="2"/><circle cx="1" cy="-47.5" r="2"/>
+                  </g>
+                </g>
+                <!-- CABAÑA: tarima + 4 postes + toldo con voladizo (abierta, no una caja) -->
+                <g id="cabana">
+                  <polygon class="sh" points="-8,4 26.6,24 0.7,39 -34,19"/>
+                  <polygon class="stroke" fill="#FFFFFF" points="34.6,16 34.6,20 8.7,35 8.7,31"/>
+                  <polygon class="stroke" fill="#F4F2EC" points="8.7,31 8.7,35 -26,15 -26,11"/>
+                  <polygon class="stroke" fill="#FFFFFF" points="0,-4 34.6,16 8.7,31 -26,11"/>
+                  <g class="stroke dark">
+                    <line x1="0" y1="-4" x2="0" y2="-28"/>
+                    <line x1="34.6" y1="16" x2="34.6" y2="-8"/>
+                    <line x1="8.7" y1="31" x2="8.7" y2="7"/>
+                    <line x1="-26" y1="11" x2="-26" y2="-13"/>
+                  </g>
+                  <polygon class="stroke" fill="#FFFFFF" points="41.6,-12 8.7,7 8.7,11 41.6,-8"/>
+                  <polygon class="stroke" fill="#F4F2EC" points="8.7,7 -32.9,-17 -32.9,-13 8.7,11"/>
+                  <polygon class="stroke" fill="#FFFFFF" points="0,-36 41.6,-12 8.7,7 -32.9,-17"/>
+                </g>
+              </defs>
 
-              <!-- ---- ZONA JARDÍN ---- -->
+              <!-- ===== MUROS PERIMETRALES (murales) — con vano de entrada ===== -->
+              <polygon class="stroke wall" points="0,-20 372.4,195 372.4,215 0,0"/>
+              <polygon class="stroke wall b" points="0,-20 -56.3,12.5 -56.3,32.5 0,0"/>
+              <polygon class="stroke wall b" points="-86.6,30 -142.9,62.5 -142.9,82.5 -86.6,50"/>
+              <g class="stroke hair">
+                <line x1="51.96" y1="10" x2="51.96" y2="30"/><line x1="103.9" y1="40" x2="103.9" y2="60"/>
+                <line x1="155.9" y1="70" x2="155.9" y2="90"/><line x1="207.8" y1="100" x2="207.8" y2="120"/>
+                <line x1="259.8" y1="130" x2="259.8" y2="150"/><line x1="311.8" y1="160" x2="311.8" y2="180"/>
+                <line x1="-27.7" y1="-4" x2="-27.7" y2="16"/>
+                <line x1="-112.6" y1="45" x2="-112.6" y2="65"/><line x1="-129.9" y1="55" x2="-129.9" y2="75"/>
+              </g>
+
+              <!-- ===== SUELO DEL PREDIO (continuo: la palapa va DENTRO) ===== -->
+              <polygon fill="#FBFAF7" points="0,0 372.4,215 229.5,297.5 -142.9,82.5"/>
+
+              <!-- ===== ZONA JARDÍN (la porción abierta) ===== -->
               <g id="z-jardin" class="zone" data-zone="jardin">
-                <polygon class="z-fill" points="0,0 259.8,150 103.9,240 -155.9,90"/>
+                <polygon class="z-fill" points="0,0 259.8,150 116.9,232.5 -142.9,82.5"/>
                 <g class="stroke thin">
-                  <line x1="51.96" y1="30" x2="-103.9" y2="120"/>
-                  <line x1="103.9" y1="60" x2="-51.96" y2="150"/>
-                  <line x1="155.9" y1="90" x2="0" y2="180"/>
-                  <line x1="207.8" y1="120" x2="51.96" y2="210"/>
-                  <line x1="-51.96" y1="30" x2="207.8" y2="180"/>
-                  <line x1="-103.9" y1="60" x2="155.9" y2="210"/>
-                </g>
-                <polygon class="stroke" fill="none" points="0,0 259.8,150 103.9,240 -155.9,90"/>
-              </g>
-
-              <!-- ---- cabañas (w42 d32 h28) ---- -->
-              <g class="stroke" fill="#FFFFFF">
-                <g transform="translate(32.9,31)">
-                  <polygon points="8.7,9 8.7,37 -27.7,16 -27.7,-12"/>
-                  <polygon points="36.4,-7 36.4,21 8.7,37 8.7,9"/>
-                  <polygon points="0,-28 36.4,-7 8.7,9 -27.7,-12"/>
-                </g>
-                <g transform="translate(93.5,66)">
-                  <polygon points="8.7,9 8.7,37 -27.7,16 -27.7,-12"/>
-                  <polygon points="36.4,-7 36.4,21 8.7,37 8.7,9"/>
-                  <polygon points="0,-28 36.4,-7 8.7,9 -27.7,-12"/>
-                </g>
-                <g transform="translate(154.2,101)">
-                  <polygon points="8.7,9 8.7,37 -27.7,16 -27.7,-12"/>
-                  <polygon points="36.4,-7 36.4,21 8.7,37 8.7,9"/>
-                  <polygon points="0,-28 36.4,-7 8.7,9 -27.7,-12"/>
+                  <line x1="51.96" y1="30" x2="-90.9" y2="112.5"/>
+                  <line x1="103.9" y1="60" x2="-39" y2="142.5"/>
+                  <line x1="155.9" y1="90" x2="13" y2="172.5"/>
+                  <line x1="207.8" y1="120" x2="65" y2="202.5"/>
+                  <line x1="-47.6" y1="27.5" x2="216.5" y2="180"/>
+                  <line x1="-95.3" y1="55" x2="168.9" y2="207.5"/>
                 </g>
               </g>
-
-              <!-- ---- palmeras ---- -->
-              <g class="stroke dark palm">
-                <g transform="translate(-8.7,55)"><path d="M0 0 C-2 -20 4 -38 1 -54"/><path d="M1,-54 Q18,-62 27,-51"/><path d="M1,-54 Q16,-72 25,-76"/><path d="M1,-54 Q3,-74 -7,-81"/><path d="M1,-54 Q-14,-70 -23,-74"/><path d="M1,-54 Q-16,-60 -25,-49"/></g>
-                <g transform="translate(-99.6,92.5) scale(.88)"><path d="M0 0 C-2 -20 4 -38 1 -54"/><path d="M1,-54 Q18,-62 27,-51"/><path d="M1,-54 Q16,-72 25,-76"/><path d="M1,-54 Q3,-74 -7,-81"/><path d="M1,-54 Q-14,-70 -23,-74"/><path d="M1,-54 Q-16,-60 -25,-49"/></g>
-                <g transform="translate(30.3,112.5) scale(.95)"><path d="M0 0 C-2 -20 4 -38 1 -54"/><path d="M1,-54 Q18,-62 27,-51"/><path d="M1,-54 Q16,-72 25,-76"/><path d="M1,-54 Q3,-74 -7,-81"/><path d="M1,-54 Q-14,-70 -23,-74"/><path d="M1,-54 Q-16,-60 -25,-49"/></g>
-                <g transform="translate(4.3,167.5) scale(1.08)"><path d="M0 0 C-2 -20 4 -38 1 -54"/><path d="M1,-54 Q18,-62 27,-51"/><path d="M1,-54 Q16,-72 25,-76"/><path d="M1,-54 Q3,-74 -7,-81"/><path d="M1,-54 Q-14,-70 -23,-74"/><path d="M1,-54 Q-16,-60 -25,-49"/></g>
-                <g transform="translate(155.9,165) scale(1.02)"><path d="M0 0 C-2 -20 4 -38 1 -54"/><path d="M1,-54 Q18,-62 27,-51"/><path d="M1,-54 Q16,-72 25,-76"/><path d="M1,-54 Q3,-74 -7,-81"/><path d="M1,-54 Q-14,-70 -23,-74"/><path d="M1,-54 Q-16,-60 -25,-49"/></g>
+              <!-- resto del predio (delantal de la palapa) -->
+              <g class="stroke thin">
+                <line x1="311.8" y1="180" x2="168.9" y2="262.5"/>
+                <line x1="259.8" y1="150" x2="324.8" y2="242.5"/>
+                <line x1="216.5" y1="180" x2="277.1" y2="270"/>
               </g>
+              <g class="stroke" fill="none">
+                <line x1="259.8" y1="150" x2="116.9" y2="232.5"/>
+              </g>
+              <polygon class="stroke sil" fill="none" points="0,0 372.4,215 229.5,297.5 -142.9,82.5"/>
 
-              <!-- ---- ZONA TIKI HUT ---- -->
+              <!-- ===== CABAÑAS (3, contra el muro) ===== -->
+              <use href="#cabana" transform="translate(20.8,28)"/>
+              <use href="#cabana" transform="translate(81.4,63)"/>
+              <use href="#cabana" transform="translate(142,98)"/>
+
+              <!-- ===== PALMERAS (de atrás hacia adelante) ===== -->
+              <use href="#palm" transform="translate(8.7,45) scale(.8)"/>
+              <use href="#palm" transform="translate(-88.3,79) scale(.74)"/>
+              <use href="#palm" transform="translate(97,84) scale(.7)"/>
+              <use href="#palm" transform="translate(-30.3,122.5) scale(.84)"/>
+              <use href="#palm" transform="translate(147.2,140) scale(.77)"/>
+              <use href="#palm" transform="translate(43.3,175) scale(.9)"/>
+              <use href="#palm" transform="translate(129.9,195) scale(.85)"/>
+
+              <!-- ===== ZONA TIKI HUT: tarima + 7 postes + cubierta a 4 aguas ===== -->
               <g id="z-tiki" class="zone" data-zone="tiki">
-                <polygon class="z-fill" points="221.7,172 334.2,237 254.6,283 142,218"/>
-                <polygon class="stroke" fill="none" points="221.7,172 334.2,237 254.6,283 142,218"/>
-                <g class="stroke dark">
-                  <line x1="221.7" y1="172" x2="221.7" y2="118"/>
-                  <line x1="334.2" y1="237" x2="334.2" y2="183"/>
-                  <line x1="254.6" y1="283" x2="254.6" y2="229"/>
-                  <line x1="142" y1="218" x2="142" y2="164"/>
+                <polygon class="sh" points="218.6,165 345.1,238 251.5,292 125.1,219"/>
+                <polygon class="z-fill deck" points="228.6,168 341.2,233 261.5,279 148.9,214"/>
+                <g class="stroke hair">
+                  <line x1="208.7" y1="179.5" x2="321.3" y2="244.5"/>
+                  <line x1="188.8" y1="191" x2="301.4" y2="256"/>
+                  <line x1="168.9" y1="202.5" x2="281.5" y2="267.5"/>
                 </g>
-                <!-- techo de paja piramidal: caras traseras, luego delanteras -->
-                <polygon class="stroke" fill="#EDEBE5" points="121.2,164 221.7,106 238.2,77.5"/>
-                <polygon class="stroke" fill="#EDEBE5" points="221.7,106 355.1,183 238.2,77.5"/>
-                <polygon class="z-fill stroke" points="355.1,183 254.6,241 238.2,77.5"/>
-                <polygon class="z-fill stroke" points="254.6,241 121.2,164 238.2,77.5"/>
-                <g class="stroke thin">
-                  <line x1="238.2" y1="77.5" x2="296.4" y2="212"/>
-                  <line x1="238.2" y1="77.5" x2="187.9" y2="202.5"/>
+                <polygon class="stroke" fill="none" points="228.6,168 341.2,233 261.5,279 148.9,214"/>
+                <g class="stroke dark">
+                  <line x1="228.6" y1="168" x2="228.6" y2="144"/>
+                  <line x1="341.2" y1="233" x2="341.2" y2="209"/>
+                  <line x1="261.5" y1="279" x2="261.5" y2="255"/>
+                  <line x1="148.9" y1="214" x2="148.9" y2="190"/>
+                  <line x1="205.2" y1="246.5" x2="205.2" y2="222.5"/>
+                  <line x1="188.8" y1="191" x2="188.8" y2="167"/>
+                  <line x1="301.4" y1="256" x2="301.4" y2="232"/>
+                </g>
+                <!-- cubierta a 4 aguas. Alero z=24 (~11 ft), cumbrera z=90 (~40 ft):
+                     proporción real de una palapa de ~63 ft de luz. -->
+                <polygon class="stroke" fill="#E4E2DA" points="228.6,136 355.1,209 275.4,151 214.8,116"/>
+                <polygon class="stroke" fill="#E4E2DA" points="135.1,190 228.6,136 214.8,116"/>
+                <!-- faldones vistos: tono propio para que la cubierta lea como volumen -->
+                <polygon class="stroke" fill="#EFEDE6" points="355.1,209 261.5,263 275.4,151"/>
+                <polygon class="stroke" fill="#F8F7F3" points="135.1,190 261.5,263 275.4,151 214.8,116"/>
+                <!-- espesor del alero (fascia): es lo que le da cuerpo al techo -->
+                <polygon class="stroke" fill="#DDDAD1" points="135.1,190 261.5,263 261.5,267 135.1,194"/>
+                <polygon class="stroke" fill="#D5D2C9" points="355.1,209 261.5,263 261.5,267 355.1,213"/>
+                <g class="stroke sil" fill="none">
+                  <line x1="214.8" y1="116" x2="275.4" y2="151"/>
+                  <line x1="214.8" y1="116" x2="135.1" y2="190"/>
+                  <line x1="275.4" y1="151" x2="261.5" y2="263"/>
+                  <line x1="275.4" y1="151" x2="355.1" y2="209"/>
+                  <polyline points="135.1,194 261.5,267 355.1,213"/>
                 </g>
               </g>
 
-              <!-- ---- etiquetas ---- -->
+              <!-- ===== ETIQUETAS ===== -->
               <g class="chip">
-                <rect class="k" x="-162" y="122" width="128" height="30"/>
-                <text class="w" x="-152" y="144">el jardín</text>
-                <rect class="p" x="-162" y="152" width="128" height="24"/>
-                <text class="b" x="-152" y="169">~18.000 sq ft</text>
+                <rect class="k" x="-168" y="130" width="128" height="30"/>
+                <text class="w" x="-158" y="152">el jardín</text>
+                <rect class="p" x="-168" y="160" width="128" height="24"/>
+                <text class="b" x="-158" y="177">~18.000 sq ft</text>
               </g>
               <g class="chip">
-                <rect class="k" x="266" y="36" width="114" height="30"/>
-                <text class="w" x="276" y="58">tiki hut</text>
-                <rect class="p" x="266" y="66" width="114" height="24"/>
-                <text class="b" x="276" y="83">~4.000 sq ft</text>
+                <rect class="k" x="270" y="86" width="114" height="30"/>
+                <text class="w" x="280" y="108">tiki hut</text>
+                <rect class="p" x="270" y="116" width="114" height="24"/>
+                <text class="b" x="280" y="133">~4.000 sq ft</text>
               </g>
             </svg>
           </div>

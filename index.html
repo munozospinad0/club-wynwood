@@ -1029,6 +1029,7 @@ img,svg{max-width:100%}
     scope.querySelectorAll("sc-for").forEach(function(el){
       var m = /\{\{\s*(\w+)\s*\}\}/.exec(el.getAttribute("list") || "");
       forBinds.push({ el: el, key: m ? m[1] : null, as: el.getAttribute("as") || "item", tpl: el.innerHTML });
+      el.removeAttribute("list");   // si no, el {{ }} crudo queda en el DOM
       el.innerHTML = "";
     });
     scope.querySelectorAll("sc-if").forEach(function(el){

@@ -3,7 +3,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Club Wynwood — Jardín de eventos al aire libre · Wynwood, Miami</title>
 <meta name="description" content="Venue al aire libre en el Wynwood Arts District, Miami. ~22.000 ft² entre jardín y tiki hut techado. Aforo ~600 de pie. Tú traes la producción, nosotros el espacio.">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300..600&family=Bricolage+Grotesque:opsz,wght@12..96,300..600&family=Instrument+Serif:ital@0;1&family=Geist:wght@200..600&family=Geist+Mono:wght@300..500&display=swap" rel="stylesheet"><style>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Geist:wght@200..600&amp;family=Geist+Mono:wght@300..500&amp;display=swap" rel="stylesheet"><style>
 @keyframes cwIn{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
 @keyframes cwDrop{0%{opacity:0;transform:translateY(-64px)}62%{opacity:1}100%{opacity:1;transform:none}}
 @keyframes cwGrow{from{opacity:0;transform:scaleY(.28)}to{opacity:1;transform:none}}
@@ -809,9 +809,17 @@ img,svg{max-width:100%}
   var reduce = matchMedia("(prefers-reduced-motion:reduce)").matches;
   var st = { lang:"es", sheet:1, zone:"all", hover:null, layers:{}, sent:false, busy:false, msg:"" };
 
-  root.style.setProperty("--cw-df", "'Archivo','Helvetica Neue',Helvetica,sans-serif");
+  /* Tipografia de display. El sistema entero es modular — laminas, cotas,
+     etiquetas — y una grotesca de anchos variables no cuadraba con eso. En
+     monoespaciada cada glifo ocupa lo mismo y el titular habla el mismo idioma
+     que el dibujo tecnico. El 0.72 compensa el mayor ancho del mono.
+     Alternativas previstas por el diseno:
+       archivo   'Archivo',...                    300  1
+       bricolage 'Bricolage Grotesque',...        300  1
+       serif     'Instrument Serif',...           400  1.06 */
+  root.style.setProperty("--cw-df", "'Geist Mono',ui-monospace,SFMono-Regular,monospace");
   root.style.setProperty("--cw-dw", "300");
-  root.style.setProperty("--cw-dsc", "1");
+  root.style.setProperty("--cw-dsc", "0.72");
   root.setAttribute("data-lang", st.lang);
 
   function restart(){

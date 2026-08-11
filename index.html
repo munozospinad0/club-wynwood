@@ -70,7 +70,7 @@ img,svg{max-width:100%}
 <div style="max-width:1620px;margin:0 auto;padding:56px 32px 44px">
 <div style="display:flex;justify-content:space-between;align-items:baseline;gap:24px;flex-wrap:wrap;padding-bottom:16px;border-bottom:1px solid #D5D1CD;margin-bottom:28px">
 <div style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#1C1B19"><sc-if value="{{ s1 }}"><span data-l="es">Lámina 01 — Implantación</span><span data-l="en">Plate 01 — Site layout</span></sc-if><sc-if value="{{ s2 }}"><span data-l="es">Lámina 02 — Sección transversal</span><span data-l="en">Plate 02 — Cross section</span></sc-if><sc-if value="{{ s3 }}"><span data-l="es">Lámina 03 — Contexto urbano</span><span data-l="en">Plate 03 — Urban context</span></sc-if><sc-if value="{{ s4 }}"><span data-l="es">Lámina 04 — Planta</span><span data-l="en">Plate 04 — Plan</span></sc-if></div>
-<div style="font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#A29685"><sc-if value="{{ s1 }}"><span data-l="es">Proyección isométrica · 1 ft ≈ 1.79 u · esquema volumétrico</span><span data-l="en">Isometric projection · 1 ft ≈ 1.79 u · volumetric diagram</span></sc-if><sc-if value="{{ s2 }}"><span data-l="es">Sección mirando al paseo · cotas por confirmar en la visita</span><span data-l="en">Section facing the walk · dimensions to be confirmed at the visit</span></sc-if><sc-if value="{{ s3 }}"><span data-l="es">Volúmenes colindantes referenciales · no es un levantamiento</span><span data-l="en">Neighbouring volumes indicative · not a survey</span></sc-if><sc-if value="{{ s4 }}"><span data-l="es">Planta cenital · superficie cubierta rayada</span><span data-l="en">Top view · covered area hatched</span></sc-if></div>
+<div style="font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#A29685"><sc-if value="{{ s1 }}"><span data-l="es">Proyección isométrica · 1 ft ≈ 1.79 u · esquema volumétrico</span><span data-l="en">Isometric projection · 1 ft ≈ 1.79 u · volumetric diagram</span></sc-if><sc-if value="{{ s2 }}"><span data-l="es">Sección mirando al paseo · cotas por confirmar en la visita</span><span data-l="en">Section facing the walk · dimensions to be confirmed at the visit</span></sc-if><sc-if value="{{ s3 }}"><span data-l="es">Trazado de calles real · distancias aproximadas</span><span data-l="en">Real street grid · approximate distances</span></sc-if><sc-if value="{{ s4 }}"><span data-l="es">Planta cenital · superficie cubierta rayada</span><span data-l="en">Top view · covered area hatched</span></sc-if></div>
 </div>
 
 <div style="display:flex;gap:30px;flex-wrap:wrap;margin-bottom:26px;border-bottom:1px solid #D5D1CD">
@@ -132,7 +132,7 @@ img,svg{max-width:100%}
 <div style="display:flex;justify-content:space-between;gap:14px;padding:11px 0;border-bottom:1px solid #D5D1CD;align-items:baseline"><span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:#7D715F"><span data-l="es">Midtown / Design District</span><span data-l="en">Midtown / Design District</span></span><span style="font-size:13.5px;color:#252320;text-align:right"><span data-l="es">6 min</span><span data-l="en">6 min</span></span></div>
 <div style="display:flex;justify-content:space-between;gap:14px;padding:11px 0;border-bottom:1px solid #D5D1CD;align-items:baseline"><span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:#7D715F"><span data-l="es">Aeropuerto MIA</span><span data-l="en">MIA airport</span></span><span style="font-size:13.5px;color:#252320;text-align:right"><span data-l="es">16 min</span><span data-l="en">16 min</span></span></div>
 </div>
-<p style="margin:0;font-size:12.5px;line-height:1.65;color:#7D715F"><span data-l="es">El predio es interior de manzana con frente a NW 1st Ct. Los volúmenes colindantes son referenciales: sirven para leer la relación del recinto con la calle, no son un levantamiento.</span><span data-l="en">The site sits within the block, fronting NW 1st Ct. Neighbouring volumes are indicative: they show how the site meets the street, they are not a survey.</span></p>
+<p style="margin:0;font-size:12.5px;line-height:1.65;color:#7D715F"><span data-l="es">El predio es interior de manzana con frente a NW 1st Ct. El trazado de calles y las referencias del barrio son reales; las distancias y los tiempos son aproximados. El ancho de portón para carga se confirma en la visita.</span><span data-l="en">The site sits within the block, fronting NW 1st Ct. The street grid and the neighbourhood references are real; distances and times are approximate. Gate width for load-in is confirmed at the site visit.</span></p>
 </sc-if>
 
 <sc-if value="{{ s4 }}">
@@ -409,47 +409,110 @@ img,svg{max-width:100%}
 </sc-if>
 
 <sc-if value="{{ s3 }}">
-<svg viewBox="-205 -120 610 350" role="img" aria-label="Contexto urbano: el predio dentro de la manzana, con frente a NW 1st Ct y volúmenes colindantes referenciales" style="width:100%;display:block">
-<g data-anim style="animation-delay:0s">
-<polygon points="-90.1,-52 263.2,128 242.5,140 -69.3,-64" fill="#E6E4E2" stroke="#D5D1CD" stroke-width=".8" opacity="0"/>
-<polygon points="-69.3,-64 263.2,128 242.5,140 -90.1,-52" fill="#E2E0DD" stroke="#D5D1CD" stroke-width=".8"/>
-<polygon points="-147.2,-19 185.3,173 171.5,181 -161,-11" fill="#E2E0DD" stroke="#D5D1CD" stroke-width=".8"/>
-</g>
-<g data-anim style="animation-delay:.12s" fill="#E4E3E0" stroke="#B3AB9F" stroke-width=".9">
-<polygon points="76.2,-70 225.1,16 169.7,48 20.8,-38"/><polygon points="20.8,-38 169.7,48 169.7,74 20.8,-12" fill="#D8D5D1"/><polygon points="169.7,48 225.1,16 225.1,42 169.7,74" fill="#CFCBC5"/>
-<polygon points="-90.1,-86 -13.9,-42 -71,-9 -147.2,-53"/><polygon points="-147.2,-53 -71,-9 -71,25 -147.2,-19" fill="#D8D5D1"/><polygon points="-71,-9 -13.9,-42 -13.9,-8 -71,25" fill="#CFCBC5"/>
-<polygon points="162.8,76 242.5,122 185.3,155 105.7,109"/><polygon points="105.7,109 185.3,155 185.3,173 105.7,127" fill="#D8D5D1"/><polygon points="185.3,155 242.5,122 242.5,140 185.3,173" fill="#CFCBC5"/>
-<polygon points="-71,19 77.9,105 22.5,137 -126.4,51"/><polygon points="-126.4,51 22.5,137 22.5,159 -126.4,73" fill="#D8D5D1"/><polygon points="22.5,137 77.9,105 77.9,127 22.5,159" fill="#CFCBC5"/>
-</g>
-<g data-anim style="animation-delay:.3s">
-<polygon points="0,0 148.9,86 91.8,119 -57.2,33" fill="#F2F1F0" stroke="#1C1B19" stroke-width="1.6"/>
-<polygon points="13.9,8 96.1,55.5 77.4,66.3 -4.8,18.8" fill="#1C1B19"/>
-<g stroke="#C2BDB4" stroke-width=".7"><line x1="-22.5" y1="13" x2="126.4" y2="99"/><line x1="-39.8" y1="23" x2="109.1" y2="109"/></g>
-</g>
-<g data-anim style="animation-delay:.5s"><g data-anim="fade" style="animation-delay:1.3s;transition:opacity .4s ease;opacity:{{ opAnn }}">
-<line x1="46" y1="-40" x2="46" y2="-78" stroke="#1C1B19" stroke-width=".8"/><circle cx="46" cy="-40" r="2.2" fill="#1C1B19"/>
-<rect x="-24" y="-100" width="150" height="21" fill="#1C1B19"/>
-<text x="-14" y="-85" fill="#E8E7E5" font-family="'Geist Mono',ui-monospace,monospace" font-size="11" letter-spacing="1.3">CLUB WYNWOOD</text>
-<rect x="-24" y="-79" width="150" height="17" fill="#F2F1F0" stroke="#C2BDB4" stroke-width=".8"/>
-<text x="-14" y="-67" fill="#252320" font-family="'Geist Mono',ui-monospace,monospace" font-size="9.5" letter-spacing=".4">2129 NW 1st Ct</text>
-<text x="98" y="22" fill="#998B76" font-family="'Geist Mono',ui-monospace,monospace" font-size="9" letter-spacing="1.3" transform="rotate(30 98 22)">NW 1ST CT</text>
+<svg viewBox="0 0 1400 900" style="width:100%;height:auto;display:block">
+<defs>
+  <marker id="fl" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M0 0 L10 5 L0 10 z" fill="#1C1B19"/>
+  </marker>
+</defs>
+<rect width="1400" height="900" fill="#E3E1DF"/>
 
-<g stroke="#A29685" stroke-width="1" stroke-dasharray="5 4" fill="none"><path d="M-150,-96 L-96,-64"/></g>
-<polygon points="-96,-64 -105,-67 -103.5,-60.5" fill="#A29685"/>
-<text x="-196" y="-104" fill="#998B76" font-family="'Geist Mono',ui-monospace,monospace" font-size="8.5" letter-spacing="1.3">WYNWOOD WALLS · 4 MIN A PIE</text>
-<g stroke="#A29685" stroke-width="1" stroke-dasharray="5 4" fill="none"><path d="M232,168 L188,142"/></g>
-<polygon points="188,142 197,145 195.5,138.5" fill="#A29685"/>
-<text x="196" y="182" fill="#998B76" font-family="'Geist Mono',ui-monospace,monospace" font-size="8.5" letter-spacing="1.3">I-95 · 3 MIN · MIDTOWN · 6 MIN</text>
-<g transform="translate(250,-96)"><line x1="0" y1="26" x2="0" y2="2" stroke="#7D715F" stroke-width="1"/><polygon points="0,-4 4.4,7.4 0,4.6 -4.4,7.4" fill="#1C1B19"/><text x="0" y="39" fill="#998B76" font-family="'Geist Mono',ui-monospace,monospace" font-size="9.5" letter-spacing="1.4" text-anchor="middle">N</text></g>
-<line x1="-200" y1="128" x2="-44" y2="128" stroke="#1C1B19" stroke-width="1"/>
-<text x="-200" y="143" fill="#252320" font-family="'Geist Mono',ui-monospace,monospace" font-size="10.5" letter-spacing="1.8">CLUB WYNWOOD</text>
-<text x="-200" y="158" fill="#998B76" font-family="'Geist Mono',ui-monospace,monospace" font-size="9" letter-spacing="1.3">LÁMINA 03 · CONTEXTO URBANO</text>
-<text x="-200" y="171" fill="#998B76" font-family="'Geist Mono',ui-monospace,monospace" font-size="9" letter-spacing="1.3">VOLÚMENES COLINDANTES REFERENCIALES</text>
-<rect x="-200" y="186" width="11" height="11" fill="#1C1B19"/>
-<text x="-183" y="195" fill="#998B76" font-family="'Geist Mono',ui-monospace,monospace" font-size="9" letter-spacing="1.3">TIKI HUT</text>
-<rect x="-108" y="186" width="11" height="11" fill="#F2F1F0" stroke="#1C1B19" stroke-width="1"/>
-<text x="-91" y="195" fill="#998B76" font-family="'Geist Mono',ui-monospace,monospace" font-size="9" letter-spacing="1.3">JARDÍN</text>
-</g></g>
+<!-- radios de caminata desde el venue -->
+<circle cx="707" cy="545" r="215" fill="none" stroke="#C2BDB4" stroke-width="1.4" stroke-dasharray="6 8"/>
+<circle cx="707" cy="545" r="360" fill="none" stroke="#C2BDB4" stroke-width="1.4" stroke-dasharray="6 8"/>
+<text x="722" y="336" font-family="Geist Mono,monospace" font-size="10.5"
+      letter-spacing="1.4" fill="#A29685">5 MIN A PIE</text>
+<text x="722" y="191" font-family="Geist Mono,monospace" font-size="10.5"
+      letter-spacing="1.4" fill="#A29685">10 MIN A PIE</text>
+
+<!-- calles este-oeste -->
+<g stroke="#F2F1F0" stroke-width="22" stroke-linecap="square">
+  <line x1="-20" y1="80" x2="1420" y2="80"/><line x1="-20" y1="200" x2="1420" y2="200"/>
+  <line x1="-20" y1="320" x2="1420" y2="320"/><line x1="-20" y1="390" x2="1420" y2="390"/>
+  <line x1="-20" y1="460" x2="1420" y2="460"/><line x1="-20" y1="530" x2="1420" y2="530"/>
+  <line x1="-20" y1="620" x2="1420" y2="620"/><line x1="-20" y1="780" x2="1420" y2="780"/>
+</g>
+<!-- avenidas norte-sur -->
+<g stroke="#F2F1F0" stroke-width="22" stroke-linecap="square">
+  <line x1="150" y1="-20" x2="150" y2="920"/><line x1="330" y1="-20" x2="330" y2="920"/>
+  <line x1="520" y1="-20" x2="520" y2="920"/><line x1="760" y1="-20" x2="760" y2="920"/>
+  <line x1="940" y1="-20" x2="940" y2="920"/><line x1="1120" y1="-20" x2="1120" y2="920"/>
+</g>
+<!-- NW 1st Ct: calle menor, la del venue -->
+<line x1="650" y1="-20" x2="650" y2="920" stroke="#F2F1F0" stroke-width="13" stroke-linecap="square"/>
+
+<!-- I-95 -->
+<path d="M-40,-20 L60,920 L150,920 L50,-20 Z" fill="#D5D1CD"/>
+<path d="M5,-20 L105,920" stroke="#F2F1F0" stroke-width="30"/>
+<text transform="translate(52,660) rotate(84)" font-family="Geist Mono,monospace"
+      font-size="15" font-weight="600" letter-spacing="2" fill="#7D715F">I-95</text>
+<circle cx="86" cy="486" r="7" fill="#1C1B19"/>
+<text x="104" y="491" font-family="Geist Mono,monospace" font-size="11.5"
+      letter-spacing="1.2" fill="#252320">ACCESO I-95 · 3 MIN</text>
+
+<!-- PARCELA DEL VENUE -->
+<rect x="654" y="474" width="107" height="142" fill="#1C1B19" opacity=".10"/>
+<rect x="660" y="480" width="95" height="130" fill="#1C1B19"/>
+<line x1="707" y1="480" x2="707" y2="392" stroke="#1C1B19" stroke-width="2"/>
+<circle cx="707" cy="392" r="5" fill="#1C1B19"/>
+<rect x="586" y="352" width="242" height="30" fill="#1C1B19"/>
+<text x="598" y="373" font-family="Geist Mono,monospace" font-size="16" letter-spacing="1.2"
+      fill="#F2F1F0">CLUB WYNWOOD</text>
+<text x="598" y="404" font-family="Geist Mono,monospace" font-size="12" letter-spacing="1"
+      fill="#252320">2129 NW 1st Ct</text>
+
+<!-- acceso y carga: por donde entra el camion -->
+<line x1="600" y1="560" x2="655" y2="560" stroke="#1C1B19" stroke-width="2.5"
+      marker-end="url(#fl)" stroke-dasharray="8 5"/>
+<text x="470" y="556" font-family="Geist Mono,monospace" font-size="11.5" letter-spacing="1.2"
+      fill="#252320">ACCESO Y CARGA</text>
+<text x="470" y="574" font-family="Geist Mono,monospace" font-size="10" letter-spacing="1"
+      fill="#A29685">POR NW 1st Ct · ANCHO POR CONFIRMAR</text>
+
+<!-- referencias del barrio -->
+<g font-family="Geist Mono,monospace" font-size="12" letter-spacing=".8" fill="#252320">
+  <circle cx="520" cy="240" r="6" fill="none" stroke="#1C1B19" stroke-width="1.8"/>
+  <text x="538" y="245">Wynwood Walls</text>
+  <circle cx="400" cy="215" r="6" fill="none" stroke="#1C1B19" stroke-width="1.8"/>
+  <text x="330" y="196">Wynwood Marketplace</text>
+  <circle cx="940" cy="90" r="6" fill="none" stroke="#1C1B19" stroke-width="1.8"/>
+  <text x="958" y="95">Midtown Miami</text>
+</g>
+
+<!-- nombres de calle -->
+<g font-family="Geist Mono,monospace" font-size="10.5" letter-spacing="1.4" fill="#A29685">
+  <text x="1160" y="74">NW 29 ST</text><text x="1160" y="194">NW 26 ST</text>
+  <text x="1160" y="314">NW 24 ST</text><text x="1160" y="384">NW 23 ST</text>
+  <text x="1160" y="454">NW 22 ST</text><text x="1160" y="524">NW 21 ST</text>
+  <text x="1160" y="614">NW 20 ST</text><text x="1160" y="774">NW 17 ST</text>
+  <text transform="translate(324,868) rotate(-90)">NW 3 AVE</text>
+  <text transform="translate(514,868) rotate(-90)">NW 2 AVE</text>
+  <text transform="translate(644,868) rotate(-90)">NW 1 CT</text>
+  <text transform="translate(754,868) rotate(-90)">NW 1 AVE</text>
+  <text transform="translate(934,868) rotate(-90)">N MIAMI AVE</text>
+</g>
+
+<!-- salidas del encuadre -->
+<g font-family="Geist Mono,monospace" font-size="11" letter-spacing="1.2" fill="#7D715F">
+  <text x="1000" y="36">↑ DESIGN DISTRICT · 6 MIN</text>
+  <text x="1000" y="884">↓ DOWNTOWN / BRICKELL · 9 MIN</text>
+  <text x="150" y="884">← AEROPUERTO MIA · 16 MIN</text>
+</g>
+
+<!-- norte y escala -->
+<g transform="translate(1330,120)">
+  <path d="M0,-34 L9,10 L0,3 L-9,10 Z" fill="#1C1B19"/>
+  <text x="0" y="30" text-anchor="middle" font-family="Geist Mono,monospace"
+        font-size="12" fill="#252320">N</text>
+</g>
+<g transform="translate(80,830)">
+  <rect x="0" y="0" width="60" height="7" fill="#1C1B19"/>
+  <rect x="60" y="0" width="60" height="7" fill="#F2F1F0" stroke="#1C1B19" stroke-width="1"/>
+  <text x="0" y="24" font-family="Geist Mono,monospace" font-size="10"
+        letter-spacing="1" fill="#A29685">0</text>
+  <text x="120" y="24" text-anchor="end" font-family="Geist Mono,monospace" font-size="10"
+        letter-spacing="1" fill="#A29685">200 M</text>
+</g>
 </svg>
 </sc-if>
 

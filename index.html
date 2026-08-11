@@ -867,7 +867,9 @@ img,svg{max-width:100%}
      identificadores, que salen de cuentas que Daniel tiene que crear.
      Ver claude-design/port/MEDICION.md para el paso a paso.
      Deja en "" lo que no uses: cada bloque se carga solo si tiene valor. */
-  var LEAD_ENDPOINT = "https://formspree.io/f/XXXXXXXX"; // o el webhook de n8n
+  // Webhook de n8n (workflow "Club Wynwood — Captura de leads del sitio").
+  // Cualifica el lead y lo escribe en la hoja "Leads Club Wynwood".
+  var LEAD_ENDPOINT = "https://munozospinad0.app.n8n.cloud/webhook/club-wynwood-lead";
   var LEAD_EMAIL    = "info@clubwynwood.com";
   var GTM_ID        = "";   // "GTM-XXXXXXX"  — recomendado: GA4 y Meta se montan dentro
   var GA4_ID        = "";   // "G-XXXXXXXXXX" — solo si NO se usa GTM

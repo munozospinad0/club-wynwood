@@ -124,6 +124,103 @@
 })();
 </script>
 
+<style>
+  /* El estado final es el de siempre: si esto no corre, el plano se ve entero. */
+  #cwPlate .cw-dib{opacity:0}
+  #cwPlate .cw-dib.cw-trazado{opacity:1}
+</style>
+<script>
+(function(){
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function geometria(host){
+    // getTotalLength() existe en SVGGeometryElement: path, line, polyline,
+    // polygon, rect, circle, ellipse. Se excluye lo que ya anima data-anim
+    // para que los dos sistemas no se peleen por el mismo elemento.
+    var sel = "path,line,polyline,polygon,rect,circle,ellipse";
+    return Array.prototype.filter.call(host.querySelectorAll(sel), function(el){
+      if (el.closest("[data-anim]")) return false;
+      var s = el.getAttribute("stroke");
+      return s && s !== "none";
+    });
+  }
+
+  function dibujar(host){
+    if (!host) return;
+    var els = geometria(host);
+    if (!els.length) return;
+
+    var textos = Array.prototype.slice.call(host.querySelectorAll("text"));
+    var PASO = 5, MAXD = 900, DUR = 620;   // escalonado, tope de retraso, duracion
+
+    els.forEach(function(el, i){
+      var L = 0;
+      try { L = el.getTotalLength(); } catch(e){ L = 0; }
+      if (!L || !isFinite(L)) { el.classList.add("cw-dib","cw-trazado"); return; }
+      var d = Math.min(i * PASO, MAXD);
+      el.classList.add("cw-dib");
+      el.style.strokeDasharray  = L + " " + L;
+      el.style.strokeDashoffset = L;
+      el.style.transition = "stroke-dashoffset " + DUR + "ms cubic-bezier(0.23, 1, 0.32, 1) " +
+                            d + "ms, opacity 180ms ease " + d + "ms";
+      // dos cuadros para que el navegador registre el estado inicial
+      requestAnimationFrame(function(){ requestAnimationFrame(function(){
+        el.classList.add("cw-trazado");
+        el.style.strokeDashoffset = "0";
+      });});
+    });
+
+    // Los textos entran cuando ya hay dibujo donde apoyarse: una cota sobre el
+    // vacio no significa nada.
+    var espera = Math.min(els.length * PASO, MAXD) + DUR * 0.45;
+    textos.forEach(function(t, i){
+      t.classList.add("cw-dib");
+      t.style.transition = "opacity 300ms ease " + (espera + Math.min(i * 8, 260)) + "ms";
+      requestAnimationFrame(function(){ requestAnimationFrame(function(){
+        t.classList.add("cw-trazado");
+      });});
+    });
+  }
+
+  function limpiar(host){
+    host.querySelectorAll(".cw-dib").forEach(function(el){
+      el.classList.remove("cw-dib","cw-trazado");
+      el.style.strokeDasharray = "";
+      el.style.strokeDashoffset = "";
+      el.style.transition = "";
+    });
+  }
+
+  function arrancar(){
+    var host = document.getElementById("cwPlate");
+    if (!host || reduce) return;
+
+    var visto = false;
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if (e.isIntersecting && !visto){ visto = true; dibujar(host); io.disconnect(); }
+      });
+    }, { threshold:.22 });
+    io.observe(host);
+
+    // Al cambiar de lamina el SVG se vuelve a pintar entero: se redibuja.
+    // Se escucha el clic en vez de observar el DOM porque un MutationObserver
+    // sobre 43 KB de SVG cuesta mas que el efecto.
+    document.addEventListener("click", function(e){
+      var b = e.target.closest && e.target.closest("#lamina button");
+      if (!b) return;
+      setTimeout(function(){
+        var h = document.getElementById("cwPlate");
+        if (h){ limpiar(h); dibujar(h); }
+      }, 40);
+    });
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", arrancar);
+  else arrancar();
+})();
+</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..700,0..100,0..1&amp;family=Archivo:wght@300..700&amp;family=Geist:wght@200..600&amp;family=Geist+Mono:wght@300..500&amp;display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..700,0..100,0..1&amp;family=Archivo:wght@300..700&amp;family=Geist:wght@200..600&amp;family=Geist+Mono:wght@300..500&amp;display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..700,0..100,0..1&amp;family=Archivo:wght@300..700&amp;family=Geist:wght@200..600&amp;family=Geist+Mono:wght@300..500&amp;display=swap"></noscript><style>
 @keyframes cwIn{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
 @keyframes cwDrop{0%{opacity:0;transform:translateY(-64px)}62%{opacity:1}100%{opacity:1;transform:none}}

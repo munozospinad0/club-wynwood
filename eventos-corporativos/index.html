@@ -1,0 +1,224 @@
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%230A0A0A'/><path d='M5.5 10 L9.5 23 L16 13.5 L22.5 23 L26.5 10' fill='none' stroke='%23F5F4F1' stroke-width='2.6' stroke-linejoin='round' stroke-linecap='round'/></svg>">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Activaciones de marca y eventos corporativos en Wynwood | Club Wynwood</title>
+<meta name="description" content="Espacio para activaciones de marca y eventos corporativos en Wynwood, Miami: ~22 000 ft² al aire libre, ~600 de pie y montaje libre. El recinto llega vacío.">
+<link rel="canonical" href="https://munozospinad0.github.io/club-wynwood/eventos-corporativos/">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta property="og:type" content="business.business">
+<meta property="og:site_name" content="Club Wynwood">
+<meta property="og:title" content="Activaciones de marca y eventos corporativos en Wynwood | Club Wynwood">
+<meta property="og:description" content="Espacio para activaciones de marca y eventos corporativos en Wynwood, Miami: ~22 000 ft² al aire libre, ~600 de pie y montaje libre. El recinto llega vacío.">
+<meta property="og:url" content="https://munozospinad0.github.io/club-wynwood/eventos-corporativos/">
+<meta property="og:image" content="https://munozospinad0.github.io/club-wynwood/assets/aerea-predio.jpg">
+<meta property="og:locale" content="es_ES">
+<meta property="og:locale:alternate" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://munozospinad0.github.io/club-wynwood/assets/aerea-predio.jpg">
+
+
+<style>
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+  /* Foco visible: no habia ninguno. Requisito de accesibilidad, no opcional. */
+  a:focus-visible,button:focus-visible,input:focus-visible,
+  select:focus-visible,textarea:focus-visible{
+    outline:2px solid #8B7F6A;outline-offset:3px}
+
+  /* Feedback al pulsar: la interfaz no respondia al clic. */
+  button,a[href]{transition:transform .12s ease}
+  button:active,a[href]:active{transform:translateY(1px)}
+
+  /* Cifras tabulares: el sitio esta lleno de numeros (~22 000, ~600, ~4 000)
+     y sin esto cambian de ancho al alternar lamina o idioma. */
+  :root{font-variant-numeric:tabular-nums}
+
+  /* Grano de papel. Un crema perfectamente plano se lee digital; la textura es
+     lo que lo hace parecer papel de dibujo. Refuerza la direccion elegida. */
+  body::after{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:9999;
+    opacity:.038;mix-blend-mode:multiply;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E")}
+</style>
+
+<style>
+  :root{--cw-ease-out:cubic-bezier(0.23, 1, 0.32, 1)}
+
+  .cw-rv{opacity:0;transform:translateY(18px)}
+  .cw-rv.cw-in{opacity:1;transform:none;
+    transition:opacity .55s var(--cw-ease-out), transform .55s var(--cw-ease-out)}
+
+  @media (hover:hover) and (pointer:fine){
+    #lamina button{transition:transform .15s ease}
+    #lamina button:hover{transform:translateY(-1px)}
+  }
+
+  /* Movimiento reducido: se conserva la opacidad (ayuda a entender que algo
+     entro) y se quita el desplazamiento. Menos y mas suave, no cero. */
+  @media (prefers-reduced-motion:reduce){
+    .cw-rv{transform:none}
+    .cw-rv.cw-in{transition:opacity .3s ease}
+  }
+</style>
+<script>
+(function(){
+  function arrancar(){
+    var bloques = [];
+    document.querySelectorAll('section:not(#lamina), footer').forEach(function(s){
+      var hijos = s.querySelectorAll(':scope > div, :scope > div > div');
+      var n = 0;
+      (hijos.length ? hijos : [s]).forEach(function(el){
+        if (el.closest('#lamina')) return;
+        if (bloques.indexOf(el) >= 0) return;
+        if (el.offsetHeight < 40) return;               // ignora envoltorios vacios
+        el.classList.add('cw-rv');
+        el.style.transitionDelay = Math.min(n, 4) * 60 + 'ms';
+        bloques.push(el); n++;
+      });
+    });
+    if (!('IntersectionObserver' in window)){
+      bloques.forEach(function(el){ el.classList.add('cw-in'); });
+      return;
+    }
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if (e.isIntersecting){ e.target.classList.add('cw-in'); io.unobserve(e.target); }
+      });
+    }, { threshold:.08, rootMargin:'0px 0px -60px 0px' });
+    bloques.forEach(function(el){ io.observe(el); });
+  }
+  // Este bloque se inyecta en el <head>: sin esperar al DOM no habria nada que observar.
+  if (document.readyState === 'loading')
+    document.addEventListener('DOMContentLoaded', arrancar);
+  else arrancar();
+})();
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Archivo:wght@300..700&amp;family=Geist:wght@200..600&amp;family=Geist+Mono:wght@300..500&amp;display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@300..700&amp;family=Geist:wght@200..600&amp;family=Geist+Mono:wght@300..500&amp;display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@300..700&amp;family=Geist:wght@200..600&amp;family=Geist+Mono:wght@300..500&amp;display=swap"></noscript><style>
+@keyframes cwIn{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+@keyframes cwDrop{0%{opacity:0;transform:translateY(-64px)}62%{opacity:1}100%{opacity:1;transform:none}}
+@keyframes cwGrow{from{opacity:0;transform:scaleY(.28)}to{opacity:1;transform:none}}
+@keyframes cwFade{from{opacity:0}to{opacity:1}}
+@keyframes cwDraw{from{stroke-dasharray:1420;stroke-dashoffset:1420}to{stroke-dasharray:1420;stroke-dashoffset:0}}
+@media (prefers-reduced-motion:no-preference){
+[data-anim]{animation:cwIn .8s cubic-bezier(.2,.72,.18,1) backwards}
+[data-anim="drop"]{animation-name:cwDrop;animation-duration:1.15s;animation-timing-function:cubic-bezier(.14,.9,.16,1)}
+[data-anim="grow"]{animation-name:cwGrow;animation-duration:.95s;transform-box:fill-box;transform-origin:50% 100%}
+[data-anim="fade"]{animation-name:cwFade;animation-duration:1.2s}
+[data-draw]{animation:cwDraw 1.5s cubic-bezier(.3,.8,.2,1) .06s backwards}
+}
+@media (max-width:820px){[data-r="plate"]{grid-template-columns:1fr!important}}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:#F8F3EA;-webkit-font-smoothing:antialiased}
+[data-l="en"]{display:none}
+html[data-lang="en"] [data-l="en"]{display:inline}
+html[data-lang="en"] [data-l="es"]{display:none}
+a{color:#211C15;text-decoration:none}
+a:hover{color:#7D725F}
+input,textarea,select,button{font:inherit;color:inherit}
+::selection{background:#211C15;color:#EEE8DF}
+img,svg{max-width:100%}
+@media (max-width:1080px){[data-r="stats"]{grid-template-columns:repeat(3,1fr)!important}[data-r="cards4"]{grid-template-columns:repeat(2,1fr)!important}}
+@media (max-width:900px){[data-r="split"],[data-r="two"],[data-r="three"],[data-r="combo"],[data-r="formsplit"]{grid-template-columns:1fr!important;gap:32px!important}[data-r="mapcard"],[data-r="maptimes"]{position:static!important;transform:none!important;max-width:none!important;min-width:0!important;margin:0!important}[data-r="mapwrap"]{display:flex;flex-direction:column;gap:1px}}
+@media (max-width:760px){[data-r="stats"]{grid-template-columns:repeat(2,1fr)!important}[data-r="cards4"]{grid-template-columns:1fr!important}[data-r="form2"]{grid-template-columns:1fr!important}[data-r="specsheet"]>div{grid-template-columns:1fr!important;gap:3px!important}[data-r="specsheet"]>div:first-child{display:none!important}}
+@media (max-width:600px){nav>div,header,section>div,footer>div{padding-left:20px!important;padding-right:20px!important}}
+</style>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Club Wynwood","item":"https://munozospinad0.github.io/club-wynwood/"},{"@type":"ListItem","position":2,"name":"Activaciones y corporativo","item":"https://munozospinad0.github.io/club-wynwood/eventos-corporativos/"}]},{"@type":"WebPage","@id":"https://munozospinad0.github.io/club-wynwood/eventos-corporativos/","name":"Activaciones de marca y eventos corporativos en Wynwood","description":"Espacio para activaciones de marca y eventos corporativos en Wynwood, Miami: ~22 000 ft² al aire libre, ~600 de pie y montaje libre. El recinto llega vacío.","about":{"@id":"https://munozospinad0.github.io/club-wynwood/#venue"},"isPartOf":{"@id":"https://munozospinad0.github.io/club-wynwood/"}}]}</script><div style="font-family:'Geist','Helvetica Neue',Helvetica,system-ui,sans-serif;color:#29241C;background:#F8F3EA">
+
+<nav style="position:sticky;top:0;z-index:50;background:#211C15;border-bottom:1px solid #423C30">
+<div style="max-width:1280px;margin:0 auto;padding:10px 32px;min-height:64px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+<a href="../#top" style="display:flex;align-items:center;gap:12px;color:#EEE8DF">
+<svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M1 2 L4.4 14 L8 5.4 L11.6 14 L15 2" fill="none" stroke="#EEE8DF" stroke-width="1.2"/></svg>
+<span style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:500">Club Wynwood</span>
+</a>
+<div style="display:flex;gap:22px;align-items:center;flex-wrap:wrap">
+<a href="../#lugar" style="font-size:11.5px;letter-spacing:.06em;color:#BBB2A2"><span data-l="es">El lugar</span><span data-l="en">The venue</span></a>
+<a href="../#espacios" style="font-size:11.5px;letter-spacing:.06em;color:#BBB2A2"><span data-l="es">Espacios</span><span data-l="en">Spaces</span></a>
+<a href="../#ficha" style="font-size:11.5px;letter-spacing:.06em;color:#BBB2A2"><span data-l="es">Ficha técnica</span><span data-l="en">Spec sheet</span></a>
+<a href="../#ubicacion" style="font-size:11.5px;letter-spacing:.06em;color:#BBB2A2"><span data-l="es">Ubicación</span><span data-l="en">Location</span></a>
+</div>
+<div style="display:flex;align-items:center;gap:14px">
+<button type="button" data-lang-toggle style="background:transparent;border:1px solid #5C5445;color:#EEE8DF;height:30px;padding:0 12px;font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.2em;cursor:pointer" style-hover="border-color:#EEE8DF"><span data-l="es">EN</span><span data-l="en">ES</span></button>
+<a href="../#disponibilidad" style="background:#EEE8DF;color:#211C15;height:38px;display:inline-flex;align-items:center;padding:0 20px;font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase" style-hover="background:#F8F3EA;color:#211C15"><span data-l="es">Solicitar disponibilidad</span><span data-l="en">Request availability</span></a>
+</div>
+</div>
+</nav><nav aria-label="Migas de pan" style="max-width:1280px;margin:0 auto;padding:28px 32px 0;font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#7D725F"><a href="../" style="color:#7D725F;text-decoration:none">Club Wynwood</a> <span aria-hidden="true">/</span> <span style="color:#29241C"><span data-l="es">Activaciones y corporativo</span><span data-l="en">Brand activations and corporate</span></span></nav><header style="max-width:1280px;margin:0 auto;padding:56px 32px 72px"><div style="font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#7D725F;padding-bottom:20px"><span data-l="es">Uso &middot; marca</span><span data-l="en">Use &middot; brand</span></div><h1 style="margin:0 0 32px;font-family:var(--cw-df,'Archivo',sans-serif);font-weight:var(--cw-dw,600);letter-spacing:-.042em;line-height:.9;font-size:calc(clamp(46px,8.4vw,92px) * var(--cw-dsc,1));max-width:16ch"><span data-l="es">Activaciones y corporativo</span><span data-l="en">Brand activations and corporate</span></h1><p style="margin:0;font-size:18px;line-height:1.62;color:#4A4335;max-width:62ch"><span data-l="es">~22 000 ft&sup2; al aire libre en el Wynwood Arts District, con aforo de ~600 de pie. El recinto llega vac&iacute;o: tu agencia monta la marca sin pelear con la decoraci&oacute;n de nadie.</span><span data-l="en">~22 000 sq ft outdoors in the Wynwood Arts District, with capacity for ~600 standing. The site arrives empty: your agency builds the brand without fighting anyone else&rsquo;s decor.</span></p></header><section style="background:#F0EAE1;border-top:1px solid #DAD3C7;border-bottom:1px solid #DAD3C7"><div style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap"><div style="padding:26px 24px;border-right:1px solid #DAD3C7;flex:1 1 200px"><div style="font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#7D725F;margin-bottom:12px"><span data-l="es">De pie</span><span data-l="en">Standing</span></div><div style="font-family:var(--cw-df,'Archivo',sans-serif);font-weight:600;font-size:34px;letter-spacing:-.02em;line-height:1">~600</div></div><div style="padding:26px 24px;border-right:1px solid #DAD3C7;flex:1 1 200px"><div style="font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#7D725F;margin-bottom:12px"><span data-l="es">Superficie total</span><span data-l="en">Total area</span></div><div style="font-family:var(--cw-df,'Archivo',sans-serif);font-weight:600;font-size:34px;letter-spacing:-.02em;line-height:1">~22 000 ft&sup2;</div><div style="font-size:12px;color:#7D725F;padding-top:6px">2 045 m&sup2;</div></div><div style="padding:26px 24px;border-right:1px solid #DAD3C7;flex:1 1 200px"><div style="font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#7D725F;margin-bottom:12px"><span data-l="es">Techado</span><span data-l="en">Covered</span></div><div style="font-family:var(--cw-df,'Archivo',sans-serif);font-weight:600;font-size:34px;letter-spacing:-.02em;line-height:1">~4 000 ft&sup2;</div><div style="font-size:12px;color:#7D725F;padding-top:6px">372 m&sup2;</div></div></div></section><section style="border-bottom:1px solid #DAD3C7"><figure style="margin:0"><img loading="lazy" decoding="async" src="../assets/aerea-predio.jpg" alt="~22 000 ft&sup2; de exterior, con la palapa techada al centro." style="display:block;width:100%;height:clamp(280px,50vh,540px);object-fit:cover;object-position:50% 50%;filter:saturate(.92) contrast(1.03)"/><figcaption style="max-width:1280px;margin:0 auto;padding:14px 32px 18px;font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#7D725F"><span data-l="es">~22 000 ft&sup2; de exterior, con la palapa techada al centro.</span><span data-l="en">~22 000 sq ft outdoors, with the covered structure at the centre.</span></figcaption></figure></section><section style="border-bottom:1px solid #DAD3C7"><div style="max-width:1280px;margin:0 auto;padding:80px 32px"><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:44px"><div><h2 style="margin:0 0 14px;font-size:19px;font-weight:600;letter-spacing:-.01em"><span data-l="es">Un lienzo, no un sal&oacute;n</span><span data-l="en">A canvas, not a ballroom</span></h2><p style="margin:0;font-size:15px;line-height:1.68;color:#4A4335"><span data-l="es">La raz&oacute;n por la que una marca elige este recinto es que no tiene est&eacute;tica propia que imponer. Superficie firme, l&iacute;mites claros y cero ambig&uuml;edad sobre qu&eacute; est&aacute; incluido.</span><span data-l="en">The reason a brand picks this site is that it has no aesthetic of its own to impose. Firm ground, clear boundaries and zero ambiguity about what is included.</span></p></div><div><h2 style="margin:0 0 14px;font-size:19px;font-weight:600;letter-spacing:-.01em"><span data-l="es">El barrio hace parte del brief</span><span data-l="en">The neighbourhood is part of the brief</span></h2><p style="margin:0;font-size:15px;line-height:1.68;color:#4A4335"><span data-l="es">Wynwood es contexto real, no una l&iacute;nea de marketing: el barrio de Art Basel, a una cuadra de los murales y a tres minutos del acceso a la I-95.</span><span data-l="en">Wynwood is real context, not a marketing line: the Art Basel district, one block from the murals and three minutes from the I-95 access.</span></p></div><div><h2 style="margin:0 0 14px;font-size:19px;font-weight:600;letter-spacing:-.01em"><span data-l="es">Lo que decide un productor</span><span data-l="en">What a producer decides on</span></h2><p style="margin:0;font-size:15px;line-height:1.68;color:#4A4335"><span data-l="es">Potencia, load-in, ancho de port&oacute;n, parking, curfew y l&iacute;mite de dB se levantan contigo en la visita t&eacute;cnica y se entregan por escrito. Preferimos eso a publicar cifras que luego no se sostengan.</span><span data-l="en">Power, load-in, gate width, parking, curfew and dB limit are surveyed with you at the technical visit and delivered in writing. We prefer that to publishing figures that will not hold up.</span></p></div></div><p style="margin:52px 0 0;font-size:14px;color:#7D725F"><a href="../#ficha" style="color:#C4772B;text-decoration:none;border-bottom:1px solid #DAD3C7;padding-bottom:2px"><span data-l="es">Ver la ficha t&eacute;cnica completa</span><span data-l="en">See the full spec sheet</span> &rarr;</a></p></div></section><section style="border-bottom:1px solid #DAD3C7"><div style="max-width:1280px;margin:0 auto;padding:72px 32px"><div style="font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#7D725F;margin-bottom:24px"><span data-l="es">Seguir leyendo</span><span data-l="en">Keep reading</span></div><div style="max-width:640px"><a href="../el-jardin/" style="display:block;padding:15px 0;border-bottom:1px solid #DAD3C7;color:#29241C;text-decoration:none;font-size:15px"><span data-l="es">El Jardín</span><span data-l="en">The Garden</span> <span style="color:#7D725F">&rarr;</span></a><a href="../tiki-hut/" style="display:block;padding:15px 0;border-bottom:1px solid #DAD3C7;color:#29241C;text-decoration:none;font-size:15px"><span data-l="es">El Tiki Hut</span><span data-l="en">The Tiki Hut</span> <span style="color:#7D725F">&rarr;</span></a><a href="../bodas/" style="display:block;padding:15px 0;border-bottom:1px solid #DAD3C7;color:#29241C;text-decoration:none;font-size:15px"><span data-l="es">Bodas</span><span data-l="en">Weddings</span> <span style="color:#7D725F">&rarr;</span></a><a href="../produccion-y-rodajes/" style="display:block;padding:15px 0;border-bottom:1px solid #DAD3C7;color:#29241C;text-decoration:none;font-size:15px"><span data-l="es">Rodajes y producci&oacute;n</span><span data-l="en">Shoots and production</span> <span style="color:#7D725F">&rarr;</span></a><a href="../preguntas-frecuentes/" style="display:block;padding:15px 0;border-bottom:1px solid #DAD3C7;color:#29241C;text-decoration:none;font-size:15px"><span data-l="es">Preguntas frecuentes</span><span data-l="en">Frequently asked questions</span> <span style="color:#7D725F">&rarr;</span></a></div></div></section><section style="background:#211C15;color:#EEE8DF">
+<div style="max-width:1280px;margin:0 auto;padding:104px 32px 88px">
+<div style="font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#978B77;margin-bottom:24px">Club Wynwood · <span data-l="es">Jardín de eventos al aire libre</span><span data-l="en">Open-air event garden</span></div>
+<h2 style="margin:0 0 32px;font-family:var(--cw-df,'Archivo','Helvetica Neue',Helvetica,sans-serif);font-weight:var(--cw-dw,300);letter-spacing:-.042em;line-height:.84;font-size:calc(clamp(58px,12vw,146px) * var(--cw-dsc,1));color:#EEE8DF"><span data-l="es">Reserva tu fecha.</span><span data-l="en">Book your date.</span></h2>
+<p style="margin:0 0 40px;font-size:17px;line-height:1.6;color:#978B77;max-width:52ch"><span data-l="es">Cuéntanos qué evento tienes y respondemos con disponibilidad, condiciones y la ficha técnica completa.</span><span data-l="en">Tell us about your event and we'll come back with availability, terms and the full spec sheet.</span></p>
+<div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:56px">
+<a href="../#disponibilidad" style="background:#EEE8DF;color:#211C15;height:48px;display:inline-flex;align-items:center;padding:0 26px;font-family:'Geist Mono',ui-monospace,monospace;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase" style-hover="background:#F8F3EA"><span data-l="es">Solicitar disponibilidad</span><span data-l="en">Request availability</span></a>
+<a href="tel:+13059707486" style="border:1px solid #5C5445;color:#EEE8DF;height:48px;display:inline-flex;align-items:center;padding:0 26px;font-family:'Geist Mono',ui-monospace,monospace;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase" style-hover="border-color:#EEE8DF">(305) 970-7486</a>
+</div>
+<div data-r="three" style="display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid #423C30;gap:0">
+<div style="padding:22px 0"><div style="font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#7D725F;margin-bottom:10px"><span data-l="es">Teléfono</span><span data-l="en">Phone</span></div><div style="font-size:15px">(305) 970-7486</div></div>
+<div style="padding:22px 0"><div style="font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#7D725F;margin-bottom:10px">Email</div><div style="font-size:15px">info@clubwynwood.com</div></div>
+<div style="padding:22px 0"><div style="font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#7D725F;margin-bottom:10px"><span data-l="es">Dirección</span><span data-l="en">Address</span></div><div style="font-size:15px">2129 NW 1st Ct, Miami FL 33127</div></div>
+</div>
+</div>
+</section>
+
+<footer style="background:#211C15;color:#7D725F;border-top:1px solid #423C30">
+<div style="max-width:1280px;margin:0 auto;padding:34px 32px;display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase">
+<div>Club Wynwood — <span data-l="es">Jardín de eventos al aire libre</span><span data-l="en">Open-air event garden</span></div>
+<div>2129 NW 1st Ct · Miami FL 33127</div>
+<div><span data-l="es">Se alquila el exterior: jardín y estructura techada</span><span data-l="en">The exterior is what's rented: garden and covered structure</span></div>
+</div>
+</footer>
+
+</div>
+<script>
+(function(){
+  var root = document.documentElement;
+  try { var g = localStorage.getItem("cw-lang"); if (g === "en") root.setAttribute("data-lang","en"); } catch(e){}
+  window.__cwToggleLang = function(){
+    var n = root.getAttribute("data-lang") === "en" ? "es" : "en";
+    root.setAttribute("data-lang", n);
+    try { localStorage.setItem("cw-lang", n); } catch(e){}
+  };
+  document.addEventListener("click", function(e){
+    var b = e.target.closest && e.target.closest("[data-lang-toggle]");
+    if (b) { e.preventDefault(); window.__cwToggleLang(); }
+  });
+
+  function arrancar(){
+    var bl = [];
+    document.querySelectorAll("section, footer").forEach(function(s){
+      var hijos = s.querySelectorAll(":scope > div, :scope > div > div");
+      var n = 0;
+      (hijos.length ? hijos : [s]).forEach(function(el){
+        if (bl.indexOf(el) >= 0 || el.offsetHeight < 40) return;
+        el.classList.add("cw-rv");
+        el.style.transitionDelay = Math.min(n,4)*60 + "ms";
+        bl.push(el); n++;
+      });
+    });
+    if (!("IntersectionObserver" in window)) { bl.forEach(function(el){ el.classList.add("cw-in"); }); return; }
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting){ e.target.classList.add("cw-in"); io.unobserve(e.target); } });
+    }, { threshold:.08, rootMargin:"0px 0px -60px 0px" });
+    bl.forEach(function(el){ io.observe(el); });
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", arrancar);
+  else arrancar();
+
+  /* La atribucion se guarda tambien aqui: una visita puede aterrizar en una
+     interior desde un anuncio y rellenar el formulario en la home. */
+  try {
+    var q = new URLSearchParams(location.search), st = {};
+    ["gclid","fbclid","utm_source","utm_medium","utm_campaign","utm_term","utm_content"]
+      .forEach(function(k){ if (q.get(k)) st[k] = q.get(k); });
+    if (Object.keys(st).length){
+      var y = JSON.parse(sessionStorage.getItem("cw-attr") || "{}");
+      for (var k in st) y[k] = st[k];
+      if (!y.landing_page) y.landing_page = location.pathname;
+      if (!y.referrer) y.referrer = document.referrer || "";
+      sessionStorage.setItem("cw-attr", JSON.stringify(y));
+    }
+  } catch(e){}
+})();
+</script>

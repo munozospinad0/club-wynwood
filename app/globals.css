@@ -28,6 +28,22 @@
 
 * { box-sizing: border-box; }
 
+/*
+ * Idioma DENTRO de la lámina.
+ *
+ * El resto del sitio resuelve el idioma en el servidor (rutas /es y /en), pero
+ * la lámina se portó verbatim del sitio estático y su markup lleva los dos
+ * idiomas como <span data-l="es"> y <span data-l="en">. Sin estas reglas se ven
+ * los dos pegados: "LÁMINA 01 — IMPLANTACIÓNPLATE 01 — SITE LAYOUT".
+ *
+ * Se conmutan con html[data-lang], que el layout fija desde la ruta. Es la
+ * única parte del sitio que oculta contenido con CSS, y solo porque los 49
+ * textos viven dentro de un SVG donde no cabe el patrón de componentes.
+ */
+[data-l="en"] { display: none; }
+html[data-lang="en"] [data-l="en"] { display: inline; }
+html[data-lang="en"] [data-l="es"] { display: none; }
+
 html { scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 

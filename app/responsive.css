@@ -69,8 +69,20 @@
   /* Los enlaces de sección se ocultan: en móvil el visitante hace scroll, no
      navega por menú. Se conservan logo, idioma y la única acción que importa. */
   nav .reja > div:nth-child(2) { display: none !important; }
-  nav .reja { justify-content: space-between; }
-  .boton { padding: 12px 16px; font-size: 10px; }
+  nav .reja { justify-content: space-between; gap: 10px; }
+  .boton { padding: 12px 14px; font-size: 10px; letter-spacing: 0.12em; }
+}
+@media (max-width: 460px) {
+  /* A 390 px "Solicitar disponibilidad" no cabe y se salía por la derecha.
+     Se acorta a "Disponibilidad": el destino es el mismo y el botón entra. */
+  nav .boton { font-size: 0; padding: 12px 14px; }
+  nav .boton::after {
+    content: "Disponibilidad";
+    font-size: 10px;
+    letter-spacing: 0.12em;
+  }
+  html[data-lang="en"] nav .boton::after { content: "Availability"; }
+  nav .reja { padding-inline: 16px; }
 }
 
 /* ---------- REJAS DE CONTENIDO ---------- */

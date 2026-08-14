@@ -49,6 +49,27 @@
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
   }
+
+  /* La causa real de que la barra lateral se saliera en móvil ("SUPERFICIE
+     ~22 00…" cortado): los hijos de un flex o un grid tienen min-width:auto por
+     defecto, así que se niegan a encoger por debajo de su contenido y empujan
+     el contenedor. min-width:0 es el interruptor que les permite encoger.
+     Se aplica a todo #lamina porque la lámina se portó verbatim y sus estilos
+     van en línea: no hay clases sobre las que afinar. */
+  #lamina * { min-width: 0; }
+  #lamina,
+  #lamina > div,
+  #lamina [style*="max-width:1280px"],
+  #lamina [style*="max-width: 1280px"] {
+    max-width: 100% !important;
+  }
+  /* Las filas de lectura (etiqueta a la izquierda, valor a la derecha) se
+     dejan partir en dos líneas antes que salirse. */
+  #lamina [style*="justify-content:space-between"],
+  #lamina [style*="justify-content: space-between"] {
+    flex-wrap: wrap;
+    gap: 2px 12px;
+  }
 }
 @media (max-width: 620px) {
   /* Las pestañas de lámina no caben en una línea: se dejan deslizar en vez de

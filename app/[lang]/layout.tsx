@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "../globals.css";
+import "../responsive.css";
 import { BCP47, IDIOMAS, alternativas, asIdioma, href } from "@/lib/i18n";
 const asIdioma_ = (p: { lang: string }) => ({ lang: asIdioma(p.lang) });
 import { grafo, localBusiness, eventVenue } from "@/lib/schema";
@@ -58,7 +59,7 @@ export default async function Layout(
   const ld = grafo(localBusiness(lang), eventVenue(lang));
 
   return (
-    <html lang={BCP47[lang]}>
+    <html lang={BCP47[lang]} data-lang={lang}>
       <body>
         <script
           type="application/ld+json"

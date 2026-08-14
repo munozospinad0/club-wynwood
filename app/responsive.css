@@ -1,0 +1,109 @@
+/*
+ * Comportamiento responsive.
+ *
+ * Daniel: "en teléfono, móvil no se ve todo bien" · "ajusta para que se vea bien
+ * en ambos lados".
+ *
+ * Los tres problemas reales en móvil, en orden de gravedad:
+ *   1. La portada es una reja de dos columnas fijas. En 390 px cada columna
+ *      queda a 195 px y el titular se rompe letra a letra.
+ *   2. La lámina es un SVG de ancho fijo dentro de una reja con barra lateral.
+ *      Sin acotarla, empuja el ancho de la página y aparece scroll horizontal —
+ *      el error de maquetación más común y el más molesto en móvil.
+ *   3. La nav lleva 5 enlaces más el selector de idioma más el botón. En 390 px
+ *      no caben y se apilan encima del logo.
+ */
+
+/* ---------- PORTADA ---------- */
+@media (max-width: 900px) {
+  header#top,
+  main > header {
+    grid-template-columns: 1fr !important;
+  }
+  /* La foto va PRIMERO en móvil: en una pantalla estrecha el visitante decide
+     en el primer scroll, y el venue convence antes que el titular. */
+  main > header > figure {
+    order: -1;
+    min-height: clamp(240px, 42vh, 380px) !important;
+  }
+  main > header > div {
+    padding: 40px 24px 44px !important;
+    min-height: 0 !important;
+  }
+}
+
+/* ---------- LA LÁMINA ---------- */
+@media (max-width: 1000px) {
+  /* La barra lateral (ámbito, lectura, capas) pasa arriba y en fila. */
+  #lamina [style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+  }
+  /* Sin esto el SVG empuja el ancho de la página. Es la causa número uno de
+     scroll horizontal en móvil. */
+  #lamina svg {
+    width: 100% !important;
+    height: auto !important;
+    max-width: 100%;
+  }
+  #cwPlate {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+@media (max-width: 620px) {
+  /* Las pestañas de lámina no caben en una línea: se dejan deslizar en vez de
+     romperlas en dos filas, que descuadra la cabecera. */
+  #lamina nav,
+  #lamina [style*="display:flex"] {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  #lamina nav::-webkit-scrollbar { display: none; }
+}
+
+/* ---------- NAV ---------- */
+@media (max-width: 1080px) {
+  nav .reja { height: auto !important; padding-block: 12px; flex-wrap: wrap; }
+}
+@media (max-width: 720px) {
+  /* Los enlaces de sección se ocultan: en móvil el visitante hace scroll, no
+     navega por menú. Se conservan logo, idioma y la única acción que importa. */
+  nav .reja > div:nth-child(2) { display: none !important; }
+  nav .reja { justify-content: space-between; }
+  .boton { padding: 12px 16px; font-size: 10px; }
+}
+
+/* ---------- REJAS DE CONTENIDO ---------- */
+@media (max-width: 720px) {
+  .reja { padding-inline: 24px; }
+  /* Las tablas de dos columnas (ficha, FAQ) se apilan: a 390 px una columna de
+     etiqueta y otra de valor dejan tres palabras por línea. */
+  section [style*="grid-template-columns: 112px"],
+  section [style*="grid-template-columns:112px"] {
+    grid-template-columns: 1fr !important;
+    gap: 6px !important;
+  }
+  section [style*="minmax(0,1fr) minmax(0,1.35fr)"] {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+  h1 { font-size: clamp(34px, 9vw, 52px); }
+  h2 { font-size: clamp(24px, 6.4vw, 36px); }
+}
+
+/* ---------- CIFRAS ---------- */
+@media (max-width: 720px) {
+  /* De 5 celdas en fila a 2 por fila: en móvil 5 columnas dan 78 px cada una y
+     "~22 000 ft²" no cabe. */
+  section > div[style*="display: flex"] > div,
+  section > div[style*="display:flex"] > div {
+    flex: 1 1 45% !important;
+    padding: 18px 16px !important;
+  }
+}
+
+/* ---------- RED DE SEGURIDAD ---------- */
+/* Nada puede desbordar horizontalmente. Si algo se escapa, que se corte antes
+   de que la página entera se pueda arrastrar. */
+html, body { max-width: 100%; overflow-x: hidden; }
+img, svg, video, table { max-width: 100%; }

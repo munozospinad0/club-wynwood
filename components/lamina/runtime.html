@@ -1,0 +1,354 @@
+<script>
+(function(){
+  /* ==================== CONFIGURACION — PEGAR LOS IDS AQUI ====================
+     Todo lo de abajo esta implementado y funcionando; solo faltan los
+     identificadores, que salen de cuentas que Daniel tiene que crear.
+     Ver claude-design/port/MEDICION.md para el paso a paso.
+     Deja en "" lo que no uses: cada bloque se carga solo si tiene valor. */
+  // Webhook de n8n (workflow "Club Wynwood — Captura de leads del sitio").
+  // Cualifica el lead y lo escribe en la hoja "Leads Club Wynwood".
+  var LEAD_ENDPOINT = "https://munozospinad0.app.n8n.cloud/webhook/club-wynwood-lead";
+  var LEAD_EMAIL    = "info@clubwynwood.com";
+  var GTM_ID        = "";   // "GTM-XXXXXXX"  — recomendado: GA4 y Meta se montan dentro
+  var GA4_ID        = "";   // "G-XXXXXXXXXX" — solo si NO se usa GTM
+  var META_PIXEL_ID = "";   // "000000000000" — solo si NO se usa GTM
+  /* =========================================================================== */
+
+  /* ---- carga de etiquetas ---- */
+  window.dataLayer = window.dataLayer || [];
+  function loadScript(src){ var e = document.createElement("script"); e.async = true; e.src = src;
+    document.head.appendChild(e); }
+  if (GTM_ID){
+    dataLayer.push({"gtm.start": +new Date(), event: "gtm.js"});
+    loadScript("https://www.googletagmanager.com/gtm.js?id=" + GTM_ID);
+  }
+  if (GA4_ID){
+    loadScript("https://www.googletagmanager.com/gtag/js?id=" + GA4_ID);
+    window.gtag = function(){ dataLayer.push(arguments); };
+    gtag("js", new Date()); gtag("config", GA4_ID);
+  }
+  if (META_PIXEL_ID){
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version="2.0";n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
+    (window,document,"script","https://connect.facebook.net/en_US/fbevents.js");
+    fbq("init", META_PIXEL_ID); fbq("track", "PageView");
+  }
+
+  /* ---- un solo punto de salida para todos los eventos ---- */
+  function ev(name, params){
+    params = params || {};
+    try{
+      dataLayer.push(Object.assign({ event: name }, params));
+      if (window.gtag && GA4_ID) gtag("event", name, params);
+      if (window.fbq && META_PIXEL_ID){
+        var std = { lead_qualified: "Lead", contact_click: "Contact" };
+        if (std[name]) fbq("track", std[name], params);
+        else fbq("trackCustom", name, params);
+      }
+    }catch(e){}
+  }
+
+  /* ---- atribucion: gclid/fbclid/utm se guardan al aterrizar y viajan con el
+         lead. Sin gclid no se pueden subir conversiones offline a Google, que
+         es lo unico que permite optimizar por CALIDAD y no por volumen. ---- */
+  var ATTR_KEYS = ["gclid","fbclid","utm_source","utm_medium","utm_campaign","utm_content","utm_term"];
+  function attribution(){
+    var store = {};
+    try{ store = JSON.parse(sessionStorage.getItem("cw_attr") || "{}"); }catch(e){}
+    var q = new URLSearchParams(location.search), dirty = false;
+    ATTR_KEYS.forEach(function(k){
+      var v = q.get(k);
+      if (v && !store[k]){ store[k] = v; dirty = true; }
+    });
+    if (!store.referrer){ store.referrer = document.referrer || "directo"; dirty = true; }
+    if (!store.landing_page){ store.landing_page = location.pathname + location.search; dirty = true; }
+    if (dirty){ try{ sessionStorage.setItem("cw_attr", JSON.stringify(store)); }catch(e){} }
+    return store;
+  }
+
+  /* ---- cualificacion. NO bloquea a nadie: todos los envios llegan igual.
+         Lo que decide es que evento se dispara, para que GA4 y Meta optimicen
+         hacia productores reales y no hacia volumen de formularios. ---- */
+  function calificar(d){
+    var p = 0;
+    var g = parseInt(d.invitados, 10);
+    if (g >= 150) p += 2; else if (g >= 80) p += 1; else if (g > 0) p -= 1;
+    if (d.fecha){
+      var dias = (new Date(d.fecha) - new Date()) / 86400000;
+      if (dias >= 0 && dias <= 365) p += 2; else if (dias > 365) p += 1;
+    }
+    if (d.produccion === "productora") p += 2;
+    else if (d.produccion === "equipo") p += 1;
+    if (d.presupuesto === "alto") p += 2;
+    else if (d.presupuesto === "medio") p += 1;
+    else if (d.presupuesto === "bajo") p -= 1;
+    return p >= 5 ? "calificado" : (p >= 2 ? "explorando" : "no_encaja");
+  }
+  function banda(n){ n = parseInt(n,10);
+    return !n ? "sin_dato" : n >= 400 ? "400+" : n >= 150 ? "150-399" : n >= 80 ? "80-149" : "menos_80"; }
+  function horizonte(f){
+    if (!f) return "sin_fecha";
+    var d = (new Date(f) - new Date()) / 86400000;
+    return d < 0 ? "pasada" : d <= 60 ? "0-60d" : d <= 180 ? "60-180d" : d <= 365 ? "6-12m" : "mas_12m";
+  }
+
+  var root = document.documentElement;
+  var reduce = matchMedia("(prefers-reduced-motion:reduce)").matches;
+  var st = { lang:"es", sheet:1, zone:"all", hover:null, layers:{}, sent:false, busy:false, msg:"" };
+
+  /* Tipografia de display. El sistema entero es modular — laminas, cotas,
+     etiquetas — y una grotesca de anchos variables no cuadraba con eso. En
+     monoespaciada cada glifo ocupa lo mismo y el titular habla el mismo idioma
+     que el dibujo tecnico. El 0.72 compensa el mayor ancho del mono.
+     Alternativas previstas por el diseno:
+       archivo   'Archivo',...                    300  1
+       bricolage 'Bricolage Grotesque',...        300  1
+       serif     'Instrument Serif',...           400  1.06 */
+  root.style.setProperty("--cw-df", "'Fraunces',Georgia,'Times New Roman',serif");
+  root.style.setProperty("--cw-dw", "400");
+  root.style.setProperty("--cw-dsc", "1");
+  root.setAttribute("data-lang", st.lang);
+
+  function restart(){
+    var host = document.getElementById("cwPlate");
+    if (!host || reduce) return;
+    var els = host.querySelectorAll("[data-anim]");
+    els.forEach(function(el){ el.style.animationName = "none"; });
+    void host.offsetWidth;
+    els.forEach(function(el){ el.style.animationName = ""; });
+  }
+  function setState(patch, cb){ Object.assign(st, patch); render(); if (cb) cb(); }
+  function jump(n){ return function(e){
+    if (e && e.preventDefault) e.preventDefault();
+    setState({ sheet:n, layers:{}, zone:"all", hover:null }, function(){
+      var t = document.getElementById("lamina");
+      if (t) scrollTo({ top: t.getBoundingClientRect().top + pageYOffset - 70, behavior: reduce ? "auto" : "smooth" });
+      restart();
+    });
+  };}
+  var PLATE = {1:"implantacion", 2:"seccion", 3:"contexto", 4:"planta"};
+  function goSheet(n){ return function(){
+    ev("view_plate", { plate: n, plate_name: PLATE[n] });
+    setState({ sheet:n, layers:{}, zone:"all", hover:null }, restart); };}
+  function tog(k,d){ return function(){ var L = Object.assign({}, st.layers);
+    L[k] = !(st.layers[k] === undefined ? d : st.layers[k]);
+    ev("toggle_layer", { layer: k, on: L[k] ? 1 : 0 });
+    setState({ layers:L }); };}
+  function setZone(z){ return function(){ ev("select_zone", { zone: z }); setState({ zone:z }); };}
+
+  function mailtoFallback(d){
+    var body = Object.keys(d).map(function(k){ return k + ": " + d[k]; }).join("%0D%0A");
+    location.href = "mailto:" + LEAD_EMAIL + "?subject=" +
+      encodeURIComponent("Solicitud de disponibilidad — Club Wynwood") + "&body=" + body;
+  }
+  function onSubmit(e){
+    e.preventDefault();
+    var f = e.target;
+    if (f.checkValidity && !f.checkValidity()){ f.reportValidity(); return; }
+
+    var attr = attribution();
+    Object.keys(attr).forEach(function(k){
+      var el = f.elements[k]; if (el) el.value = attr[k];
+    });
+    var d = {}; new FormData(f).forEach(function(v,k){ d[k] = v; });
+    var calidad = calificar(d);
+    d.calidad = calidad;
+    if (f.elements.calidad) f.elements.calidad.value = calidad;
+
+    var params = {
+      lead_quality: calidad,
+      event_type:   d.tipo || "",
+      guests_band:  banda(d.invitados),
+      date_horizon: horizonte(d.fecha),
+      production:   d.produccion || "sin_dato",
+      budget_band:  d.presupuesto || "sin_dato"
+    };
+    ev("generate_lead", params);
+    // Solo el calificado es conversion primaria en GA4 y evento de optimizacion
+    // en Meta. Contar todo como Lead entrena a las plataformas a traer volumen.
+    if (calidad === "calificado") ev("lead_qualified", params);
+    else ev("lead_unqualified", params);
+
+    if (LEAD_ENDPOINT.indexOf("XXXX") >= 0){ mailtoFallback(d); return; }
+    setState({ busy:true, msg: st.lang === "en" ? "Sending…" : "Enviando…" });
+    fetch(LEAD_ENDPOINT, { method:"POST", headers:{Accept:"application/json","Content-Type":"application/json"},
+                           body: JSON.stringify(d) })
+      .then(function(r){ if(!r.ok) throw 0; setState({ sent:true, busy:false, msg:"" }); })
+      .catch(function(){ setState({ busy:false, msg: st.lang === "en"
+        ? "Could not send. Opening your email…" : "No se pudo enviar. Abrimos tu correo…" });
+        setTimeout(function(){ mailtoFallback(d); }, 900); });
+  }
+
+  function vals(){
+    var es = st.lang !== "en";
+    var z = st.hover || st.zone || "all";
+    var on = function(k,d){ return st.layers[k] === undefined ? d : st.layers[k]; };
+    var roofOn = on("roof",true), vegOn = on("veg",true), peopleOn = on("people",true), annOn = on("ann",true);
+    var dim = 0.22;
+    var opJ = z === "tiki" ? dim : 1, opT = z === "jardin" ? dim : 1;
+    var sel = st.zone || "all", sheet = st.sheet;
+    var V = {
+      all:    [["Superficie","~22 000 ft² · 2 045 m²"],["Cubierta","~4 000 ft² · 372 m²"],["De pie / sentados","~600 / ~300"],["Suelo", es?"Pavimento + césped":"Paving + turf"]],
+      jardin: [["Superficie","~18 000 ft² · 1 672 m²"],["Cubierta", es?"Ninguna":"None"],["Aforo", es?"En visita":"At site visit"],["Suelo", es?"Pavimento + césped":"Paving + turf"]],
+      tiki:   [["Superficie","~4 000 ft² · 372 m²"],["Cubierta", es?"Paja, cuatro aguas":"Thatch, four hips"],["Aforo", es?"En visita":"At site visit"],["Cerramiento", es?"Abierta por los costados":"Open on all sides"]]
+    };
+    var K = {"Superficie":"Area","Cubierta":"Cover","De pie / sentados":"Standing / seated","Suelo":"Ground","Aforo":"Capacity","Cerramiento":"Enclosure"};
+    var tabB = function(n){ return sheet === n ? "#C4772B" : "transparent"; };
+    var tabC = function(n){ return sheet === n ? "#211C15" : "#A29784"; };
+    return {
+      s1: sheet===1, s2: sheet===2, s3: sheet===3, s4: sheet===4,
+      t1b:tabB(1), t1c:tabC(1), t2b:tabB(2), t2c:tabC(2), t3b:tabB(3), t3c:tabC(3), t4b:tabB(4), t4c:tabC(4),
+      sh1:goSheet(1), sh2:goSheet(2), sh3:goSheet(3), sh4:goSheet(4),
+      go1:jump(1), go2:jump(2), go3:jump(3),
+      readout: V[sel].map(function(r){ return { k: es ? r[0] : (K[r[0]] || r[0]), v: r[1] }; }),
+      opJ:opJ, opT:opT, zoneJ: z==="jardin"?1:0, zoneT: z==="tiki"?1:0,
+      opVegJ: vegOn ? opJ : 0,
+      opRoof: roofOn?1:0, opPeople: peopleOn?1:0, opAnn: annOn?1:0,
+      swRoof: roofOn?"#211C15":"transparent", swVeg: vegOn?"#211C15":"transparent",
+      swPeople: peopleOn?"#211C15":"transparent", swAnn: annOn?"#211C15":"transparent",
+      bgAll: sel==="all"?"#211C15":"transparent", fgAll: sel==="all"?"#EEE8DF":"#29241C",
+      bgJar: sel==="jardin"?"#211C15":"transparent", fgJar: sel==="jardin"?"#EEE8DF":"#29241C",
+      bgTik: sel==="tiki"?"#211C15":"transparent", fgTik: sel==="tiki"?"#EEE8DF":"#29241C",
+      zAll: setZone("all"), zJar: setZone("jardin"), zTik: setZone("tiki"),
+      hJar: function(){ setState({hover:"jardin"}); }, hTik: function(){ setState({hover:"tiki"}); }, hOut: function(){ setState({hover:null}); },
+      tRoof: tog("roof",true), tVeg: tog("veg",true), tPeople: tog("people",true), tAnn: tog("ann",true),
+      replay: restart,
+      toggleLang: function(){ var n = st.lang === "es" ? "en" : "es"; root.setAttribute("data-lang", n); setState({lang:n}); },
+      eventTypes: es ? ["Activación de marca","Corporativo","Fiesta privada","Rodaje / producción","Otro"]
+                     : ["Brand activation","Corporate","Private party","Shoot / production","Other"],
+      formMsg: st.msg || (st.sent ? (es ? "Recibido. Respondemos en 24 h hábiles."
+                                        : "Received. We reply within 24 business hours.") : ""),
+      onSubmit: onSubmit
+    };
+  }
+
+  /* ---- BUG DE IDIOMA EN LAS LAMINAS ----
+     Claude Design dejo los 49 textos de los SVG en espanol fijo: no llevan
+     data-l, asi que al pasar a EN la pagina cambiaba y los dibujos no. Se veia
+     la barra lateral en ingles junto a "LAMINA 03 · CONTEXTO URBANO".
+     Como en SVG no se puede usar el patron de <span>, se traduce por
+     diccionario cambiando el textContent. Solo lo que es idioma: las cotas,
+     los nombres de calle y "TIKI HUT" son neutros y no se tocan. */
+  var TR = {
+    "ACCESO": "ACCESS",
+    "EL JARDÍN": "THE GARDEN",
+    "JARDÍN": "GARDEN",
+    "ESCALA GRÁFICA": "GRAPHIC SCALE",
+    "IMPLANTACIÓN · JARDÍN + TIKI HUT": "SITE LAYOUT · GARDEN + TIKI HUT",
+    "LÁMINA 01 · SIN ESCALA": "PLATE 01 · NOT TO SCALE",
+    "○ EN VISITA": "○ AT SITE VISIT",
+    "LÁMINA 02 · SECCIÓN TRANSVERSAL": "PLATE 02 · CROSS SECTION",
+    "TIKI HUT · MIRANDO AL PASEO": "TIKI HUT · FACING THE WALK",
+    "CUBIERTA DE PAJA SOBRE ESTRUCTURA DE MADERA": "THATCH ROOF ON TIMBER FRAME",
+    "ABIERTA POR LOS COSTADOS · SIN CERRAMIENTO": "OPEN ON ALL SIDES · NO ENCLOSURE",
+    "WYNWOOD WALLS · 4 MIN A PIE": "WYNWOOD WALLS · 4 MIN WALK",
+    "LÁMINA 03 · CONTEXTO URBANO": "PLATE 03 · URBAN CONTEXT",
+    "VOLÚMENES COLINDANTES REFERENCIALES": "NEIGHBOURING VOLUMES INDICATIVE",
+    "CUBIERTO": "COVERED",
+    "ABIERTO": "OPEN-AIR",
+    "PASEO PAVIMENTADO DE EXTREMO A EXTREMO · CÉSPED ARTIFICIAL A AMBOS LADOS":
+      "PAVED WALK END TO END · ARTIFICIAL TURF ON BOTH SIDES",
+    "LÁMINA 04 · PLANTA CENITAL": "PLATE 04 · TOP VIEW",
+    "SUPERFICIE CUBIERTA RAYADA · SIN ESCALA": "COVERED AREA HATCHED · NOT TO SCALE"
+  };
+  var svgTexts = [];
+  function collectSvgTexts(){
+    document.querySelectorAll("svg text").forEach(function(el){
+      if (el.children.length) return;            // los que llevan tspan se dejan
+      var es = el.textContent.trim();
+      if (TR[es]) svgTexts.push({ el: el, es: es, en: TR[es] });
+    });
+  }
+  function applySvgLang(){
+    var en = st.lang === "en";
+    svgTexts.forEach(function(t){ t.el.textContent = en ? t.en : t.es; });
+  }
+
+  /* ---- shim de plantillas: captura los {{ }} una vez y los reevalúa ---- */
+  var EV = { onclick:"click", onmouseenter:"mouseenter", onmouseleave:"mouseleave", onsubmit:"submit" };
+  var attrBinds = [], textBinds = [], ifBinds = [], forBinds = [];
+  var RX = /\{\{\s*([\w.]+)\s*\}\}/g;
+
+  function collect(scope){
+    scope.querySelectorAll("sc-for").forEach(function(el){
+      var m = /\{\{\s*(\w+)\s*\}\}/.exec(el.getAttribute("list") || "");
+      forBinds.push({ el: el, key: m ? m[1] : null, as: el.getAttribute("as") || "item", tpl: el.innerHTML });
+      el.removeAttribute("list");   // si no, el {{ }} crudo queda en el DOM
+      el.innerHTML = "";
+    });
+    scope.querySelectorAll("sc-if").forEach(function(el){
+      var m = /\{\{\s*(\w+)\s*\}\}/.exec(el.getAttribute("value") || "");
+      if (m) ifBinds.push({ el: el, key: m[1] });
+      el.removeAttribute("value");
+    });
+    scope.querySelectorAll("*").forEach(function(el){
+      Array.prototype.slice.call(el.attributes).forEach(function(a){
+        if (a.value.indexOf("{{") < 0) return;
+        var lower = a.name.toLowerCase();
+        if (EV[lower]){
+          var n = /\{\{\s*(\w+)\s*\}\}/.exec(a.value);
+          if (n) el.addEventListener(EV[lower], function(e){ var f = vals()[n[1]]; if (f) f(e); });
+          el.removeAttribute(a.name);
+        } else if (a.name !== "list") {
+          attrBinds.push({ el: el, name: a.name, tpl: a.value });
+        }
+      });
+    });
+    var w = document.createTreeWalker(scope, NodeFilter.SHOW_TEXT);
+    var n;
+    while ((n = w.nextNode())) if (n.nodeValue.indexOf("{{") >= 0)
+      textBinds.push({ node: n, tpl: n.nodeValue });
+  }
+
+  function fill(tpl, v, extra){
+    return tpl.replace(RX, function(_, path){
+      var src = (extra && path.split(".")[0] in extra) ? extra : v;
+      var cur = src;
+      path.split(".").forEach(function(p){ cur = (cur == null ? cur : cur[p]); });
+      return cur == null ? "" : cur;
+    });
+  }
+
+  function render(){
+    var v = vals();
+    ifBinds.forEach(function(b){ b.el.hidden = !v[b.key]; });
+    attrBinds.forEach(function(b){ b.el.setAttribute(b.name, fill(b.tpl, v)); });
+    textBinds.forEach(function(b){ b.node.nodeValue = fill(b.tpl, v); });
+    forBinds.forEach(function(b){
+      var list = v[b.key] || [], out = "";
+      list.forEach(function(item){
+        var sc = {}; sc[b.as] = item;
+        out += fill(b.tpl, v, sc);
+      });
+      b.el.innerHTML = out;
+    });
+    applySvgLang();   // las laminas cambian de idioma con el resto de la pagina
+  }
+
+  collect(document.body);
+  collectSvgTexts();
+  render();
+  attribution();
+
+  /* ---- microconversiones y arranque de formulario ---- */
+  var started = false;
+  document.addEventListener("focusin", function(e){
+    if (started) return;
+    if (e.target.closest && e.target.closest("#disponibilidad form")){
+      started = true; ev("form_start", {});
+    }
+  });
+  document.addEventListener("click", function(e){
+    var a = e.target.closest && e.target.closest("a[href]");
+    if (!a) return;
+    var h = a.getAttribute("href") || "";
+    if (h.indexOf("mailto:") === 0)      ev("contact_click", { method: "email" });
+    else if (h.indexOf("tel:") === 0)    ev("contact_click", { method: "telefono" });
+    else if (/wa\.me|whatsapp/.test(h))  ev("contact_click", { method: "whatsapp" });
+    else if (/maps\.google|goo\.gl\/maps/.test(h)) ev("contact_click", { method: "mapa" });
+  });
+})();
+</script>
+

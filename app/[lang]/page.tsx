@@ -4,6 +4,7 @@ import { FICHA, TIEMPOS, VENUE } from "@/lib/venue";
 import { PAGINAS } from "@/lib/contenido";
 import Formulario from "@/components/Formulario";
 import Lamina from "@/components/Lamina";
+import Edificio from "@/components/Edificio";
 
 /**
  * Home. El orden sigue cómo decide un productor:
@@ -111,6 +112,8 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       </section>
 
       <Lamina />
+
+      <Edificio lang={lang} />
 
       {/* ---------------- QUÉ SE ALQUILA ---------------- */}
       <section style={{ borderBottom: "1px solid var(--regla)" }}>

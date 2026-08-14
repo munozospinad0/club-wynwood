@@ -28,9 +28,24 @@ export function asIdioma(v: string): Idioma {
     : IDIOMA_POR_DEFECTO;
 }
 
-export const BASE =
-  process.env.NEXT_PUBLIC_BASE_URL?.replace(/\/$/, "") ??
-  "https://clubwynwood.com";
+/**
+ * Base de todas las URLs absolutas: canonical, hreflang, sitemap, JSON-LD.
+ *
+ * El orden importa. Mientras no exista el dominio propio, apuntar los canonical
+ * a clubwynwood.com sería declarar como versión buena una URL que no resuelve:
+ * el rastreador la intenta, falla, y puede acabar sin indexar ninguna de las
+ * dos. Vercel expone la URL de producción en VERCEL_PROJECT_PRODUCTION_URL, así
+ * que el sitio se declara a sí mismo hasta que el dominio esté.
+ *
+ * Cuando se compre el dominio: basta poner NEXT_PUBLIC_BASE_URL en Vercel.
+ */
+export const BASE = (() => {
+  const explicita = process.env.NEXT_PUBLIC_BASE_URL;
+  if (explicita) return explicita.replace(/\/$/, "");
+  const vercel = process.env.VERCEL_PROJECT_PRODUCTION_URL;
+  if (vercel) return `https://${vercel.replace(/\/$/, "")}`;
+  return "http://localhost:3200";
+})();
 
 /**
  * Las rutas se traducen: /es/el-jardin y /en/the-garden.

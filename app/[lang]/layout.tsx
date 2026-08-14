@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "../globals.css";
 import "../responsive.css";
-import { BCP47, IDIOMAS, alternativas, asIdioma, href } from "@/lib/i18n";
+import { BCP47, IDIOMAS, INDEXABLE, alternativas, asIdioma, href } from "@/lib/i18n";
 const asIdioma_ = (p: { lang: string }) => ({ lang: asIdioma(p.lang) });
 import { grafo, localBusiness, eventVenue } from "@/lib/schema";
 import { VENUE } from "@/lib/venue";
@@ -28,7 +28,12 @@ export async function generateMetadata(
       ? "Venue al aire libre en el Wynwood Arts District, Miami. ~22.000 ft² entre jardín y palapa techada. Aforo ~600 de pie. Tú traes la producción; nosotros entregamos el espacio."
       : "Open-air venue in Miami's Wynwood Arts District. ~22,000 sq ft between garden and covered structure. ~600 standing. You bring the production; we hand over the space.",
     alternates: alternativas("home"),
-    robots: { index: true, follow: true, "max-image-preview": "large" },
+    // Cerrado mientras esto viva en Vercel: robots.txt solo frena el rastreo,
+    // no la indexación de una URL que alguien enlace. La meta sí. Se necesitan
+    // las dos. Ver INDEXABLE en lib/i18n.ts.
+    robots: INDEXABLE
+      ? { index: true, follow: true, "max-image-preview": "large" }
+      : { index: false, follow: false, nocache: true },
     openGraph: {
       type: "website",
       siteName: "Club Wynwood",

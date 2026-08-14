@@ -48,6 +48,25 @@ export const BASE = (() => {
 })();
 
 /**
+ * ¿Se deja indexar este sitio?
+ *
+ * Daniel: "no pongas el robots aún, yo tengo GoDaddy para el sitio pero aún no
+ * lo vamos a mover hasta que tengamos una mejor versión".
+ *
+ * Tiene razón y es urgente: mientras esto viva en una URL de Vercel, dejar
+ * entrar a los rastreadores significa que Google puede indexar el preview como
+ * un sitio duplicado del que ya está en línea. Limpiar eso después cuesta
+ * semanas de recrawl, y encima los dos se harían competencia.
+ *
+ * Se ata al MISMO interruptor que el dominio: solo se indexa cuando
+ * NEXT_PUBLIC_BASE_URL está puesta, o sea cuando el sitio ya vive en su dominio
+ * de verdad. Un solo cambio en Vercel abre las tres cosas a la vez —canonicals
+ * correctos, robots abierto y metadata indexable— y no hay forma de abrir una y
+ * olvidar las otras.
+ */
+export const INDEXABLE = Boolean(process.env.NEXT_PUBLIC_BASE_URL);
+
+/**
  * Las rutas se traducen: /es/el-jardin y /en/the-garden.
  * Una URL en inglés que dice "el-jardin" es una señal contradictoria para el
  * rastreador y se lee peor para el visitante.

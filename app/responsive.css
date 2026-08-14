@@ -140,3 +140,12 @@
    de que la página entera se pueda arrastrar. */
 html, body { max-width: 100%; overflow-x: hidden; }
 img, svg, video, table { max-width: 100%; }
+
+/* ---------- LÁMINA 05 · EL EDIFICIO ---------- */
+@media (max-width: 1000px) {
+  /* Misma cura que la lámina del exterior: la barra lateral arriba y el SVG
+     acotado. Sin min-width:0 los hijos se niegan a encoger y empujan la página. */
+  #interior [data-lam="reja"] { grid-template-columns: 1fr !important; gap: 28px !important; }
+  #interior * { min-width: 0; }
+  #interior svg { width: 100% !important; height: auto !important; }
+}

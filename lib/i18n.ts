@@ -16,6 +16,18 @@ export const IDIOMA_POR_DEFECTO: Idioma = "es";
 /** Código BCP-47 para <html lang> y hreflang. */
 export const BCP47: Record<Idioma, string> = { es: "es-US", en: "en-US" };
 
+/**
+ * Next genera los tipos de `params` con `lang: string`, no con nuestra unión.
+ * Esto lo estrecha en un solo sitio en vez de repartir casts por las rutas —y
+ * de paso valida de verdad: un /fr/ que se colara caería al idioma por defecto
+ * en vez de romper en tiempo de ejecución.
+ */
+export function asIdioma(v: string): Idioma {
+  return (IDIOMAS as readonly string[]).includes(v)
+    ? (v as Idioma)
+    : IDIOMA_POR_DEFECTO;
+}
+
 export const BASE =
   process.env.NEXT_PUBLIC_BASE_URL?.replace(/\/$/, "") ??
   "https://clubwynwood.com";

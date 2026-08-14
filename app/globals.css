@@ -1,0 +1,129 @@
+/*
+ * Sistema visual "papel de obra". Los valores no son decorativos: salen de
+ * papel(), la función que remapea toda la rampa neutra hacia el cálido fijando
+ * primero el CROMA visible y despejando la saturación. La versión anterior hacía
+ * caer la saturación en los extremos y el papel salía gris.
+ */
+:root {
+  --papel: #f8f3ea;
+  --papel-2: #f0eae1;
+  --papel-3: #e9e3d9;
+  --tinta: #211c15;
+  --tinta-2: #29241c;
+  --texto: #7d725f;
+  --texto-3: #a29784;
+  --regla: #dad3c7;
+  --regla-osc: #423c30;
+  --ocre: #c4772b;
+
+  --display: "Fraunces", Georgia, "Times New Roman", serif;
+  --cuerpo: "Geist", "Helvetica Neue", Helvetica, system-ui, sans-serif;
+  --mono: "Geist Mono", ui-monospace, SFMono-Regular, monospace;
+
+  --reja: 1280px;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+
+  font-variant-numeric: tabular-nums;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  margin: 0;
+  background: var(--papel);
+  color: var(--tinta-2);
+  font-family: var(--cuerpo);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Grano de papel. Un crema perfectamente plano se lee digital; la textura es lo
+   que lo hace parecer papel de dibujo. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.038;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Accesibilidad: el sitio anterior no tenía NINGÚN indicador de foco. */
+a:focus-visible, button:focus-visible, input:focus-visible,
+select:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--ocre);
+  outline-offset: 3px;
+}
+
+a { color: inherit; }
+
+h1, h2, h3 {
+  font-family: var(--display);
+  font-weight: 400;
+  letter-spacing: -0.026em;
+  font-optical-sizing: auto;
+  font-variation-settings: "SOFT" 0, "WONK" 1;
+  text-wrap: balance;
+}
+
+h1 { font-size: clamp(44px, 5.2vw, 88px); line-height: 0.95; margin: 0; }
+h2 { font-size: clamp(30px, 3.4vw, 54px); line-height: 1.0; margin: 0; }
+h3 { font-size: clamp(24px, 2.2vw, 34px); line-height: 1.08; margin: 0; }
+
+p { line-height: 1.66; text-wrap: pretty; }
+
+.reja { max-width: var(--reja); margin: 0 auto; padding-inline: 32px; }
+
+.ojo {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--texto);
+}
+
+/* Bloque de respuesta: los modelos citan párrafos de 40-60 palabras que abren
+   con la conclusión. Cada sección lleva uno. */
+.respuesta {
+  font-size: 17px;
+  line-height: 1.62;
+  color: var(--tinta-2);
+  max-width: 62ch;
+}
+
+.boton {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--tinta);
+  color: var(--papel);
+  padding: 14px 22px;
+  text-decoration: none;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  border: 0;
+  cursor: pointer;
+  transition: transform 0.12s ease;
+}
+.boton:active { transform: translateY(1px); }
+@media (hover: hover) and (pointer: fine) {
+  .boton:hover { background: var(--regla-osc); }
+}
+
+/* Revelado al scroll. La clase la añade el JS, así que sin JS se ve todo. */
+.rv { opacity: 0; transform: translateY(18px); }
+.rv.dentro {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.55s var(--ease-out), transform 0.55s var(--ease-out);
+}
+@media (prefers-reduced-motion: reduce) {
+  .rv { transform: none; }
+  .rv.dentro { transition: opacity 0.3s ease; }
+}

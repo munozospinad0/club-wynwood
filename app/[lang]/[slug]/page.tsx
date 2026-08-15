@@ -7,6 +7,7 @@ import {
 } from "@/lib/i18n";
 import { PAGINAS, FAQ, pagina } from "@/lib/contenido";
 import { grafo, breadcrumb, faqPage } from "@/lib/schema";
+import Calculadora from "@/components/Calculadora";
 
 /**
  * Una sola ruta dinámica para las seis páginas interiores.
@@ -124,6 +125,24 @@ export default async function PaginaInterior(
         {/* Bloque de respuesta citable: 40-60 palabras, conclusión primero. */}
         <p className="respuesta" style={{ fontSize: 18 }}>{p.respuesta[lang]}</p>
       </header>
+
+      {/* La calculadora solo en /aforo-y-montajes/: es su sitio natural y
+          repetirla por todo el sitio la convertiria en decoracion. */}
+      {clave === "aforos" && (
+        <section style={{ borderBottom: "1px solid var(--regla)" }}>
+          <div className="reja" style={{ paddingBlock: "0 56px" }}>
+            <div className="ojo" style={{ paddingBottom: 16 }}>
+              {es ? "Calcula tu espacio" : "Work out your space"}
+            </div>
+            <Calculadora lang={lang} />
+            <p style={{ margin: "16px 0 0", fontSize: 13, color: "var(--texto)", maxWidth: "62ch" }}>
+              {es
+                ? "Los ratios son estándares de planificación de eventos, y el resultado nunca supera el aforo declarado del inmueble: si la aritmética da más de lo que el venue admite, la calculadora lo dice."
+                : "The ratios are standard event-planning figures, and the result never exceeds the venue's stated capacity: if the arithmetic allows more than the site takes, the calculator says so."}
+            </p>
+          </div>
+        </section>
+      )}
 
       <section style={{ background: "var(--papel-2)", borderBlock: "1px solid var(--regla)" }}>
         <div className="reja" style={{ display: "flex", flexWrap: "wrap", padding: 0 }}>

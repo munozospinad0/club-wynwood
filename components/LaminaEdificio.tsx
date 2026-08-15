@@ -83,6 +83,50 @@ const VB = {
   w: (XS[1] - XS[0]) + 176, h: (YS[1] - YS[0]) + 168,
 };
 
+/** Barandilla: montantes cada 4 ft y pasamanos. Sin esto el canto del forjado
+ *  parece que se acaba porque si, y el doble espacio no se lee. */
+function Barandilla({ x, y, largo, z, eje = "x" }:
+  { x: number; y: number; largo: number; z: number; eje?: "x" | "y" }) {
+  const H = 3.4;
+  const fin = eje === "x" ? p(x + largo, y, z + H) : p(x, y + largo, z + H);
+  const ini = p(x, y, z + H);
+  const montantes = [];
+  for (let t = 0; t <= largo; t += 4) {
+    const a = eje === "x" ? p(x + t, y, z) : p(x, y + t, z);
+    const b = eje === "x" ? p(x + t, y, z + H) : p(x, y + t, z + H);
+    montantes.push(
+      <line key={t} x1={a[0]} y1={a[1]} x2={b[0]} y2={b[1]}
+            stroke="#7d725f" strokeWidth="0.5" />
+    );
+  }
+  return (
+    <g>
+      {montantes}
+      <line x1={ini[0]} y1={ini[1]} x2={fin[0]} y2={fin[1]}
+            stroke="#211c15" strokeWidth="0.85" />
+    </g>
+  );
+}
+
+/** Escalera con peldanos. Ata los dos niveles: sin ella el 02 flota. */
+function Escalera({ x, y, ancho, largo, z0, z1 }:
+  { x: number; y: number; ancho: number; largo: number; z0: number; z1: number }) {
+  const n = 9, dl = largo / n, dz = (z1 - z0) / n;
+  const pasos = [];
+  for (let i = 0; i < n; i++) {
+    const yy = y + i * dl, zz = z0 + i * dz;
+    pasos.push(
+      <g key={i}>
+        <path d={cFrente(x, yy + dl, ancho, zz, zz + dz)} fill="#e0d7c6"
+              stroke="#7d725f" strokeWidth="0.4" />
+        <path d={cTecho(x, yy, ancho, dl, zz + dz)} fill="#f4eee2"
+              stroke="#7d725f" strokeWidth="0.4" />
+      </g>
+    );
+  }
+  return <g>{pasos}</g>;
+}
+
 function Persona({ xf, yf, zf = 0, o = 0.6 }: { xf: number; yf: number; zf?: number; o?: number }) {
   const [x, y] = p(xf, yf, zf);
   return (
@@ -259,8 +303,13 @@ export default function LaminaEdificio({ lang }: { lang: Idioma }) {
                     stroke="#211c15" strokeWidth="0.7" />
 
               {/* --- cinco salas privadas, con puerta --- */}
-              {salas.map((_, i) => {
-                const x0 = 7 + i * 13.4, y0 = 12, dx = 10.4, dy = 30, z1 = H1 + 9;
+              {/* Ancho proporcional a los ft2 reales de cada sala: cinco cajas
+                  identicas son una plantilla, cinco anchos distintos son un
+                  edificio. Profundidad fija de 30 ft. */}
+              {(() => { let acum = 7; return salas.map((sala, i) => {
+                const dx = sala.sqft / 30;
+                const x0 = acum; acum += dx + 3.2;
+                const y0 = 12, dy = 30, z1 = H1 + 9;
                 const [px, py] = p(x0 + dx, y0 + dy * 0.62, H1);
                 const [qx, qy] = p(x0 + dx, y0 + dy * 0.62, H1 + 6.4);
                 return (
@@ -269,7 +318,7 @@ export default function LaminaEdificio({ lang }: { lang: Idioma }) {
                     <line x1={px} y1={py} x2={qx} y2={qy} stroke="#7d725f" strokeWidth="0.5" />
                   </g>
                 );
-              })}
+              }); })()}
 
               {/* --- el vacío a doble altura --- */}
               <path d={cTecho(CORTE, 0, ANCHO - CORTE, FONDO, 0)} fill="url(#tDoble)" />
@@ -299,10 +348,58 @@ export default function LaminaEdificio({ lang }: { lang: Idioma }) {
               <path d={cTecho(0, 0, ANCHO, FONDO, H2)} fill="none" stroke="#211c15"
                     strokeWidth="0.7" opacity="0.26" strokeDasharray="4 3.5" />
 
+              {/* --- barandilla del forjado sobre el vacío --- */}
+              <Barandilla x={CORTE} y={0} largo={FONDO} z={H1} eje="y" />
+              <Barandilla x={CUT_X} y={CUT_Y} largo={CORTE - CUT_X} z={H1} eje="x" />
+
+              {/* --- escalera, dentro del recorte --- */}
+              <Escalera x={CUT_X + 2} y={CUT_Y + 4} ancho={7} largo={22} z0={0} z1={H1} />
+
+              {/* --- pasillo del nivel 02, marcado en la losa --- */}
+              <path d={cTecho(4, 44, CORTE - 8, 8, H1 + 0.05)} fill="none"
+                    stroke="#a29784" strokeWidth="0.5" strokeDasharray="3 2.4" />
+
+              {/* --- retícula de losa, para dar escala al plano --- */}
+              {ejesX.filter((x) => x > 0 && x < CORTE).map((x) => {
+                const [ax, ay] = p(x, 0, H1 + 0.05), [bx, by] = p(x, CUT_Y, H1 + 0.05);
+                return <line key={`lx${x}`} x1={ax} y1={ay} x2={bx} y2={by}
+                             stroke="#c6beb0" strokeWidth="0.4" />;
+              })}
+
+              {/* --- acceso con marquesina, en la fachada --- */}
+              <path d={cFrente(50, FONDO, 12, 0, 8)} fill="#f8f3ea"
+                    stroke="#211c15" strokeWidth="0.8" />
+              <path d={cTecho(48, FONDO - 6, 16, 6, 9.4)} fill="#e0d7c6"
+                    stroke="#211c15" strokeWidth="0.7" />
+
+              {/* --- carpinterías del muro perimetral. El plano de 2016 marca
+                      los montantes en rojo justo en esta fachada. --- */}
+              {[8, 20, 32, 68, 80, 92, 104, 116].map((x) => {
+                const [ax, ay] = p(x, FONDO, 1.5);
+                const [bx, by] = p(x, FONDO, x >= CORTE ? 18 : 9.5);
+                return <line key={`c${x}`} x1={ax} y1={ay} x2={bx} y2={by}
+                             stroke="#a29784" strokeWidth="0.55" />;
+              })}
+              <path d={cFrente(66, FONDO, 58, 1.5, 18)} fill="none"
+                    stroke="#a29784" strokeWidth="0.5" />
+
+              {/* --- vigas de cubierta vistas sobre la doble altura. Es lo que
+                      un productor mira para colgar. --- */}
+              {[6, 18, 30, 42, 54, 66, 78].map((y) => {
+                const [ax, ay] = p(CORTE, y, H2 - 1.2), [bx, by] = p(ANCHO, y, H2 - 1.2);
+                return <line key={`j${y}`} x1={ax} y1={ay} x2={bx} y2={by}
+                             stroke="#8a8071" strokeWidth="0.45" opacity="0.8" />;
+              })}
+
               {/* --- escala humana, en los dos niveles --- */}
               <Persona xf={100} yf={22} /><Persona xf={112} yf={52} />
               <Persona xf={90} yf={70} /><Persona xf={120} yf={34} o={0.45} />
               <Persona xf={30} yf={44} zf={H1} o={0.5} />
+              {/* asomados al vacío desde el nivel 02: es lo que explica la
+                  relación entre las dos plantas de un vistazo */}
+              <Persona xf={CORTE - 3} yf={26} zf={H1} o={0.55} />
+              <Persona xf={CORTE - 3} yf={54} zf={H1} o={0.45} />
+              <Persona xf={56} yf={FONDO - 6} o={0.5} />
 
               {/* --- cotas, todas fuera del dibujo --- */}
               <Cota a={p(ANCHO + 7, FONDO + 7, 0)} b={p(ANCHO + 7, FONDO + 7, H2)}
@@ -312,6 +409,9 @@ export default function LaminaEdificio({ lang }: { lang: Idioma }) {
                     texto={`≈ ${ANCHO} FT`} dy={12} />
               <Cota a={p(ANCHO + 16, 0, 0)} b={p(ANCHO + 16, FONDO, 0)}
                     texto={`≈ ${FONDO} FT`} dy={12} />
+              {/* la luz de la zona alta, que es la cota que se lee del plano */}
+              <Cota a={p(CORTE, -9, 0)} b={p(ANCHO, -9, 0)}
+                    texto={COTAS.luzDobleAlturaFt} color="#c4772b" dy={-9} />
 
               {/* --- cartelas, ninguna sobre el dibujo --- */}
               <Cartela anclaje={p(36, 26, H1 + 9)} hacia={[VB.x + 16, VB.y + 96]}

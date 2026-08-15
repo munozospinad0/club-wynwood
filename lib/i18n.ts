@@ -82,6 +82,9 @@ export const RUTAS = {
   guia: { es: "organizar-un-evento-en-wynwood", en: "hosting-an-event-in-wynwood" },
   quinces: { es: "quinceaneras", en: "quinceaneras" },
   aforos: { es: "aforo-y-montajes", en: "capacity-and-layouts" },
+  popups: { es: "pop-ups-y-mercados", en: "pop-ups-and-markets" },
+  graduaciones: { es: "graduaciones", en: "graduations" },
+  pequenos: { es: "eventos-pequenos", en: "small-events" },
 } as const;
 
 export type ClaveRuta = keyof typeof RUTAS;

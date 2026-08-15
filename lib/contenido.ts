@@ -515,6 +515,184 @@ export const PAGINAS: Pagina[] = [
       },
     ],
   },
+
+  {
+    clave: "popups",
+    ojo: { es: "Uso · pop-up", en: "Use · pop-up" },
+    h1: { es: "Pop-ups y mercados", en: "Pop-ups and markets" },
+    respuesta: {
+      es: "Un pop-up en Wynwood necesita tres cosas: superficie firme donde montar módulos, público que ya esté paseando por el barrio, y una cubierta para que el sábado no dependa del cielo. Aquí son ~22.000 ft² con paseo pavimentado de extremo a extremo y ~4.000 ft² techados, a una cuadra de los murales.",
+      en: "A pop-up in Wynwood needs three things: firm ground to build modules on, an audience already walking the neighbourhood, and cover so Saturday does not depend on the sky. Here that is ~22,000 sq ft with a paved walk running end to end and ~4,000 sq ft under roof, one block from the murals.",
+    },
+    title: {
+      es: "Espacio para pop-ups y mercados en Wynwood, Miami | Club Wynwood",
+      en: "Pop-up and market space in Wynwood, Miami | Club Wynwood",
+    },
+    description: {
+      es: "Recinto al aire libre para pop-ups y mercados en Wynwood: ~22.000 ft², paseo pavimentado para montar módulos y ~4.000 ft² techados. A una cuadra de Wynwood Walls.",
+      en: "Open-air site for pop-ups and markets in Wynwood: ~22,000 sq ft, a paved walk for building modules and ~4,000 sq ft under roof. One block from Wynwood Walls.",
+    },
+    cifras: [
+      { etiqueta: { es: "Superficie", en: "Area" }, valor: "~22 000 ft²" },
+      { etiqueta: { es: "A Wynwood Walls", en: "To Wynwood Walls" }, valor: "4 min" },
+      { etiqueta: { es: "De pie", en: "Standing" }, valor: "~600" },
+    ],
+    foto: {
+      src: "/assets/venue-exterior.webp",
+      alt: {
+        es: "Paseo pavimentado entre palmeras, apto para montar módulos de un mercado",
+        en: "Paved walk between palms, suitable for building market modules",
+      },
+      pie: {
+        es: "El paseo pavimentado recorre el recinto de extremo a extremo.",
+        en: "The paved walk runs the length of the site.",
+      },
+    },
+    bloques: [
+      {
+        titulo: { es: "El paseo es el eje del montaje", en: "The walk is the spine of the build" },
+        cuerpo: {
+          es: "Un mercado se ordena a lo largo de un recorrido, y aquí ya existe: pavimento continuo de extremo a extremo, con césped a los dos lados para los módulos. No hay que resolver piso ni trazar circulación desde cero, y eso son horas de montaje que no pagas.",
+          en: "A market organises itself along a route, and here one already exists: continuous paving end to end, with turf on both sides for the modules. You do not have to solve flooring or draw circulation from scratch, and that is load-in hours you do not pay for.",
+        },
+      },
+      {
+        titulo: { es: "El público ya está en la calle", en: "The audience is already outside" },
+        cuerpo: {
+          es: "2129 NW 1st Ct está a cuatro minutos a pie de Wynwood Walls. La diferencia entre un pop-up en un polígono y uno aquí es que en Wynwood la gente ya salió a caminar el barrio: el tráfico peatonal del fin de semana no hay que comprarlo con pauta.",
+          en: "2129 NW 1st Ct is a four-minute walk from Wynwood Walls. The difference between a pop-up in an industrial park and one here is that in Wynwood people are already out walking: weekend foot traffic is not something you have to buy with ads.",
+        },
+      },
+      {
+        titulo: { es: "El sábado no depende del cielo", en: "Saturday does not depend on the sky" },
+        cuerpo: {
+          es: "Un mercado se cae con la lluvia y no se reprograma: los expositores ya vinieron. Los ~4.000 ft² de palapa fija permiten concentrar los módulos bajo techo si cambia el tiempo, sin carpas de última hora ni devolver el día.",
+          en: "A market dies in the rain and does not get rescheduled: the vendors already showed up. The ~4,000 sq ft of permanent structure let you concentrate modules under cover if the weather turns, with no last-minute tents and no refunding the day.",
+        },
+      },
+      {
+        titulo: { es: "Lo que hay que preguntar antes", en: "What to ask beforehand" },
+        cuerpo: {
+          es: "Para un mercado con muchos expositores importan tres datos que se levantan en la visita: la potencia disponible y cómo se reparte, el ancho de portón para la carga de todos, y el horario de descarga. Te los damos por escrito antes de firmar.",
+          en: "For a market with many vendors, three figures matter and they are surveyed at the visit: available power and how it splits, gate width for everyone's load-in, and unloading hours. You get them in writing before signing.",
+        },
+      },
+    ],
+  },
+
+  {
+    clave: "graduaciones",
+    ojo: { es: "Uso · graduación", en: "Use · graduation" },
+    h1: { es: "Graduaciones", en: "Graduations" },
+    respuesta: {
+      es: "El recinto admite ~300 invitados sentados o ~600 de pie, que cubre desde una promoción entera hasta una fiesta de familia. La ceremonia o los discursos van en el jardín, la cena bajo la palapa techada, y los ~4.000 ft² cubiertos resuelven la lluvia de mayo y junio en Miami.",
+      en: "The site takes ~300 seated or ~600 standing, which covers anything from a whole graduating class to a family party. The ceremony or speeches go in the garden, dinner under the covered structure, and the ~4,000 sq ft under roof handle the May and June rain in Miami.",
+    },
+    title: {
+      es: "Venue para graduaciones en Wynwood, Miami — hasta 600 invitados | Club Wynwood",
+      en: "Graduation venue in Wynwood, Miami — up to 600 guests | Club Wynwood",
+    },
+    description: {
+      es: "Espacio al aire libre para fiestas de graduación en Wynwood, Miami: ~600 de pie o ~300 sentados, con palapa techada de ~4.000 ft² como plan de lluvia.",
+      en: "Open-air space for graduation parties in Wynwood, Miami: ~600 standing or ~300 seated, with a ~4,000 sq ft covered structure as the rain plan.",
+    },
+    cifras: [
+      { etiqueta: { es: "De pie", en: "Standing" }, valor: "~600" },
+      { etiqueta: { es: "Sentados", en: "Seated" }, valor: "~300" },
+      { etiqueta: { es: "Techado", en: "Covered" }, valor: "~4 000 ft²" },
+    ],
+    foto: {
+      src: "/assets/aerea-predio.jpg",
+      alt: {
+        es: "Vista aérea del recinto completo, con la palapa techada y el jardín",
+        en: "Aerial view of the whole site, with the covered structure and the garden",
+      },
+      pie: {
+        es: "El recinto completo, con la palapa al centro.",
+        en: "The whole site, with the structure at the centre.",
+      },
+    },
+    bloques: [
+      {
+        titulo: { es: "Mayo y junio llueve", en: "May and June it rains" },
+        cuerpo: {
+          es: "La temporada de graduaciones en Miami coincide con el principio de la de lluvias. Una fiesta al aire libre en esas fechas necesita un plan B que no sea «cruzamos los dedos»: aquí son ~4.000 ft² de cubierta fija, sin carpa y sin cambiar de sede.",
+          en: "Graduation season in Miami overlaps with the start of the rainy season. An outdoor party in those weeks needs a plan B that is not “fingers crossed”: here it is ~4,000 sq ft of permanent cover, with no tent and no change of venue.",
+        },
+      },
+      {
+        titulo: { es: "Discursos fuera, cena dentro", en: "Speeches outside, dinner inside" },
+        cuerpo: {
+          es: "Los dos espacios son contiguos y comparten el paseo, así que se puede hacer la parte de pie —discursos, fotos, brindis— en el jardín y pasar a la cena bajo techo sin que nadie salga del recinto. Eso ahorra el momento muerto que suele romper el ritmo.",
+          en: "The two spaces are contiguous and share the walk, so you can do the standing part — speeches, photographs, toasts — in the garden and move to a seated dinner under cover without anyone leaving the site. That removes the dead moment that usually breaks the rhythm.",
+        },
+      },
+      {
+        titulo: { es: "Tu proveedor, tu presupuesto", en: "Your supplier, your budget" },
+        cuerpo: {
+          es: "No hay catering obligatorio ni proveedor impuesto. En una graduación, donde el presupuesto suele salir de varias familias, poder elegir quién sirve y a qué precio cambia la cuenta entera.",
+          en: "There is no mandatory catering and no imposed supplier. At a graduation, where the budget often comes from several families, being able to choose who caters and at what price changes the whole arithmetic.",
+        },
+      },
+    ],
+  },
+
+  {
+    clave: "pequenos",
+    ojo: { es: "Uso · evento pequeño", en: "Use · small event" },
+    h1: { es: "Eventos pequeños", en: "Small events" },
+    respuesta: {
+      es: "Sí se puede alquilar solo una parte. El Tiki Hut son ~4.000 ft² techados que se contratan sueltos, sin el jardín, y esa es la medida que encaja con un baby shower, un bautizo o un cumpleaños de 50 a 150 invitados. Contratar los ~22.000 ft² completos para eso no tiene sentido y no lo recomendamos.",
+      en: "Yes, you can rent just one part. The Tiki Hut is ~4,000 sq ft under roof that books on its own, without the garden, and that is the size that fits a baby shower, a christening or a birthday of 50 to 150 guests. Taking the full ~22,000 sq ft for that makes no sense and we do not recommend it.",
+    },
+    title: {
+      es: "Eventos pequeños en Wynwood: alquilar solo el Tiki Hut | Club Wynwood",
+      en: "Small events in Wynwood: renting just the Tiki Hut | Club Wynwood",
+    },
+    description: {
+      es: "Para baby showers, bautizos y cumpleaños de 50 a 150 invitados se alquila solo el Tiki Hut: ~4.000 ft² techados en Wynwood, sin contratar el jardín entero.",
+      en: "For baby showers, christenings and birthdays of 50 to 150 guests you can rent just the Tiki Hut: ~4,000 sq ft under roof in Wynwood, without taking the whole garden.",
+    },
+    cifras: [
+      { etiqueta: { es: "Solo el Tiki Hut", en: "Tiki Hut only" }, valor: "~4 000 ft²" },
+      { etiqueta: { es: "Invitados", en: "Guests" }, valor: "50–150" },
+      { etiqueta: { es: "Techado", en: "Under roof" }, valor: "100%" },
+    ],
+    foto: {
+      src: "/assets/venue-palapa.webp",
+      alt: {
+        es: "Bajo la palapa: techo de paja sobre postes de madera, abierta por los costados",
+        en: "Under the structure: thatch roof on timber posts, open on the sides",
+      },
+      pie: {
+        es: "El Tiki Hut se alquila suelto, sin el jardín.",
+        en: "The Tiki Hut books on its own, without the garden.",
+      },
+    },
+    bloques: [
+      {
+        titulo: { es: "Por qué no alquilarlo todo", en: "Why not take the whole thing" },
+        cuerpo: {
+          es: "Un evento de 80 personas en ~22.000 ft² se ve vacío, y además pagas superficie que no usas. Con solo el Tiki Hut el grupo queda reunido bajo techo, la conversación funciona y el presupuesto se va a comida y decoración en vez de a metros cuadrados.",
+          en: "An 80-person event in ~22,000 sq ft looks empty, and you are paying for surface you do not use. With just the Tiki Hut the group stays together under cover, conversation works, and the budget goes to food and decor instead of square footage.",
+        },
+      },
+      {
+        titulo: { es: "Techado y abierto a la vez", en: "Covered and open at once" },
+        cuerpo: {
+          es: "La palapa tiene techo de paja pero no tiene paredes: está abierta por los cuatro costados. Para un evento de día eso significa sombra sin encierro y sin aire acondicionado, que es exactamente lo que se busca en un baby shower o un bautizo a mediodía.",
+          en: "The structure has a thatched roof but no walls: it is open on all four sides. For a daytime event that means shade without being shut in and without air conditioning, which is exactly what a midday baby shower or christening wants.",
+        },
+      },
+      {
+        titulo: { es: "Las cabañas quedan a mano", en: "The cabanas are right there" },
+        cuerpo: {
+          es: "Las ocho cabañas amuebladas están en el jardín, junto a la palapa. Aunque el alquiler sea solo del Tiki Hut, conviene preguntar en la visita si se pueden incluir: para un evento con niños o con gente mayor son la zona de descanso que suele faltar.",
+          en: "The eight furnished cabanas sit in the garden, next to the structure. Even if you only book the Tiki Hut, it is worth asking at the visit whether they can be included: for an event with children or older guests they are the rest area that is usually missing.",
+        },
+      },
+    ],
+  },
 ];
 
 export function pagina(clave: string): Pagina | undefined {

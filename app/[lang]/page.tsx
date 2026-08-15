@@ -149,12 +149,12 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           <div className="ojo" style={{ marginBottom: 24 }}>{es ? "Ficha técnica" : "Spec sheet"}</div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))", gap: 44, marginBottom: 48 }}>
             <h2 style={{ color: "var(--papel-3)" }}>
-              {es ? <>Los números, y de dónde salen.</> : <>The numbers, and where they come from.</>}
+              {es ? <>Las medidas del sitio.</> : <>The site&rsquo;s measurements.</>}
             </h2>
             <p className="respuesta" style={{ color: "var(--texto)", margin: 0 }}>
               {es
-                ? "Un productor decide con números, no con adjetivos. Estas son las superficies y aforos del inmueble. La ficha de infraestructura se levanta contigo en la visita técnica y te la entregamos por escrito."
-                : "A producer decides with numbers, not adjectives. These are the venue's areas and capacities. The infrastructure sheet is surveyed with you at the technical visit and delivered in writing."}
+                ? "Estas son las medidas y los aforos del sitio. Lo que todavía no está medido —la potencia, por dónde se entra a descargar, el parking, los baños, la licencia de licor y hasta qué hora se puede— lo revisamos juntos cuando vengas a verlo, y te lo mandamos por escrito."
+                : "These are the site's measurements and capacities. What is not measured yet —power, where you load in, parking, restrooms, the liquor licence and how late you can run— we go through together when you come to see it, and you get it in writing."}
             </p>
           </div>
 

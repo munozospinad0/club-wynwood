@@ -1,129 +1,126 @@
+import { crearGeo } from "@/lib/iso";
 import type { Idioma } from "@/lib/i18n";
 
 /**
- * LÁMINA 00 — EL CONJUNTO. Las dos zonas en una sola vista.
+ * LÁMINA 00 — EL CONJUNTO.
  *
- * Daniel: "quiero uno donde esté todo, la zona 1 y 2 por fa".
+ * Daniel, sobre la versión anterior: "no se ve todo mal pero no es muy claro,
+ * siento que no se puede ver, no se entiende con facilidad, ese es el problema".
  *
- * LA PALAPA, CORREGIDA. Las láminas del exterior la dibujan como 134 × 30 ft,
- * un rectángulo largo paralelo al paseo. La foto aérea del predio muestra un
- * bloque CASI CUADRADO rodeado de palmeras. Las dos no pueden ser ciertas, y la
- * mala es la nuestra: 134 × 30 salió de repartir los ~4.000 ft² declarados sin
- * mirar la forma.
+ * Diagnóstico, y es incómodo porque es culpa mía: le estuve metiendo detalle
+ * porque me lo pedía, y el motivo de que no se entendiera era exactamente ese.
+ * Todo estaba en el mismo tono crema y con la misma línea —suelo, césped,
+ * treinta palmeras iguales, palapa, edificio, cotas— así que no había figura y
+ * fondo. Cuando todo pesa igual, no se lee nada.
  *
- * Aquí se mantiene la MISMA fuente —los ~4.000 ft² del propietario— y se cambia
- * el supuesto de forma por el que enseña la foto: √4.000 ≈ 63, o sea ≈ 63 × 63.
- * Sigue siendo una estimación y está rotulada como tal, pero es fiel a la única
- * evidencia visual que existe del predio.
+ * ESTA VERSIÓN NO AÑADE: EDITA.
+ *   · Tres niveles de valor y nada más: el suelo casi blanco, los volúmenes
+ *     techados en tinta, y las cotas en gris. Lo que tiene techo se ve oscuro,
+ *     que es la información que de verdad importa aquí.
+ *   · Las palmeras bajan de ~30 a 12 y solo van donde están de verdad: dos
+ *     hileras flanqueando el paseo.
+ *   · La palapa se dibuja como CUBIERTA: alero marcado, limatesas y sombra
+ *     proyectada. Antes se leía como una carpa plana.
+ *   · Las cartelas salen del dibujo y van en columna, sin cruzarse con nada.
+ *   · El edificio se acerca al lote: separados 40 ft parecían dos propiedades.
  *
- * Escala propia: el conjunto mide ~380 ft de largo y a 1.79 u/ft no cabría en
- * una lámina legible. Las de zona siguen a 1.79.
+ * La palapa va a ≈ 63 × 63 ft: mantiene los ~4.000 ft² declarados y corrige la
+ * forma según la foto aérea, donde es un bloque casi cuadrado y no el
+ * rectángulo largo de las láminas del exterior.
  */
 
-const U = 1.05;
-const K = 0.866;
-
-function p(xf: number, yf: number, zf = 0): [number, number] {
-  const x = xf * U, y = yf * U, z = zf * U;
-  return [(x - y) * K, (x + y) * 0.5 - z];
-}
-const poly = (...q: Array<[number, number]>) =>
-  q.map((c, i) => `${i ? "L" : "M"}${c[0].toFixed(1)},${c[1].toFixed(1)}`).join(" ") + " Z";
-const cTecho = (x: number, y: number, dx: number, dy: number, z: number) =>
-  poly(p(x, y, z), p(x + dx, y, z), p(x + dx, y + dy, z), p(x, y + dy, z));
-const cFrente = (x: number, y: number, dx: number, z0: number, z1: number) =>
-  poly(p(x, y, z0), p(x + dx, y, z0), p(x + dx, y, z1), p(x, y, z1));
-const cLado = (x: number, y: number, dy: number, z0: number, z1: number) =>
-  poly(p(x, y, z0), p(x, y + dy, z0), p(x, y + dy, z1), p(x, y, z1));
-
-// ---------------------------------------------------------------- geometría
-const LOTE = { x: 0, y: 0, dx: 240, dy: 92 };          // exterior, ~22.000 ft²
-const PALAPA = { x: 62, y: 15, dx: 63, dy: 63 };       // ≈ 63×63 — ver cabecera
-const PASEO = { x: 0, y: 40, dx: 240, dy: 12 };
-const EDIF = { x: 258, y: 1, dx: 118, dy: 90 };        // el edificio, zona 02
+const U = 1.12;
+const LOTE = { dx: 240, dy: 92 };
+const PALAPA = { x: 58, y: 14, dx: 63, dy: 63 };
+const PASEO = { y: 40, dy: 12 };
+const EDIF = { x: 256, dx: 118, dy: 90 };
 const H_ALERO = 11, H_CUMBRE = 26, H1 = 12, H2 = 22;
-
-const XS = [p(LOTE.x, LOTE.y + LOTE.dy)[0], p(EDIF.x + EDIF.dx, 0)[0]];
-const YS = [p(0, 0, H2)[1], p(EDIF.x + EDIF.dx, LOTE.dy)[1]];
-const VB = { x: XS[0] - 46, y: YS[0] - 74, w: XS[1] - XS[0] + 108, h: YS[1] - YS[0] + 128 };
-
-function Palmera({ xf, yf }: { xf: number; yf: number }) {
-  const [x, y] = p(xf, yf, 0);
-  return (
-    <g transform={`translate(${x.toFixed(1)},${y.toFixed(1)})`} opacity="0.85">
-      <line x1="0" y1="0" x2="0" y2="-13" stroke="#8a8071" strokeWidth="0.8" />
-      {[-1.15, -0.62, 0, 0.62, 1.15].map((a, i) => (
-        <path key={i}
-              d={`M0,-13 q${(Math.sin(a) * 6).toFixed(1)},${(-2.6 - Math.abs(Math.cos(a)) * 1.6).toFixed(1)} ${(Math.sin(a) * 10).toFixed(1)},${(0.6 + Math.abs(Math.cos(a))).toFixed(1)}`}
-              fill="none" stroke="#7d725f" strokeWidth="0.65" />
-      ))}
-    </g>
-  );
-}
-
-function Persona({ xf, yf, zf = 0, o = 0.55 }: { xf: number; yf: number; zf?: number; o?: number }) {
-  const [x, y] = p(xf, yf, zf);
-  return (
-    <g transform={`translate(${x.toFixed(1)},${y.toFixed(1)})`} opacity={o}>
-      <circle cx="0" cy="-6.6" r="1.35" fill="#5c5445" />
-      <path d="M0,-5.3 L0,-2.1 M0,-4.5 L-1.5,-3.1 M0,-4.5 L1.5,-3.1 M0,-2.1 L-1.2,0 M0,-2.1 L1.2,0"
-            stroke="#5c5445" strokeWidth="0.8" fill="none" strokeLinecap="round" />
-    </g>
-  );
-}
-
-function Cartela({ anclaje, hacia, titulo, dato, tono = "#211c15" }:
-  { anclaje: [number, number]; hacia: [number, number]; titulo: string; dato?: string; tono?: string }) {
-  const [ax, ay] = anclaje, [bx, by] = hacia;
-  const w = Math.max(titulo.length * 5.4, dato ? dato.length * 5.2 : 0) + 14;
-  return (
-    <g>
-      <line x1={ax} y1={ay} x2={bx} y2={by} stroke={tono} strokeWidth="0.65" />
-      <circle cx={ax} cy={ay} r="1.7" fill={tono} />
-      <rect x={bx} y={by - 25} width={w} height={14} fill={tono} />
-      <text x={bx + 7} y={by - 15} fill="#f8f3ea" fontFamily="ui-monospace,monospace"
-            fontSize="7.8" letterSpacing="1.5">{titulo}</text>
-      {dato && (
-        <>
-          <rect x={bx} y={by - 11} width={w} height={12} fill="#f8f3ea"
-                stroke={tono} strokeWidth="0.6" />
-          <text x={bx + 7} y={by - 2} fill="#211c15" fontFamily="ui-monospace,monospace"
-                fontSize="7.2" letterSpacing="1.2">{dato}</text>
-        </>
-      )}
-    </g>
-  );
-}
-
-function Cota({ a, b, texto, color = "#7d725f", dy = 0 }:
-  { a: [number, number]; b: [number, number]; texto: string; color?: string; dy?: number }) {
-  const [x1, y1] = a, [x2, y2] = b;
-  const an = Math.atan2(y2 - y1, x2 - x1), f = 4.2;
-  const pt = (x: number, y: number, s: number) =>
-    `M${(x + Math.cos(an + 0.38) * f * s).toFixed(1)},${(y + Math.sin(an + 0.38) * f * s).toFixed(1)} ` +
-    `L${x.toFixed(1)},${y.toFixed(1)} ` +
-    `L${(x + Math.cos(an - 0.38) * f * s).toFixed(1)},${(y + Math.sin(an - 0.38) * f * s).toFixed(1)}`;
-  return (
-    <g>
-      <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={color} strokeWidth="0.6" />
-      <path d={pt(x1, y1, 1)} fill="none" stroke={color} strokeWidth="0.6" />
-      <path d={pt(x2, y2, -1)} fill="none" stroke={color} strokeWidth="0.6" />
-      <text x={(x1 + x2) / 2} y={(y1 + y2) / 2 + dy} fill={color}
-            fontFamily="ui-monospace,monospace" fontSize="7" letterSpacing="1"
-            textAnchor="middle">{texto}</text>
-    </g>
-  );
-}
+const TOTAL_X = EDIF.x + EDIF.dx;
 
 export default function LaminaConjunto({ lang }: { lang: Idioma }) {
   const es = lang === "es";
+  const g = crearGeo(U, TOTAL_X / 2, LOTE.dy / 2, 0);
+  const { p, techo, frente, lado } = g;
+  const VB = g.caja(TOTAL_X, LOTE.dy, H_CUMBRE, 74);
 
+  // Solo donde están de verdad: dos hileras flanqueando el paseo.
   const palmeras: Array<[number, number]> = [];
-  for (let x = 14; x < 236; x += 15) { palmeras.push([x, 33]); palmeras.push([x, 60]); }
+  for (let i = 0; i < 6; i++) {
+    palmeras.push([26 + i * 36, PASEO.y - 7]);
+    palmeras.push([44 + i * 36, PASEO.y + PASEO.dy + 7]);
+  }
 
-  const pilaresE: Array<[number, number]> = [];
-  for (let x = EDIF.x; x <= EDIF.x + EDIF.dx; x += 30)
-    for (let y = EDIF.y; y <= EDIF.y + EDIF.dy; y += 30) pilaresE.push([x, y]);
+  const Palma = ({ x, y }: { x: number; y: number }) => {
+    const [a, b] = p(x, y, 0);
+    return (
+      <g transform={`translate(${a.toFixed(1)},${b.toFixed(1)})`}>
+        <ellipse cx="0" cy="1" rx="4.6" ry="1.7" fill="#211c15" opacity="0.07" />
+        <line x1="0" y1="0" x2="0" y2="-15" stroke="#8a8071" strokeWidth="0.9" />
+        {[-1.2, -0.6, 0, 0.6, 1.2].map((t, i) => (
+          <path key={i}
+                d={`M0,-15 q${(Math.sin(t) * 6.4).toFixed(1)},${(-3 - Math.abs(Math.cos(t)) * 1.8).toFixed(1)} ${(Math.sin(t) * 11).toFixed(1)},${(0.8 + Math.abs(Math.cos(t)) * 1.2).toFixed(1)}`}
+                fill="none" stroke="#6f6656" strokeWidth="0.8" strokeLinecap="round" />
+        ))}
+      </g>
+    );
+  };
+
+  const Gente = ({ x, y, z = 0 }: { x: number; y: number; z?: number }) => {
+    const [a, b] = p(x, y, z);
+    return (
+      <g transform={`translate(${a.toFixed(1)},${b.toFixed(1)})`} opacity="0.5">
+        <circle cx="0" cy="-6.4" r="1.3" fill="#3e3a34" />
+        <path d="M0,-5.2 L0,-2 M0,-4.4 L-1.5,-3 M0,-4.4 L1.5,-3 M0,-2 L-1.2,0 M0,-2 L1.2,0"
+              stroke="#3e3a34" strokeWidth="0.8" fill="none" strokeLinecap="round" />
+      </g>
+    );
+  };
+
+  /** Cartelas en columna, fuera del dibujo. Antes se cruzaban con el cajetín. */
+  const Ficha = ({ y, titulo, dato, ancla }:
+    { y: number; titulo: string; dato: string; ancla: [number, number] }) => {
+    const x = VB.x + VB.w - 176;
+    return (
+      <g>
+        <line x1={ancla[0]} y1={ancla[1]} x2={x} y2={y + 7} stroke="#211c15" strokeWidth="0.6" />
+        <circle cx={ancla[0]} cy={ancla[1]} r="1.9" fill="#211c15" />
+        <rect x={x} y={y} width="162" height="15" fill="#211c15" />
+        <text x={x + 8} y={y + 11} fill="#f8f3ea" fontFamily="ui-monospace,monospace"
+              fontSize="8.2" letterSpacing="1.6">{titulo}</text>
+        <rect x={x} y={y + 15} width="162" height="13" fill="#f8f3ea" stroke="#211c15" strokeWidth="0.6" />
+        <text x={x + 8} y={y + 25} fill="#211c15" fontFamily="ui-monospace,monospace"
+              fontSize="7.6" letterSpacing="1.2">{dato}</text>
+      </g>
+    );
+  };
+
+  const Cota = ({ a, b, txt, dy = 0 }:
+    { a: [number, number]; b: [number, number]; txt: string; dy?: number }) => {
+    const an = Math.atan2(b[1] - a[1], b[0] - a[0]), f = 4;
+    const pt = (q: [number, number], s: number) =>
+      `M${(q[0] + Math.cos(an + 0.36) * f * s).toFixed(1)},${(q[1] + Math.sin(an + 0.36) * f * s).toFixed(1)} ` +
+      `L${q[0].toFixed(1)},${q[1].toFixed(1)} ` +
+      `L${(q[0] + Math.cos(an - 0.36) * f * s).toFixed(1)},${(q[1] + Math.sin(an - 0.36) * f * s).toFixed(1)}`;
+    return (
+      <g opacity="0.75">
+        <line x1={a[0]} y1={a[1]} x2={b[0]} y2={b[1]} stroke="#8a8071" strokeWidth="0.55" />
+        <path d={pt(a, 1)} fill="none" stroke="#8a8071" strokeWidth="0.55" />
+        <path d={pt(b, -1)} fill="none" stroke="#8a8071" strokeWidth="0.55" />
+        <text x={(a[0] + b[0]) / 2} y={(a[1] + b[1]) / 2 + dy} fill="#8a8071"
+              fontFamily="ui-monospace,monospace" fontSize="7" letterSpacing="1"
+              textAnchor="middle">{txt}</text>
+      </g>
+    );
+  };
+
+  // Vértices de la cubierta a cuatro aguas.
+  const A = p(PALAPA.x, PALAPA.y, H_ALERO);
+  const B = p(PALAPA.x + PALAPA.dx, PALAPA.y, H_ALERO);
+  const C = p(PALAPA.x + PALAPA.dx, PALAPA.y + PALAPA.dy, H_ALERO);
+  const D = p(PALAPA.x, PALAPA.y + PALAPA.dy, H_ALERO);
+  const CUM = p(PALAPA.x + PALAPA.dx / 2, PALAPA.y + PALAPA.dy / 2, H_CUMBRE);
+  const faldon = (u: [number, number], v: [number, number]) =>
+    `M${u[0]},${u[1]} L${v[0]},${v[1]} L${CUM[0]},${CUM[1]} Z`;
 
   return (
     <section aria-label={es ? "Lámina 00 — el conjunto" : "Plate 00 — the whole site"}
@@ -135,7 +132,7 @@ export default function LaminaConjunto({ lang }: { lang: Idioma }) {
             {es ? "Lámina 00 — El conjunto" : "Plate 00 — The whole site"}
           </div>
           <div className="ojo">
-            {es ? "Las dos zonas · esquema volumétrico" : "Both zones · volumetric diagram"}
+            {es ? "Lo que tiene techo, en tinta" : "What has a roof, in ink"}
           </div>
         </div>
 
@@ -143,178 +140,111 @@ export default function LaminaConjunto({ lang }: { lang: Idioma }) {
           <svg viewBox={`${VB.x.toFixed(0)} ${VB.y.toFixed(0)} ${VB.w.toFixed(0)} ${VB.h.toFixed(0)}`}
                role="img"
                aria-label={es
-                 ? "Isométrica del conjunto: a la izquierda el jardín con la palapa techada, a la derecha el edificio de dos niveles"
-                 : "Isometric of the whole site: the garden with the covered structure on the left, the two-level building on the right"}
+                 ? "Isométrica del conjunto: el jardín con la palapa techada y, a su derecha, el edificio de dos niveles"
+                 : "Isometric of the whole site: the garden with its covered structure and, to the right, the two-level building"}
                style={{ width: "100%", height: "auto", display: "block" }}>
-            <defs>
-              <pattern id="cesped" width="7" height="7" patternUnits="userSpaceOnUse">
-                <circle cx="1" cy="1" r="0.5" fill="#a8b394" />
-              </pattern>
-              <pattern id="pavim" width="9" height="9" patternUnits="userSpaceOnUse">
-                <path d="M0,0 H9 M0,0 V9" stroke="#c6beb0" strokeWidth="0.35" />
-              </pattern>
-              <pattern id="paja" width="4" height="4" patternTransform="rotate(38)"
-                       patternUnits="userSpaceOnUse">
-                <line x1="0" y1="0" x2="0" y2="4" stroke="#b5a888" strokeWidth="0.7" />
-              </pattern>
-              <pattern id="alto" width="5" height="5" patternTransform="rotate(45)"
-                       patternUnits="userSpaceOnUse">
-                <line x1="0" y1="0" x2="0" y2="5" stroke="#c4772b" strokeWidth="0.5" opacity="0.5" />
-              </pattern>
-            </defs>
 
-            {/* ================= ZONA 01 · EXTERIOR ================= */}
-            <path d={cTecho(LOTE.x, LOTE.y, LOTE.dx, LOTE.dy, 0)} fill="#eef0e4"
-                  stroke="#7d725f" strokeWidth="0.7" />
-            <path d={cTecho(LOTE.x, LOTE.y, LOTE.dx, LOTE.dy, 0)} fill="url(#cesped)" />
-            <path d={cTecho(PASEO.x, PASEO.y, PASEO.dx, PASEO.dy, 0.2)} fill="#f4efe4"
-                  stroke="#a29784" strokeWidth="0.5" />
-            <path d={cTecho(PASEO.x, PASEO.y, PASEO.dx, PASEO.dy, 0.2)} fill="url(#pavim)" />
+          {/* ---------- SUELO: casi blanco, sin trama. Es el fondo. ---------- */}
+          <path d={techo(0, 0, LOTE.dx, LOTE.dy, 0)} fill="#f6f3ea" stroke="#c6beb0" strokeWidth="0.8" />
+          <path d={techo(0, PASEO.y, LOTE.dx, PASEO.dy, 0.1)} fill="#ece5d6" stroke="none" />
+          <path d={techo(EDIF.x, 0, EDIF.dx, EDIF.dy, 0)} fill="#f6f3ea" stroke="#c6beb0" strokeWidth="0.8" />
 
-            {/* seto perimetral */}
-            <path d={cFrente(LOTE.x, LOTE.y + LOTE.dy, LOTE.dx, 0, 3.4)} fill="#cfd6bd"
-                  stroke="#8a8071" strokeWidth="0.5" />
+          {/* sombra de los volúmenes: da asiento y separa figura de fondo */}
+          <path d={techo(PALAPA.x + 4, PALAPA.y + 4, PALAPA.dx, PALAPA.dy, 0.05)}
+                fill="#211c15" opacity="0.08" />
+          <path d={techo(EDIF.x + 4, 4, EDIF.dx, EDIF.dy, 0.05)} fill="#211c15" opacity="0.08" />
 
-            {palmeras.map(([x, y], i) => <Palmera key={i} xf={x} yf={y} />)}
+          {palmeras.map(([x, y], i) => <Palma key={i} x={x} y={y} />)}
+          {[[36, 30], [96, 62], [150, 46], [186, 34], [214, 60]].map(([x, y], i) =>
+            <Gente key={i} x={x} y={y} />)}
 
-            {/* --- la palapa, ≈63×63 --- */}
-            {[PALAPA.x, PALAPA.x + PALAPA.dx].map((x) =>
-              [PALAPA.y, PALAPA.y + PALAPA.dy].map((y) => {
-                const [ax, ay] = p(x, y, 0), [bx, by] = p(x, y, H_ALERO);
-                return <line key={`${x}-${y}`} x1={ax} y1={ay} x2={bx} y2={by}
-                             stroke="#695f4f" strokeWidth="1" />;
-              }))}
-            {(() => {
-              const cx = PALAPA.x + PALAPA.dx / 2, cy = PALAPA.y + PALAPA.dy / 2;
-              const [a] = [p(PALAPA.x, PALAPA.y, H_ALERO)];
-              const b = p(PALAPA.x + PALAPA.dx, PALAPA.y, H_ALERO);
-              const c = p(PALAPA.x + PALAPA.dx, PALAPA.y + PALAPA.dy, H_ALERO);
-              const dd = p(PALAPA.x, PALAPA.y + PALAPA.dy, H_ALERO);
-              const cum = p(cx, cy, H_CUMBRE);
-              const faldon = (u: [number, number], v: [number, number]) =>
-                `M${u[0]},${u[1]} L${v[0]},${v[1]} L${cum[0]},${cum[1]} Z`;
-              return (
-                <g>
-                  <path d={faldon(a, b)} fill="#ddd0ac" stroke="#695f4f" strokeWidth="0.7" />
-                  <path d={faldon(b, c)} fill="#d3c49c" stroke="#695f4f" strokeWidth="0.7" />
-                  <path d={faldon(c, dd)} fill="#e6dcbe" stroke="#695f4f" strokeWidth="0.7" />
-                  <path d={faldon(a, b)} fill="url(#paja)" opacity="0.55" />
-                  <path d={faldon(b, c)} fill="url(#paja)" opacity="0.55" />
-                  <path d={faldon(c, dd)} fill="url(#paja)" opacity="0.4" />
-                </g>
-              );
-            })()}
-
-            {[[40, 25], [52, 62], [150, 46], [175, 34], [196, 58], [96, 46], [110, 68]]
-              .map(([x, y], i) => <Persona key={i} xf={x} yf={y} />)}
-
-            {/* ================= ZONA 02 · EDIFICIO ================= */}
-            <path d={cTecho(EDIF.x, EDIF.y, EDIF.dx, EDIF.dy, 0)} fill="#f2ece1"
-                  stroke="#7d725f" strokeWidth="0.6" />
-            {pilaresE.map(([x, y], i) => {
-              const alto = x >= EDIF.x + 70 ? H2 : H1;
-              const [ax, ay] = p(x, y, 0), [bx, by] = p(x, y, alto);
-              return <line key={i} x1={ax} y1={ay} x2={bx} y2={by} stroke="#5c5445" strokeWidth="0.85" />;
+          {/* ---------- LA PALAPA: cubierta en tinta ---------- */}
+          {[[PALAPA.x, PALAPA.y], [PALAPA.x + PALAPA.dx, PALAPA.y],
+            [PALAPA.x + PALAPA.dx, PALAPA.y + PALAPA.dy], [PALAPA.x, PALAPA.y + PALAPA.dy]]
+            .map(([x, y], i) => {
+              const a = p(x, y, 0), b = p(x, y, H_ALERO);
+              return <line key={i} x1={a[0]} y1={a[1]} x2={b[0]} y2={b[1]}
+                           stroke="#3e3a34" strokeWidth="1.3" />;
             })}
-            <path d={cFrente(EDIF.x, EDIF.y + EDIF.dy, 70, 0, H1)} fill="#e6dfd2"
-                  stroke="#211c15" strokeWidth="0.75" />
-            <path d={cFrente(EDIF.x + 70, EDIF.y + EDIF.dy, EDIF.dx - 70, 0, H2)} fill="#e0d8ca"
-                  stroke="#211c15" strokeWidth="0.75" />
-            <path d={cLado(EDIF.x + EDIF.dx, EDIF.y, EDIF.dy, 0, H2)} fill="#d8cfbe"
-                  stroke="#211c15" strokeWidth="0.75" />
-            {/* forjado del nivel 02 */}
-            <path d={cTecho(EDIF.x, EDIF.y, 70, EDIF.dy, H1)} fill="#efe8dc"
-                  stroke="#211c15" strokeWidth="0.8" />
-            {[0, 1, 2, 3, 4].map((i) => (
-              <g key={i}>
-                <path d={cTecho(EDIF.x + 6 + i * 12, EDIF.y + 12, 9, 30, H1 + 8)}
-                      fill="#fdfaf4" stroke="#211c15" strokeWidth="0.55" />
-                <path d={cFrente(EDIF.x + 6 + i * 12, EDIF.y + 42, 9, H1, H1 + 8)}
-                      fill="#efe7d9" stroke="#211c15" strokeWidth="0.55" />
-              </g>
+          <path d={faldon(A, B)} fill="#6f6656" stroke="#211c15" strokeWidth="1" strokeLinejoin="round" />
+          <path d={faldon(B, C)} fill="#5c5445" stroke="#211c15" strokeWidth="1" strokeLinejoin="round" />
+          <path d={faldon(C, D)} fill="#857a66" stroke="#211c15" strokeWidth="1" strokeLinejoin="round" />
+          {/* alero: la línea que hace que se lea como techo y no como carpa */}
+          <path d={`M${A[0]},${A[1]} L${B[0]},${B[1]} L${C[0]},${C[1]} L${D[0]},${D[1]} Z`}
+                fill="none" stroke="#211c15" strokeWidth="1.4" strokeLinejoin="round" />
+
+          {/* ---------- EL EDIFICIO: sólido, en tinta ---------- */}
+          <path d={frente(EDIF.x, EDIF.dy, 70, 0, H1)} fill="#8f8574" stroke="#211c15" strokeWidth="1" />
+          <path d={frente(EDIF.x + 70, EDIF.dy, EDIF.dx - 70, 0, H2)} fill="#7d725f" stroke="#211c15" strokeWidth="1" />
+          <path d={lado(EDIF.x + EDIF.dx, 0, EDIF.dy, 0, H2)} fill="#6b6152" stroke="#211c15" strokeWidth="1" />
+          <path d={techo(EDIF.x, 0, 70, EDIF.dy, H1)} fill="#a89d88" stroke="#211c15" strokeWidth="1" />
+          <path d={techo(EDIF.x + 70, 0, EDIF.dx - 70, EDIF.dy, H2)} fill="#b8ad97" stroke="#211c15" strokeWidth="1" />
+          {/* las cinco salas, apenas insinuadas: aquí no son el tema */}
+          {[0, 1, 2, 3, 4].map((i) => (
+            <path key={i} d={techo(EDIF.x + 8 + i * 12, 14, 9, 30, H1 + 0.1)}
+                  fill="none" stroke="#f8f3ea" strokeWidth="0.6" opacity="0.55" />
+          ))}
+
+          {/* ---------- COTAS, en gris y al fondo ---------- */}
+          <Cota a={p(0, LOTE.dy + 13, 0)} b={p(LOTE.dx, LOTE.dy + 13, 0)} txt="≈ 240 FT · 73 M" dy={11} />
+          <Cota a={p(LOTE.dx + 11, 0, 0)} b={p(LOTE.dx + 11, LOTE.dy, 0)} txt="≈ 92 FT" dy={10} />
+          <Cota a={p(EDIF.x, LOTE.dy + 13, 0)} b={p(TOTAL_X, LOTE.dy + 13, 0)} txt="≈ 130 FT" dy={11} />
+
+          {/* ---------- CARTELAS, en columna y fuera del dibujo ---------- */}
+          <Ficha y={VB.y + 40} titulo={es ? "EL JARDÍN" : "THE GARDEN"}
+                 dato="~18 000 ft² / 1 672 m²" ancla={p(170, 66, 0)} />
+          <Ficha y={VB.y + 88} titulo="TIKI HUT" dato="~4 000 ft² / 372 m²"
+                 ancla={[CUM[0], CUM[1] + 6]} />
+          <Ficha y={VB.y + 136} titulo={es ? "EL EDIFICIO" : "THE BUILDING"}
+                 dato={es ? "2 niveles · 22 ft libres" : "2 levels · 22 ft clear"}
+                 ancla={p(EDIF.x + 100, 44, H2)} />
+
+          {/* ---------- ZONAS ---------- */}
+          <text {...(() => { const [x, y] = p(118, -13, 0); return { x, y }; })()}
+                fontFamily="ui-monospace,monospace" fontSize="8" letterSpacing="1.8"
+                fill="#8a8071" textAnchor="middle">
+            {es ? "ZONA 01 · EXTERIOR" : "ZONE 01 · OUTDOOR"}
+          </text>
+          <text {...(() => { const [x, y] = p(EDIF.x + 58, -13, 0); return { x, y }; })()}
+                fontFamily="ui-monospace,monospace" fontSize="8" letterSpacing="1.8"
+                fill="#8a8071" textAnchor="middle">
+            {es ? "ZONA 02 · EDIFICIO" : "ZONE 02 · BUILDING"}
+          </text>
+
+          {/* ---------- CAJETÍN ---------- */}
+          <g fontFamily="ui-monospace,monospace" letterSpacing="1.6">
+            <line x1={VB.x + 14} y1={VB.y + 24} x2={VB.x + 148} y2={VB.y + 24}
+                  stroke="#211c15" strokeWidth="0.9" />
+            <text x={VB.x + 14} y={VB.y + 39} fontSize="10" fill="#211c15">CLUB WYNWOOD</text>
+            <text x={VB.x + 14} y={VB.y + 52} fontSize="7.4" fill="#8a8071">
+              {es ? "EL CONJUNTO · ZONAS 01 Y 02" : "THE WHOLE SITE · ZONES 01 AND 02"}
+            </text>
+            <text x={VB.x + 14} y={VB.y + 63} fontSize="7.4" fill="#8a8071">
+              {es ? "LÁMINA 00 · SIN ESCALA" : "PLATE 00 · NOT TO SCALE"}
+            </text>
+          </g>
+
+          <g transform={`translate(${VB.x + 14},${VB.y + VB.h - 22})`}>
+            {[0, 1, 2].map((i) => (
+              <rect key={i} x={i * 26} y="0" width="26" height="4.2"
+                    fill={i % 2 ? "#f8f3ea" : "#211c15"} stroke="#211c15" strokeWidth="0.45" />
             ))}
-            {/* doble altura */}
-            <path d={cTecho(EDIF.x + 70, EDIF.y, EDIF.dx - 70, EDIF.dy, 0.3)} fill="url(#alto)" />
-            <path d={cTecho(EDIF.x + 70, EDIF.y, EDIF.dx - 70, EDIF.dy, H2)} fill="none"
-                  stroke="#211c15" strokeWidth="0.8" />
-            {[[EDIF.x + 90, 30], [EDIF.x + 104, 58], [EDIF.x + 30, 60]]
-              .map(([x, y], i) => <Persona key={`e${i}`} xf={x} yf={y} />)}
+            <text x="0" y="13" fontFamily="ui-monospace,monospace" fontSize="6.6" fill="#8a8071">0</text>
+            <text x="60" y="13" fontFamily="ui-monospace,monospace" fontSize="6.6" fill="#8a8071">75 FT</text>
+          </g>
 
-            {/* ================= COTAS ================= */}
-            <Cota a={p(LOTE.x, LOTE.dy + 14, 0)} b={p(LOTE.dx, LOTE.dy + 14, 0)}
-                  texto={es ? "≈ 240 FT · 73 M" : "≈ 240 FT · 73 M"} dy={11} />
-            <Cota a={p(EDIF.x, LOTE.dy + 14, 0)} b={p(EDIF.x + EDIF.dx, LOTE.dy + 14, 0)}
-                  texto="≈ 130 FT" dy={11} />
-            <Cota a={p(LOTE.dx + 12, LOTE.y, 0)} b={p(LOTE.dx + 12, LOTE.dy, 0)}
-                  texto="≈ 92 FT" dy={10} />
-            <Cota a={p(PALAPA.x, PALAPA.y - 9, 0)} b={p(PALAPA.x + PALAPA.dx, PALAPA.y - 9, 0)}
-                  texto="≈ 63 FT" color="#c4772b" dy={-7} />
+          <g transform={`translate(${VB.x + VB.w - 26},${VB.y + 30})`}>
+            <path d="M0,16 L0,-11 M-3.2,-4 L0,-12 L3.2,-4" fill="none" stroke="#211c15" strokeWidth="1" />
+            <text x="-2.5" y="27" fontFamily="ui-monospace,monospace" fontSize="8" fill="#8a8071">N</text>
+          </g>
+        </svg>
 
-            {/* ================= CARTELAS ================= */}
-            <Cartela anclaje={p(PALAPA.x + 30, PALAPA.y + 30, H_CUMBRE * 0.72)}
-                     hacia={[VB.x + 84, VB.y + 62]}
-                     titulo={es ? "TIKI HUT" : "TIKI HUT"} dato="~4 000 ft² / 372 m²" />
-            <Cartela anclaje={p(180, 70, 0)} hacia={[VB.x + 250, VB.y + VB.h - 46]}
-                     titulo={es ? "EL JARDÍN" : "THE GARDEN"} dato="~18 000 ft² / 1 672 m²" />
-            <Cartela anclaje={p(EDIF.x + 96, 44, H2 * 0.55)}
-                     hacia={[VB.x + VB.w - 168, VB.y + 46]}
-                     titulo={es ? "EL EDIFICIO" : "THE BUILDING"}
-                     dato={es ? "2 niveles · 22 ft libres" : "2 levels · 22 ft clear"} />
-
-            {/* separación entre zonas */}
-            {(() => {
-              const a = p(248, -6, 0), b = p(248, LOTE.dy + 6, 0);
-              return <line x1={a[0]} y1={a[1]} x2={b[0]} y2={b[1]} stroke="#a29784"
-                           strokeWidth="0.7" strokeDasharray="5 4" />;
-            })()}
-            <text {...(() => { const [x, y] = p(140, -14, 0); return { x, y }; })()}
-                  fontFamily="ui-monospace,monospace" fontSize="7.6" letterSpacing="1.6" fill="#7d725f">
-              {es ? "ZONA 01 · EXTERIOR" : "ZONE 01 · OUTDOOR"}
-            </text>
-            <text {...(() => { const [x, y] = p(300, -14, 0); return { x, y }; })()}
-                  fontFamily="ui-monospace,monospace" fontSize="7.6" letterSpacing="1.6" fill="#7d725f">
-              {es ? "ZONA 02 · EDIFICIO" : "ZONE 02 · BUILDING"}
-            </text>
-
-            {/* cajetín */}
-            <g fontFamily="ui-monospace,monospace" letterSpacing="1.6">
-              <line x1={VB.x + 14} y1={VB.y + 24} x2={VB.x + 140} y2={VB.y + 24}
-                    stroke="#211c15" strokeWidth="0.8" />
-              <text x={VB.x + 14} y={VB.y + 38} fontSize="9.4" fill="#211c15">CLUB WYNWOOD</text>
-              <text x={VB.x + 14} y={VB.y + 50} fontSize="7.2" fill="#7d725f">
-                {es ? "EL CONJUNTO · ZONAS 01 Y 02" : "THE WHOLE SITE · ZONES 01 AND 02"}
-              </text>
-              <text x={VB.x + 14} y={VB.y + 61} fontSize="7.2" fill="#7d725f">
-                {es ? "LÁMINA 00 · SIN ESCALA" : "PLATE 00 · NOT TO SCALE"}
-              </text>
-            </g>
-
-            <g transform={`translate(${VB.x + 14},${VB.y + VB.h - 24})`}>
-              <text x="0" y="-7" fontFamily="ui-monospace,monospace" fontSize="7"
-                    letterSpacing="1.4" fill="#7d725f">
-                {es ? "ESCALA GRÁFICA" : "GRAPHIC SCALE"}
-              </text>
-              {[0, 1, 2].map((i) => (
-                <rect key={i} x={i * 26} y="0" width="26" height="4.2"
-                      fill={i % 2 ? "#f8f3ea" : "#211c15"} stroke="#211c15" strokeWidth="0.45" />
-              ))}
-              <text x="0" y="13" fontFamily="ui-monospace,monospace" fontSize="6.5" fill="#7d725f">0</text>
-              <text x="64" y="13" fontFamily="ui-monospace,monospace" fontSize="6.5" fill="#7d725f">75 FT</text>
-            </g>
-
-            <g transform={`translate(${VB.x + VB.w - 30},${VB.y + 32})`}>
-              <path d="M0,17 L0,-11 M-3.4,-4 L0,-12 L3.4,-4" fill="none"
-                    stroke="#211c15" strokeWidth="0.9" />
-              <text x="-2.6" y="28" fontFamily="ui-monospace,monospace" fontSize="8" fill="#7d725f">N</text>
-            </g>
-          </svg>
-
-          <figcaption className="ojo" style={{ paddingTop: 16, lineHeight: 1.75, maxWidth: "78ch" }}>
-            {es
-              ? "Esquema volumétrico aproximado — no es un plano a escala. La palapa se dibuja aquí como ≈ 63 × 63 ft: mantiene los ~4 000 ft² declarados por el propietario y corrige la forma según la foto aérea del predio, donde se ve un bloque casi cuadrado y no el rectángulo largo de las láminas anteriores. La posición relativa del edificio y las cotas del lote se confirman en la visita técnica."
-              : "Approximate volumetric diagram — not to scale. The structure is drawn here as ≈ 63 × 63 ft: it keeps the ~4,000 sq ft declared by the owner and corrects the shape against the site's aerial photograph, which shows a near-square mass rather than the long rectangle of the earlier plates. The building's relative position and the lot dimensions are confirmed at the technical visit."}
-          </figcaption>
-        </figure>
+        <figcaption className="ojo" style={{ paddingTop: 16, lineHeight: 1.75, maxWidth: "78ch" }}>
+          {es
+            ? "Esquema volumétrico aproximado — no es un plano a escala. Lo techado se dibuja en tinta y lo abierto en claro. La palapa va como ≈ 63 × 63 ft: mantiene los ~4 000 ft² declarados por el propietario y corrige la forma según la foto aérea, donde se ve un bloque casi cuadrado. La posición relativa del edificio se confirma en la visita técnica."
+            : "Approximate volumetric diagram — not to scale. Roofed volumes are drawn in ink, open ground in light tone. The structure is drawn as ≈ 63 × 63 ft: it keeps the ~4,000 sq ft declared by the owner and corrects the shape against the aerial photograph, which shows a near-square mass. The building's relative position is confirmed at the technical visit."}
+        </figcaption>
+      </figure>
       </div>
     </section>
   );

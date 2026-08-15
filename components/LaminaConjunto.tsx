@@ -41,7 +41,16 @@ export default function LaminaConjunto({ lang }: { lang: Idioma }) {
   const es = lang === "es";
   const g = crearGeo(U, TOTAL_X / 2, LOTE.dy / 2, 0);
   const { p, techo, frente, lado } = g;
-  const VB = g.caja(TOTAL_X, LOTE.dy, H_CUMBRE, 74);
+  // La caja de la proyección se derrama más hacia abajo que hacia arriba, y a
+  // la derecha hay que dejar sitio para la columna de cartelas. Margen a medida
+  // en vez de uno igual en los cuatro lados.
+  const base = g.caja(TOTAL_X, LOTE.dy, H_CUMBRE, 0);
+  const VB = {
+    x: base.x - 56,
+    y: base.y - 78,
+    w: base.w + 56 + 232,
+    h: base.h + 78 + 56,
+  };
 
   // Solo donde están de verdad: dos hileras flanqueando el paseo.
   const palmeras: Array<[number, number]> = [];
@@ -79,15 +88,15 @@ export default function LaminaConjunto({ lang }: { lang: Idioma }) {
   /** Cartelas en columna, fuera del dibujo. Antes se cruzaban con el cajetín. */
   const Ficha = ({ y, titulo, dato, ancla }:
     { y: number; titulo: string; dato: string; ancla: [number, number] }) => {
-    const x = VB.x + VB.w - 176;
+    const x = VB.x + VB.w - 208;
     return (
       <g>
         <line x1={ancla[0]} y1={ancla[1]} x2={x} y2={y + 7} stroke="#211c15" strokeWidth="0.6" />
         <circle cx={ancla[0]} cy={ancla[1]} r="1.9" fill="#211c15" />
-        <rect x={x} y={y} width="162" height="15" fill="#211c15" />
+        <rect x={x} y={y} width="196" height="15" fill="#211c15" />
         <text x={x + 8} y={y + 11} fill="#f8f3ea" fontFamily="ui-monospace,monospace"
               fontSize="8.2" letterSpacing="1.6">{titulo}</text>
-        <rect x={x} y={y + 15} width="162" height="13" fill="#f8f3ea" stroke="#211c15" strokeWidth="0.6" />
+        <rect x={x} y={y + 15} width="196" height="13" fill="#f8f3ea" stroke="#211c15" strokeWidth="0.6" />
         <text x={x + 8} y={y + 25} fill="#211c15" fontFamily="ui-monospace,monospace"
               fontSize="7.6" letterSpacing="1.2">{dato}</text>
       </g>
@@ -191,25 +200,13 @@ export default function LaminaConjunto({ lang }: { lang: Idioma }) {
           <Cota a={p(EDIF.x, LOTE.dy + 13, 0)} b={p(TOTAL_X, LOTE.dy + 13, 0)} txt="≈ 130 FT" dy={11} />
 
           {/* ---------- CARTELAS, en columna y fuera del dibujo ---------- */}
-          <Ficha y={VB.y + 40} titulo={es ? "EL JARDÍN" : "THE GARDEN"}
+          <Ficha y={VB.y + 40} titulo={es ? "ZONA 01 · EL JARDÍN" : "ZONE 01 · THE GARDEN"}
                  dato="~18 000 ft² / 1 672 m²" ancla={p(170, 66, 0)} />
-          <Ficha y={VB.y + 88} titulo="TIKI HUT" dato="~4 000 ft² / 372 m²"
+          <Ficha y={VB.y + 88} titulo={es ? "ZONA 01 · TIKI HUT" : "ZONE 01 · TIKI HUT"} dato="~4 000 ft² / 372 m²"
                  ancla={[CUM[0], CUM[1] + 6]} />
-          <Ficha y={VB.y + 136} titulo={es ? "EL EDIFICIO" : "THE BUILDING"}
+          <Ficha y={VB.y + 136} titulo={es ? "ZONA 02 · EL EDIFICIO" : "ZONE 02 · THE BUILDING"}
                  dato={es ? "2 niveles · 22 ft libres" : "2 levels · 22 ft clear"}
                  ancla={p(EDIF.x + 100, 44, H2)} />
-
-          {/* ---------- ZONAS ---------- */}
-          <text {...(() => { const [x, y] = p(118, -13, 0); return { x, y }; })()}
-                fontFamily="ui-monospace,monospace" fontSize="8" letterSpacing="1.8"
-                fill="#8a8071" textAnchor="middle">
-            {es ? "ZONA 01 · EXTERIOR" : "ZONE 01 · OUTDOOR"}
-          </text>
-          <text {...(() => { const [x, y] = p(EDIF.x + 58, -13, 0); return { x, y }; })()}
-                fontFamily="ui-monospace,monospace" fontSize="8" letterSpacing="1.8"
-                fill="#8a8071" textAnchor="middle">
-            {es ? "ZONA 02 · EDIFICIO" : "ZONE 02 · BUILDING"}
-          </text>
 
           {/* ---------- CAJETÍN ---------- */}
           <g fontFamily="ui-monospace,monospace" letterSpacing="1.6">
@@ -233,7 +230,7 @@ export default function LaminaConjunto({ lang }: { lang: Idioma }) {
             <text x="60" y="13" fontFamily="ui-monospace,monospace" fontSize="6.6" fill="#8a8071">75 FT</text>
           </g>
 
-          <g transform={`translate(${VB.x + VB.w - 26},${VB.y + 30})`}>
+          <g transform={`translate(${VB.x + VB.w - 232},${VB.y + 26})`}>
             <path d="M0,16 L0,-11 M-3.2,-4 L0,-12 L3.2,-4" fill="none" stroke="#211c15" strokeWidth="1" />
             <text x="-2.5" y="27" fontFamily="ui-monospace,monospace" fontSize="8" fill="#8a8071">N</text>
           </g>

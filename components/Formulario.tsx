@@ -3,9 +3,23 @@
 import { useEffect, useState } from "react";
 import type { Idioma } from "@/lib/i18n";
 
+/**
+ * El webhook de n8n al que va el formulario.
+ *
+ * OJO CON ESTA URL. La que había aquí antes —n8n.srv1043270.hstgr.cloud— NO
+ * EXISTE: el host no resuelve por DNS. El workflow «Club Wynwood — Captura de
+ * leads del sitio» (HMf412NsoC3LXJCP) vive en la instancia de n8n cloud, que es
+ * la de abajo, y es la que el runtime del sitio estático ya usaba bien.
+ *
+ * Mientras estuvo mal, cada envío fallaba en el `fetch` y el visitante veía el
+ * mensaje de error. No se perdía en silencio, pero se perdía igual.
+ *
+ * Si alguna vez se migra la instancia, se cambia por variable de entorno y no
+ * tocando esta línea: NEXT_PUBLIC_WEBHOOK_LEADS manda sobre esto.
+ */
 const WEBHOOK =
   process.env.NEXT_PUBLIC_WEBHOOK_LEADS ??
-  "https://n8n.srv1043270.hstgr.cloud/webhook/club-wynwood-lead";
+  "https://munozospinad0.app.n8n.cloud/webhook/club-wynwood-lead";
 
 /**
  * Formulario de solicitud, contra el mismo webhook de n8n que ya funciona.

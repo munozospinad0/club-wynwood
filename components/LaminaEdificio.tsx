@@ -63,6 +63,18 @@ const H2 = COTAS.alturaDobleFt;    // 22
 const CORTE = 76;                  // ft: fin del forjado 02, principio del vacío
 const ESP = 1.4;                   // ft de canto de losa
 
+/**
+ * El forjado del nivel 02 se dibuja EN L, recortando la esquina cercana.
+ *
+ * En la versión anterior cubría toda la planta baja y la cocina quedaba debajo,
+ * invisible: la cartela parecía apuntar al aire porque no había nada que
+ * señalar. Cortarlo es la técnica estándar de la isométrica seccionada y
+ * además enseña los dos niveles a la vez, que es justo lo que hay que
+ * comunicar de este edificio.
+ */
+const CUT_X = 42;   // ft: hasta dónde llega el recorte en x
+const CUT_Y = 58;   // ft: dónde empieza el recorte en y
+
 /** Caja de la proyección, para encuadrar sin adivinar. */
 const XS = [p(0, FONDO)[0], p(ANCHO, 0)[0]];
 const YS = [p(0, 0, H2)[1], p(ANCHO, FONDO)[1]];
@@ -137,8 +149,8 @@ export default function LaminaEdificio({ lang }: { lang: Idioma }) {
 
   return (
     <section id="interior" aria-label={es ? "Lámina 05 — el edificio" : "Plate 05 — the building"}
-             style={{ background: "#eae4da", borderBottom: "1px solid var(--regla)" }}>
-      <div className="reja" style={{ paddingBlock: 60 }}>
+             style={{ background: "transparent" }}>
+      <div className="reja" style={{ paddingBlock: "34px 60px" }}>
         <div style={{ display: "flex", justifyContent: "space-between", gap: 24, flexWrap: "wrap",
                       paddingBottom: 14, borderBottom: "1px solid var(--regla)" }}>
           <div className="ojo" style={{ color: "var(--tinta-2)" }}>
@@ -222,17 +234,29 @@ export default function LaminaEdificio({ lang }: { lang: Idioma }) {
               <path d={cLado(0, 0, FONDO, 0, H1)} fill="#dbd2c1" stroke="#211c15" strokeWidth="0.8" />
 
               {/* --- cocina y servicios --- */}
-              <Volumen x={12} y={56} dx={24} dy={26} z0={0} z1={9} />
-              <Volumen x={41} y={56} dx={17} dy={26} z0={0} z1={9} />
-              {/* hueco de escalera */}
-              <Volumen x={64} y={58} dx={9} dy={22} z0={0} z1={H1} techo="#e9e2d5" frente="#d9d0be" lado="#cec4b0" />
+              {/* Van dentro del recorte del forjado: si no, quedan tapadas. */}
+              <Volumen x={7} y={CUT_Y + 4} dx={22} dy={24} z0={0} z1={9}
+                       techo="#f6f0e4" frente="#e4dbc9" lado="#d6cbb6" />
+              <Volumen x={31} y={CUT_Y + 4} dx={9} dy={24} z0={0} z1={9}
+                       techo="#f0e9dc" frente="#ded5c2" lado="#cfc4ae" />
+              {/* hueco de escalera, arrimado al canto del corte */}
+              <Volumen x={CUT_X + 2} y={CUT_Y + 6} dx={8} dy={20} z0={0} z1={H1}
+                       techo="#e9e2d5" frente="#d9d0be" lado="#cec4b0" />
 
               {/* --- losa del nivel 02, con canto --- */}
-              <path d={cFrente(0, FONDO, CORTE, H1 - ESP, H1)} fill="url(#tCorte)"
+              {/* Forjado en L: dos rectangulos, con el recorte entre ellos. */}
+              <path d={cTecho(0, 0, CORTE, CUT_Y, H1)} fill="#efe8dc" stroke="#211c15" strokeWidth="0.9" />
+              <path d={cTecho(CUT_X, CUT_Y, CORTE - CUT_X, FONDO - CUT_Y, H1)}
+                    fill="#efe8dc" stroke="#211c15" strokeWidth="0.9" />
+              {/* Cantos. Con trama de seccion para que se lea CORTADO y no roto. */}
+              <path d={cFrente(CUT_X, FONDO, CORTE - CUT_X, H1 - ESP, H1)} fill="url(#tCorte)"
+                    stroke="#211c15" strokeWidth="0.7" />
+              <path d={cFrente(0, CUT_Y, CUT_X, H1 - ESP, H1)} fill="url(#tCorte)"
+                    stroke="#211c15" strokeWidth="0.7" />
+              <path d={cLado(CUT_X, CUT_Y, FONDO - CUT_Y, H1 - ESP, H1)} fill="url(#tCorte)"
                     stroke="#211c15" strokeWidth="0.7" />
               <path d={cLado(CORTE, 0, FONDO, H1 - ESP, H1)} fill="url(#tCorte)"
                     stroke="#211c15" strokeWidth="0.7" />
-              <path d={cTecho(0, 0, CORTE, FONDO, H1)} fill="#efe8dc" stroke="#211c15" strokeWidth="0.9" />
 
               {/* --- cinco salas privadas, con puerta --- */}
               {salas.map((_, i) => {
@@ -251,11 +275,29 @@ export default function LaminaEdificio({ lang }: { lang: Idioma }) {
               <path d={cTecho(CORTE, 0, ANCHO - CORTE, FONDO, 0)} fill="url(#tDoble)" />
               <path d={cTecho(CORTE, 0, ANCHO - CORTE, FONDO, 0)} fill="none" stroke="#c4772b"
                     strokeWidth="0.8" strokeDasharray="3.5 2.5" />
+              {/* Muros hasta 22 ft: sin ellos, una trama en el suelo es una terraza. */}
               <path d={cFrente(CORTE, FONDO, ANCHO - CORTE, 0, H2)} fill="#e6dfd2"
                     stroke="#211c15" strokeWidth="0.8" />
-              {/* plano de cubierta, punteado */}
+              <path d={cLado(ANCHO, 0, FONDO, 0, H2)} fill="#dbd2c1"
+                    stroke="#211c15" strokeWidth="0.8" />
+              {/* Vigas uniendo las cabezas de pilar: sin ellas los pilares
+                  flotaban como palos sueltos con un rombo encima. */}
+              {ejesY.map((y) => {
+                const [ax, ay] = p(CORTE, y, H2), [bx, by] = p(ANCHO, y, H2);
+                return <line key={`vy${y}`} x1={ax} y1={ay} x2={bx} y2={by}
+                             stroke="#5c5445" strokeWidth="0.75" opacity="0.9" />;
+              })}
+              {ejesX.filter((x) => x >= CORTE).map((x) => {
+                const [ax, ay] = p(x, 0, H2), [bx, by] = p(x, FONDO, H2);
+                return <line key={`vx${x}`} x1={ax} y1={ay} x2={bx} y2={by}
+                             stroke="#5c5445" strokeWidth="0.75" opacity="0.9" />;
+              })}
+              {/* Arista de cubierta sobre la zona alta, marcada. */}
+              <path d={cTecho(CORTE, 0, ANCHO - CORTE, FONDO, H2)} fill="none"
+                    stroke="#211c15" strokeWidth="0.9" />
+              {/* Plano de cubierta del resto, punteado. */}
               <path d={cTecho(0, 0, ANCHO, FONDO, H2)} fill="none" stroke="#211c15"
-                    strokeWidth="0.7" opacity="0.3" strokeDasharray="4 3.5" />
+                    strokeWidth="0.7" opacity="0.26" strokeDasharray="4 3.5" />
 
               {/* --- escala humana, en los dos niveles --- */}
               <Persona xf={100} yf={22} /><Persona xf={112} yf={52} />
@@ -265,7 +307,7 @@ export default function LaminaEdificio({ lang }: { lang: Idioma }) {
               {/* --- cotas, todas fuera del dibujo --- */}
               <Cota a={p(ANCHO + 7, FONDO + 7, 0)} b={p(ANCHO + 7, FONDO + 7, H2)}
                     texto={`${H2} FT`} color="#c4772b" dx={17} />
-              <Cota a={p(-7, FONDO + 7, 0)} b={p(-7, FONDO + 7, H1)} texto={`${H1} FT`} dx={-17} />
+              <Cota a={p(-13, FONDO + 13, 0)} b={p(-13, FONDO + 13, H1)} texto={`${H1} FT`} dx={-19} />
               <Cota a={p(0, FONDO + 15, 0)} b={p(ANCHO, FONDO + 15, 0)}
                     texto={`≈ ${ANCHO} FT`} dy={12} />
               <Cota a={p(ANCHO + 16, 0, 0)} b={p(ANCHO + 16, FONDO, 0)}
@@ -275,7 +317,7 @@ export default function LaminaEdificio({ lang }: { lang: Idioma }) {
               <Cartela anclaje={p(36, 26, H1 + 9)} hacia={[VB.x + 16, VB.y + 96]}
                        titulo={es ? "NIVEL 02" : "LEVEL 02"}
                        dato={es ? `${salas.length} salas privadas` : `${salas.length} private rooms`} />
-              <Cartela anclaje={p(24, 68, 9)} hacia={[VB.x + 16, VB.y + VB.h - 78]}
+              <Cartela anclaje={p(18, CUT_Y + 16, 9)} hacia={[VB.x + 16, VB.y + VB.h - 78]}
                        titulo={es ? "COCINA" : "KITCHEN"} dato="580 ft²" />
               <Cartela anclaje={p(104, 44, 0)} hacia={[VB.x + VB.w - 126, VB.y + 62]}
                        titulo={es ? "DOBLE ALTURA" : "DOUBLE HEIGHT"} dato={`${H2} ft`} />

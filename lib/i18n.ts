@@ -85,6 +85,9 @@ export const RUTAS = {
   popups: { es: "pop-ups-y-mercados", en: "pop-ups-and-markets" },
   graduaciones: { es: "graduaciones", en: "graduations" },
   pequenos: { es: "eventos-pequenos", en: "small-events" },
+  artbasel: { es: "art-basel-y-miami-art-week", en: "art-basel-and-miami-art-week" },
+  finDeAno: { es: "fiesta-de-fin-de-ano-de-empresa", en: "company-holiday-party" },
+  barrio: { es: "por-que-wynwood", en: "why-wynwood" },
 } as const;
 
 export type ClaveRuta = keyof typeof RUTAS;

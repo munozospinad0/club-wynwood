@@ -693,6 +693,198 @@ export const PAGINAS: Pagina[] = [
       },
     ],
   },
+
+  {
+    clave: "artbasel",
+    ojo: { es: "Temporada · diciembre", en: "Season · December" },
+    h1: { es: "Art Basel y Miami Art Week", en: "Art Basel and Miami Art Week" },
+    respuesta: {
+      es: "Durante Miami Art Week el barrio que más se busca para activaciones es Wynwood, y este recinto está dentro del Arts District, a cuatro minutos a pie de Wynwood Walls. Son ~22.000 ft² al aire libre con ~4.000 techados y aforo de ~600 de pie, sin estética propia que pelee con la instalación que traigas.",
+      en: "During Miami Art Week the neighbourhood most in demand for activations is Wynwood, and this site sits inside the Arts District, a four-minute walk from Wynwood Walls. It is ~22,000 sq ft outdoors with ~4,000 under roof and capacity for ~600 standing, with no aesthetic of its own to fight the installation you bring.",
+    },
+    title: {
+      es: "Espacio para Art Basel y Miami Art Week en Wynwood | Club Wynwood",
+      en: "Art Basel and Miami Art Week space in Wynwood | Club Wynwood",
+    },
+    description: {
+      es: "Recinto de ~22.000 ft² en el Wynwood Arts District para activaciones de Miami Art Week: a 4 minutos de Wynwood Walls, aforo ~600 de pie y ~4.000 ft² techados.",
+      en: "A ~22,000 sq ft site in the Wynwood Arts District for Miami Art Week activations: 4 minutes from Wynwood Walls, ~600 standing and ~4,000 sq ft under roof.",
+    },
+    cifras: [
+      { etiqueta: { es: "A Wynwood Walls", en: "To Wynwood Walls" }, valor: "4 min" },
+      { etiqueta: { es: "De pie", en: "Standing" }, valor: "~600" },
+      { etiqueta: { es: "Superficie", en: "Area" }, valor: "~22 000 ft²" },
+    ],
+    foto: {
+      src: "/assets/aerea-predio.jpg",
+      alt: {
+        es: "Vista aérea del recinto dentro del Wynwood Arts District",
+        en: "Aerial view of the site inside the Wynwood Arts District",
+      },
+      pie: {
+        es: "El recinto, dentro del Wynwood Arts District.",
+        en: "The site, inside the Wynwood Arts District.",
+      },
+    },
+    bloques: [
+      {
+        titulo: { es: "El barrio no es decorado", en: "The neighbourhood is not a backdrop" },
+        cuerpo: {
+          es: "En diciembre medio Miami se disfraza de Wynwood. La diferencia de estar dentro del Arts District es que el público que te interesa ya viene caminando: en la semana del arte la gente recorre el barrio a pie entre galerías, murales y activaciones, y estar a cuatro minutos de Wynwood Walls te pone en ese recorrido.",
+          en: "In December half of Miami dresses up as Wynwood. The difference of being inside the Arts District is that the audience you want is already walking: during art week people move through the neighbourhood on foot between galleries, murals and activations, and being four minutes from Wynwood Walls puts you on that route.",
+        },
+      },
+      {
+        titulo: { es: "Un recinto sin estética propia", en: "A site with no aesthetic of its own" },
+        cuerpo: {
+          es: "Una instalación de arte o una activación de marca en Art Week viene con su propio lenguaje visual. Un salón con moqueta, lámparas y paredes tratadas pelea con eso. Aquí hay superficie firme, límites claros y nada que discuta con lo que montes.",
+          en: "An art installation or a brand activation during Art Week arrives with its own visual language. A ballroom with carpet, chandeliers and finished walls fights it. Here there is firm ground, clear boundaries and nothing arguing with what you build.",
+        },
+      },
+      {
+        titulo: { es: "Diciembre también llueve", en: "December rains too" },
+        cuerpo: {
+          es: "La semana del arte cae en temporada seca, pero un aguacero de tarde en Miami no avisa. Los ~4.000 ft² de palapa fija permiten mover la parte crítica bajo techo sin desmontar la instalación ni alquilar carpa a precio de diciembre.",
+          en: "Art week falls in the dry season, but an afternoon downpour in Miami gives no warning. The ~4,000 sq ft of permanent structure let you move the critical part under cover without striking the installation or renting a tent at December prices.",
+        },
+      },
+      {
+        titulo: { es: "Reservar con antelación", en: "Booking ahead" },
+        cuerpo: {
+          es: "Las fechas de Art Week son las más disputadas del año en este barrio y se cierran con meses de margen. Si tu activación es para diciembre, la conversación útil empieza en verano: escríbenos con la fecha y el aforo y te decimos disponibilidad real.",
+          en: "Art Week dates are the most contested of the year in this neighbourhood and close months ahead. If your activation is for December, the useful conversation starts in summer: write to us with the date and headcount and we come back with real availability.",
+        },
+      },
+    ],
+  },
+
+  {
+    clave: "finDeAno",
+    ojo: { es: "Uso · fin de año", en: "Use · year-end" },
+    h1: { es: "Fiesta de fin de año de empresa", en: "Company holiday party" },
+    respuesta: {
+      es: "Una cena de empresa de 100 a 300 personas cabe sentada bajo la palapa techada, con el jardín para el cóctel de llegada y los discursos. Diciembre en Miami se hace al aire libre —es de los mejores meses— y los ~4.000 ft² cubiertos quitan el riesgo de la lluvia sin encerrar a nadie.",
+      en: "A company dinner of 100 to 300 people fits seated under the covered structure, with the garden for the arrival cocktail and the speeches. December in Miami is made for outdoors — it is one of the best months — and the ~4,000 sq ft under roof remove the rain risk without shutting anyone in.",
+    },
+    title: {
+      es: "Fiesta de fin de año de empresa en Wynwood, Miami | Club Wynwood",
+      en: "Company holiday party venue in Wynwood, Miami | Club Wynwood",
+    },
+    description: {
+      es: "Venue al aire libre para la fiesta de fin de año de tu empresa en Wynwood: cóctel en el jardín, cena sentada bajo la palapa techada, de 100 a 300 personas.",
+      en: "Open-air venue for your company holiday party in Wynwood: cocktails in the garden, seated dinner under the covered structure, 100 to 300 people.",
+    },
+    cifras: [
+      { etiqueta: { es: "Cena sentada", en: "Seated dinner" }, valor: "100–300" },
+      { etiqueta: { es: "Cóctel de pie", en: "Standing cocktail" }, valor: "~600" },
+      { etiqueta: { es: "Bajo techo", en: "Under roof" }, valor: "~4 000 ft²" },
+    ],
+    foto: {
+      src: "/assets/venue-palapa.webp",
+      alt: {
+        es: "Bajo la palapa techada, donde va la cena sentada",
+        en: "Under the covered structure, where the seated dinner goes",
+      },
+      pie: {
+        es: "Bajo la palapa: la parte sentada del evento.",
+        en: "Under the structure: the seated part of the event.",
+      },
+    },
+    bloques: [
+      {
+        titulo: { es: "Llegada fuera, cena dentro", en: "Arrival outside, dinner inside" },
+        cuerpo: {
+          es: "El montaje que mejor funciona para una empresa: cóctel de bienvenida y networking en el jardín, con la gente de pie y moviéndose, y después pasar a la mesa bajo la palapa. Los dos espacios comparten el paseo, así que el cambio no rompe el ritmo ni obliga a salir a la calle.",
+          en: "The layout that works best for a company: welcome cocktail and networking in the garden, with people standing and moving, then through to the table under the structure. The two spaces share the walk, so the transition does not break the rhythm or send anyone out to the street.",
+        },
+      },
+      {
+        titulo: { es: "Diciembre en Miami se hace fuera", en: "December in Miami happens outdoors" },
+        cuerpo: {
+          es: "Es de los mejores meses del año aquí, y una fiesta de empresa al aire libre en diciembre se recuerda distinto que un salón de hotel. El riesgo es el aguacero de tarde, y eso lo resuelven los ~4.000 ft² de cubierta fija: no hay que decidir nada con dos semanas de antelación mirando el parte.",
+          en: "It is one of the best months of the year here, and an outdoor company party in December is remembered differently from a hotel ballroom. The risk is the afternoon downpour, and the ~4,000 sq ft of permanent cover handle it: nothing has to be decided two weeks out while watching the forecast.",
+        },
+      },
+      {
+        titulo: { es: "Sin proveedor impuesto", en: "No imposed supplier" },
+        cuerpo: {
+          es: "Los hoteles suelen atar el catering y la barra a su cocina, y ahí es donde se va el presupuesto de una cena de empresa. Aquí se alquila el espacio: eliges proveedor, menú y barra, y el ahorro se nota justo en la partida más grande.",
+          en: "Hotels usually tie catering and bar to their own kitchen, and that is where a company dinner's budget goes. Here you rent the space: you choose supplier, menu and bar, and the saving shows up in the largest line item.",
+        },
+      },
+      {
+        titulo: { es: "Las fechas de diciembre vuelan", en: "December dates go fast" },
+        cuerpo: {
+          es: "Las dos primeras semanas de diciembre son las más pedidas del año, y coinciden además con Art Week. Si la fecha es esa, conviene cerrarla con meses de margen: escríbenos con el número de asistentes y te decimos qué hay libre.",
+          en: "The first two weeks of December are the most requested of the year, and they overlap with Art Week. If that is your date, close it months ahead: write to us with your headcount and we come back with what is free.",
+        },
+      },
+    ],
+  },
+
+  {
+    clave: "barrio",
+    ojo: { es: "El barrio", en: "The neighbourhood" },
+    h1: { es: "Por qué Wynwood", en: "Why Wynwood" },
+    respuesta: {
+      es: "Wynwood es el distrito de arte de Miami y, para un evento, tres cosas lo hacen distinto: el barrio se recorre a pie, está a tres minutos del acceso a la I-95 y a dieciséis del aeropuerto, y los murales dan un fondo que ningún salón puede montar. Esta página es para quien está eligiendo barrio antes que local.",
+      en: "Wynwood is Miami's arts district and, for an event, three things make it different: the neighbourhood is walkable, it is three minutes from the I-95 access and sixteen from the airport, and the murals give a backdrop no ballroom can build. This page is for whoever is choosing a neighbourhood before choosing a venue.",
+    },
+    title: {
+      es: "Por qué hacer tu evento en Wynwood, Miami | Club Wynwood",
+      en: "Why host your event in Wynwood, Miami | Club Wynwood",
+    },
+    description: {
+      es: "Qué tiene Wynwood para un evento: barrio peatonal, 3 minutos a la I-95, 16 al aeropuerto MIA, y los murales del Arts District como fondo real.",
+      en: "What Wynwood offers an event: a walkable neighbourhood, 3 minutes to the I-95, 16 to MIA airport, and the Arts District murals as a real backdrop.",
+    },
+    cifras: [
+      { etiqueta: { es: "A la I-95", en: "To the I-95" }, valor: "3 min" },
+      { etiqueta: { es: "Al aeropuerto MIA", en: "To MIA airport" }, valor: "16 min" },
+      { etiqueta: { es: "A Miami Beach", en: "To Miami Beach" }, valor: "18 min" },
+    ],
+    foto: {
+      src: "/assets/venue-exterior.webp",
+      alt: {
+        es: "El recinto con los murales del barrio al fondo",
+        en: "The site with the neighbourhood murals behind",
+      },
+      pie: {
+        es: "Los murales del barrio, al fondo del recinto.",
+        en: "The neighbourhood murals, behind the site.",
+      },
+    },
+    bloques: [
+      {
+        titulo: { es: "Se recorre a pie", en: "It is walkable" },
+        cuerpo: {
+          es: "Wynwood es de los pocos sitios de Miami donde la gente camina. Para un evento eso cambia dos cosas: los invitados pueden llegar antes o quedarse después sin depender del coche, y una activación abierta al público recibe gente que ya estaba en la calle.",
+          en: "Wynwood is one of the few places in Miami where people walk. For an event that changes two things: guests can arrive early or stay on without depending on a car, and an activation open to the public receives people who were already outside.",
+        },
+      },
+      {
+        titulo: { es: "Está bien conectado", en: "It is well connected" },
+        cuerpo: {
+          es: "Tres minutos al acceso de la I-95, seis a Midtown y el Design District, nueve a Downtown y Brickell, dieciséis al aeropuerto MIA y dieciocho a Miami Beach. Para un evento con invitados de fuera, esos dieciséis minutos al aeropuerto valen más que cualquier argumento de marca.",
+          en: "Three minutes to the I-95 access, six to Midtown and the Design District, nine to Downtown and Brickell, sixteen to MIA airport and eighteen to Miami Beach. For an event with out-of-town guests, those sixteen minutes to the airport are worth more than any brand argument.",
+        },
+      },
+      {
+        titulo: { es: "El fondo ya existe", en: "The backdrop already exists" },
+        cuerpo: {
+          es: "Los murales del Arts District son el escenario que ningún salón puede construir, y no cuestan producción. Para una boda, una quinceañera o un rodaje, eso son fotos con lugar reconocible en vez de fotos con pared.",
+          en: "The Arts District murals are the set no ballroom can build, and they cost no production. For a wedding, a quinceañera or a shoot, that means photographs with a recognisable place instead of photographs with a wall.",
+        },
+      },
+      {
+        titulo: { es: "Lo que hay que tener en cuenta", en: "What to bear in mind" },
+        cuerpo: {
+          es: "Wynwood es un barrio con vivienda y con vida nocturna, así que el ruido y el horario están regulados y el aparcamiento en calle es limitado los fines de semana. Son las dos preguntas que conviene hacerle a cualquier venue de la zona, y las repasamos contigo en la visita.",
+          en: "Wynwood is a neighbourhood with housing and with nightlife, so noise and hours are regulated and street parking is limited at weekends. Those are the two questions worth asking any venue in the area, and we go through them with you at the visit.",
+        },
+      },
+    ],
+  },
 ];
 
 export function pagina(clave: string): Pagina | undefined {

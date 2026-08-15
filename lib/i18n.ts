@@ -79,6 +79,9 @@ export const RUTAS = {
   corporativo: { es: "eventos-corporativos", en: "corporate-events" },
   produccion: { es: "produccion-y-rodajes", en: "film-and-production" },
   faq: { es: "preguntas-frecuentes", en: "faq" },
+  guia: { es: "organizar-un-evento-en-wynwood", en: "hosting-an-event-in-wynwood" },
+  quinces: { es: "quinceaneras", en: "quinceaneras" },
+  aforos: { es: "aforo-y-montajes", en: "capacity-and-layouts" },
 } as const;
 
 export type ClaveRuta = keyof typeof RUTAS;

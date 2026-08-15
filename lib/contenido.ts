@@ -316,6 +316,205 @@ export const PAGINAS: Pagina[] = [
       },
     ],
   },
+
+  {
+    clave: "guia",
+    ojo: { es: "Guía", en: "Guide" },
+    h1: { es: "Organizar un evento en Wynwood", en: "Hosting an event in Wynwood" },
+    respuesta: {
+      es: "Para hacer un evento en Wynwood hay seis cosas que se deciden antes que el sitio: cuánta gente, si hay plan de lluvia, cuánta potencia necesita tu producción, por dónde entra el camión, hasta qué hora puedes sonar y quién pone la barra. Esta página es la lista de preguntas, en el orden en que conviene hacerlas.",
+      en: "Six things get decided before the venue when you host an event in Wynwood: how many people, whether there is a rain plan, how much power your production needs, where the truck loads in, how late you can run sound and who provides the bar. This page is that checklist, in the order worth asking it.",
+    },
+    title: {
+      es: "Cómo organizar un evento en Wynwood, Miami — la lista de preguntas | Club Wynwood",
+      en: "How to host an event in Wynwood, Miami — the checklist | Club Wynwood",
+    },
+    description: {
+      es: "Las seis preguntas que hay que hacerle a cualquier venue de Wynwood antes de reservar: aforo, plan de lluvia, potencia, load-in, curfew y barra. Con lo que respondemos nosotros.",
+      en: "The six questions to ask any Wynwood venue before booking: capacity, rain plan, power, load-in, curfew and bar. Including how we answer them.",
+    },
+    cifras: [
+      { etiqueta: { es: "Preguntas", en: "Questions" }, valor: "6" },
+      { etiqueta: { es: "Se responden en", en: "Answered at" }, valor: "1 visita" },
+      { etiqueta: { es: "Por escrito", en: "In writing" }, valor: "Sí" },
+    ],
+    foto: {
+      src: "/assets/aerea-predio.jpg",
+      alt: {
+        es: "Vista aérea de un recinto de eventos al aire libre en Wynwood, Miami",
+        en: "Aerial view of an open-air event site in Wynwood, Miami",
+      },
+      pie: {
+        es: "Un recinto al aire libre en Wynwood: 2129 NW 1st Ct.",
+        en: "An open-air site in Wynwood: 2129 NW 1st Ct.",
+      },
+    },
+    bloques: [
+      {
+        titulo: { es: "1. ¿Cuánta gente, y sentada o de pie?", en: "1. How many people, seated or standing?" },
+        cuerpo: {
+          es: "Es la primera y la que cambia todo lo demás. Un recinto que aguanta 600 de pie no aguanta 600 sentados: con mesas redondas y pista, la misma superficie baja a la mitad. Pide siempre las dos cifras por separado, y pregunta cuál es el aforo con TU montaje, no el máximo teórico. Aquí son ~600 de pie y ~300 sentados en el recinto completo.",
+          en: "This is the first one and it changes everything else. A site that holds 600 standing does not hold 600 seated: with round tables and a dance floor, the same surface drops by half. Always ask for both figures separately, and ask what the capacity is with YOUR layout, not the theoretical maximum. Here it is ~600 standing and ~300 seated across the whole site.",
+        },
+      },
+      {
+        titulo: { es: "2. ¿Qué pasa si llueve?", en: "2. What happens if it rains?" },
+        cuerpo: {
+          es: "En Miami esta pregunta no es opcional. Hay tres respuestas posibles y solo una es buena: «hay cubierta fija», «se alquila carpa» (súmalo al presupuesto y comprueba que cabe) o «se reprograma» (que no es un plan). Pregunta cuántos ft² están techados de verdad, no si «hay una zona cubierta». Aquí son ~4.000 ft² de palapa fija.",
+          en: "In Miami this question is not optional. There are three possible answers and only one is good: “there is permanent cover”, “a tent is rented” (add it to the budget and check it fits) or “we reschedule” (which is not a plan). Ask how many square feet are actually roofed, not whether “there is a covered area”. Here it is ~4,000 sq ft of permanent structure.",
+        },
+      },
+      {
+        titulo: { es: "3. ¿Cuánta potencia hay, y de qué tipo?", en: "3. How much power, and what kind?" },
+        cuerpo: {
+          es: "No basta con «sí hay luz». Tu proveedor de sonido e iluminación necesita amperaje y fase, y si el recinto no lo tiene, entra un generador —que cuesta, hace ruido y necesita sitio—. Pide el dato por escrito antes de firmar. Si un venue no te lo sabe decir, es que nadie lo ha medido.",
+          en: "“Yes, there is power” is not enough. Your sound and lighting supplier needs amperage and phase, and if the site does not have it, a generator comes in — which costs money, makes noise and needs space. Ask for the figure in writing before signing. If a venue cannot tell you, it means nobody has measured it.",
+        },
+      },
+      {
+        titulo: { es: "4. ¿Por dónde entra el camión?", en: "4. Where does the truck load in?" },
+        cuerpo: {
+          es: "El ancho del portón decide si tu producción entra rodando o a mano, y eso son horas de montaje y dinero. Pregunta ancho libre, si hay drive-in, y a qué hora se puede empezar a descargar. En Wynwood, además, la calle importa: no todas admiten un camión parado.",
+          en: "Gate width decides whether your production rolls in or goes in by hand, and that is hours of load-in and money. Ask for clear width, whether there is drive-in access, and what time you can start unloading. In Wynwood the street matters too: not all of them take a parked truck.",
+        },
+      },
+      {
+        titulo: { es: "5. ¿Hasta qué hora, y con cuántos decibelios?", en: "5. Until what time, and at how many decibels?" },
+        cuerpo: {
+          es: "Curfew y límite de dB son dos cosas distintas y las dos te pueden cortar la fiesta. Wynwood es un barrio con vivienda, así que pregunta las dos por escrito y confirma quién responde si aparece una queja. Un venue que no tiene clara esta respuesta te está pasando el riesgo a ti.",
+          en: "Curfew and dB limit are two different things and either can end your party. Wynwood is a neighbourhood with housing, so ask for both in writing and confirm who answers if a complaint comes in. A venue that is not clear on this is handing you the risk.",
+        },
+      },
+      {
+        titulo: { es: "6. ¿Quién pone la barra?", en: "6. Who provides the bar?" },
+        cuerpo: {
+          es: "Hay tres modelos: el venue tiene licencia y vende, el venue te obliga a su proveedor, o traes tu barra con tu licencia. Cambian el presupuesto y el margen por completo. Pregúntalo antes de enamorarte del sitio, porque es donde más se rompen las cuentas.",
+          en: "There are three models: the venue holds the licence and sells, the venue requires its own supplier, or you bring your bar with your licence. They change the budget and the margin completely. Ask before falling in love with the place, because this is where the numbers break most often.",
+        },
+      },
+      {
+        titulo: { es: "Cómo respondemos nosotros", en: "How we answer" },
+        cuerpo: {
+          es: "Las dos primeras están publicadas en este sitio con sus cifras. Las cuatro siguientes —potencia, load-in, curfew y barra— se revisan contigo el día de la visita y te las mandamos por escrito. No las publicamos porque no las hemos medido nosotros, y preferimos eso a poner un número que luego no se sostenga.",
+          en: "The first two are published on this site with their figures. The next four — power, load-in, curfew and bar — are reviewed with you on the day of the visit and sent to you in writing. We do not publish them because we have not measured them ourselves, and we prefer that to putting up a number that will not hold.",
+        },
+      },
+    ],
+  },
+
+  {
+    clave: "quinces",
+    ojo: { es: "Uso · quinceañera", en: "Use · quinceañera" },
+    h1: { es: "Quinceañeras", en: "Quinceañeras" },
+    respuesta: {
+      es: "El recinto admite hasta ~300 invitados sentados, con la entrada y el vals en el jardín y la cena y el baile bajo la palapa techada de ~4.000 ft². Los ~4.000 ft² cubiertos son además el plan de lluvia, así que la fecha no depende del cielo de Miami.",
+      en: "The site takes up to ~300 seated guests, with the entrance and the waltz in the garden and dinner and dancing under the ~4,000 sq ft covered structure. Those covered square feet are also the rain plan, so the date does not depend on the Miami sky.",
+    },
+    title: {
+      es: "Salón para quinceañeras en Wynwood, Miami — hasta 300 invitados | Club Wynwood",
+      en: "Quinceañera venue in Wynwood, Miami — up to 300 guests | Club Wynwood",
+    },
+    description: {
+      es: "Venue al aire libre para quinceañeras en Wynwood, Miami: hasta ~300 sentados, jardín para la entrada y el vals, y palapa techada de ~4.000 ft² para la cena y el baile.",
+      en: "Open-air quinceañera venue in Wynwood, Miami: up to ~300 seated, a garden for the entrance and waltz, and a ~4,000 sq ft covered structure for dinner and dancing.",
+    },
+    cifras: [
+      { etiqueta: { es: "Sentados", en: "Seated" }, valor: "~300" },
+      { etiqueta: { es: "Bajo techo", en: "Under roof" }, valor: "~4 000 ft²" },
+      { etiqueta: { es: "Cabañas", en: "Cabanas" }, valor: "8" },
+    ],
+    foto: {
+      src: "/assets/venue-exterior.webp",
+      alt: {
+        es: "El paseo pavimentado entre palmeras, recorrido de entrada para una quinceañera",
+        en: "The paved walk between palms, an entrance aisle for a quinceañera",
+      },
+      pie: {
+        es: "El paseo central entre las dos hileras de palmeras.",
+        en: "The central walk between the two rows of palms.",
+      },
+    },
+    bloques: [
+      {
+        titulo: { es: "La entrada tiene recorrido", en: "The entrance has a walk" },
+        cuerpo: {
+          es: "El paseo pavimentado recorre el jardín de extremo a extremo entre dos hileras de palmeras reales. Es un pasillo de entrada que ya existe: no hay que montarlo ni alfombrarlo, y las fotos salen con las palmeras y los murales del barrio de fondo, no con una pared.",
+          en: "The paved walk runs the length of the garden between two rows of real palms. It is an entrance aisle that already exists: it does not need building or carpeting, and the photographs come out with palms and the neighbourhood murals behind, not a wall.",
+        },
+      },
+      {
+        titulo: { es: "Cena y baile bajo techo", en: "Dinner and dancing under cover" },
+        cuerpo: {
+          es: "La palapa de ~4.000 ft² cubre la parte sentada del evento. Eso resuelve dos cosas a la vez: la lluvia y el sol de Miami a las cinco de la tarde. Las ocho cabañas amuebladas del jardín funcionan como zonas de descanso para los invitados mayores.",
+          en: "The ~4,000 sq ft structure covers the seated part of the event. That solves two things at once: the rain and the five-o'clock Miami sun. The eight furnished cabanas in the garden work as rest areas for older guests.",
+        },
+      },
+      {
+        titulo: { es: "Tu decoración, sin competencia", en: "Your decor, uncontested" },
+        cuerpo: {
+          es: "El recinto no tiene una estética propia que imponer. Eso importa en una quinceañera más que en ningún otro evento: el color y el montaje los pone la familia o su decorador, y aquí no hay moqueta ni lámparas ni un salón que pelee con ellos.",
+          en: "The site has no aesthetic of its own to impose. That matters more at a quinceañera than at any other event: the colour scheme and the build come from the family or their decorator, and here there is no carpet, no chandeliers and no ballroom competing with them.",
+        },
+      },
+    ],
+  },
+
+  {
+    clave: "aforos",
+    ojo: { es: "Ficha · aforo", en: "Spec · capacity" },
+    h1: { es: "Aforo y montajes", en: "Capacity and layouts" },
+    respuesta: {
+      es: "Club Wynwood admite ~600 personas de pie o ~300 sentadas usando el recinto completo de ~22.000 ft². La diferencia no es un truco: con mesas redondas, pista y servicio, la misma superficie rinde aproximadamente la mitad. El aforo con tu montaje concreto se confirma en la visita técnica.",
+      en: "Club Wynwood takes ~600 people standing or ~300 seated across the whole ~22,000 sq ft site. The gap is not a trick: with round tables, a dance floor and service, the same surface yields roughly half. Capacity for your specific layout is confirmed at the technical visit.",
+    },
+    title: {
+      es: "Aforo: cuánta gente cabe — 600 de pie, 300 sentados | Club Wynwood",
+      en: "Capacity: how many people fit — 600 standing, 300 seated | Club Wynwood",
+    },
+    description: {
+      es: "Cuánta gente cabe en Club Wynwood: ~600 de pie o ~300 sentados en ~22.000 ft². Cómo cambia el aforo según el montaje y por qué las dos cifras son tan distintas.",
+      en: "How many people fit at Club Wynwood: ~600 standing or ~300 seated across ~22,000 sq ft. How capacity changes with the layout and why the two figures differ so much.",
+    },
+    cifras: [
+      { etiqueta: { es: "De pie", en: "Standing" }, valor: "~600" },
+      { etiqueta: { es: "Sentados", en: "Seated" }, valor: "~300" },
+      { etiqueta: { es: "Superficie", en: "Area" }, valor: "~22 000 ft²" },
+    ],
+    foto: {
+      src: "/assets/aerea-predio.jpg",
+      alt: {
+        es: "Vista aérea del recinto completo, con la palapa techada y el jardín",
+        en: "Aerial view of the whole site, with the covered structure and the garden",
+      },
+      pie: {
+        es: "El recinto completo: ~22.000 ft² entre jardín y palapa.",
+        en: "The whole site: ~22,000 sq ft between garden and structure.",
+      },
+    },
+    bloques: [
+      {
+        titulo: { es: "Por qué 600 y 300 son tan distintos", en: "Why 600 and 300 differ so much" },
+        cuerpo: {
+          es: "Una persona de pie en un cóctel ocupa alrededor de un tercio de lo que ocupa sentada en una mesa redonda con su silla, su parte de mesa y el pasillo del servicio. Añade pista de baile, escenario y barra y la superficie útil baja otra vez. Por eso ningún venue serio te da una sola cifra.",
+          en: "A person standing at a cocktail takes roughly a third of what they take seated at a round table, counting their share of table and the service aisle. Add a dance floor, a stage and a bar and the usable surface drops again. That is why no serious venue gives you a single figure.",
+        },
+      },
+      {
+        titulo: { es: "Por separado o combinado", en: "Separately or combined" },
+        cuerpo: {
+          es: "El Jardín (~18.000 ft²) y el Tiki Hut (~4.000 ft²) se alquilan sueltos o juntos. Las cifras de ~600 y ~300 son del recinto completo; si contratas solo uno de los dos, el aforo baja en proporción a la superficie que uses. Son contiguos y comparten el paseo, así que combinados funcionan como un solo recinto.",
+          en: "The Garden (~18,000 sq ft) and the Tiki Hut (~4,000 sq ft) rent separately or together. The ~600 and ~300 figures are for the whole site; if you take only one, capacity drops in proportion to the surface you use. They are contiguous and share the walk, so combined they work as a single site.",
+        },
+      },
+      {
+        titulo: { es: "Lo que falta medir", en: "What still needs measuring" },
+        cuerpo: {
+          es: "El aforo por montaje —el tuyo, con tu plano— se levanta en la visita técnica junto con la potencia, el load-in, el parking y el curfew, y se entrega por escrito. Las cifras de esta página son aproximaciones del propietario, no medición topográfica, y están marcadas con «~» en toda la ficha.",
+          en: "Capacity per layout — yours, with your floor plan — is surveyed at the technical visit along with power, load-in, parking and curfew, and delivered in writing. The figures on this page are owner approximations, not a survey measurement, and are marked with “~” throughout the spec sheet.",
+        },
+      },
+    ],
+  },
 ];
 
 export function pagina(clave: string): Pagina | undefined {

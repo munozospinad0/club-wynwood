@@ -29,16 +29,22 @@ import type { Idioma } from "@/lib/i18n";
  * habría que rearrancarlo en cada cambio de pestaña.
  */
 export default function Laminas({
-  lang, exterior, edificio,
+  lang, conjunto, exterior, edificio,
 }: {
   lang: Idioma;
+  conjunto: React.ReactNode;
   exterior: React.ReactNode;
   edificio: React.ReactNode;
 }) {
   const es = lang === "es";
-  const [zona, setZona] = useState<"exterior" | "edificio">("exterior");
+  const [zona, setZona] = useState<"conjunto" | "exterior" | "edificio">("conjunto");
 
+  // El conjunto va PRIMERO y abre por defecto: es la que sitúa. Sin ella, el
+  // visitante ve dos dibujos y no sabe que son el mismo sitio.
   const ZONAS = [
+    { id: "conjunto" as const,
+      n: es ? "El conjunto" : "The whole site",
+      d: es ? "Las dos zonas en una vista" : "Both zones in one view" },
     { id: "exterior" as const,
       n: es ? "Zona 01 · Exterior" : "Zone 01 · Outdoor",
       d: es ? "Jardín y Tiki Hut · 4 láminas" : "Garden and Tiki Hut · 4 plates" },
@@ -84,6 +90,7 @@ export default function Laminas({
       {/* Las dos se renderizan siempre; solo se oculta la que no toca. Así el
           contenido de ambas está en el HTML servido y el runtime del exterior
           no se reinicia al cambiar de zona. */}
+      <div hidden={zona !== "conjunto"}>{conjunto}</div>
       <div hidden={zona !== "exterior"}>{exterior}</div>
       <div hidden={zona !== "edificio"}>{edificio}</div>
     </section>

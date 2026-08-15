@@ -711,9 +711,9 @@ export const PAGINAS: Pagina[] = [
       en: "A ~22,000 sq ft site in the Wynwood Arts District for Miami Art Week activations: 4 minutes from Wynwood Walls, ~600 standing and ~4,000 sq ft under roof.",
     },
     cifras: [
+      { etiqueta: { es: "Art Basel 2026", en: "Art Basel 2026" }, valor: "4–6 dic" },
       { etiqueta: { es: "A Wynwood Walls", en: "To Wynwood Walls" }, valor: "4 min" },
       { etiqueta: { es: "De pie", en: "Standing" }, valor: "~600" },
-      { etiqueta: { es: "Superficie", en: "Area" }, valor: "~22 000 ft²" },
     ],
     foto: {
       src: "/assets/aerea-predio.jpg",
@@ -749,10 +749,10 @@ export const PAGINAS: Pagina[] = [
         },
       },
       {
-        titulo: { es: "Reservar con antelación", en: "Booking ahead" },
+        titulo: { es: "Del 4 al 6 de diciembre de 2026", en: "4 to 6 December 2026" },
         cuerpo: {
-          es: "Las fechas de Art Week son las más disputadas del año en este barrio y se cierran con meses de margen. Si tu activación es para diciembre, la conversación útil empieza en verano: escríbenos con la fecha y el aforo y te decimos disponibilidad real.",
-          en: "Art Week dates are the most contested of the year in this neighbourhood and close months ahead. If your activation is for December, the useful conversation starts in summer: write to us with the date and headcount and we come back with real availability.",
+          es: "Art Basel Miami Beach 2026 es del 4 al 6 de diciembre, y la semana alrededor de esas fechas es la más disputada del año en este barrio. Se cierra con meses de margen: si tu activación es para esa semana, la conversación útil empieza en verano. Escríbenos con la fecha y el aforo y te decimos disponibilidad real.",
+          en: "Art Basel Miami Beach 2026 runs from 4 to 6 December, and the week around those dates is the most contested of the year in this neighbourhood. It closes months ahead: if your activation is for that week, the useful conversation starts in summer. Write to us with the date and headcount and we come back with real availability.",
         },
       },
     ],

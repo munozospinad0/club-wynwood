@@ -15,6 +15,13 @@ const WEBHOOK =
  * decide qué evento de conversión se dispara, para que Meta y Google optimicen
  * hacia leads que se parecen a los que cierran y no hacia volumen.
  *
+ * TRAMOS DE PRESUPUESTO — calibrados con precio real de mercado, no a ojo.
+ * Los directorios publican $150-617/hora en Wynwood y el sector $800-6.000/día
+ * para activaciones. Con eso, un día entero de un venue grande cae en el entorno
+ * de 4.000-6.000: los tramos anteriores (>20.000 / 8.000-20.000 / <8.000) dejaban
+ * el alto casi vacío y metían a casi todo el mundo en el bajo, así que la
+ * puntuación no separaba nada.
+ *
  * ATRIBUCIÓN — gclid/fbclid/utm se leen de la URL y se guardan en sessionStorage
  * al aterrizar. Una visita puede caer en /bodas desde un anuncio y rellenar el
  * formulario en la home; sin esto se perdería el origen de ese lead.
@@ -160,9 +167,9 @@ export default function Formulario({ lang }: { lang: Idioma }) {
           <label style={etiqueta} htmlFor="presupuesto">{es ? "Presupuesto (USD)" : "Budget (USD)"}</label>
           <select style={campo} id="presupuesto" name="presupuesto" defaultValue="">
             <option value="">—</option>
-            <option value="alto">{es ? "Más de 20 000" : "Over 20,000"}</option>
-            <option value="medio">8 000 – 20 000</option>
-            <option value="bajo">{es ? "Menos de 8 000" : "Under 8,000"}</option>
+            <option value="alto">{es ? "Más de 15 000" : "Over 15,000"}</option>
+            <option value="medio">6 000 – 15 000</option>
+            <option value="bajo">{es ? "Menos de 6 000" : "Under 6,000"}</option>
             <option value="sin-definir">{es ? "Todavía por definir" : "Not defined yet"}</option>
           </select>
         </div>

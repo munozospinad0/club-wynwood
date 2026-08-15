@@ -28,6 +28,16 @@ const WEBHOOK =
  */
 type Estado = "idle" | "enviando" | "ok" | "error";
 
+/** Lee una cookie por nombre. Devuelve "" si no está o si están bloqueadas. */
+function cookie(nombre: string): string {
+  try {
+    const m = document.cookie.match(new RegExp("(?:^|; )" + nombre + "=([^;]*)"));
+    return m ? decodeURIComponent(m[1]) : "";
+  } catch {
+    return "";
+  }
+}
+
 export default function Formulario({ lang }: { lang: Idioma }) {
   const es = lang === "es";
   const [estado, setEstado] = useState<Estado>("idle");
@@ -81,6 +91,24 @@ export default function Formulario({ lang }: { lang: Idioma }) {
     let attr = {};
     try { attr = JSON.parse(sessionStorage.getItem("cw-attr") || "{}"); } catch { /* vacío */ }
 
+    /**
+     * UN SOLO id PARA LOS DOS CAMINOS.
+     *
+     * Este mismo envío va a llegar a Meta dos veces: por el píxel del navegador
+     * (ahora) y por la API de Conversiones desde el CRM (en cuanto se guarde).
+     * Eso es deliberado —el servidor casa mejor y sobrevive a los bloqueadores—
+     * pero solo funciona si Meta puede reconocer que son EL MISMO hecho.
+     *
+     * Los reconoce por `event_id`. Si no coincide, cuenta dos conversiones por
+     * cada lead: el informe sale al doble, el coste por lead a la mitad, y la
+     * campaña se optimiza con números que no existen. Por eso el id se genera
+     * aquí, una vez, y viaja por los dos caminos.
+     */
+    const eventId =
+      typeof crypto !== "undefined" && crypto.randomUUID
+        ? crypto.randomUUID()
+        : `cw-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+
     try {
       const r = await fetch(WEBHOOK, {
         method: "POST",
@@ -92,6 +120,17 @@ export default function Formulario({ lang }: { lang: Idioma }) {
           // El + inicial se pierde si la hoja lo interpreta como número.
           telefono: d.telefono ? `'${d.telefono}` : "",
           enviado: new Date().toISOString(),
+
+          // ── huella para la API de Conversiones ──────────────────────────
+          // Estas cookies las pone el píxel de Meta y SOLO existen aquí, en el
+          // navegador de la persona. El CRM no puede deducirlas: si no viajan
+          // en el cuerpo, se pierden, y la coincidencia baja mucho.
+          // La IP no se puede leer desde el navegador — la añade n8n, que sí ve
+          // la del visitante en la cabecera x-forwarded-for.
+          event_id: eventId,
+          fbp: cookie("_fbp"),
+          fbc: cookie("_fbc"),
+          user_agent: navigator.userAgent,
         }),
       });
       if (!r.ok) throw new Error(String(r.status));
@@ -99,7 +138,7 @@ export default function Formulario({ lang }: { lang: Idioma }) {
       // Solo los CALIFICADO disparan el evento de conversión.
       if (calidad === "CALIFICADO" && typeof window !== "undefined") {
         (window as unknown as { dataLayer?: unknown[] }).dataLayer?.push({
-          event: "lead_calificado", valor_lead: 1,
+          event: "lead_calificado", valor_lead: 1, event_id: eventId,
         });
       }
     } catch {

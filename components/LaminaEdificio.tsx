@@ -2,124 +2,157 @@ import { COTAS, NIVEL_02, totalInmueble } from "@/lib/edificio";
 import type { Idioma } from "@/lib/i18n";
 
 /**
- * LÁMINA 05 — EL EDIFICIO. Isométrica, al mismo nivel de detalle que las del
- * exterior.
+ * LÁMINA 05 — EL EDIFICIO. Isométrica.
  *
- * Daniel: "tiene que tener el mismo detalle de como hicimos la parte exterior".
- * Tenía razón: lo anterior era un esquema de secciones y al lado de las
- * isométricas del jardín se veía pobre.
+ * Segunda pasada. La primera "iba cerca pero más o menos": el dibujo quedaba
+ * arrinconado abajo a la derecha con medio lienzo vacío, los rótulos se montaban
+ * sobre la geometría, la escala gráfica chocaba con la cota de 12 ft y la de
+ * 22 ft se salía del encuadre.
  *
- * PROYECCIÓN, la misma que las láminas del exterior para que el conjunto se lea
- * como una sola serie:
- *     sx = (x − y) · 0.866
- *     sy = (x + y) · 0.5 − z
- * Escala 1 ft ≈ 1.79 u, también la misma. Eso importa: cuando exista la lámina
- * maestra del predio completo, el edificio ya estará dibujado a la escala de la
- * palapa y del jardín y encajará sin rehacerlo.
+ * QUÉ CAMBIA EN ESTA
+ *   · viewBox calculado a partir de la caja real de la proyección, no a ojo.
+ *   · Rótulos en cartela negra con línea de guía y punto, como en las láminas
+ *     del exterior. Ninguno se apoya sobre el dibujo.
+ *   · Cotas FUERA de la geometría, cada una en su banda.
+ *   · Espesor real en losas y muros: sin canto, una isométrica se lee plana.
+ *   · Retícula de pilares con capitel, hueco de escalera, puertas en las salas,
+ *     trama en las caras cortadas y figuras humanas en los dos niveles.
  *
- * QUÉ SE DIBUJA: el cascarón. Losas, retícula de pilares, el vacío a doble
- * altura, las cinco salas del nivel 02, cocina y servicios.
- * QUÉ NO: ni una atracción del operador. Ver lib/edificio.ts.
+ * PROYECCIÓN, la misma que el exterior para que sean una serie:
+ *     sx = (x − y) · 0.866        sy = (x + y) · 0.5 − z        1 ft ≈ 1.79 u
+ * Cuando exista la lámina maestra, el edificio encaja sin rehacerlo.
  *
- * Server Component: sin estado ni JavaScript, así que las cotas y los rótulos
- * llegan en el HTML servido.
+ * QUÉ SE DIBUJA: el cascarón. QUÉ NO: nada del operador. Ver lib/edificio.ts.
  */
 
-const U = 1.79;                 // unidades por pie, igual que en el exterior
-const K = 0.866;                // cos(30°)
+const U = 1.79;
+const K = 0.866;
 
-/** Proyecta un punto (x, y, z) en pies a coordenadas de pantalla. */
 function p(xf: number, yf: number, zf = 0): [number, number] {
   const x = xf * U, y = yf * U, z = zf * U;
   return [(x - y) * K, (x + y) * 0.5 - z];
 }
-const d = (...pts: Array<[number, number]>) =>
-  pts.map((q, i) => `${i ? "L" : "M"}${q[0].toFixed(1)},${q[1].toFixed(1)}`).join(" ") + " Z";
+const poly = (...q: Array<[number, number]>) =>
+  q.map((c, i) => `${i ? "L" : "M"}${c[0].toFixed(1)},${c[1].toFixed(1)}`).join(" ") + " Z";
 
-/** Cara superior de un prisma: es la que da la lectura de planta. */
-const techo = (x0: number, y0: number, dx: number, dy: number, z: number) =>
-  d(p(x0, y0, z), p(x0 + dx, y0, z), p(x0 + dx, y0 + dy, z), p(x0, y0 + dy, z));
+const cTecho = (x: number, y: number, dx: number, dy: number, z: number) =>
+  poly(p(x, y, z), p(x + dx, y, z), p(x + dx, y + dy, z), p(x, y + dy, z));
+const cFrente = (x: number, y: number, dx: number, z0: number, z1: number) =>
+  poly(p(x, y, z0), p(x + dx, y, z0), p(x + dx, y, z1), p(x, y, z1));
+const cLado = (x: number, y: number, dy: number, z0: number, z1: number) =>
+  poly(p(x, y, z0), p(x, y + dy, z0), p(x, y + dy, z1), p(x, y, z1));
 
-/** Las dos caras verticales que se ven en esta orientación. */
-const caraA = (x0: number, y0: number, dx: number, z0: number, z1: number) =>
-  d(p(x0, y0, z0), p(x0 + dx, y0, z0), p(x0 + dx, y0, z1), p(x0, y0, z1));
-const caraB = (x0: number, y0: number, dy: number, z0: number, z1: number) =>
-  d(p(x0, y0, z0), p(x0, y0 + dy, z0), p(x0, y0 + dy, z1), p(x0, y0, z1));
-
-// --- Geometría. Cotas leídas del plano de 2016, no deducidas. --------------
-const ANCHO = 130;   // ft, fachada
-const FONDO = 90;    // ft
-const H1 = COTAS.alturaPlantaFt;   // 12
-const H2 = COTAS.alturaDobleFt;    // 22
-const CORTE = 74;    // ft: donde acaba el forjado del nivel 02 y empieza el vacío
-
-/** Figura humana, para escala. La misma del exterior. */
-function Persona({ xf, yf, zf = 0 }: { xf: number; yf: number; zf?: number }) {
-  const [x, y] = p(xf, yf, zf);
+/** Prisma completo con sus tres caras visibles y canto marcado. */
+function Volumen({ x, y, dx, dy, z0, z1, techo = "#fdfaf4", frente = "#efe7d9",
+                   lado = "#e2d9c8", borde = "#211c15", w = 0.75 }:
+  { x: number; y: number; dx: number; dy: number; z0: number; z1: number;
+    techo?: string; frente?: string; lado?: string; borde?: string; w?: number }) {
   return (
-    <g transform={`translate(${x.toFixed(1)},${y.toFixed(1)})`} opacity="0.62">
-      <circle cx="0" cy="-9.4" r="1.9" fill="#7d725f" />
-      <path d="M0,-7.4 L0,-3 M0,-6.2 L-2,-4.4 M0,-6.2 L2,-4.4 M0,-3 L-1.7,0 M0,-3 L1.7,0"
-            stroke="#7d725f" strokeWidth="1.1" fill="none" strokeLinecap="round" />
+    <g>
+      <path d={cFrente(x, y + dy, dx, z0, z1)} fill={frente} stroke={borde} strokeWidth={w} />
+      <path d={cLado(x + dx, y, dy, z0, z1)} fill={lado} stroke={borde} strokeWidth={w} />
+      <path d={cTecho(x, y, dx, dy, z1)} fill={techo} stroke={borde} strokeWidth={w} />
     </g>
   );
 }
 
-/** Cota con flechas en los extremos, como en las láminas del exterior. */
-function Cota({ a, b, texto, color = "#7d725f", desp = 0 }:
-  { a: [number, number]; b: [number, number]; texto: string; color?: string; desp?: number }) {
-  const [x1, y1] = a, [x2, y2] = b;
-  const mx = (x1 + x2) / 2, my = (y1 + y2) / 2;
-  const ang = Math.atan2(y2 - y1, x2 - x1);
-  const f = 5;
-  const fl = (x: number, y: number, s: number) =>
-    `M${(x + Math.cos(ang + 0.4) * f * s).toFixed(1)},${(y + Math.sin(ang + 0.4) * f * s).toFixed(1)} ` +
-    `L${x.toFixed(1)},${y.toFixed(1)} ` +
-    `L${(x + Math.cos(ang - 0.4) * f * s).toFixed(1)},${(y + Math.sin(ang - 0.4) * f * s).toFixed(1)}`;
+// --- Geometría. Alturas leídas del plano; fachada y fondo, aproximadas. ----
+const ANCHO = 130, FONDO = 90;
+const H1 = COTAS.alturaPlantaFt;   // 12
+const H2 = COTAS.alturaDobleFt;    // 22
+const CORTE = 76;                  // ft: fin del forjado 02, principio del vacío
+const ESP = 1.4;                   // ft de canto de losa
+
+/** Caja de la proyección, para encuadrar sin adivinar. */
+const XS = [p(0, FONDO)[0], p(ANCHO, 0)[0]];
+const YS = [p(0, 0, H2)[1], p(ANCHO, FONDO)[1]];
+const VB = {
+  x: XS[0] - 78, y: YS[0] - 96,
+  w: (XS[1] - XS[0]) + 176, h: (YS[1] - YS[0]) + 168,
+};
+
+function Persona({ xf, yf, zf = 0, o = 0.6 }: { xf: number; yf: number; zf?: number; o?: number }) {
+  const [x, y] = p(xf, yf, zf);
+  return (
+    <g transform={`translate(${x.toFixed(1)},${y.toFixed(1)})`} opacity={o}>
+      <circle cx="0" cy="-9.2" r="1.85" fill="#5c5445" />
+      <path d="M0,-7.3 L0,-3 M0,-6.1 L-2,-4.3 M0,-6.1 L2,-4.3 M0,-3 L-1.7,0 M0,-3 L1.7,0"
+            stroke="#5c5445" strokeWidth="1.05" fill="none" strokeLinecap="round" />
+    </g>
+  );
+}
+
+/** Cartela negra con línea de guía y punto, como en las láminas del exterior. */
+function Cartela({ anclaje, hacia, titulo, dato }:
+  { anclaje: [number, number]; hacia: [number, number]; titulo: string; dato?: string }) {
+  const [ax, ay] = anclaje, [bx, by] = hacia;
+  const w = Math.max(titulo.length * 5.3, dato ? dato.length * 5.1 : 0) + 14;
+  const h = dato ? 25 : 15;
   return (
     <g>
-      <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={color} strokeWidth="0.7" />
-      <path d={fl(x1, y1, 1)} fill="none" stroke={color} strokeWidth="0.7" />
-      <path d={fl(x2, y2, -1)} fill="none" stroke={color} strokeWidth="0.7" />
-      <text x={mx} y={my + desp} fill={color} fontFamily="ui-monospace,monospace"
-            fontSize="7" letterSpacing="0.9" textAnchor="middle">{texto}</text>
+      <line x1={ax} y1={ay} x2={bx} y2={by} stroke="#211c15" strokeWidth="0.65" />
+      <circle cx={ax} cy={ay} r="1.7" fill="#211c15" />
+      <rect x={bx} y={by - h} width={w} height={dato ? 14 : h} fill="#211c15" />
+      <text x={bx + 7} y={by - h + 10} fill="#f8f3ea" fontFamily="ui-monospace,monospace"
+            fontSize="7.6" letterSpacing="1.5">{titulo}</text>
+      {dato && (
+        <>
+          <rect x={bx} y={by - 11} width={w} height={12} fill="#f8f3ea"
+                stroke="#211c15" strokeWidth="0.6" />
+          <text x={bx + 7} y={by - 2} fill="#211c15" fontFamily="ui-monospace,monospace"
+                fontSize="7.2" letterSpacing="1.2">{dato}</text>
+        </>
+      )}
+    </g>
+  );
+}
+
+/** Cota con flechas. Se dibuja fuera de la geometría, nunca encima. */
+function Cota({ a, b, texto, color = "#7d725f", dx = 0, dy = 0 }:
+  { a: [number, number]; b: [number, number]; texto: string; color?: string; dx?: number; dy?: number }) {
+  const [x1, y1] = a, [x2, y2] = b;
+  const an = Math.atan2(y2 - y1, x2 - x1), f = 4.6;
+  const punta = (x: number, y: number, s: number) =>
+    `M${(x + Math.cos(an + 0.38) * f * s).toFixed(1)},${(y + Math.sin(an + 0.38) * f * s).toFixed(1)} ` +
+    `L${x.toFixed(1)},${y.toFixed(1)} ` +
+    `L${(x + Math.cos(an - 0.38) * f * s).toFixed(1)},${(y + Math.sin(an - 0.38) * f * s).toFixed(1)}`;
+  return (
+    <g>
+      <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={color} strokeWidth="0.65" />
+      <path d={punta(x1, y1, 1)} fill="none" stroke={color} strokeWidth="0.65" />
+      <path d={punta(x2, y2, -1)} fill="none" stroke={color} strokeWidth="0.65" />
+      <text x={(x1 + x2) / 2 + dx} y={(y1 + y2) / 2 + dy} fill={color}
+            fontFamily="ui-monospace,monospace" fontSize="7.4" letterSpacing="1.1"
+            textAnchor="middle">{texto}</text>
     </g>
   );
 }
 
 export default function LaminaEdificio({ lang }: { lang: Idioma }) {
   const es = lang === "es";
-  const salas = NIVEL_02.filter((r) => r.duenio === "inmueble" && r.nombre.es.startsWith("Sala privada"));
+  const salas = NIVEL_02.filter((r) => r.nombre.es.startsWith("Sala privada"));
 
-  // Retícula de pilares, a 26 ft entre ejes.
-  const pilares: Array<[number, number]> = [];
-  for (let x = 0; x <= ANCHO; x += 26)
-    for (let y = 0; y <= FONDO; y += 30) pilares.push([x, y]);
+  const ejesX: number[] = []; for (let x = 0; x <= ANCHO; x += 26) ejesX.push(x);
+  const ejesY: number[] = []; for (let y = 0; y <= FONDO; y += 30) ejesY.push(y);
 
   return (
-    <section
-      id="interior"
-      aria-label={es ? "Lámina 05 — el edificio" : "Plate 05 — the building"}
-      style={{ background: "#eae4da", borderBottom: "1px solid var(--regla)" }}
-    >
-      <div className="reja" style={{ paddingBlock: 64 }}>
-        {/* cabecera de lámina, igual que las del exterior */}
-        <div style={{ display: "flex", justifyContent: "space-between", gap: 24,
-                      flexWrap: "wrap", paddingBottom: 14, borderBottom: "1px solid var(--regla)" }}>
+    <section id="interior" aria-label={es ? "Lámina 05 — el edificio" : "Plate 05 — the building"}
+             style={{ background: "#eae4da", borderBottom: "1px solid var(--regla)" }}>
+      <div className="reja" style={{ paddingBlock: 60 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", gap: 24, flexWrap: "wrap",
+                      paddingBottom: 14, borderBottom: "1px solid var(--regla)" }}>
           <div className="ojo" style={{ color: "var(--tinta-2)" }}>
             {es ? "Lámina 05 — El edificio" : "Plate 05 — The building"}
           </div>
           <div className="ojo">
-            {es
-              ? "Proyección isométrica · 1 ft ≈ 1.79 u · esquema volumétrico"
-              : "Isometric projection · 1 ft ≈ 1.79 u · volumetric diagram"}
+            {es ? "Proyección isométrica · 1 ft ≈ 1.79 u · esquema volumétrico"
+                : "Isometric projection · 1 ft ≈ 1.79 u · volumetric diagram"}
           </div>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "minmax(0,220px) minmax(0,1fr)",
-                      gap: 40, paddingTop: 30 }} data-lam="reja">
+        <div data-lam="reja" style={{ display: "grid",
+             gridTemplateColumns: "minmax(0,210px) minmax(0,1fr)", gap: 36, paddingTop: 28 }}>
 
-          {/* ---------------- barra lateral ---------------- */}
           <aside>
             <div className="ojo" style={{ paddingBottom: 12 }}>{es ? "Lectura" : "Readout"}</div>
             {[
@@ -135,152 +168,156 @@ export default function LaminaEdificio({ lang }: { lang: Idioma }) {
                 <span style={{ fontSize: 13 }}>{v}</span>
               </div>
             ))}
-
             <div className="ojo" style={{ padding: "22px 0 12px" }}>{es ? "Capas" : "Layers"}</div>
-            {[
-              es ? "Estructura" : "Structure",
-              es ? "Losa nivel 02" : "Level 02 slab",
-              es ? "Doble altura" : "Double height",
-              es ? "Escala humana" : "Human scale",
-              es ? "Cotas" : "Dimensions",
-            ].map((c) => (
+            {[es ? "Estructura" : "Structure", es ? "Losa nivel 02" : "Level 02 slab",
+              es ? "Doble altura" : "Double height", es ? "Escala humana" : "Human scale",
+              es ? "Cotas" : "Dimensions"].map((c) => (
               <div key={c} style={{ display: "flex", gap: 10, alignItems: "center",
                                     padding: "8px 0", borderBottom: "1px solid var(--regla)" }}>
-                <span style={{ width: 8, height: 8, background: "var(--tinta)", display: "inline-block" }} />
+                <span style={{ width: 8, height: 8, background: "var(--tinta)" }} />
                 <span className="ojo" style={{ fontSize: 9 }}>{c}</span>
               </div>
             ))}
           </aside>
 
-          {/* ---------------- el dibujo ---------------- */}
           <figure style={{ margin: 0 }}>
-            <svg viewBox="-215 -180 460 300" role="img"
+            <svg viewBox={`${VB.x.toFixed(0)} ${VB.y.toFixed(0)} ${VB.w.toFixed(0)} ${VB.h.toFixed(0)}`}
+                 role="img"
                  aria-label={es
-                   ? "Isométrica del edificio: dos niveles, retícula de pilares, zona a doble altura de 22 pies y cinco salas privadas en el nivel 02"
-                   : "Isometric of the building: two levels, column grid, a 22-foot double-height zone and five private rooms on level 02"}
+                   ? "Isométrica del edificio: dos niveles, retícula de pilares, zona a doble altura de 22 pies, cinco salas privadas en el nivel 02 y cocina en planta baja"
+                   : "Isometric of the building: two levels, column grid, a 22-foot double-height zone, five private rooms on level 02 and a kitchen on the ground floor"}
                  style={{ width: "100%", height: "auto", display: "block" }}>
               <defs>
-                <pattern id="tramaDoble" width="6" height="6" patternTransform="rotate(45)"
+                <pattern id="tDoble" width="5.5" height="5.5" patternTransform="rotate(45)"
                          patternUnits="userSpaceOnUse">
-                  <line x1="0" y1="0" x2="0" y2="6" stroke="#c4772b" strokeWidth="0.6" opacity="0.5" />
+                  <line x1="0" y1="0" x2="0" y2="5.5" stroke="#c4772b" strokeWidth="0.55" opacity="0.55" />
                 </pattern>
-                <pattern id="tramaLosa" width="9" height="9" patternUnits="userSpaceOnUse">
-                  <circle cx="1" cy="1" r="0.5" fill="#a29784" />
+                <pattern id="tSuelo" width="8" height="8" patternUnits="userSpaceOnUse">
+                  <circle cx="1" cy="1" r="0.42" fill="#a29784" />
+                </pattern>
+                <pattern id="tCorte" width="3.4" height="3.4" patternTransform="rotate(45)"
+                         patternUnits="userSpaceOnUse">
+                  <line x1="0" y1="0" x2="0" y2="3.4" stroke="#7d725f" strokeWidth="0.4" />
                 </pattern>
               </defs>
 
-              {/* losa de planta baja */}
-              <path d={techo(0, 0, ANCHO, FONDO, 0)} fill="#f2ece1" stroke="#7d725f" strokeWidth="0.7" />
-              <path d={techo(0, 0, ANCHO, FONDO, 0)} fill="url(#tramaLosa)" opacity="0.5" />
+              {/* --- suelo --- */}
+              <path d={cTecho(0, 0, ANCHO, FONDO, 0)} fill="#f2ece1" stroke="#7d725f" strokeWidth="0.6" />
+              <path d={cTecho(0, 0, ANCHO, FONDO, 0)} fill="url(#tSuelo)" opacity="0.55" />
 
-              {/* muros perimetrales hasta 12 ft */}
-              <path d={caraA(0, FONDO, ANCHO, 0, H1)} fill="#e6dfd2" stroke="#7d725f" strokeWidth="0.7" />
-              <path d={caraB(0, 0, FONDO, 0, H1)} fill="#ded6c7" stroke="#7d725f" strokeWidth="0.7" />
+              {/* --- retícula de pilares, con capitel --- */}
+              {ejesX.map((x) => ejesY.map((y) => {
+                const alto = x >= CORTE ? H2 : H1;
+                const [ax, ay] = p(x, y, 0), [bx, by] = p(x, y, alto);
+                return (
+                  <g key={`${x}-${y}`}>
+                    <line x1={ax} y1={ay} x2={bx} y2={by} stroke="#5c5445" strokeWidth="1.1" />
+                    <path d={cTecho(x - 1, y - 1, 2, 2, alto)} fill="#a29784" stroke="#5c5445" strokeWidth="0.4" />
+                  </g>
+                );
+              }))}
 
-              {/* retícula de pilares */}
-              {pilares.map(([x, y], i) => {
-                const [ax, ay] = p(x, y, 0);
-                const [bx, by] = p(x, y, x >= CORTE ? H2 : H1);
-                return <line key={i} x1={ax} y1={ay} x2={bx} y2={by}
-                             stroke="#695f4f" strokeWidth="0.9" opacity="0.85" />;
-              })}
+              {/* --- muros perimetrales de planta baja, con espesor --- */}
+              <path d={cFrente(0, FONDO, ANCHO, 0, H1)} fill="#e6dfd2" stroke="#211c15" strokeWidth="0.8" />
+              <path d={cLado(0, 0, FONDO, 0, H1)} fill="#dbd2c1" stroke="#211c15" strokeWidth="0.8" />
 
-              {/* losa del nivel 02: solo hasta CORTE; el resto es el vacío */}
-              <path d={techo(0, 0, CORTE, FONDO, H1)} fill="#efe8dc" stroke="#211c15" strokeWidth="0.9" />
+              {/* --- cocina y servicios --- */}
+              <Volumen x={12} y={56} dx={24} dy={26} z0={0} z1={9} />
+              <Volumen x={41} y={56} dx={17} dy={26} z0={0} z1={9} />
+              {/* hueco de escalera */}
+              <Volumen x={64} y={58} dx={9} dy={22} z0={0} z1={H1} techo="#e9e2d5" frente="#d9d0be" lado="#cec4b0" />
 
-              {/* cinco salas privadas sobre esa losa */}
-              {salas.map((s, i) => {
-                const x0 = 8 + i * 13, y0 = 14, dx = 10, dy = 26, hz = H1 + 9;
+              {/* --- losa del nivel 02, con canto --- */}
+              <path d={cFrente(0, FONDO, CORTE, H1 - ESP, H1)} fill="url(#tCorte)"
+                    stroke="#211c15" strokeWidth="0.7" />
+              <path d={cLado(CORTE, 0, FONDO, H1 - ESP, H1)} fill="url(#tCorte)"
+                    stroke="#211c15" strokeWidth="0.7" />
+              <path d={cTecho(0, 0, CORTE, FONDO, H1)} fill="#efe8dc" stroke="#211c15" strokeWidth="0.9" />
+
+              {/* --- cinco salas privadas, con puerta --- */}
+              {salas.map((_, i) => {
+                const x0 = 7 + i * 13.4, y0 = 12, dx = 10.4, dy = 30, z1 = H1 + 9;
+                const [px, py] = p(x0 + dx, y0 + dy * 0.62, H1);
+                const [qx, qy] = p(x0 + dx, y0 + dy * 0.62, H1 + 6.4);
                 return (
                   <g key={i}>
-                    <path d={caraA(x0, y0 + dy, dx, H1, hz)} fill="#f8f3ea" stroke="#7d725f" strokeWidth="0.6" />
-                    <path d={caraB(x0, y0, dy, H1, hz)} fill="#e9e2d5" stroke="#7d725f" strokeWidth="0.6" />
-                    <path d={techo(x0, y0, dx, dy, hz)} fill="#fdfaf4" stroke="#211c15" strokeWidth="0.7" />
+                    <Volumen x={x0} y={y0} dx={dx} dy={dy} z0={H1} z1={z1} w={0.62} />
+                    <line x1={px} y1={py} x2={qx} y2={qy} stroke="#7d725f" strokeWidth="0.5" />
                   </g>
                 );
               })}
 
-              {/* cocina y servicios, en planta baja */}
-              {[[10, 58, 22, 24], [38, 58, 16, 24]].map(([x0, y0, dx, dy], i) => (
-                <g key={`s${i}`}>
-                  <path d={caraA(x0, y0 + dy, dx, 0, 9)} fill="#e3dbcc" stroke="#7d725f" strokeWidth="0.6" />
-                  <path d={techo(x0, y0, dx, dy, 9)} fill="#f2ece1" stroke="#695f4f" strokeWidth="0.7" />
-                </g>
-              ))}
+              {/* --- el vacío a doble altura --- */}
+              <path d={cTecho(CORTE, 0, ANCHO - CORTE, FONDO, 0)} fill="url(#tDoble)" />
+              <path d={cTecho(CORTE, 0, ANCHO - CORTE, FONDO, 0)} fill="none" stroke="#c4772b"
+                    strokeWidth="0.8" strokeDasharray="3.5 2.5" />
+              <path d={cFrente(CORTE, FONDO, ANCHO - CORTE, 0, H2)} fill="#e6dfd2"
+                    stroke="#211c15" strokeWidth="0.8" />
+              {/* plano de cubierta, punteado */}
+              <path d={cTecho(0, 0, ANCHO, FONDO, H2)} fill="none" stroke="#211c15"
+                    strokeWidth="0.7" opacity="0.3" strokeDasharray="4 3.5" />
 
-              {/* el vacío a doble altura, trama ocre */}
-              <path d={techo(CORTE, 0, ANCHO - CORTE, FONDO, 0)} fill="url(#tramaDoble)" />
-              <path d={techo(CORTE, 0, ANCHO - CORTE, FONDO, 0)} fill="none"
-                    stroke="#c4772b" strokeWidth="0.8" strokeDasharray="3 2" />
+              {/* --- escala humana, en los dos niveles --- */}
+              <Persona xf={100} yf={22} /><Persona xf={112} yf={52} />
+              <Persona xf={90} yf={70} /><Persona xf={120} yf={34} o={0.45} />
+              <Persona xf={30} yf={44} zf={H1} o={0.5} />
 
-              {/* coronación del muro en la zona alta */}
-              <path d={caraA(CORTE, FONDO, ANCHO - CORTE, H1, H2)} fill="#e6dfd2"
-                    stroke="#7d725f" strokeWidth="0.7" />
-              <path d={techo(0, 0, ANCHO, FONDO, H2)} fill="none" stroke="#211c15"
-                    strokeWidth="0.8" opacity="0.28" strokeDasharray="4 3" />
+              {/* --- cotas, todas fuera del dibujo --- */}
+              <Cota a={p(ANCHO + 7, FONDO + 7, 0)} b={p(ANCHO + 7, FONDO + 7, H2)}
+                    texto={`${H2} FT`} color="#c4772b" dx={17} />
+              <Cota a={p(-7, FONDO + 7, 0)} b={p(-7, FONDO + 7, H1)} texto={`${H1} FT`} dx={-17} />
+              <Cota a={p(0, FONDO + 15, 0)} b={p(ANCHO, FONDO + 15, 0)}
+                    texto={`≈ ${ANCHO} FT`} dy={12} />
+              <Cota a={p(ANCHO + 16, 0, 0)} b={p(ANCHO + 16, FONDO, 0)}
+                    texto={`≈ ${FONDO} FT`} dy={12} />
 
-              {/* escala humana */}
-              {[[96, 20], [104, 46], [88, 66], [116, 34]].map(([x, y], i) => (
-                <Persona key={i} xf={x} yf={y} />
-              ))}
+              {/* --- cartelas, ninguna sobre el dibujo --- */}
+              <Cartela anclaje={p(36, 26, H1 + 9)} hacia={[VB.x + 16, VB.y + 96]}
+                       titulo={es ? "NIVEL 02" : "LEVEL 02"}
+                       dato={es ? `${salas.length} salas privadas` : `${salas.length} private rooms`} />
+              <Cartela anclaje={p(24, 68, 9)} hacia={[VB.x + 16, VB.y + VB.h - 78]}
+                       titulo={es ? "COCINA" : "KITCHEN"} dato="580 ft²" />
+              <Cartela anclaje={p(104, 44, 0)} hacia={[VB.x + VB.w - 126, VB.y + 62]}
+                       titulo={es ? "DOBLE ALTURA" : "DOUBLE HEIGHT"} dato={`${H2} ft`} />
 
-              {/* cotas */}
-              <Cota a={p(ANCHO + 8, FONDO, 0)} b={p(ANCHO + 8, FONDO, H2)}
-                    texto={`${H2} FT`} color="#c4772b" desp={-3} />
-              <Cota a={p(-8, FONDO, 0)} b={p(-8, FONDO, H1)} texto={`${H1} FT`} desp={-3} />
-              <Cota a={p(0, FONDO + 10, 0)} b={p(ANCHO, FONDO + 10, 0)}
-                    texto={`≈ ${ANCHO} FT`} desp={9} />
-              <Cota a={p(ANCHO + 14, 0, 0)} b={p(ANCHO + 14, FONDO, 0)}
-                    texto={`≈ ${FONDO} FT`} desp={9} />
-
-              {/* rótulos */}
-              <g fontFamily="ui-monospace,monospace" letterSpacing="1.4">
-                <text {...pos(30, 24, H1 + 16)} fontSize="7.5" fill="#7d725f">
-                  {es ? "NIVEL 02 · 5 SALAS PRIVADAS" : "LEVEL 02 · 5 PRIVATE ROOMS"}
-                </text>
-                <text {...pos(18, 72, 12)} fontSize="7.5" fill="#7d725f">
-                  {es ? "COCINA Y SERVICIOS" : "KITCHEN & SERVICES"}
-                </text>
-                <text {...pos(96, 6, 2)} fontSize="8" fill="#c4772b">
-                  {es ? "DOBLE ALTURA" : "DOUBLE HEIGHT"}
-                </text>
-              </g>
-
-              {/* cajetín */}
-              <g fontFamily="ui-monospace,monospace" letterSpacing="1.6" fill="#7d725f">
-                <line x1="-205" y1="-166" x2="-95" y2="-166" stroke="#211c15" strokeWidth="0.8" />
-                <text x="-205" y="-154" fontSize="9" fill="#211c15">CLUB WYNWOOD</text>
-                <text x="-205" y="-143" fontSize="7">
+              {/* --- cajetín --- */}
+              <g fontFamily="ui-monospace,monospace" letterSpacing="1.6">
+                <line x1={VB.x + 14} y1={VB.y + 26} x2={VB.x + 132} y2={VB.y + 26}
+                      stroke="#211c15" strokeWidth="0.8" />
+                <text x={VB.x + 14} y={VB.y + 40} fontSize="9.4" fill="#211c15">CLUB WYNWOOD</text>
+                <text x={VB.x + 14} y={VB.y + 52} fontSize="7.2" fill="#7d725f">
                   {es ? "EL EDIFICIO · NIVELES 01 Y 02" : "THE BUILDING · LEVELS 01 AND 02"}
                 </text>
-                <text x="-205" y="-133" fontSize="7">
+                <text x={VB.x + 14} y={VB.y + 63} fontSize="7.2" fill="#7d725f">
                   {es ? "LÁMINA 05 · SIN ESCALA" : "PLATE 05 · NOT TO SCALE"}
                 </text>
               </g>
 
-              {/* escala gráfica */}
-              <g transform="translate(-205,86)">
-                <text x="0" y="-6" fontFamily="ui-monospace,monospace" fontSize="7"
+              {/* --- escala gráfica, abajo a la izquierda y lejos de las cotas --- */}
+              <g transform={`translate(${VB.x + 14},${VB.y + VB.h - 26})`}>
+                <text x="0" y="-7" fontFamily="ui-monospace,monospace" fontSize="7"
                       letterSpacing="1.4" fill="#7d725f">
                   {es ? "ESCALA GRÁFICA" : "GRAPHIC SCALE"}
                 </text>
-                <rect x="0" y="0" width="27" height="4.5" fill="#211c15" />
-                <rect x="27" y="0" width="27" height="4.5" fill="#f8f3ea" stroke="#211c15" strokeWidth="0.5" />
-                <rect x="54" y="0" width="27" height="4.5" fill="#211c15" />
-                <text x="0" y="14" fontFamily="ui-monospace,monospace" fontSize="6.5" fill="#7d725f">0</text>
-                <text x="70" y="14" fontFamily="ui-monospace,monospace" fontSize="6.5" fill="#7d725f">45 FT</text>
+                {[0, 1, 2].map((i) => (
+                  <rect key={i} x={i * 26} y="0" width="26" height="4.4"
+                        fill={i % 2 ? "#f8f3ea" : "#211c15"} stroke="#211c15" strokeWidth="0.45" />
+                ))}
+                <text x="0" y="14" fontFamily="ui-monospace,monospace" fontSize="6.6" fill="#7d725f">0</text>
+                <text x="66" y="14" fontFamily="ui-monospace,monospace" fontSize="6.6" fill="#7d725f">45 FT</text>
               </g>
 
-              {/* norte */}
-              <g transform="translate(196,-140)">
-                <path d="M0,16 L0,-10 M-3.4,-4 L0,-11 L3.4,-4" fill="none" stroke="#211c15" strokeWidth="0.9" />
-                <text x="-2.6" y="27" fontFamily="ui-monospace,monospace" fontSize="8" fill="#7d725f">N</text>
+              {/* --- norte --- */}
+              <g transform={`translate(${VB.x + VB.w - 34},${VB.y + 34})`}>
+                <path d="M0,18 L0,-12 M-3.6,-5 L0,-13 L3.6,-5" fill="none"
+                      stroke="#211c15" strokeWidth="0.95" />
+                <text x="-2.7" y="30" fontFamily="ui-monospace,monospace" fontSize="8.4" fill="#7d725f">N</text>
               </g>
             </svg>
 
-            <figcaption className="ojo" style={{ paddingTop: 16, lineHeight: 1.7, maxWidth: "72ch" }}>
+            <figcaption className="ojo" style={{ paddingTop: 16, lineHeight: 1.75, maxWidth: "74ch" }}>
               {es
-                ? "Esquema volumétrico aproximado — no es un plano a escala. Las superficies y las alturas salen del plano de 2016 del inmueble; las cotas de fachada y fondo son aproximadas y se levantan en la visita técnica. Lo que hoy hay montado en la planta baja pertenece al operador y no forma parte del alquiler."
+                ? "Esquema volumétrico aproximado — no es un plano a escala. Las superficies y las alturas salen del plano de 2016 del inmueble; la fachada y el fondo son aproximados y se levantan en la visita técnica. Lo que hoy hay montado en la planta baja pertenece al operador y no forma parte del alquiler."
                 : "Approximate volumetric diagram — not to scale. Areas and heights come from the building's 2016 plan; frontage and depth are approximate and are surveyed at the technical visit. Whatever is installed on the ground floor today belongs to the operator and is not part of the rental."}
             </figcaption>
           </figure>
@@ -288,10 +325,4 @@ export default function LaminaEdificio({ lang }: { lang: Idioma }) {
       </div>
     </section>
   );
-}
-
-/** Coloca un texto en coordenadas del mundo. */
-function pos(xf: number, yf: number, zf: number) {
-  const [x, y] = p(xf, yf, zf);
-  return { x, y };
 }

@@ -1,5 +1,19 @@
 /**
- * MANIFIESTO DE FOTOS.
+ * MANIFIESTO DE FOTOS — OJO: ESTO NO PINTA NADA HOY.
+ *
+ * ⚠ Este archivo y <Foto> forman un sistema que NINGUNA página usa. Las páginas
+ * pintan sus imágenes con <Image> y la ruta que traen en `contenido.ts`, no por
+ * aquí. Se construyeron los dos en paralelo y nunca se enchufó éste.
+ *
+ * O sea: poner `existe: true` aquí NO hace que una foto aparezca en el sitio.
+ * Para que aparezca hay que cambiar el `foto.src` de la página en contenido.ts.
+ * Está escrito en mayúsculas porque ya me engañó una vez a mí mismo.
+ *
+ * Mientras tanto sí sirve para algo, y por eso no se borra: es EL BRIEF. El
+ * campo `encargo` de cada hueco dice qué tiene que enseñar cada foto y por qué
+ * hace falta, que es justo lo que hay que mandarle a un fotógrafo. Enchufarlo
+ * de verdad —que las páginas lean de aquí— es una tarea pendiente y sensata,
+ * porque hoy la misma imagen se repite en seis páginas sin que se note.
  *
  * Hoy hay 4 imágenes cubriendo 17 huecos: la aérea sale en cinco páginas y las
  * otras se repiten en el resto. Funciona, pero se nota, y es el techo real del

@@ -716,14 +716,17 @@ export const PAGINAS: Pagina[] = [
       { etiqueta: { es: "De pie", en: "Standing" }, valor: "~600" },
     ],
     foto: {
-      src: "/assets/aerea-predio.jpg",
+      // Art Basel se vive de noche: las activaciones abren cuando cierran las
+      // ferias. La aérea de día no lo contaba, y además ya salía en otras cinco
+      // páginas. Fotograma del vídeo de la fiesta — ver VIDEOS.md.
+      src: "/assets/recinto-noche.jpg",
       alt: {
-        es: "Vista aérea del recinto dentro del Wynwood Arts District",
-        en: "Aerial view of the site inside the Wynwood Arts District",
+        es: "El recinto al anochecer durante un evento, visto desde arriba, con el paseo alfombrado y las palmeras iluminadas",
+        en: "The site at dusk during an event, seen from above, with the carpeted walk and uplit palms",
       },
       pie: {
-        es: "El recinto, dentro del Wynwood Arts District.",
-        en: "The site, inside the Wynwood Arts District.",
+        es: "Una activación al anochecer en el recinto, en pleno Wynwood Arts District.",
+        en: "A dusk activation on site, in the heart of the Wynwood Arts District.",
       },
     },
     bloques: [
@@ -780,14 +783,17 @@ export const PAGINAS: Pagina[] = [
       { etiqueta: { es: "Bajo techo", en: "Under roof" }, valor: "~4 000 ft²" },
     ],
     foto: {
-      src: "/assets/venue-palapa.webp",
+      // La única foto nocturna que tenemos, y esta es LA página donde importa:
+      // se vende una fiesta de fin de año y hasta ahora la ilustraba un interior
+      // de día. Sale de un fotograma del vídeo de la fiesta — ver VIDEOS.md.
+      src: "/assets/recinto-noche.jpg",
       alt: {
-        es: "Bajo la palapa techada, donde va la cena sentada",
-        en: "Under the covered structure, where the seated dinner goes",
+        es: "El recinto al anochecer visto desde arriba: alfombra roja sobre el paseo, palmeras iluminadas desde el tronco y el techo de paja al fondo",
+        en: "The site at dusk seen from above: a red carpet along the walk, palms uplit from the trunk and the thatch roof beyond",
       },
       pie: {
-        es: "Bajo la palapa: la parte sentada del evento.",
-        en: "Under the structure: the seated part of the event.",
+        es: "Fin de año en el recinto: alfombra sobre el paseo, palmeras iluminadas y la palapa al lado. Foto de un evento real.",
+        en: "New Year's Eve on site: carpet along the walk, uplit palms and the structure alongside. A real event.",
       },
     },
     bloques: [

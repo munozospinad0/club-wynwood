@@ -1,9 +1,15 @@
 /**
  * MANIFIESTO DE FOTOS.
  *
- * Hoy hay 3 imágenes cubriendo 17 huecos: la aérea sale en cinco páginas y las
- * dos del venue se repiten en el resto. Funciona, pero se nota, y es el techo
- * real del sitio ahora mismo — ninguna maqueta arregla no tener material.
+ * Hoy hay 4 imágenes cubriendo 17 huecos: la aérea sale en cinco páginas y las
+ * otras se repiten en el resto. Funciona, pero se nota, y es el techo real del
+ * sitio ahora mismo — ninguna maqueta arregla no tener material.
+ *
+ * `recinto-noche.jpg` NO es una foto: es un fotograma del vídeo de la fiesta
+ * (IMG_5627), girado 90°. Al ser un plano cenital no tiene arriba ni abajo, así
+ * que girarlo convierte el vertical de 1080×1920 en un 16/9 de 1920×1080 exacto
+ * sin recortar un píxel. Ver VIDEOS.md: del resto de ese vídeo casi nada se
+ * puede usar, porque son primeros planos de invitados de una fiesta privada.
  *
  * Este archivo es la lista de qué foto va en cada sitio. Cuando llegue una
  * nueva, se deja en /public/assets con el nombre de `archivo` y aparece sola:
@@ -154,7 +160,7 @@ export const HUECOS: Hueco[] = [
   {
     id: "noche",
     archivo: "recinto-noche.jpg",
-    existe: false,
+    existe: true,
     proporcion: "16/9",
     donde: "/fiesta-de-fin-de-ano/, /art-basel/, /bodas/",
     encargo: {
@@ -162,8 +168,8 @@ export const HUECOS: Hueco[] = [
       en: "The site at night with the lighting on. Half the events sold here happen at night and there is not a single night photograph.",
     },
     alt: {
-      es: "El recinto de noche, con la palapa y el jardín iluminados",
-      en: "The site at night, with the structure and garden lit",
+      es: "Vista cenital del recinto al anochecer: el techo de paja, el paseo con alfombra roja y las palmeras iluminadas desde el tronco",
+      en: "Overhead view of the site at dusk: the thatch roof, the walk with a red carpet and the palms uplit from the trunk",
     },
     prioridad: "media",
   },

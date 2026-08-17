@@ -29,19 +29,28 @@ import type { Idioma } from "@/lib/i18n";
  * habría que rearrancarlo en cada cambio de pestaña.
  */
 export default function Laminas({
-  lang, conjunto, exterior, edificio,
+  lang, planta, conjunto, exterior, edificio,
 }: {
   lang: Idioma;
+  planta: React.ReactNode;
   conjunto: React.ReactNode;
   exterior: React.ReactNode;
   edificio: React.ReactNode;
 }) {
   const es = lang === "es";
-  const [zona, setZona] = useState<"conjunto" | "exterior" | "edificio">("conjunto");
+  const [zona, setZona] = useState<"planta" | "conjunto" | "exterior" | "edificio">("planta");
 
-  // El conjunto va PRIMERO y abre por defecto: es la que sitúa. Sin ella, el
-  // visitante ve dos dibujos y no sabe que son el mismo sitio.
+  // LA PLANTA VA PRIMERA Y ABRE POR DEFECTO.
+  //
+  // Antes abría «el conjunto», con el argumento de que era la que situaba. Es
+  // verdad que sitúa, pero situar no es lo primero que necesita quien llega:
+  // lo primero es saber si su evento cabe, por dónde entra el camión y qué pasa
+  // si llueve. La planta es la única que contesta eso, así que es la que se ve
+  // al aterrizar. Las demás quedan para quien ya quiere mirar el detalle.
   const ZONAS = [
+    { id: "planta" as const,
+      n: es ? "Planta" : "Plan",
+      d: es ? "Qué cabe y por dónde se entra" : "What fits and how you get in" },
     { id: "conjunto" as const,
       n: es ? "El conjunto" : "The whole site",
       d: es ? "Las dos zonas en una vista" : "Both zones in one view" },
@@ -90,6 +99,7 @@ export default function Laminas({
       {/* Las dos se renderizan siempre; solo se oculta la que no toca. Así el
           contenido de ambas está en el HTML servido y el runtime del exterior
           no se reinicia al cambiar de zona. */}
+      <div hidden={zona !== "planta"}>{planta}</div>
       <div hidden={zona !== "conjunto"}>{conjunto}</div>
       <div hidden={zona !== "exterior"}>{exterior}</div>
       <div hidden={zona !== "edificio"}>{edificio}</div>

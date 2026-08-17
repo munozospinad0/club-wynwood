@@ -7,6 +7,7 @@ import Lamina from "@/components/Lamina";
 import LaminaEdificio from "@/components/LaminaEdificio";
 import Laminas from "@/components/Laminas";
 import LaminaConjunto from "@/components/LaminaConjunto";
+import LaminaPlanta from "@/components/LaminaPlanta";
 
 /**
  * Home. El orden sigue cómo decide un productor:
@@ -113,7 +114,11 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         </div>
       </section>
 
-      <Laminas lang={lang} conjunto={<LaminaConjunto lang={lang} />} exterior={<Lamina />} edificio={<LaminaEdificio lang={lang} />} />
+      <Laminas lang={lang}
+               planta={<LaminaPlanta lang={lang} />}
+               conjunto={<LaminaConjunto lang={lang} />}
+               exterior={<Lamina />}
+               edificio={<LaminaEdificio lang={lang} />} />
 
       {/* ---------------- QUÉ SE ALQUILA ---------------- */}
       <section style={{ borderBottom: "1px solid var(--regla)" }}>

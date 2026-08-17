@@ -129,12 +129,54 @@ salvar estos.
 
 ---
 
-## Lo que estos vídeos resuelven de paso
+## La palapa de las láminas 01 y 04: qué pasa exactamente
 
-Hay una duda abierta desde hace semanas: **la palapa está dibujada mal en las
-láminas 01 y 04** — 134×30 ft, cuando la aérea sugería algo casi cuadrado.
+Investigado a fondo el 15 de agosto. Resultado: **el problema es el dibujo, no
+la cota**, y por eso no se arregla cambiando el número.
 
-El cenital de IMG_5627 la enseña desde arriba, con el paseo al lado como
-referencia de escala. No es una medición, pero es lo más cerca que hemos estado
-de una sin ir al sitio con un metro. Merece un rato antes de mandarle las
-preguntas a Kate.
+### Lo que está confirmado
+
+La palapa es un **bloque de paja a cuatro aguas, casi cuadrado**. Se ve en dos
+fuentes independientes: la foto aérea del predio (`aerea-predio.jpg`) y el
+cenital del vídeo de la fiesta. No hay ninguna duda sobre la forma.
+
+Con los **~4.000 ft² declarados** por el propietario, un cuadrado da
+√4.000 = 63,2 → **≈ 63 × 63 ft**. Es el criterio que ya usa
+[LaminaConjunto.tsx](components/LaminaConjunto.tsx), donde está bien dibujada.
+
+### Lo que NO se puede hacer
+
+Cambiar el rótulo de «134 × 30» a «63 × 63» en las láminas 01 y 04. **Se probó
+y queda peor.**
+
+Midiendo sobre la lámina 04 renderizada: la flecha de esa cota abarca un 45 %
+del predio, y el predio son 240 ft. O sea, **el dibujo representa unos 107 ft**.
+Rotularlo «134» es una exageración; rotularlo «63» es una contradicción que se
+ve a simple vista. La cota vieja al menos concuerda con lo dibujado.
+
+En una lámina marcada «SIN ESCALA» la cota manda sobre la longitud dibujada,
+pero eso vale para desviaciones pequeñas. Un factor de casi dos no es una
+libertad de escala: es un plano que dice dos cosas distintas.
+
+Lo mismo pasa con la lámina 02: la sección rotula 30 ft de ancho, que es el lado
+corto del rectángulo largo. Si la palapa es cuadrada, la sección tendría que ser
+de 63 ft — y el dibujo de la sección tampoco lo aguanta.
+
+### Lo que sí lo arregla
+
+Redibujar la geometría, no reetiquetarla. Y hay un camino corto: **la versión
+paramétrica ya existe y ya está bien**. `LaminaConjunto.tsx` construye la palapa
+desde [lib/iso.ts](lib/iso.ts) con `PALAPA = { dx: 63, dy: 63 }`, así que
+cambiar la forma es cambiar dos números, no reescribir trazados SVG a mano.
+
+Las láminas 01 y 04 son SVG portados del sitio estático, con los trazados
+escritos a mano dentro de una cadena de 91 KB. Ahí no se toca la forma sin
+rehacerla.
+
+**Esto es una decisión tuya**, no un arreglo que se pueda dar por hecho: son las
+láminas que más tiempo llevaron y sustituirlas por la versión paramétrica cambia
+cómo se ven. Mientras tanto quedan como estaban, que es lo consistente.
+
+Y sigue en pie lo mismo de antes: **la medida real se la tiene que dar Kate**.
+Ninguna de las dos fotos tiene una referencia de escala fiable, y sacar una cifra
+de ahí sería inventarla con aspecto de dato.

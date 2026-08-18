@@ -43,6 +43,53 @@ Va con marca de agua «Club Wynwood» en todos los fotogramas.
 
 ---
 
+## CONCLUSIÓN, tras exprimirlos (17 de agosto)
+
+**De los tres vídeos salió exactamente una imagen aprovechable.** Está puesta y
+se ve: `recinto-noche.jpg`, en las páginas de fin de año y Art Basel.
+
+Eso no es pereza, es lo que hay. El recorrido de por qué:
+
+### Los de 93 s (IMG_8191 / 8192) — descartados
+
+Llevan subtítulos quemados en la imagen, así que la mayoría de fotogramas trae
+una palabra suelta encima («PERMITEN», «ESCALA») y no sirven. Buscando por
+brillo en la banda inferior aparecen **10 segundos limpios en los 93**.
+
+De esos diez: **ocho son interior de FunDimension** —láser tag, arcade, hasta un
+rótulo «…MENSION» legible—, uno está movido, y el único bueno es el paseo de
+palmeras… que ya tenemos mejor en `venue-exterior.webp`.
+
+O sea: lo distintivo de ese vídeo es justo lo que decidimos no vender.
+
+### El de la fiesta (IMG_5627) — una sola imagen
+
+La apertura cenital (0–1,8 s) es lo único sin caras reconocibles. Se probó
+sacar una segunda imagen del segundo 1,5 para el hueco `evento-montado`: **el
+dron apenas se mueve en ese segundo y medio**, así que sale prácticamente la
+misma foto. Poner las dos sería repetir.
+
+El resto del minuto son primeros planos. En la hoja de contacto pequeña las
+caras parecían diminutas; **a resolución completa son perfectamente
+reconocibles.**
+
+### La distinción que importa sobre los derechos
+
+Daniel confirmó: *«los hicimos nosotros»*. Eso resuelve los **derechos de la
+pieza** — es material propio y se puede usar.
+
+**No resuelve el consentimiento de los invitados** para aparecer en publicidad.
+Son dos permisos distintos, y en Florida hay ley de derecho de imagen. Grabar tu
+propia fiesta te da el vídeo; no te da el derecho a poner la cara de un invitado
+en un anuncio de Instagram.
+
+Por eso el hueco `evento-montado` —el que más convierte— **sigue vacío**, y solo
+se llena de dos maneras: pidiendo permiso a quien sale en esos planos, o
+haciendo una foto ancha a propósito en el próximo evento. La segunda es más
+barata que la primera.
+
+---
+
 ## Lo que hay que decidir antes de usar nada
 
 **IMG_5627 es una fiesta privada, y casi todo el vídeo son primeros planos de

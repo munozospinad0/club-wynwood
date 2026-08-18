@@ -99,27 +99,6 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         </figure>
       </header>
 
-      {/* ---------------- CIFRAS, a ancho completo ---------------- */}
-      <section style={{ borderBottom: "1px solid var(--regla)", background: "var(--papel-2)" }}>
-        <div style={{ display: "flex", flexWrap: "wrap" }}>
-          {CIFRAS_CABECERA.map((c) => (
-            <div key={c.es} style={{ flex: "1 1 200px", padding: "26px 24px", borderRight: "1px solid var(--regla)" }}>
-              <div className="ojo" style={{ paddingBottom: 10 }}>{es ? c.es : c.en}</div>
-              <div style={{ fontFamily: "var(--display)", fontWeight: 600, fontSize: 32, lineHeight: 1, letterSpacing: "-.02em" }}>
-                {c.v}
-              </div>
-              {c.sub && <div style={{ fontSize: 12, color: "var(--texto)", paddingTop: 6 }}>{c.sub}</div>}
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <Laminas lang={lang}
-               planta={<LaminaPlanta lang={lang} />}
-               conjunto={<LaminaConjunto lang={lang} />}
-               exterior={<Lamina />}
-               edificio={<LaminaEdificio lang={lang} />} />
-
       {/* ---------------- QUÉ SE ALQUILA ---------------- */}
       <section style={{ borderBottom: "1px solid var(--regla)" }}>
         <div className="reja" style={{ paddingBlock: 76 }}>
@@ -147,8 +126,70 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           </div>
         </div>
       </section>
+{/* ---------------- DÓNDE ---------------- */}
+      <section style={{ borderBottom: "1px solid var(--regla)" }}>
+        <div className="reja" style={{ paddingBlock: 70, display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: 44 }}>
+          <div>
+            <div className="ojo" style={{ marginBottom: 18 }}>{es ? "Ubicación" : "Location"}</div>
+            <h2 style={{ marginBottom: 16 }}>{VENUE.direccion.calle}</h2>
+            <p className="respuesta" style={{ color: "var(--texto)" }}>
+              {es
+                ? "El predio está en el Wynwood Arts District, a una cuadra de los murales y a tres minutos del acceso a la I-95."
+                : "The site sits in the Wynwood Arts District, one block from the murals and three minutes from the I-95 access."}
+            </p>
+            <a className="boton" style={{ marginTop: 8 }} href={`https://maps.google.com/?q=${encodeURIComponent(`${VENUE.direccion.calle}, ${VENUE.direccion.ciudad}, ${VENUE.direccion.region} ${VENUE.direccion.cp}`)}`} target="_blank" rel="noopener noreferrer">
+              {es ? "Cómo llegar" : "Directions"} →
+            </a>
+          </div>
+          <div>
+            <div className="ojo" style={{ marginBottom: 14 }}>{es ? "Desde el venue · aprox." : "From the venue · approx."}</div>
+            {TIEMPOS.map((t) => (
+              <div key={t.es} style={{ display: "flex", justifyContent: "space-between", gap: 20, padding: "12px 0", borderBottom: "1px solid var(--regla)" }}>
+                <span style={{ fontSize: 14 }}>{es ? t.es : t.en}</span>
+                <span style={{ fontSize: 13, color: "var(--texto)" }}>{es ? t.valor : t.valorEn}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-      {/* ---------------- FICHA TÉCNICA ---------------- */}
+      {/* ---------------- FRONTERA: aquí se acaba lo que vende ----------------
+           Existe para que el cambio de registro se VEA. Arriba se decide si el
+           sitio sirve; abajo se ejecuta el evento. Sin este corte, un visitante
+           que solo quiere saber si le cabe la fiesta se topa de golpe con
+           cotas y planos y cree que se ha equivocado de página. */}
+      <section style={{ borderTop: "1px solid var(--regla)", background: "var(--papel-3)" }}>
+        <div className="reja" style={{ paddingBlock: 52 }}>
+          <div className="ojo" style={{ paddingBottom: 14 }}>
+            {es ? "A partir de aquí, la documentación" : "From here on, the documentation"}
+          </div>
+          <p style={{ margin: 0, maxWidth: "62ch", fontSize: 15, lineHeight: 1.7, color: "var(--texto)" }}>
+            {es
+              ? "Las medidas, las láminas del recinto y la ficha técnica. Va abajo a propósito: si todavía estás decidiendo si el sitio te sirve, lo de arriba ya lo contesta. Esto es para cuando te toca montar el evento."
+              : "Measurements, the site plates and the spec sheet. It sits down here on purpose: if you are still deciding whether the place works for you, everything above already answers that. This is for when you have to build the event."}
+          </p>
+        </div>
+      </section>
+{/* ---------------- CIFRAS, a ancho completo ---------------- */}
+      <section style={{ borderBottom: "1px solid var(--regla)", background: "var(--papel-2)" }}>
+        <div style={{ display: "flex", flexWrap: "wrap" }}>
+          {CIFRAS_CABECERA.map((c) => (
+            <div key={c.es} style={{ flex: "1 1 200px", padding: "26px 24px", borderRight: "1px solid var(--regla)" }}>
+              <div className="ojo" style={{ paddingBottom: 10 }}>{es ? c.es : c.en}</div>
+              <div style={{ fontFamily: "var(--display)", fontWeight: 600, fontSize: 32, lineHeight: 1, letterSpacing: "-.02em" }}>
+                {c.v}
+              </div>
+              {c.sub && <div style={{ fontSize: 12, color: "var(--texto)", paddingTop: 6 }}>{c.sub}</div>}
+            </div>
+          ))}
+        </div>
+      </section>
+      <Laminas lang={lang}
+               planta={<LaminaPlanta lang={lang} />}
+               conjunto={<LaminaConjunto lang={lang} />}
+               exterior={<Lamina />}
+               edificio={<LaminaEdificio lang={lang} />} />
+{/* ---------------- FICHA TÉCNICA ---------------- */}
       <section id="ficha" style={{ background: "var(--tinta)", color: "var(--papel-3)" }}>
         <div className="reja" style={{ paddingBlock: 80 }}>
           <div className="ojo" style={{ marginBottom: 24 }}>{es ? "Ficha técnica" : "Spec sheet"}</div>
@@ -183,32 +224,12 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         </div>
       </section>
 
-      {/* ---------------- DÓNDE ---------------- */}
-      <section style={{ borderBottom: "1px solid var(--regla)" }}>
-        <div className="reja" style={{ paddingBlock: 70, display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: 44 }}>
-          <div>
-            <div className="ojo" style={{ marginBottom: 18 }}>{es ? "Ubicación" : "Location"}</div>
-            <h2 style={{ marginBottom: 16 }}>{VENUE.direccion.calle}</h2>
-            <p className="respuesta" style={{ color: "var(--texto)" }}>
-              {es
-                ? "El predio está en el Wynwood Arts District, a una cuadra de los murales y a tres minutos del acceso a la I-95."
-                : "The site sits in the Wynwood Arts District, one block from the murals and three minutes from the I-95 access."}
-            </p>
-            <a className="boton" style={{ marginTop: 8 }} href={`https://maps.google.com/?q=${encodeURIComponent(`${VENUE.direccion.calle}, ${VENUE.direccion.ciudad}, ${VENUE.direccion.region} ${VENUE.direccion.cp}`)}`} target="_blank" rel="noopener noreferrer">
-              {es ? "Cómo llegar" : "Directions"} →
-            </a>
-          </div>
-          <div>
-            <div className="ojo" style={{ marginBottom: 14 }}>{es ? "Desde el venue · aprox." : "From the venue · approx."}</div>
-            {TIEMPOS.map((t) => (
-              <div key={t.es} style={{ display: "flex", justifyContent: "space-between", gap: 20, padding: "12px 0", borderBottom: "1px solid var(--regla)" }}>
-                <span style={{ fontSize: 14 }}>{es ? t.es : t.en}</span>
-                <span style={{ fontSize: 13, color: "var(--texto)" }}>{es ? t.valor : t.valorEn}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+
+      
+
+      
+
+      
 
       {/* ---------------- SOLICITAR ---------------- */}
       <section id="disponibilidad" style={{ background: "var(--papel-2)" }}>

@@ -1,13 +1,15 @@
 import Image from "next/image";
 import { asIdioma, href } from "@/lib/i18n";
 import { FICHA, TIEMPOS, VENUE } from "@/lib/venue";
-import { PAGINAS } from "@/lib/contenido";
+import { PAGINAS, FAQ } from "@/lib/contenido";
+import { grafo, faqPage } from "@/lib/schema";
 import Formulario from "@/components/Formulario";
 import Lamina from "@/components/Lamina";
 import LaminaEdificio from "@/components/LaminaEdificio";
 import Laminas from "@/components/Laminas";
 import LaminaConjunto from "@/components/LaminaConjunto";
 import LaminaPlanta from "@/components/LaminaPlanta";
+import Dudas from "@/components/Dudas";
 
 /**
  * Home. El orden sigue cómo decide un productor:
@@ -29,10 +31,28 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
   const lang = asIdioma((await params).lang);
   const es = lang === "es";
   const verificados = FICHA.filter((f) => f.estado === "verificado");
+
+  /**
+   * SOLO el FAQPage.
+   *
+   * Aquí metí primero también LocalBusiness y EventVenue, dando por hecho que
+   * la home no tenía datos estructurados. Los tenía: **los inyecta el layout**,
+   * y yo había mirado solo esta página. El resultado eran dos LocalBusiness y
+   * dos EventVenue en el mismo documento, que es peor que no tener ninguno —
+   * un buscador que encuentra la misma entidad declarada dos veces no sabe cuál
+   * vale.
+   *
+   * Lo que sí faltaba es el FAQPage, y es el que importa para lo que buscamos:
+   * es lo que permite que una respuesta nuestra salga citada cuando alguien
+   * pregunta «¿qué pasa si llueve en un venue al aire libre en Wynwood?».
+   */
+  const ld = grafo(faqPage(lang, FAQ.map((f) => ({ q: f.q[lang], a: f.a[lang] }))));
   const enVisita = FICHA.filter((f) => f.estado === "en-visita");
 
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
+
       {/* ---------------- PORTADA: mitad tipo, mitad foto ----------------
           Las dos columnas se estiran igual, así que no hay sobrante que
           repartir: es estructuralmente imposible que salga el hueco de crema
@@ -230,6 +250,12 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       
 
       
+
+      {/* Las dudas van ANTES del formulario, no en una página aparte. Es el
+          momento en que dejan de ser curiosidad y pasan a ser freno: la persona
+          ya decidió que el sitio le gusta y ahora piensa «ya, ¿pero cuánto
+          cuesta y qué pasa si llueve?». */}
+      <Dudas lang={lang} />
 
       {/* ---------------- SOLICITAR ---------------- */}
       <section id="disponibilidad" style={{ background: "var(--papel-2)" }}>

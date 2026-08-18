@@ -900,10 +900,15 @@ export function pagina(clave: string): Pagina | undefined {
 /** Las 8 preguntas de la FAQ. Alimentan la página y el FAQPage del schema. */
 export const FAQ: Array<{ q: Record<Idioma, string>; a: Record<Idioma, string> }> = [
   {
-    q: { es: "¿Qué incluye el alquiler de Club Wynwood?", en: "What does renting Club Wynwood include?" },
+    // Ésta es LA pregunta, y antes se contestaba con un «No» y punto. Un «no»
+    // no resuelve una duda: la deja intacta y encima suena a que hay algo que
+    // esconder. Sin publicar cifra —eso lo decide Sandra— sí se puede decir de
+    // qué depende y cuándo llega el número, que es lo que la persona necesita
+    // para saber si seguir o no.
+    q: { es: "¿Cuánto cuesta? ¿Publican tarifas?", en: "How much does it cost? Do you publish rates?" },
     a: {
-      es: "Se alquila el espacio exterior: el Jardín de ~18.000 ft² y el Tiki Hut techado de ~4.000 ft², por separado o juntos, con las ocho cabañas amuebladas y las mesas de picnic que ya están en el jardín. La producción, el catering, el sonido, la iluminación y el mobiliario adicional los aporta tu equipo o tu productora.",
-      en: "You rent the outdoor space: the ~18,000 sq ft Garden and the ~4,000 sq ft covered Tiki Hut, separately or together, with the eight furnished cabanas and the picnic tables already in the garden. Production, catering, sound, lighting and extra furniture come from your team or your production company.",
+      es: "No hay tarifa publicada, y sí depende de cuatro cosas: qué espacio usas (solo el Jardín, solo el Tiki Hut o el recinto completo), cuántas horas, qué día —un sábado de diciembre no vale lo que un martes de agosto— y si necesitas montaje la víspera. Mándanos la fecha y el número de invitados y te llega el presupuesto con la disponibilidad en 24 horas hábiles, sin visita previa ni compromiso.",
+      en: "There is no published rate, and the price depends on four things: which space you use (Garden only, Tiki Hut only or the whole site), how many hours, which day —a Saturday in December is not a Tuesday in August— and whether you need to build the day before. Send us the date and the guest count and you get the quote together with availability within 24 business hours, with no site visit and no commitment.",
     },
   },
   {
@@ -921,6 +926,20 @@ export const FAQ: Array<{ q: Record<Idioma, string>; a: Record<Idioma, string> }
     },
   },
   {
+    q: { es: "¿Qué incluye el alquiler de Club Wynwood?", en: "What does renting Club Wynwood include?" },
+    a: {
+      es: "Se alquila el espacio exterior: el Jardín de ~18.000 ft² y el Tiki Hut techado de ~4.000 ft², por separado o juntos, con las ocho cabañas amuebladas y las mesas de picnic que ya están en el jardín. La producción, el catering, el sonido, la iluminación y el mobiliario adicional los aporta tu equipo o tu productora.",
+      en: "You rent the outdoor space: the ~18,000 sq ft Garden and the ~4,000 sq ft covered Tiki Hut, separately or together, with the eight furnished cabanas and the picnic tables already in the garden. Production, catering, sound, lighting and extra furniture come from your team or your production company.",
+    },
+  },
+  {
+    q: { es: "¿Puedo traer mi propio catering y mi propia barra?", en: "Can I bring my own catering and bar?" },
+    a: {
+      es: "Sí. No hay proveedor impuesto ni comisión por traer el tuyo, que es la diferencia principal con un hotel o un salón: allí la cocina es suya y ahí se va buena parte del presupuesto. Aquí no hay cocina propia, así que el catering monta en el sitio y la barra la pone tu equipo.",
+      en: "Yes. There is no imposed supplier and no fee for bringing your own, which is the main difference with a hotel or a ballroom: there the kitchen is theirs, and that is where much of the budget goes. Here there is no kitchen of our own, so catering sets up on site and your team runs the bar.",
+    },
+  },
+  {
     q: { es: "¿Se pueden alquilar los dos espacios por separado?", en: "Can the two spaces be rented separately?" },
     a: {
       es: "Sí. El Jardín y el Tiki Hut se alquilan por separado o combinados. Son contiguos y comparten el paseo central, así que juntos funcionan como un solo recinto continuo y no como dos salas.",
@@ -928,17 +947,10 @@ export const FAQ: Array<{ q: Record<Idioma, string>; a: Record<Idioma, string> }
     },
   },
   {
-    q: { es: "¿Dónde queda exactamente?", en: "Where exactly is it?" },
+    q: { es: "¿Hasta qué hora se puede, y con cuánto volumen?", en: "How late can we run, and how loud?" },
     a: {
-      es: "En 2129 NW 1st Ct, Miami, FL 33127, dentro del Wynwood Arts District. A cuatro minutos a pie de Wynwood Walls, tres del acceso a la I-95, seis de Midtown y el Design District y dieciséis del aeropuerto MIA.",
-      en: "At 2129 NW 1st Ct, Miami, FL 33127, inside the Wynwood Arts District. Four minutes on foot from Wynwood Walls, three from the I-95 access, six from Midtown and the Design District and sixteen from MIA airport.",
-    },
-  },
-  {
-    q: { es: "¿Publican tarifas?", en: "Do you publish rates?" },
-    a: {
-      es: "No. Los paquetes se arman contra cada evento, porque el precio depende de la fecha, del espacio que uses y del montaje. Se envían junto con la disponibilidad.",
-      en: "No. Packages are built against each event, because the price depends on the date, the space you use and the build. They are sent together with availability.",
+      es: "Todavía no lo publicamos, y preferimos decirlo así en vez de dar un número que no hemos comprobado. El horario límite y el tope de decibelios dependen de la ordenanza de la zona y de la licencia vigente del sitio: se confirman por escrito en la visita técnica, junto con la potencia, el parking y los baños. Si tu evento depende de terminar tarde, dilo en la solicitud y lo resolvemos antes de que vengas.",
+      en: "We do not publish this yet, and we would rather say so than give a number we have not verified. The curfew and the dB limit depend on the local ordinance and the site's current licence: both are confirmed in writing at the technical visit, along with power, parking and restrooms. If your event depends on running late, say so in the enquiry and we resolve it before you come.",
     },
   },
   {
@@ -946,6 +958,13 @@ export const FAQ: Array<{ q: Record<Idioma, string>; a: Record<Idioma, string> }
     a: {
       es: "Sí, y su detalle exacto —amperaje y fase, plazas de parking, número de baños, ancho de portón para carga, licencia de licor, curfew y límite de dB— se levanta contigo en la visita técnica y se entrega por escrito. No lo publicamos porque no lo hemos medido nosotros.",
       en: "Yes, and the exact detail —amperage and phase, parking spaces, number of restrooms, gate width for load-in, liquor licence, curfew and dB limit— is surveyed with you at the technical visit and delivered in writing. We do not publish it because we have not measured it ourselves.",
+    },
+  },
+  {
+    q: { es: "¿Dónde queda exactamente?", en: "Where exactly is it?" },
+    a: {
+      es: "En 2129 NW 1st Ct, Miami, FL 33127, dentro del Wynwood Arts District. A cuatro minutos a pie de Wynwood Walls, tres del acceso a la I-95, seis de Midtown y el Design District y dieciséis del aeropuerto MIA.",
+      en: "At 2129 NW 1st Ct, Miami, FL 33127, inside the Wynwood Arts District. Four minutes on foot from Wynwood Walls, three from the I-95 access, six from Midtown and the Design District and sixteen from MIA airport.",
     },
   },
   {

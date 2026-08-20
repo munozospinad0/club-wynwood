@@ -1,4 +1,4 @@
-import { crearGeo } from "@/lib/iso";
+import { crearGeo, type Giro } from "@/lib/iso";
 import type { Idioma } from "@/lib/i18n";
 
 /**
@@ -37,9 +37,16 @@ const EDIF = { x: 256, dx: 118, dy: 90 };
 const H_ALERO = 11, H_CUMBRE = 26, H1 = 12, H2 = 22;
 const TOTAL_X = EDIF.x + EDIF.dx;
 
-export default function LaminaConjunto({ lang }: { lang: Idioma }) {
+/**
+ * @param giro  Cuarto de vuelta. Toda la geometría pasa por `crearGeo`, así que
+ *              cambiar este número gira el dibujo entero —volúmenes, palmeras,
+ *              cotas y anclas de las cartelas— sin tocar ni un trazo. Era el
+ *              motivo de diseñar `iso.ts` así, y hasta ahora estaba sin usar:
+ *              el conmutador existía pero nadie le pasaba las cuatro vistas.
+ */
+export default function LaminaConjunto({ lang, giro = 0 }: { lang: Idioma; giro?: Giro }) {
   const es = lang === "es";
-  const g = crearGeo(U, TOTAL_X / 2, LOTE.dy / 2, 0);
+  const g = crearGeo(U, TOTAL_X / 2, LOTE.dy / 2, giro);
   const { p, techo, frente, lado } = g;
   // La caja de la proyección se derrama más hacia abajo que hacia arriba, y a
   // la derecha hay que dejar sitio para la columna de cartelas. Margen a medida
@@ -230,10 +237,44 @@ export default function LaminaConjunto({ lang }: { lang: Idioma }) {
             <text x="60" y="13" fontFamily="ui-monospace,monospace" fontSize="6.6" fill="#8a8071">75 FT</text>
           </g>
 
-          <g transform={`translate(${VB.x + VB.w - 232},${VB.y + 26})`}>
-            <path d="M0,16 L0,-11 M-3.2,-4 L0,-12 L3.2,-4" fill="none" stroke="#211c15" strokeWidth="1" />
-            <text x="-2.5" y="27" fontFamily="ui-monospace,monospace" fontSize="8" fill="#8a8071">N</text>
-          </g>
+          {/* ---------- NORTE ----------
+              Antes apuntaba siempre arriba, en las cuatro vistas. Con una sola
+              vista se notaba poco; con el conmutador puesto es un error que se
+              ve al primer clic: si giras el dibujo, el norte gira con él.
+              Un plano que miente en el norte no es un plano.
+
+              No se rota «a ojo» 90° por vista: se PROYECTA el norte real. Se
+              toma un punto 10 ft al norte del centro, se pasa por la misma
+              función que dibuja todo lo demás y se mide hacia dónde cae en
+              pantalla. Así es exacto por construcción y sigue siéndolo si
+              mañana cambia la proyección.
+
+              La «N» se queda derecha: una letra girada 180° no se lee. */}
+          {(() => {
+            const c: [number, number] = [TOTAL_X / 2, LOTE.dy / 2];
+            const o = p(c[0], c[1], 0);
+            const n = p(c[0], c[1] - 10, 0);
+            const rad = Math.atan2(n[1] - o[1], n[0] - o[0]);
+            const ang = (rad * 180) / Math.PI + 90;
+            // La «N» va en la PUNTA, no en un sitio fijo. Con la flecha girando
+            // y la letra quieta, en dos de las cuatro vistas la N quedaba al
+            // lado contrario de donde apunta, que es justo lo que no puede
+            // pasar. Se coloca sobre el mismo vector, un poco más allá del
+            // vértice, y se deja derecha para que se lea.
+            const nx = Math.cos(rad) * 21;
+            const ny = Math.sin(rad) * 21;
+            return (
+              <g transform={`translate(${VB.x + VB.w - 232},${VB.y + 30})`}>
+                <g transform={`rotate(${ang.toFixed(1)})`}>
+                  <path d="M0,14 L0,-11 M-3.2,-4 L0,-12 L3.2,-4"
+                        fill="none" stroke="#211c15" strokeWidth="1" />
+                </g>
+                <text x={nx.toFixed(1)} y={ny.toFixed(1)} dy="3"
+                      textAnchor="middle" fontFamily="ui-monospace,monospace"
+                      fontSize="8.5" fill="#8a8071">N</text>
+              </g>
+            );
+          })()}
         </svg>
 
         <figcaption className="ojo" style={{ paddingTop: 16, lineHeight: 1.75, maxWidth: "78ch" }}>

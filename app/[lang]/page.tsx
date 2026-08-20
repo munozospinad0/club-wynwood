@@ -10,6 +10,7 @@ import Laminas from "@/components/Laminas";
 import LaminaConjunto from "@/components/LaminaConjunto";
 import LaminaPlanta from "@/components/LaminaPlanta";
 import Dudas from "@/components/Dudas";
+import Giro from "@/components/Giro";
 
 /**
  * Home. El orden sigue cómo decide un productor:
@@ -206,7 +207,17 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       </section>
       <Laminas lang={lang}
                planta={<LaminaPlanta lang={lang} />}
-               conjunto={<LaminaConjunto lang={lang} />}
+               conjunto={
+                 /* Las cuatro vistas llegan YA DIBUJADAS del servidor y el
+                    conmutador solo enseña una. Cuesta HTML —cuatro veces el
+                    mismo dibujo— pero mantiene trazos y cotas en el documento
+                    sin ejecutar JavaScript, que es lo que hace el sitio citable
+                    para un motor generativo. */
+                 <Giro lang={lang}
+                       vistas={([0, 1, 2, 3] as const).map((gi) => (
+                         <LaminaConjunto key={gi} lang={lang} giro={gi} />
+                       ))} />
+               }
                exterior={<Lamina />}
                edificio={<LaminaEdificio lang={lang} />} />
 {/* ---------------- FICHA TÉCNICA ---------------- */}

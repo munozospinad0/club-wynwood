@@ -127,36 +127,19 @@ export default async function PaginaInterior(
         <p className="respuesta" style={{ fontSize: 18 }}>{p.respuesta[lang]}</p>
       </header>
 
-      {/* La calculadora solo en /aforo-y-montajes/: es su sitio natural y
-          repetirla por todo el sitio la convertiria en decoracion. */}
-      {clave === "aforos" && (
-        <section style={{ borderBottom: "1px solid var(--regla)" }}>
-          <div className="reja" style={{ paddingBlock: "0 56px" }}>
-            <div className="ojo" style={{ paddingBottom: 16 }}>
-              {es ? "Calcula tu espacio" : "Work out your space"}
-            </div>
-            <Calculadora lang={lang} />
-            <p style={{ margin: "16px 0 0", fontSize: 13, color: "var(--texto)", maxWidth: "62ch" }}>
-              {es
-                ? "Los ratios son estándares de planificación de eventos, y el resultado nunca supera el aforo declarado del inmueble: si la aritmética da más de lo que el venue admite, la calculadora lo dice."
-                : "The ratios are standard event-planning figures, and the result never exceeds the venue's stated capacity: if the arithmetic allows more than the site takes, the calculator says so."}
-            </p>
-          </div>
-        </section>
-      )}
+      {/* ─── EL ORDEN DE UNA INTERIOR ───────────────────────────────────────
+          foto -> texto -> cifras -> calculadora -> pedir
 
-      <section style={{ background: "var(--papel-2)", borderBlock: "1px solid var(--regla)" }}>
-        <div className="reja" style={{ display: "flex", flexWrap: "wrap", padding: 0 }}>
-          {p.cifras.map((c) => (
-            <div key={c.etiqueta.es} style={{ flex: "1 1 200px", padding: "26px 24px", borderRight: "1px solid var(--regla)" }}>
-              <div className="ojo" style={{ paddingBottom: 12 }}>{c.etiqueta[lang]}</div>
-              <div style={{ fontFamily: "var(--display)", fontWeight: 600, fontSize: 34, lineHeight: 1, letterSpacing: "-.02em" }}>
-                {c.valor}
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+          Antes las CIFRAS iban las primeras, justo debajo del titular. Es el
+          mismo fallo que tenía la portada y por el mismo motivo: un número sin
+          marco no informa. A quien acaba de aterrizar desde una búsqueda,
+          «~18 000 ft²» no le dice nada todavía — ni siquiera sabe si esto es un
+          jardín, una nave o una azotea.
+
+          Lo que sí contesta esa pregunta en un segundo es la FOTO, y estaba
+          enterrada debajo de una barra de estadísticas. Ahora abre.
+          Las cifras caen después del texto, cuando ya hay dónde colgarlas, y la
+          calculadora justo detrás porque es la herramienta que las usa. */}
 
       <section style={{ borderBottom: "1px solid var(--regla)" }}>
         <figure style={{ margin: "0 auto", maxWidth: "var(--reja)", padding: "48px 32px 40px" }}>
@@ -187,6 +170,37 @@ export default async function PaginaInterior(
           </div>
         </div>
       </section>
+
+      <section style={{ background: "var(--papel-2)", borderBlock: "1px solid var(--regla)" }}>
+        <div className="reja" style={{ display: "flex", flexWrap: "wrap", padding: 0 }}>
+          {p.cifras.map((c) => (
+            <div key={c.etiqueta.es} style={{ flex: "1 1 200px", padding: "26px 24px", borderRight: "1px solid var(--regla)" }}>
+              <div className="ojo" style={{ paddingBottom: 12 }}>{c.etiqueta[lang]}</div>
+              <div style={{ fontFamily: "var(--display)", fontWeight: 600, fontSize: 34, lineHeight: 1, letterSpacing: "-.02em" }}>
+                {c.valor}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* La calculadora solo en /aforo-y-montajes/: es su sitio natural y
+          repetirla por todo el sitio la convertiria en decoracion. */}
+      {clave === "aforos" && (
+        <section style={{ borderBottom: "1px solid var(--regla)" }}>
+          <div className="reja" style={{ paddingBlock: "56px" }}>
+            <div className="ojo" style={{ paddingBottom: 16 }}>
+              {es ? "Calcula tu espacio" : "Work out your space"}
+            </div>
+            <Calculadora lang={lang} />
+            <p style={{ margin: "16px 0 0", fontSize: 13, color: "var(--texto)", maxWidth: "62ch" }}>
+              {es
+                ? "Los ratios son estándares de planificación de eventos, y el resultado nunca supera el aforo declarado del inmueble: si la aritmética da más de lo que el venue admite, la calculadora lo dice."
+                : "The ratios are standard event-planning figures, and the result never exceeds the venue's stated capacity: if the arithmetic allows more than the site takes, the calculator says so."}
+            </p>
+          </div>
+        </section>
+      )}
 
       {/* El cierre va ANTES de «Relacionado». Quien acaba de leer la página
           está en su punto de más intención: ofrecerle primero más lectura y

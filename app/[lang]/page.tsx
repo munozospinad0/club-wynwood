@@ -11,6 +11,7 @@ import LaminaConjunto from "@/components/LaminaConjunto";
 import LaminaPlanta from "@/components/LaminaPlanta";
 import Dudas from "@/components/Dudas";
 import Giro from "@/components/Giro";
+import Cifras from "@/components/Cifras";
 
 /**
  * Home. El orden sigue cómo decide un productor:
@@ -20,13 +21,9 @@ import Giro from "@/components/Giro";
  * iba ANTES de decir qué se alquila.
  */
 
-const CIFRAS_CABECERA = [
-  { es: "Superficie total", en: "Total area", v: "~22 000 ft²", sub: "2 045 m²" },
-  { es: "Techado", en: "Covered", v: "~4 000 ft²", sub: "372 m²" },
-  { es: "De pie", en: "Standing", v: "~600", sub: "" },
-  { es: "Sentados", en: "Seated", v: "~300", sub: "" },
-  { es: "Cabañas", en: "Cabanas", v: "8", sub: "" },
-];
+// Las cifras viven ahora en components/Cifras.tsx, junto a los dibujos que las
+// explican: tener el número en un archivo y el glifo que lo representa en otro
+// es pedir que se desincronicen.
 
 export default async function Home({ params }: { params: Promise<{ lang: string }> }) {
   const lang = asIdioma((await params).lang);
@@ -191,20 +188,10 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           </p>
         </div>
       </section>
-{/* ---------------- CIFRAS, a ancho completo ---------------- */}
-      <section style={{ borderBottom: "1px solid var(--regla)", background: "var(--papel-2)" }}>
-        <div style={{ display: "flex", flexWrap: "wrap" }}>
-          {CIFRAS_CABECERA.map((c) => (
-            <div key={c.es} style={{ flex: "1 1 200px", padding: "26px 24px", borderRight: "1px solid var(--regla)" }}>
-              <div className="ojo" style={{ paddingBottom: 10 }}>{es ? c.es : c.en}</div>
-              <div style={{ fontFamily: "var(--display)", fontWeight: 600, fontSize: 32, lineHeight: 1, letterSpacing: "-.02em" }}>
-                {c.v}
-              </div>
-              {c.sub && <div style={{ fontSize: 12, color: "var(--texto)", paddingTop: 6 }}>{c.sub}</div>}
-            </div>
-          ))}
-        </div>
-      </section>
+      {/* Las cifras, dibujadas. Ver components/Cifras.tsx: el plano a escala, los
+          puntos de veinte en veinte y las ocho cabañas dicen en un vistazo lo
+          que cinco números en fila obligaban a deducir. */}
+      <Cifras lang={lang} />
       <Laminas lang={lang}
                planta={<LaminaPlanta lang={lang} />}
                conjunto={

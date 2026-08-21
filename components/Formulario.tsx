@@ -247,10 +247,14 @@ export default function Formulario({ lang }: { lang: Idioma }) {
         </p>
       )}
 
+      {/* Decía «no publicamos tarifas», que es la versión defensiva de lo mismo
+          y encima contradecía al párrafo de arriba, que promete presupuesto.
+          Lo que la persona necesita saber justo antes de pulsar es qué recibe y
+          a qué se compromete: nada. */}
       <p style={{ margin: 0, fontSize: 13, color: "var(--texto)" }}>
         {es
-          ? "Respondemos en 24 h hábiles. Los paquetes se arman contra el evento; no publicamos tarifas."
-          : "We reply within 24 business hours. Packages are built against the event; we don't publish rates."}
+          ? "Te llega disponibilidad y presupuesto en 24 h hábiles. Sin visita previa y sin compromiso."
+          : "You get availability and a quote within 24 business hours. No site visit and no commitment."}
       </p>
     </form>
   );

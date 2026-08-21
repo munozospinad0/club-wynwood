@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Cierre from "@/components/Cierre";
 import { notFound } from "next/navigation";
 import {
   IDIOMAS, RUTAS, alternativas, asIdioma, href, url,
@@ -187,6 +188,11 @@ export default async function PaginaInterior(
         </div>
       </section>
 
+      {/* El cierre va ANTES de «Relacionado». Quien acaba de leer la página
+          está en su punto de más intención: ofrecerle primero más lectura y
+          después el formulario es pedirle que se enfríe antes de escribir. */}
+      <Cierre lang={lang} tema={TEMA[clave]?.[lang]} />
+
       <Seguir lang={lang} actual={clave} />
     </>
   );
@@ -203,16 +209,81 @@ function Migas({ lang, nombre }: { lang: Idioma; nombre: string }) {
   );
 }
 
-/** Enlazado interno: sin esto las interiores quedan huérfanas para el rastreador. */
+/**
+ * A qué familia pertenece cada página. Sirve para enlazar lo que de verdad se
+ * parece, en vez de listarlo todo.
+ *
+ *   espacio    — qué alquilas
+ *   ocasion    — para qué lo alquilas
+ *   referencia — cómo funciona, y el barrio
+ */
+/**
+ * Cómo se nombra el evento en el cierre de cada página.
+ *
+ * Va aquí y no en contenido.ts para tenerlo todo a la vista de un golpe: son
+ * catorce frases que tienen que encajar en «¿Tienes fecha para ___?», y eso se
+ * revisa mejor en una lista que repartido por novecientas líneas.
+ *
+ * Donde no encaja bien —la guía, el barrio, los aforos— se deja sin tema y el
+ * cierre usa el titular genérico. Forzar «¿Tienes fecha para por qué Wynwood?»
+ * sería peor que no personalizar.
+ */
+const TEMA: Partial<Record<string, { es: string; en: string }>> = {
+  jardin:       { es: "tu evento en el Jardín",     en: "your event in the Garden" },
+  tikiHut:      { es: "tu evento bajo el Tiki Hut", en: "your event under the Tiki Hut" },
+  bodas:        { es: "tu boda",                    en: "your wedding" },
+  corporativo:  { es: "tu evento de empresa",       en: "your company event" },
+  quinces:      { es: "los quince",                 en: "the quinceañera" },
+  graduaciones: { es: "la graduación",              en: "the graduation" },
+  popups:       { es: "tu pop-up",                  en: "your pop-up" },
+  produccion:   { es: "tu rodaje",                  en: "your shoot" },
+  artbasel:     { es: "Art Basel",                  en: "Art Basel" },
+  finDeAno:     { es: "la fiesta de fin de año",    en: "the holiday party" },
+  pequenos:     { es: "tu evento",                  en: "your event" },
+};
+
+const FAMILIA: Record<string, "espacio" | "ocasion" | "referencia"> = {
+  jardin: "espacio", tikiHut: "espacio",
+  bodas: "ocasion", corporativo: "ocasion", quinces: "ocasion",
+  graduaciones: "ocasion", popups: "ocasion", produccion: "ocasion",
+  artbasel: "ocasion", finDeAno: "ocasion", pequenos: "ocasion",
+  aforos: "referencia", guia: "referencia", barrio: "referencia",
+};
+
+/**
+ * Enlazado interno. Sin esto las interiores quedan huérfanas para el rastreador.
+ *
+ * ANTES LISTABA LAS TRECE. Desde una página de bodas ofrecía rodajes, pop-ups y
+ * Art Basel — trece enlaces de los que doce no venían a cuento. Eso no es
+ * navegación, es un vertedero: no ayuda a quien lee y reparte el peso de enlace
+ * entre trece destinos en vez de concentrarlo donde importa.
+ *
+ * Ahora enseña como mucho cinco, y elegidos: primero las de su misma familia
+ * —si estás mirando bodas, lo que se parece son quinceañeras y graduaciones—,
+ * después los dos espacios, que valen desde cualquier página porque son lo que
+ * de verdad se alquila, y al final las preguntas.
+ */
 function Seguir({ lang, actual }: { lang: Idioma; actual: ClaveRuta }) {
   const es = lang === "es";
-  const otras = PAGINAS.filter((p) => p.clave !== actual);
+  const miFamilia = FAMILIA[actual];
+
+  const mismas = PAGINAS.filter((p) => p.clave !== actual && FAMILIA[p.clave] === miFamilia);
+  const espacios = PAGINAS.filter((p) => p.clave !== actual && FAMILIA[p.clave] === "espacio");
+
+  // Sin repetidos y con tope: tres de su familia y los espacios para rellenar.
+  const vistos = new Set<string>();
+  const elegidas = [...mismas.slice(0, 3), ...espacios]
+    .filter((p) => !vistos.has(p.clave) && vistos.add(p.clave))
+    .slice(0, 5);
+
   return (
     <section style={{ borderBottom: "1px solid var(--regla)" }}>
       <div className="reja" style={{ paddingBlock: 66 }}>
-        <div className="ojo" style={{ marginBottom: 24 }}>{es ? "Seguir leyendo" : "Keep reading"}</div>
+        <div className="ojo" style={{ marginBottom: 24 }}>
+          {es ? "Relacionado" : "Related"}
+        </div>
         <div style={{ maxWidth: 640 }}>
-          {otras.map((o) => (
+          {elegidas.map((o) => (
             <a key={o.clave} href={href(o.clave, lang)} style={{ display: "block", padding: "15px 0", borderBottom: "1px solid var(--regla)", textDecoration: "none", fontSize: 15 }}>
               {o.h1[lang]} <span style={{ color: "var(--ocre)" }}>→</span>
             </a>

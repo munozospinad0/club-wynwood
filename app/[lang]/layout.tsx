@@ -7,6 +7,7 @@ import { grafo, localBusiness, eventVenue } from "@/lib/schema";
 import { VENUE } from "@/lib/venue";
 import SelectorIdioma from "@/components/SelectorIdioma";
 import Revelado from "@/components/Revelado";
+import Gtm from "@/components/Gtm";
 
 export function generateStaticParams() {
   return IDIOMAS.map((lang) => ({ lang }));
@@ -66,6 +67,11 @@ export default async function Layout(
   return (
     <html lang={BCP47[lang]} data-lang={lang}>
       <body>
+        {/* GA4 y el píxel de Meta se montan DENTRO de GTM. Sin
+            NEXT_PUBLIC_GTM_ID no carga nada y los eventos se acumulan en el
+            dataLayer hasta que exista contenedor. */}
+        <Gtm />
+
         <script
           type="application/ld+json"
           // El contenido sale de lib/venue.ts, no de entrada de usuario.

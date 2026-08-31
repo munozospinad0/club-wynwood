@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { Idioma } from "@/lib/i18n";
+import { ev } from "@/lib/medicion";
 
 /**
  * UN SOLO VISOR DE LÁMINAS, con las dos zonas.
@@ -77,7 +78,12 @@ export default function Laminas({
             const activa = zona === z.id;
             return (
               <button key={z.id} role="tab" aria-selected={activa} type="button"
-                      onClick={() => setZona(z.id)}
+                      /* Abrir una lámina es la señal de intención más honesta
+                         del sitio: quien mira los dibujos está evaluando si su
+                         producción cabe, no leyendo un folleto. Con dos o
+                         cuatro leads calificados al mes, es de los pocos
+                         números que se mueven lo bastante como para leerlos. */
+                      onClick={() => { ev("view_plate", { plate_name: z.id }); setZona(z.id); }}
                       style={{
                         background: "transparent", border: 0, cursor: "pointer",
                         textAlign: "left", padding: "0 44px 16px 0",

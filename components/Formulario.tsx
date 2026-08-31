@@ -3,52 +3,53 @@
 import { useEffect, useRef, useState } from "react";
 import type { Idioma } from "@/lib/i18n";
 import { bandaInvitados, ev, horizonteFecha } from "@/lib/medicion";
+import { encolar, vaciarCola } from "@/lib/cola";
 
 /**
- * El webhook de n8n al que va el formulario.
+ * EL FORMULARIO. Va DIRECTO al CRM: ya no pasa por n8n.
  *
- * OJO CON ESTA URL. La que había aquí antes —n8n.srv1043270.hstgr.cloud— NO
- * EXISTE: el host no resuelve por DNS. El workflow «Club Wynwood — Captura de
- * leads del sitio» (HMf412NsoC3LXJCP) vive en la instancia de n8n cloud, que es
- * la de abajo, y es la que el runtime del sitio estático ya usaba bien.
+ * ─────────────────────────────────────────────────────────────────────────
+ * POR QUÉ SE QUITÓ EL INTERMEDIARIO
+ * ─────────────────────────────────────────────────────────────────────────
  *
- * Si alguna vez se migra la instancia, se cambia por variable de entorno y no
- * tocando esta línea: NEXT_PUBLIC_WEBHOOK_LEADS manda sobre esto.
+ * n8n compraba tres cosas:
+ *
+ *  · LA IP DEL VISITANTE. Era el argumento más fuerte para tenerlo, y resulta
+ *    que es el argumento más fuerte para quitarlo: con un servidor en medio, el
+ *    CRM veía la IP DE n8n en todos los leads —el mismo valor para todo el
+ *    mundo, así que Meta no podía casar a nadie— y había que reenviarla a mano
+ *    en un nodo de código. Llamando directo, la IP correcta llega sola.
+ *
+ *  · EL REINTENTO. Se repone aquí: tres intentos inmediatos y, si aun así no
+ *    entra, el envío queda en una cola local que se vacía la próxima vez que
+ *    esta persona abra el sitio. Ver `lib/cola.ts`.
+ *
+ *  · LA COPIA A GOOGLE SHEETS. Se repone en el CRM, y mejor: manda el lead por
+ *    correo **aunque no haya podido guardarlo**. Un correo sobrevive a que se
+ *    caiga la base de datos.
+ *
+ * Y se va con él una clase entera de fallos silenciosos: en n8n Cloud las
+ * variables de entorno están bloqueadas dentro de los nodos de código, así que
+ * el nodo que firmaba devolvía vacío y la rama del CRM no corría nunca. Sin
+ * error, sin aviso, todo aparentemente bien.
+ *
+ * ─────────────────────────────────────────────────────────────────────────
+ * LA CUALIFICACIÓN NO SE CALCULA AQUÍ
+ * ─────────────────────────────────────────────────────────────────────────
+ *
+ * Llegó a estar escrita cuatro veces con dos versiones distintas: la misma
+ * solicitud salía EXPLORANDO por un camino y NO ENCAJA por el otro, y eso
+ * decide qué evento de conversión ve Meta. Ahora vive en un solo archivo del
+ * CRM, y la respuesta del envío trae la calidad ya calculada.
+ *
+ * ATRIBUCIÓN — gclid/fbclid/utm se leen de la URL al aterrizar y se guardan en
+ * sessionStorage. Una visita puede caer en /bodas desde un anuncio y rellenar
+ * el formulario en la home; sin esto se perdería el origen de ese lead.
  */
-const WEBHOOK =
-  process.env.NEXT_PUBLIC_WEBHOOK_LEADS ??
-  "https://munozospinad0.app.n8n.cloud/webhook/club-wynwood-lead";
 
-/**
- * El CRM, que es quien sabe cualificar.
- *
- * ─────────────────────────────────────────────────────────────────────────
- * POR QUÉ EL SITIO YA NO CALCULA LA CALIDAD
- * ─────────────────────────────────────────────────────────────────────────
- *
- * Hasta el 30-ago-2026 esta función vivía aquí dentro, y también en el sitio
- * estático, y también en el CRM, y también en un archivo muerto del CRM. Cuatro
- * copias, dos versiones distintas: la misma solicitud salía EXPLORANDO por un
- * camino y NO ENCAJA por el otro. Y eso decide qué evento de conversión ve
- * Meta, o sea que decide hacia dónde optimiza la campaña.
- *
- * Ahora el modelo vive en un solo archivo del CRM y el sitio PREGUNTA.
- *
- * Si el CRM no contesta —está desplegando, o hay un corte— el envío sigue
- * adelante sin `calidad`. No se pierde nada: **el CRM recalcula siempre en
- * servidor** cuando el lead entra por n8n. Lo único que se pierde es el evento
- * de conversión más fino en el navegador, y perder eso es infinitamente mejor
- * que perder el lead.
- */
 const CRM = process.env.NEXT_PUBLIC_CRM_URL ?? "https://crm-wynwood.vercel.app";
+const ENDPOINT = `${CRM}/api/solicitud`;
 
-/**
- * Formulario de solicitud, contra el webhook de n8n.
- *
- * ATRIBUCIÓN — gclid/fbclid/utm se leen de la URL y se guardan en sessionStorage
- * al aterrizar. Una visita puede caer en /bodas desde un anuncio y rellenar el
- * formulario en la home; sin esto se perdería el origen de ese lead.
- */
 type Estado = "idle" | "enviando" | "ok" | "error";
 
 /** Lee una cookie por nombre. Devuelve "" si no está o si están bloqueadas. */
@@ -61,15 +62,21 @@ function cookie(nombre: string): string {
   }
 }
 
+function idUnico(): string {
+  return typeof crypto !== "undefined" && crypto.randomUUID
+    ? crypto.randomUUID()
+    : `cw-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+}
+
 /**
  * Prefijos telefónicos.
  *
  * No es adorno: sin el prefijo, un móvil de Colombia y uno de Estados Unidos
- * tienen los mismos diez dígitos, y el CRM tiene que ADIVINAR. Adivinaba
- * Estados Unidos, así que un número colombiano se convertía en un teléfono
- * estadounidense que no existe y el hash no casaba con nadie en Meta.
+ * tienen los mismos diez dígitos y el CRM tiene que ADIVINAR. Adivinaba Estados
+ * Unidos, así que un número colombiano se convertía en un teléfono
+ * estadounidense inexistente y el hash no casaba con nadie en Meta.
  *
- * Preguntarlo convierte una suposición en un dato. Y de paso da el país, que es
+ * Preguntarlo convierte una suposición en un dato, y de paso da el país, que es
  * otra señal de coincidencia gratis.
  */
 const PREFIJOS: Array<{ cc: string; iso: string; etiqueta: string }> = [
@@ -94,40 +101,35 @@ const TIPOS = [
   { valor: "Otro", es: "Otro", en: "Other" },
 ];
 
-interface Cualificacion {
-  calidad: string;
-  puntos: number;
-  razones: string[];
-  modelo: string;
+interface Respuesta {
+  ok?: boolean;
+  calidad?: string | null;
+  degradado?: boolean;
 }
 
-async function pedirCualificacion(d: Record<string, string>): Promise<Cualificacion | null> {
-  try {
-    // Con tope de tiempo: si el CRM tarda, se manda igual. El visitante no
-    // tiene por qué esperar a una herramienta interna.
-    const corte = AbortSignal.timeout(3500);
-    const r = await fetch(`${CRM}/api/cualificar`, {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({
-        invitados: d.invitados ?? "",
-        fecha: d.fecha ?? "",
-        produccion: d.produccion ?? "",
-        presupuesto: d.presupuesto ?? "",
-      }),
-      signal: corte,
-    });
-    if (!r.ok) return null;
-    return (await r.json()) as Cualificacion;
-  } catch {
-    return null;
+/** Tres intentos con espera creciente. Un 4xx no se reintenta: no mejora. */
+async function entregar(cuerpo: Record<string, unknown>): Promise<Respuesta | null> {
+  for (let intento = 1; intento <= 3; intento++) {
+    try {
+      const r = await fetch(ENDPOINT, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(cuerpo),
+      });
+      if (r.ok) return (await r.json().catch(() => ({}))) as Respuesta;
+      if (r.status >= 400 && r.status < 500) return null;
+    } catch { /* corte de red: se reintenta */ }
+
+    if (intento < 3) await new Promise((r) => setTimeout(r, 400 * 2 ** (intento - 1)));
   }
+  return null;
 }
 
 export default function Formulario({ lang }: { lang: Idioma }) {
   const es = lang === "es";
   const [estado, setEstado] = useState<Estado>("idle");
   const empezado = useRef(false);
+  const pintado = useRef(Date.now());
 
   useEffect(() => {
     try {
@@ -141,6 +143,9 @@ export default function Formulario({ lang }: { lang: Idioma }) {
       y.referrer ??= document.referrer || "";
       sessionStorage.setItem("cw-attr", JSON.stringify(y));
     } catch { /* sessionStorage bloqueado: se envía sin atribución */ }
+
+    // Si quedó algo sin entregar de una visita anterior, este es el momento.
+    void vaciarCola(ENDPOINT);
   }, []);
 
   /** Solo la primera vez: mide cuánta gente empieza y no termina. */
@@ -157,9 +162,7 @@ export default function Formulario({ lang }: { lang: Idioma }) {
     const fd = new FormData(e.currentTarget);
     const d = Object.fromEntries(fd.entries()) as Record<string, string>;
 
-    // El teléfono se compone en E.164 aquí, con el prefijo que eligió la
-    // persona. Al CRM le llega limpio: el apóstrofo que necesita Google Sheets
-    // lo pone n8n, que es de quien es el problema.
+    // El teléfono se compone en E.164 con el prefijo que eligió la persona.
     const cc = d.prefijo || "1";
     const digitos = (d.telefono || "").replace(/\D/g, "");
     const telefono = digitos ? `+${cc}${digitos}` : "";
@@ -171,23 +174,45 @@ export default function Formulario({ lang }: { lang: Idioma }) {
     /**
      * UN SOLO id PARA LOS DOS CAMINOS.
      *
-     * Este mismo envío va a llegar a Meta dos veces: por el píxel del navegador
-     * y por la API de Conversiones desde el CRM. Eso es deliberado —el servidor
-     * casa mejor y sobrevive a los bloqueadores— pero solo funciona si Meta
-     * puede reconocer que son EL MISMO hecho. Los reconoce por `event_id`.
-     *
-     * Si no coincidiera, Meta contaría dos conversiones por lead: el informe
-     * saldría al doble y el coste por lead a la mitad del real.
+     * Este envío va a llegar a Meta dos veces: por el píxel del navegador y por
+     * la API de Conversiones desde el CRM. Es deliberado —el servidor casa
+     * mejor y sobrevive a los bloqueadores— pero solo funciona si Meta reconoce
+     * que son EL MISMO hecho, y lo reconoce por `event_id`. Si no coincidiera,
+     * contaría dos conversiones por lead: el informe al doble y el coste por
+     * lead a la mitad del real.
      */
-    const eventId =
-      typeof crypto !== "undefined" && crypto.randomUUID
-        ? crypto.randomUUID()
-        : `cw-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+    const eventId = idUnico();
 
-    const cual = await pedirCualificacion({ ...d, telefono });
+    const cuerpo: Record<string, unknown> = {
+      ...d, ...attr,
+      telefono,
+      pais,
+      idioma: lang,
+      enviado: new Date().toISOString(),
+
+      // La clave de deduplicación se genera AQUÍ y se repite en cada reintento
+      // y en la cola. Es lo que hace que insistir no cree solicitudes dobles.
+      idempotencyKey: idUnico(),
+
+      // Cuánto tardó en rellenarlo. Nadie rellena diez campos en tres segundos.
+      tardo: Date.now() - pintado.current,
+
+      // ── huella para la API de Conversiones ────────────────────────────────
+      // Estas cookies las pone el píxel de Meta y SOLO existen aquí, en el
+      // navegador de la persona. El CRM no puede deducirlas.
+      // La IP ya no se manda: la lee el CRM de la cabecera, que es de donde hay
+      // que leerla. Si se aceptara del cuerpo, cualquiera podría decir que es
+      // otro y saltarse el límite por IP.
+      event_id: eventId,
+      fbp: cookie("_fbp"),
+      fbc: cookie("_fbc"),
+      user_agent: navigator.userAgent,
+    };
+
+    const r = await entregar(cuerpo);
 
     const parametros = {
-      lead_quality: cual?.calidad ?? "sin_dato",
+      lead_quality: r?.calidad ?? "sin_dato",
       event_type: d.tipo || "sin_dato",
       guests_band: bandaInvitados(d.invitados),
       date_horizon: horizonteFecha(d.fecha),
@@ -196,47 +221,20 @@ export default function Formulario({ lang }: { lang: Idioma }) {
       event_id: eventId,
     };
 
-    try {
-      const r = await fetch(WEBHOOK, {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({
-          ...d, ...attr,
-          telefono,
-          pais,
-          idioma: lang,
-          // Lo que calculó el CRM. Se manda para poder DETECTAR LA DERIVA: el
-          // CRM lo vuelve a calcular al guardar y compara. Si no coinciden, o
-          // alguien tocó el formulario o hay dos modelos en la calle.
-          calidad: cual?.calidad ?? "",
-          razones: cual?.razones?.join(" · ") ?? "",
-          modelo: cual?.modelo ?? "",
-          enviado: new Date().toISOString(),
-
-          // ── huella para la API de Conversiones ──────────────────────────
-          // Estas cookies las pone el píxel de Meta y SOLO existen aquí, en el
-          // navegador de la persona. El CRM no puede deducirlas: si no viajan
-          // en el cuerpo, se pierden y la coincidencia baja mucho.
-          // La IP no se puede leer desde el navegador — la añade n8n, que sí ve
-          // la del visitante en la cabecera x-forwarded-for.
-          event_id: eventId,
-          fbp: cookie("_fbp"),
-          fbc: cookie("_fbc"),
-          user_agent: navigator.userAgent,
-        }),
-      });
-      if (!r.ok) throw new Error(String(r.status));
-
+    if (r) {
       setEstado("ok");
-
       // Todo envío cuenta como generate_lead, pero SOLO el calificado es
       // conversión primaria. Contar todo entrena a las plataformas a traer
       // volumen, y volumen barato es lo que este venue no puede atender.
       ev("generate_lead", parametros);
-      ev(cual?.calidad === "CALIFICADO" ? "lead_qualified" : "lead_unqualified", parametros);
-    } catch {
-      setEstado("error");
+      ev(r.calidad === "CALIFICADO" ? "lead_qualified" : "lead_unqualified", parametros);
+      return;
     }
+
+    // No entró. Queda en la cola por si esta persona vuelve, y se le dice la
+    // verdad con una alternativa que sí funciona ahora mismo.
+    encolar(cuerpo);
+    setEstado("error");
   }
 
   const campo: React.CSSProperties = {
@@ -261,6 +259,15 @@ export default function Formulario({ lang }: { lang: Idioma }) {
 
   return (
     <form onSubmit={enviar} onFocusCapture={alEmpezar} style={{ display: "grid", gap: 18, maxWidth: 620 }}>
+      {/* LA TRAMPA. Invisible para una persona, irresistible para un robot que
+          rellena todo lo que encuentra. No lleva `display:none` —algunos robots
+          ya lo detectan— sino posición fuera de pantalla, y queda excluida de
+          la navegación por teclado y de los lectores de pantalla. */}
+      <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", top: 0, width: 1, height: 1, overflow: "hidden" }}>
+        <label htmlFor="cw-web">No rellenar</label>
+        <input id="cw-web" name="trampa" type="text" tabIndex={-1} autoComplete="off" />
+      </div>
+
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))", gap: 18 }}>
         <div>
           <label style={etiqueta} htmlFor="nombre">{es ? "Nombre" : "Name"}</label>
@@ -347,10 +354,13 @@ export default function Formulario({ lang }: { lang: Idioma }) {
       </button>
 
       {estado === "error" && (
-        <p role="alert" style={{ margin: 0, fontSize: 14, color: "var(--ocre)" }}>
+        <p role="alert" style={{ margin: 0, fontSize: 14, lineHeight: 1.55, color: "var(--ocre)" }}>
           {es
-            ? "No se pudo enviar. Escríbenos a info@clubwynwood.com o llama al (305) 970-7486."
-            : "Could not send. Email info@clubwynwood.com or call (305) 970-7486."}
+            ? "No se pudo enviar ahora mismo. Lo reintentamos solos, pero si prefieres no esperar: "
+            : "It could not be sent right now. We keep retrying, but if you would rather not wait: "}
+          <a href="mailto:info@clubwynwood.com">info@clubwynwood.com</a>
+          {" · "}
+          <a href="tel:+13059707486">(305) 970-7486</a>
         </p>
       )}
 

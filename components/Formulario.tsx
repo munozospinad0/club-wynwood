@@ -358,9 +358,20 @@ export default function Formulario({ lang }: { lang: Idioma }) {
           {es
             ? "No se pudo enviar ahora mismo. Lo reintentamos solos, pero si prefieres no esperar: "
             : "It could not be sent right now. We keep retrying, but if you would rather not wait: "}
-          <a href="mailto:info@clubwynwood.com">info@clubwynwood.com</a>
+          {/* `contact_click` es micro-conversión: sirve para MIRAR, nunca para
+              optimizar. Y aquí tiene un valor extra que no tiene en el pie de
+              página: un clic en el correo desde ESTE punto significa que el
+              envío falló y la persona siguió intentándolo por su cuenta. Es la
+              medida de cuánto negocio salva —o pierde— el respaldo. */}
+          <a href="mailto:info@clubwynwood.com"
+             onClick={() => ev("contact_click", { method: "email", desde: "fallo_envio" })}>
+            info@clubwynwood.com
+          </a>
           {" · "}
-          <a href="tel:+13059707486">(305) 970-7486</a>
+          <a href="tel:+13059707486"
+             onClick={() => ev("contact_click", { method: "telefono", desde: "fallo_envio" })}>
+            (305) 970-7486
+          </a>
         </p>
       )}
 

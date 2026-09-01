@@ -4,6 +4,7 @@ import { FICHA, TIEMPOS, VENUE } from "@/lib/venue";
 import { PAGINAS, FAQ } from "@/lib/contenido";
 import { grafo, faqPage } from "@/lib/schema";
 import Formulario from "@/components/Formulario";
+import Contacto from "@/components/Contacto";
 import Lamina from "@/components/Lamina";
 import LaminaEdificio from "@/components/LaminaEdificio";
 import Laminas from "@/components/Laminas";
@@ -266,6 +267,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
               : "With the event type, date and guest count we come back with real availability and terms. If you need to see the space, we schedule the visit and survey the spec sheet with you."}
           </p>
           <Formulario lang={lang} />
+          <Contacto lang={lang} />
         </div>
       </section>
     </>

@@ -7,11 +7,14 @@
  * Los tres problemas reales en móvil, en orden de gravedad:
  *   1. La portada es una reja de dos columnas fijas. En 390 px cada columna
  *      queda a 195 px y el titular se rompe letra a letra.
- *   2. La lámina es un SVG de ancho fijo dentro de una reja con barra lateral.
- *      Sin acotarla, empuja el ancho de la página y aparece scroll horizontal —
- *      el error de maquetación más común y el más molesto en móvil.
+ *   2. Un SVG de ancho fijo dentro de una reja con barra lateral. Sin acotarlo,
+ *      empuja el ancho de la página y aparece scroll horizontal — el error de
+ *      maquetación más común y el más molesto en móvil.
  *   3. La nav lleva 5 enlaces más el selector de idioma más el botón. En 390 px
  *      no caben y se apilan encima del logo.
+ *
+ * La lámina del recinto (app/lamina.css) trae su propio comportamiento: el
+ * dibujo escala con la anchura y los rótulos pasan a números.
  */
 
 /* ---------- PORTADA ---------- */
@@ -30,56 +33,6 @@
     padding: 40px 24px 44px !important;
     min-height: 0 !important;
   }
-}
-
-/* ---------- LA LÁMINA ---------- */
-@media (max-width: 1000px) {
-  /* La barra lateral (ámbito, lectura, capas) pasa arriba y en fila. */
-  #lamina [style*="grid-template-columns"] {
-    grid-template-columns: 1fr !important;
-  }
-  /* Sin esto el SVG empuja el ancho de la página. Es la causa número uno de
-     scroll horizontal en móvil. */
-  #lamina svg {
-    width: 100% !important;
-    height: auto !important;
-    max-width: 100%;
-  }
-  #cwPlate {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  /* La causa real de que la barra lateral se saliera en móvil ("SUPERFICIE
-     ~22 00…" cortado): los hijos de un flex o un grid tienen min-width:auto por
-     defecto, así que se niegan a encoger por debajo de su contenido y empujan
-     el contenedor. min-width:0 es el interruptor que les permite encoger.
-     Se aplica a todo #lamina porque la lámina se portó verbatim y sus estilos
-     van en línea: no hay clases sobre las que afinar. */
-  #lamina * { min-width: 0; }
-  #lamina,
-  #lamina > div,
-  #lamina [style*="max-width:1280px"],
-  #lamina [style*="max-width: 1280px"] {
-    max-width: 100% !important;
-  }
-  /* Las filas de lectura (etiqueta a la izquierda, valor a la derecha) se
-     dejan partir en dos líneas antes que salirse. */
-  #lamina [style*="justify-content:space-between"],
-  #lamina [style*="justify-content: space-between"] {
-    flex-wrap: wrap;
-    gap: 2px 12px;
-  }
-}
-@media (max-width: 620px) {
-  /* Las pestañas de lámina no caben en una línea: se dejan deslizar en vez de
-     romperlas en dos filas, que descuadra la cabecera. */
-  #lamina nav,
-  #lamina [style*="display:flex"] {
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-  #lamina nav::-webkit-scrollbar { display: none; }
 }
 
 /* ---------- NAV ---------- */
@@ -135,6 +88,19 @@
   }
 }
 
+/* ---------- PESTAÑAS DE LAS LÁMINAS ---------- */
+@media (max-width: 620px) {
+  /* Las tres pestañas no caben en una línea: se dejan deslizar en vez de
+     romperlas en dos filas, que descuadra la cabecera. */
+  [role="tablist"] {
+    flex-wrap: nowrap !important;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  [role="tablist"]::-webkit-scrollbar { display: none; }
+  [role="tab"] { padding-right: 28px !important; white-space: nowrap; }
+}
+
 /* ---------- RED DE SEGURIDAD ---------- */
 /* Nada puede desbordar horizontalmente. Si algo se escapa, que se corte antes
    de que la página entera se pueda arrastrar. */
@@ -143,8 +109,8 @@ img, svg, video, table { max-width: 100%; }
 
 /* ---------- LÁMINA 05 · EL EDIFICIO ---------- */
 @media (max-width: 1000px) {
-  /* Misma cura que la lámina del exterior: la barra lateral arriba y el SVG
-     acotado. Sin min-width:0 los hijos se niegan a encoger y empujan la página. */
+  /* La barra lateral arriba y el SVG acotado. Sin min-width:0 los hijos se
+     niegan a encoger y empujan la página. */
   #interior [data-lam="reja"] { grid-template-columns: 1fr !important; gap: 28px !important; }
   #interior * { min-width: 0; }
   #interior svg { width: 100% !important; height: auto !important; }

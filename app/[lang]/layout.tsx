@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "../globals.css";
 import "../responsive.css";
+import "../lamina.css";
 import { BCP47, IDIOMAS, INDEXABLE, alternativas, asIdioma, href } from "@/lib/i18n";
 const asIdioma_ = (p: { lang: string }) => ({ lang: asIdioma(p.lang) });
 import { grafo, localBusiness, eventVenue } from "@/lib/schema";

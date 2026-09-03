@@ -14,17 +14,17 @@
  *
  * Concretamente:
  *
- *  1. Los ONCE manejadores del runtime portado que `Lamina.tsx` envuelve para
- *     medir siguen escritos igual. `components/lamina/datos.ts` es código
- *     GENERADO por cw-lam-comp.py: si se regenera y una expresión cambia, la
- *     sustitución deja de aplicar y ese control deja de medirse sin avisar.
- *
- *  2. Los ocho eventos del contrato siguen declarados en `lib/medicion.ts` con
+ *  1. Los ocho eventos del contrato siguen declarados en `lib/medicion.ts` con
  *     el nombre exacto de `crm-wynwood/docs/04-MEDICION.md`. Un evento con otro
  *     nombre no activa su disparador de GTM y desaparece.
  *
- *  3. Ninguno de los eventos del contrato se quedó sin usar en el código.
+ *  2. Ninguno de los eventos del contrato se quedó sin usar en el código.
  *     Declarado y nunca disparado es lo mismo que no existir.
+ *
+ *  3. Los tres eventos de las láminas los dispara `LaminaRecinto.tsx` desde
+ *     código propio. Antes vivían envueltos sobre un runtime generado que se
+ *     regeneraba y perdía los enganches sin avisar; ese runtime se retiró el
+ *     2-sep-2026 junto con las cuatro subláminas que nadie entendía.
  */
 
 import { readFileSync, readdirSync, statSync } from "node:fs";
@@ -33,19 +33,14 @@ import { fileURLToPath } from "node:url";
 
 const RAIZ = join(dirname(fileURLToPath(import.meta.url)), "..");
 
-/** Las once expresiones que Lamina.tsx envuelve. Tienen que coincidir con ENGANCHES. */
-const ENGANCHES = [
-  "sh1:goSheet(1)", "sh2:goSheet(2)", "sh3:goSheet(3)", "sh4:goSheet(4)",
-  'zAll: setZone("all")', 'zJar: setZone("jardin")', 'zTik: setZone("tiki")',
-  'tRoof: tog("roof",true)', 'tVeg: tog("veg",true)',
-  'tPeople: tog("people",true)', 'tAnn: tog("ann",true)',
-];
-
 /** El contrato. Estos nombres los conoce GTM; no se inventan variantes. */
 const EVENTOS = [
   "view_plate", "select_zone", "toggle_layer", "form_start",
   "generate_lead", "lead_qualified", "lead_unqualified", "contact_click",
 ];
+
+/** Lo que la lámina del recinto tiene que seguir midiendo. */
+const LAMINA = ["view_plate", "select_zone", "toggle_layer"];
 
 let fallos = 0;
 const ok = (m) => console.log("  ok    " + m);
@@ -61,15 +56,6 @@ function fuentes(dir, acc = []) {
   return acc;
 }
 
-console.log("\nLos manejadores de la lámina siguen donde Lamina.tsx los busca\n");
-const datos = readFileSync(join(RAIZ, "components/lamina/datos.ts"), "utf8");
-// datos.ts guarda el runtime como cadena JS: las comillas van escapadas.
-const runtime = datos.replace(/\\"/g, '"');
-for (const e of ENGANCHES) {
-  if (runtime.includes(e)) ok(e);
-  else mal(`${e} — ya no está: ese control dejó de medirse`);
-}
-
 console.log("\nLos ocho eventos del contrato están declarados\n");
 const medicion = readFileSync(join(RAIZ, "lib/medicion.ts"), "utf8");
 for (const ev of EVENTOS) {
@@ -83,9 +69,15 @@ const codigo = fuentes(RAIZ)
   .map((p) => readFileSync(p, "utf8"))
   .join("\n");
 for (const ev of EVENTOS) {
-  // Puede dispararse con ev("x") o quedar nombrado en la tabla de ENGANCHES.
   if (codigo.includes(`"${ev}"`)) ok(ev);
   else mal(`${ev} — declarado pero nunca disparado`);
+}
+
+console.log("\nLa lámina del recinto mide sus tres eventos\n");
+const recinto = readFileSync(join(RAIZ, "components/LaminaRecinto.tsx"), "utf8");
+for (const ev of LAMINA) {
+  if (recinto.includes(`ev("${ev}"`)) ok(ev);
+  else mal(`${ev} — LaminaRecinto.tsx ya no lo dispara`);
 }
 
 console.log(

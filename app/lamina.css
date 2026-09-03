@@ -1,0 +1,306 @@
+/*
+ * Lámina «El recinto» (components/LaminaRecinto.tsx).
+ *
+ * Tres clases sobre los elementos del SVG:
+ *   .tz  un trazo: se dibuja con stroke-dashoffset sobre pathLength="1"
+ *   .rl  un relleno: se lava después del trazo (fill-opacity)
+ *   .ap  algo que aparece de golpe (opacity): cotas, gente, guías
+ *
+ * Y tres estados en la raíz .lam:
+ *   .pendiente  todavía no entró en pantalla (solo lo pone el JS)
+ *   .dibujar    entró: corre la secuencia
+ *   .quieto     sin JS útil o con movimiento reducido: todo visible, nada se mueve
+ *
+ * El escalonado va por grupos con --d (segundos) heredado a los hijos.
+ */
+
+.lam { --lam-ocre: #c4772b; }
+
+.lam-fig {
+  position: relative;
+  width: 100%;
+  margin: 0;
+  background: #fbf8f1;
+  border: 1px solid var(--regla);
+  overflow: hidden;
+}
+.lam-fig > svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 1;
+}
+/* El cajetín y los rótulos van SIEMPRE por encima del dibujo. */
+.lam-cajetin, .lam-etq { z-index: 2; }
+
+/* ---------- la secuencia de dibujo ---------- */
+.lam.pendiente .tz { stroke-dasharray: 1; stroke-dashoffset: 1; }
+.lam.pendiente .rl { fill-opacity: 0; }
+.lam.pendiente .ap,
+.lam.pendiente .lam-etq,
+.lam.pendiente .lam-cajetin { opacity: 0; }
+
+.lam.dibujar .tz {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: lam-trazo 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation-delay: var(--d, 0s);
+}
+.lam.dibujar .rl {
+  fill-opacity: 0;
+  animation: lam-lavado 0.7s ease forwards;
+  animation-delay: calc(var(--d, 0s) + 0.6s);
+}
+/* Un elemento con trazo Y relleno lleva las dos animaciones a la vez. Si se
+   dejara que la regla de .rl pisara la de .tz, el trazo no se dibujaría nunca
+   —el camión, que es ocre sobre papel, desaparecía por eso—. */
+.lam.dibujar .rl.tz {
+  animation: lam-trazo 1s cubic-bezier(0.4, 0, 0.2, 1) forwards, lam-lavado 0.7s ease forwards;
+  animation-delay: var(--d, 0s), calc(var(--d, 0s) + 0.6s);
+}
+.lam.dibujar .ap {
+  opacity: 0;
+  animation: lam-aparece 0.5s ease forwards;
+  animation-delay: calc(var(--d, 0s) + 0.5s);
+}
+/* Los rótulos no van con animation-delay: el estado «listo» los enciende
+   cuando el dibujo terminó. Un delay se reiniciaba al cambiar de modo y el
+   cajetín se apagaba solo. */
+.lam.dibujar .lam-etq,
+.lam.dibujar .lam-cajetin {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.lam.listo .lam-etq,
+.lam.listo .lam-cajetin { opacity: 1; }
+
+@keyframes lam-trazo { to { stroke-dashoffset: 0; } }
+@keyframes lam-lavado { to { fill-opacity: 1; } }
+@keyframes lam-aparece { to { opacity: 1; } }
+
+/* ---------- zonas: al tocar una, las demás se apagan ---------- */
+.lam .z { transition: opacity 0.18s ease; cursor: pointer; }
+.lam.enfocado .z { opacity: 0.32; }
+.lam.enfocado .z.activa { opacity: 1; }
+.lam.enfocado .guia { opacity: 0.25; }
+.lam.enfocado .guia.activa { opacity: 1; }
+.lam.enfocado .guia.activa line { stroke: var(--lam-ocre); stroke-width: 1.1; }
+.lam.enfocado .guia.activa circle { fill: var(--lam-ocre); }
+
+/* ---------- los tres modos ---------- */
+.lam .lluvia, .lam .mesas, .lam .camion { display: none; }
+
+/* si llueve: llueve encima de todo, el césped se apaga y la cubierta se marca */
+.lam[data-modo="lluvia"] .lluvia { display: block; }
+.lam[data-modo="lluvia"] .cesped { opacity: 0.45; }
+.lam[data-modo="lluvia"] .palapa-cubierta { stroke: var(--lam-ocre); stroke-width: 2.2; }
+.lam[data-modo="lluvia"] .gota {
+  opacity: 0;
+  animation: lam-gota 1.15s linear infinite;
+  animation-delay: var(--t, 0s);
+}
+@keyframes lam-gota {
+  from { transform: translateY(-48px); opacity: 0; }
+  15%  { opacity: 0.55; }
+  85%  { opacity: 0.45; }
+  to   { transform: translateY(48px); opacity: 0; }
+}
+
+/* 300 sentados: las mesas aparecen una a una */
+.lam[data-modo="mesas"] .mesas { display: block; }
+.lam[data-modo="mesas"] .mesa {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: lam-mesa 0.38s cubic-bezier(0.2, 0.9, 0.3, 1.25) both;
+  animation-delay: calc(var(--i, 0) * 40ms);
+}
+@keyframes lam-mesa {
+  from { transform: scale(0); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+/* el camión: entra por el acceso y recorre el paseo */
+.lam[data-modo="camion"] .camion {
+  display: block;
+  animation: lam-camion 2.8s cubic-bezier(0.35, 0, 0.15, 1) both;
+}
+@keyframes lam-camion {
+  from { transform: translate(var(--cx), var(--cy)); }
+  to   { transform: translate(0, 0); }
+}
+
+/* ---------- quieto: sin JS útil o con movimiento reducido ---------- */
+.lam.quieto .tz, .lam.quieto .rl, .lam.quieto .ap { animation: none !important; }
+@media (prefers-reduced-motion: reduce) {
+  .lam .tz, .lam .rl, .lam .ap, .lam .lam-etq, .lam .lam-cajetin,
+  .lam .gota, .lam .mesa, .lam .camion { animation: none !important; }
+  .lam.pendiente .tz { stroke-dashoffset: 0; }
+  .lam.pendiente .rl { fill-opacity: 1; }
+  .lam.pendiente .ap, .lam.pendiente .lam-etq, .lam.pendiente .lam-cajetin { opacity: 1; }
+  .lam[data-modo="lluvia"] .gota { opacity: 0.45; }
+}
+
+/* ---------- los mandos ---------- */
+.lam-modos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  padding: 0 0 12px;
+}
+.lam-modo {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 10px 15px;
+  border: 1px solid var(--regla);
+  background: transparent;
+  color: var(--texto);
+  cursor: pointer;
+}
+.lam-modo[aria-pressed="true"] {
+  background: var(--tinta);
+  color: var(--papel);
+  border-color: var(--tinta);
+}
+.lam-explica {
+  margin: 0 0 18px;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--texto);
+  max-width: 66ch;
+  min-height: 2.6em;
+}
+
+/* ---------- cajetín y rótulos, en HTML sobre el dibujo ---------- */
+.lam-cajetin {
+  position: absolute;
+  left: 16px;
+  top: 14px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--texto);
+  line-height: 1.55;
+  pointer-events: none;
+}
+.lam-cajetin b {
+  display: block;
+  font-weight: 400;
+  color: var(--tinta);
+  padding-bottom: 3px;
+  margin-bottom: 5px;
+  border-bottom: 1px solid var(--tinta);
+}
+
+.lam-etq {
+  position: absolute;
+  display: inline-flex;
+  align-items: stretch;
+  transform: translate(0, -100%);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  color: var(--tinta);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.lam-etq.inf { transform: translate(0, 0); }
+.lam-etq.der { transform: translate(-100%, -100%); }
+.lam-etq.der.inf { transform: translate(-100%, 0); }
+.lam-etq-n, .lam-item-n {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 7px;
+  background: var(--tinta);
+  color: var(--papel);
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+}
+.lam-etq-txt {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 3px 10px 3px 9px;
+  background: #fbf8f1;
+  border: 1px solid var(--tinta);
+  border-left: 0;
+  text-align: left;
+  line-height: 1.15;
+}
+.lam-etq-nombre {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.lam-etq-dato { font-size: 11.5px; color: var(--texto); padding-top: 2px; }
+.lam-etq.activa .lam-etq-n, .lam-item.activa .lam-item-n { background: var(--lam-ocre); }
+.lam-etq.activa .lam-etq-txt { border-color: var(--lam-ocre); }
+
+/* ---------- la lista de zonas ---------- */
+.lam-lista {
+  list-style: none;
+  margin: 20px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 0 28px;
+  border-top: 1px solid var(--regla);
+}
+.lam-lista li { border-bottom: 1px solid var(--regla); }
+.lam-item {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+  padding: 16px 0 18px;
+  background: transparent;
+  border: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+.lam-item-n { width: 24px; }
+.lam-item-nombre {
+  display: block;
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.3;
+  color: var(--tinta);
+}
+.lam-item-dato {
+  display: block;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--texto);
+  padding-top: 4px;
+}
+.lam-item-lee {
+  display: block;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--texto);
+  padding-top: 7px;
+}
+
+/* ---------- pantalla estrecha: los rótulos quedan como números ---------- */
+@media (max-width: 720px) {
+  .lam-etq-txt { display: none; }
+  .lam-etq-n { min-width: 22px; height: 22px; font-size: 10px; }
+  .lam-cajetin { display: none; }
+  .lam-lista { grid-template-columns: 1fr; }
+}

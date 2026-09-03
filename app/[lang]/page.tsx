@@ -5,13 +5,11 @@ import { PAGINAS, FAQ } from "@/lib/contenido";
 import { grafo, faqPage } from "@/lib/schema";
 import Formulario from "@/components/Formulario";
 import Contacto from "@/components/Contacto";
-import Lamina from "@/components/Lamina";
 import LaminaEdificio from "@/components/LaminaEdificio";
 import Laminas from "@/components/Laminas";
-import LaminaConjunto from "@/components/LaminaConjunto";
 import LaminaPlanta from "@/components/LaminaPlanta";
+import LaminaRecinto from "@/components/LaminaRecinto";
 import Dudas from "@/components/Dudas";
-import Giro from "@/components/Giro";
 import Cifras from "@/components/Cifras";
 
 /**
@@ -118,6 +116,14 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         </figure>
       </header>
 
+      {/* ---------------- EL TERRENO, EN UN DIBUJO ----------------
+          Va justo debajo de la portada, y no abajo con la documentación, a
+          propósito: Daniel, 2-sep-2026, «la página debe ser un concepto tipo
+          folleto, fácil de entender el terreno». El dibujo se explica solo,
+          se anima al entrar y contesta las tres preguntas de quien todavía
+          está decidiendo. Ver components/LaminaRecinto.tsx. */}
+      <LaminaRecinto lang={lang} />
+
       {/* ---------------- QUÉ SE ALQUILA ---------------- */}
       <section style={{ borderBottom: "1px solid var(--regla)" }}>
         <div className="reja" style={{ paddingBlock: 76 }}>
@@ -184,8 +190,8 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           </div>
           <p style={{ margin: 0, maxWidth: "62ch", fontSize: 15, lineHeight: 1.7, color: "var(--texto)" }}>
             {es
-              ? "Las medidas, las láminas del recinto y la ficha técnica. Va abajo a propósito: si todavía estás decidiendo si el sitio te sirve, lo de arriba ya lo contesta. Esto es para cuando te toca montar el evento."
-              : "Measurements, the site plates and the spec sheet. It sits down here on purpose: if you are still deciding whether the place works for you, everything above already answers that. This is for when you have to build the event."}
+              ? "Las medidas, la planta a escala, el edificio y la ficha técnica. Va abajo a propósito: si todavía estás decidiendo si el sitio te sirve, lo de arriba ya lo contesta. Esto es para cuando te toca montar el evento."
+              : "Measurements, the plan to scale, the building and the spec sheet. It sits down here on purpose: if you are still deciding whether the place works for you, everything above already answers that. This is for when you have to build the event."}
           </p>
         </div>
       </section>
@@ -193,20 +199,10 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           puntos de veinte en veinte y las ocho cabañas dicen en un vistazo lo
           que cinco números en fila obligaban a deducir. */}
       <Cifras lang={lang} />
+      {/* Las dos láminas técnicas, para quien ya está montando. El dibujo que
+          explica el terreno está arriba, debajo de la portada. */}
       <Laminas lang={lang}
                planta={<LaminaPlanta lang={lang} />}
-               conjunto={
-                 /* Las cuatro vistas llegan YA DIBUJADAS del servidor y el
-                    conmutador solo enseña una. Cuesta HTML —cuatro veces el
-                    mismo dibujo— pero mantiene trazos y cotas en el documento
-                    sin ejecutar JavaScript, que es lo que hace el sitio citable
-                    para un motor generativo. */
-                 <Giro lang={lang}
-                       vistas={([0, 1, 2, 3] as const).map((gi) => (
-                         <LaminaConjunto key={gi} lang={lang} giro={gi} />
-                       ))} />
-               }
-               exterior={<Lamina />}
                edificio={<LaminaEdificio lang={lang} />} />
 {/* ---------------- FICHA TÉCNICA ---------------- */}
       <section id="ficha" style={{ background: "var(--tinta)", color: "var(--papel-3)" }}>
@@ -242,13 +238,6 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           </dl>
         </div>
       </section>
-
-
-      
-
-      
-
-      
 
       {/* Las dudas van ANTES del formulario, no en una página aparte. Es el
           momento en que dejan de ser curiosidad y pasan a ser freno: la persona

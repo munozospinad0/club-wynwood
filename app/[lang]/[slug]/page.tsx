@@ -9,6 +9,7 @@ import {
 import { PAGINAS, FAQ, pagina } from "@/lib/contenido";
 import { grafo, breadcrumb, faqPage } from "@/lib/schema";
 import Calculadora from "@/components/Calculadora";
+import Residencia from "@/components/Residencia";
 
 /**
  * Una sola ruta dinámica para las seis páginas interiores.
@@ -51,6 +52,18 @@ export async function generateMetadata(
         ? "Qué incluye el alquiler, cuánta gente cabe, qué pasa si llueve, dónde queda y cómo se cotiza Club Wynwood."
         : "What renting includes, how many people fit, what happens if it rains, where it is and how Club Wynwood is quoted.",
       alternates: alternativas("faq"),
+    };
+  }
+
+  if (clave === "residencia") {
+    return {
+      title: lang === "es"
+        ? "Residencia permanente en EE. UU. — EB-5 Direct"
+        : "Permanent residency in the U.S. — EB-5 Direct",
+      description: lang === "es"
+        ? "Servicio de Law Offices of Sandra Clavijo, firma de abogados de inmigración en Miami: asesoría en residencia por inversión EB-5 Direct. Servicio independiente del alquiler del venue."
+        : "A service of Law Offices of Sandra Clavijo, a Miami immigration law firm: EB-5 Direct residency-by-investment counsel. Independent from the venue rental.",
+      alternates: alternativas("residencia"),
     };
   }
 
@@ -102,6 +115,24 @@ export default async function PaginaInterior(
           </div>
         </section>
         <Seguir lang={lang} actual={clave} />
+      </>
+    );
+  }
+
+  // ------------------------------------------------- servicio legal aparte
+  // No es una página del venue y no usa su plantilla: ni foto, ni cifras, ni
+  // el cierre que ofrece disponibilidad. Ver components/Residencia.tsx.
+  if (clave === "residencia") {
+    const ld = grafo(
+      breadcrumb(lang, es ? "Residencia permanente" : "Permanent residency", url("residencia", lang))
+    );
+    return (
+      <>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
+        <div className="reja" style={{ paddingBlock: "56px 0" }}>
+          <Migas lang={lang} nombre={es ? "Residencia permanente" : "Permanent residency"} />
+        </div>
+        <Residencia lang={lang} />
       </>
     );
   }

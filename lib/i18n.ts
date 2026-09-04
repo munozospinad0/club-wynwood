@@ -88,6 +88,10 @@ export const RUTAS = {
   artbasel: { es: "art-basel-y-miami-art-week", en: "art-basel-and-miami-art-week" },
   finDeAno: { es: "fiesta-de-fin-de-ano-de-empresa", en: "company-holiday-party" },
   barrio: { es: "por-que-wynwood", en: "why-wynwood" },
+  /* Servicio legal de Law Offices of Sandra Clavijo, no del venue. Vive en
+     este dominio porque ya vivía en el sitio anterior; no entra en la
+     navegación y su formulario va al CRM de la firma. Ver components/Residencia.tsx. */
+  residencia: { es: "residencia-permanente", en: "permanent-residency" },
 } as const;
 
 export type ClaveRuta = keyof typeof RUTAS;

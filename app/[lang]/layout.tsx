@@ -160,6 +160,14 @@ export default async function Layout(
                 ? "Se alquila el exterior: jardín y estructura techada"
                 : "The exterior is what's rented: garden and covered structure"}
             </div>
+            {/* El servicio legal de Sandra Clavijo vive en este dominio desde
+                el sitio anterior. Va SOLO en el pie: en la navegación
+                competiría con lo que el venue vende. */}
+            <div>
+              <a href={href("residencia", lang)} style={{ color: "var(--texto)" }}>
+                {es ? "Residencia permanente · EB-5" : "Permanent residency · EB-5"}
+              </a>
+            </div>
           </div>
         </footer>
 

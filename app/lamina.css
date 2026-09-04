@@ -304,3 +304,207 @@
   .lam-cajetin { display: none; }
   .lam-lista { grid-template-columns: 1fr; }
 }
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   EL RECORRIDO GUIADO
+
+   Va debajo del dibujo y comparte su lenguaje: esquinas rectas, filetes de 1px,
+   sin sombras. El único color de estado es el ocre, y aquí marca dos cosas y
+   nada más: el capítulo que suena y la frase que se está diciendo.
+
+   La regla de composición es que el protagonista es el DIBUJO. Estos controles
+   tienen que poder mirarse sin querer: si compitieran, la gente miraría los
+   botones mientras la voz describe algo que está pasando arriba.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.rec {
+  border-top: 1px solid var(--regla);
+  margin-top: 26px;
+  padding-top: 22px;
+}
+
+/* ── el arranque ─────────────────────────────────────────────────────────── */
+
+.rec-inicio {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px 40px;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding-bottom: 24px;
+}
+
+.rec-titulo {
+  font-family: var(--display);
+  font-size: clamp(23px, 3vw, 31px);
+  font-weight: 400;
+  line-height: 1.12;
+  margin: 8px 0 0;
+}
+
+.rec-intro {
+  margin: 10px 0 0;
+  max-width: 48ch;
+  color: var(--texto);
+  line-height: 1.62;
+}
+
+/* ── botones ─────────────────────────────────────────────────────────────── */
+
+.rec-play,
+.rec-boton {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  padding: 13px 21px;
+  border: 1px solid var(--tinta);
+  background: var(--tinta);
+  color: var(--papel);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background .18s ease, color .18s ease, border-color .18s ease;
+}
+
+.rec-play:hover,
+.rec-boton:hover { background: var(--ocre); border-color: var(--ocre); }
+
+.rec-boton-plano {
+  background: transparent;
+  color: var(--texto);
+  border-color: var(--regla);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  padding: 12px 15px;
+}
+.rec-boton-plano:hover { background: transparent; color: var(--tinta); border-color: var(--tinta); }
+
+/* Triángulo y pausa dibujados con bordes: no hay iconos que cargar. */
+.rec-play-icono {
+  width: 0; height: 0;
+  border-left: 9px solid currentColor;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+}
+.rec-pausa-icono {
+  width: 9px; height: 12px;
+  border-left: 3px solid currentColor;
+  border-right: 3px solid currentColor;
+}
+
+/* ── la barra mientras suena ─────────────────────────────────────────────── */
+
+.rec-barra {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.rec-progreso {
+  flex: 1 1 160px;
+  height: 2px;
+  background: var(--regla);
+  min-width: 120px;
+}
+.rec-progreso-relleno {
+  height: 100%;
+  background: var(--ocre);
+  transition: width .2s linear;
+}
+
+.rec-cuenta {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--texto);
+  white-space: nowrap;
+}
+
+/* ── el texto que se dice ────────────────────────────────────────────────── */
+
+/* Es también la transcripción: quien no puede o no quiere oír lee lo mismo.
+   Por eso no se oculta nunca ni se reduce a un subtítulo de una línea. */
+.rec-texto {
+  margin: 20px 0 0;
+  max-width: 68ch;
+  font-size: 16.5px;
+  line-height: 1.72;
+  color: var(--texto);
+}
+
+.rec-dicha {
+  color: var(--tinta);
+  box-shadow: inset 0 -1px 0 var(--ocre);
+}
+
+.rec-nota {
+  margin: 10px 0 0;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--texto);
+}
+
+/* ── los capítulos ───────────────────────────────────────────────────────── */
+
+/* Son las preguntas que hace la gente, no un índice. Se ven siempre y se puede
+   saltar a la propia: poder ir directo a «y si llueve» vale más que el orden. */
+.rec-capitulos {
+  list-style: none;
+  margin: 24px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
+  gap: 0;
+  border-top: 1px solid var(--regla);
+}
+
+.rec-capitulos li { border-bottom: 1px solid var(--regla); }
+
+.rec-cap {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 14px 14px 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: var(--tinta);
+  text-align: left;
+  cursor: pointer;
+  transition: color .16s ease;
+}
+.rec-cap:hover { color: var(--ocre); }
+
+.rec-cap-n {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .1em;
+  color: var(--texto);
+  flex: none;
+}
+
+.rec-cap.activo { color: var(--ocre); }
+.rec-cap.activo .rec-cap-n { color: var(--ocre); }
+
+.rec-cap-txt { line-height: 1.35; }
+
+@media (max-width: 620px) {
+  .rec-inicio { flex-direction: column; align-items: stretch; }
+  .rec-play { justify-content: center; }
+  .rec-texto { font-size: 15.5px; }
+}
+
+/* Sin movimiento: la barra deja de animarse y las transiciones se apagan. */
+@media (prefers-reduced-motion: reduce) {
+  .rec-progreso-relleno { transition: none; }
+  .rec-play, .rec-boton, .rec-cap { transition: none; }
+}

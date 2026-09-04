@@ -8,7 +8,7 @@ import Contacto from "@/components/Contacto";
 import LaminaEdificio from "@/components/LaminaEdificio";
 import Laminas from "@/components/Laminas";
 import LaminaPlanta from "@/components/LaminaPlanta";
-import LaminaRecinto from "@/components/LaminaRecinto";
+import Recorrido from "@/components/Recorrido";
 import Dudas from "@/components/Dudas";
 import Cifras from "@/components/Cifras";
 
@@ -121,8 +121,17 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           propósito: Daniel, 2-sep-2026, «la página debe ser un concepto tipo
           folleto, fácil de entender el terreno». El dibujo se explica solo,
           se anima al entrar y contesta las tres preguntas de quien todavía
-          está decidiendo. Ver components/LaminaRecinto.tsx. */}
-      <LaminaRecinto lang={lang} />
+          está decidiendo. Ver components/LaminaRecinto.tsx.
+
+          Desde el 4-sep-2026 el dibujo va dentro del RECORRIDO GUIADO: el mismo
+          dibujo, pero narrado. Siete capítulos que contestan las siete preguntas
+          que hace todo el que va a montar algo aquí, y en frases concretas del
+          guion el dibujo cambia de modo y resalta la zona de la que se habla.
+
+          No es un vídeo a propósito: un vídeo pesa, no se lee, no se indexa y
+          hay que regrabarlo entero cuando cambia una cifra. Y funciona sin voz,
+          así que la página no depende de que los audios existan. */}
+      <Recorrido lang={lang} />
 
       {/* ---------------- QUÉ SE ALQUILA ---------------- */}
       <section style={{ borderBottom: "1px solid var(--regla)" }}>

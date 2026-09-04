@@ -256,7 +256,13 @@ const T = {
     titulo: "Un jardín de 240 pies, con techo en una esquina.",
     intro: "Así es el recinto visto desde el aire. Toca cada zona para saber qué es, y prueba las tres preguntas que siempre hacen los productores.",
     aria: "Isométrica del recinto: un jardín rectangular con setos perimetrales, un paseo pavimentado de extremo a extremo, una palapa techada en una esquina, dos hileras de palmeras y ocho cabañas en el borde opuesto. Al lado, el edificio de dos niveles.",
-    modos: { todo: "Ver todo", lluvia: "¿Y si llueve?", mesas: "¿Caben 300 sentados?", camion: "¿Entra un camión?" } as Record<Modo, string>,
+    /**
+     * Nombres de capa, no preguntas. Las preguntas las hace el recorrido
+     * guiado, que además las contesta: tener las mismas dos veces, una como
+     * botón mudo y otra como capítulo narrado, obliga a la persona a descubrir
+     * por prueba y error cuál de las dos hace qué.
+     */
+    modos: { todo: "Ver todo", lluvia: "Con lluvia", mesas: "Con mesas", camion: "Con camión" } as Record<Modo, string>,
     explica: {
       todo: "Lo techado va en tinta y lo abierto en claro. El paseo cruza el recinto de lado a lado y es por donde entra todo.",
       lluvia: "La palapa cubre ~4 000 ft² con techo de paja, abierta por los cuatro costados: para el sol y el agua que cae recta. Lo demás queda al aire, y para un evento de invierno conviene carpa lateral.",
@@ -279,7 +285,8 @@ const T = {
     titulo: "A 240-foot garden, with a roof in one corner.",
     intro: "This is the site seen from the air. Tap each zone to see what it is, and try the three questions producers always ask.",
     aria: "Isometric of the site: a rectangular garden with perimeter hedges, a paved walk running end to end, a thatched structure in one corner, two rows of palms and eight cabanas along the far edge. Next to it, the two-level building.",
-    modos: { todo: "Everything", lluvia: "What if it rains?", mesas: "Do 300 seated fit?", camion: "Does a truck get in?" } as Record<Modo, string>,
+    /** Layer names, not questions. The tour asks and answers those. */
+    modos: { todo: "Everything", lluvia: "With rain", mesas: "With tables", camion: "With a truck" } as Record<Modo, string>,
     explica: {
       todo: "Roofed volumes are drawn in ink, open ground in light tone. The walk crosses the site end to end, and it is how everything gets in.",
       lluvia: "The structure covers ~4,000 sq ft under thatch, open on all four sides: it stops sun and vertical rain. The rest stays open-air, and a winter event should budget for side tenting.",
@@ -303,12 +310,42 @@ const ORDEN_ZONAS: Zona[] = ["jardin", "tiki", "cabanas", "acceso", "edificio"];
 
 // ── la lámina ──────────────────────────────────────────────────────────────
 
-export default function LaminaRecinto({ lang }: { lang: Idioma }) {
+/**
+ * El dibujo se puede DIRIGIR desde fuera, sin perder su control manual.
+ *
+ * Lo usa el recorrido guiado (`components/Recorrido.tsx`): mientras la voz
+ * narra, es el guion quien decide qué modo y qué zona se ven. En cuanto la
+ * persona toca un botón, `onManual` avisa, el recorrido se para y el dibujo
+ * vuelve a su estado interno.
+ *
+ * Las tres props son opcionales a propósito: sin ninguna, esto es exactamente
+ * lo que era antes y funciona igual. Un componente que solo sirve acompañado de
+ * otro es un componente que se rompe cuando alguien lo usa suelto.
+ */
+export default function LaminaRecinto({
+  lang,
+  modoDirigido,
+  zonaDirigida,
+  onManual,
+  panel,
+}: {
+  lang: Idioma;
+  modoDirigido?: Modo;
+  /** `null` es un valor válido: significa «ninguna zona resaltada». */
+  zonaDirigida?: Zona | null;
+  onManual?: () => void;
+  panel?: React.ReactNode;
+}) {
   const t = T[lang];
-  const [modo, setModo] = useState<Modo>("todo");
-  const [zona, setZona] = useState<Zona | null>(null);
+  const [modoLocal, setModo] = useState<Modo>("todo");
+  const [zonaLocal, setZona] = useState<Zona | null>(null);
   const [fase, setFase] = useState<Fase>("pendiente");
   const raiz = useRef<HTMLDivElement>(null);
+
+  // Lo que manda mientras el recorrido está en marcha. `undefined` significa
+  // que nadie dirige; `null` en la zona sí dirige, y quiere decir «ninguna».
+  const modo = modoDirigido ?? modoLocal;
+  const zona = zonaDirigida !== undefined ? zonaDirigida : zonaLocal;
 
   // Se dibuja al entrar en pantalla, una vez. Sin JavaScript, sin
   // IntersectionObserver o con movimiento reducido: se ve entero y quieto.
@@ -337,11 +374,15 @@ export default function LaminaRecinto({ lang }: { lang: Idioma }) {
   }, []);
 
   function elegirModo(m: Modo) {
+    // Tocar un botón devuelve el mando: el recorrido se para y el dibujo pasa a
+    // obedecer a la persona. Seguir narrando encima sería pelearse con ella.
+    onManual?.();
     setModo(m);
     if (m !== "todo") ev("toggle_layer", { layer: m });
   }
 
   function tocarZona(z: Zona) {
+    onManual?.();
     setZona((actual) => (actual === z ? null : z));
     ev("select_zone", { zone: z });
   }
@@ -579,6 +620,10 @@ export default function LaminaRecinto({ lang }: { lang: Idioma }) {
               );
             })}
           </figure>
+
+          {/* El recorrido guiado, si lo hay. Va DEBAJO del dibujo a propósito:
+              lo que se narra pasa arriba, y los controles no deben taparlo. */}
+          {panel}
 
           {/* ── la lectura de cada zona ─────────────────────────────────── */}
           <ol className="lam-lista">

@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import type { Idioma } from "@/lib/i18n";
+import { paraElLead } from "@/lib/atribucion";
 
 /**
  * El formulario de la página de residencia permanente.
@@ -69,8 +70,7 @@ export default function FormularioLegal({ lang }: { lang: Idioma }) {
     const digitos = (d.telefono || "").replace(/\D/g, "");
     const pais = PREFIJOS.find((p) => p.cc === cc)?.iso ?? "";
 
-    let attr = {};
-    try { attr = JSON.parse(sessionStorage.getItem("cw-attr") || "{}"); } catch { /* vacío */ }
+    const attr = paraElLead();
 
     try {
       const r = await fetch(ENDPOINT, {

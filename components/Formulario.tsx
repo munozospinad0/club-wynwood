@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import type { Idioma } from "@/lib/i18n";
 import { bandaInvitados, ev, horizonteFecha } from "@/lib/medicion";
 import { encolar, vaciarCola } from "@/lib/cola";
+import { capturar, paraElLead } from "@/lib/atribucion";
 
 /**
  * EL FORMULARIO. Va DIRECTO al CRM: ya no pasa por n8n.
@@ -132,17 +133,10 @@ export default function Formulario({ lang }: { lang: Idioma }) {
   const pintado = useRef(Date.now());
 
   useEffect(() => {
-    try {
-      const q = new URLSearchParams(location.search);
-      const capt: Record<string, string> = {};
-      ["gclid", "fbclid", "utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"]
-        .forEach((k) => { const v = q.get(k); if (v) capt[k] = v; });
-      const y = JSON.parse(sessionStorage.getItem("cw-attr") || "{}");
-      Object.assign(y, capt);
-      y.landing_page ??= location.pathname;
-      y.referrer ??= document.referrer || "";
-      sessionStorage.setItem("cw-attr", JSON.stringify(y));
-    } catch { /* sessionStorage bloqueado: se envía sin atribución */ }
+    // La atribución vive en una cookie de 90 días, no en la sesión: quien ve el
+    // anuncio el lunes y escribe el jueves tiene que seguir trayendo su gclid.
+    // Ver lib/atribucion.ts.
+    capturar();
 
     // Si quedó algo sin entregar de una visita anterior, este es el momento.
     void vaciarCola(ENDPOINT);
@@ -168,8 +162,7 @@ export default function Formulario({ lang }: { lang: Idioma }) {
     const telefono = digitos ? `+${cc}${digitos}` : "";
     const pais = PREFIJOS.find((p) => p.cc === cc)?.iso ?? "";
 
-    let attr = {};
-    try { attr = JSON.parse(sessionStorage.getItem("cw-attr") || "{}"); } catch { /* vacío */ }
+    const attr = paraElLead();
 
     /**
      * UN SOLO id PARA LOS DOS CAMINOS.

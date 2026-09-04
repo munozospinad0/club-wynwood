@@ -8,7 +8,7 @@ import { grafo, localBusiness, eventVenue } from "@/lib/schema";
 import { VENUE } from "@/lib/venue";
 import SelectorIdioma from "@/components/SelectorIdioma";
 import Revelado from "@/components/Revelado";
-import Gtm from "@/components/Gtm";
+import Medicion from "@/components/Medicion";
 
 export function generateStaticParams() {
   return IDIOMAS.map((lang) => ({ lang }));
@@ -68,10 +68,10 @@ export default async function Layout(
   return (
     <html lang={BCP47[lang]} data-lang={lang}>
       <body>
-        {/* GA4 y el píxel de Meta se montan DENTRO de GTM. Sin
-            NEXT_PUBLIC_GTM_ID no carga nada y los eventos se acumulan en el
-            dataLayer hasta que exista contenedor. */}
-        <Gtm />
+        {/* Consentimiento por defecto y, detrás, el transporte: el contenedor
+            de GTM si existe, GA4 directo si no. Sin ninguno de los dos, los
+            eventos se acumulan en el dataLayer. Ver components/Medicion.tsx. */}
+        <Medicion />
 
         <script
           type="application/ld+json"

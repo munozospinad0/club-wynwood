@@ -508,3 +508,15 @@
   .rec-progreso-relleno { transition: none; }
   .rec-play, .rec-boton, .rec-cap { transition: none; }
 }
+
+
+/* El formulario al final del recorrido. Se separa con un filete y respira:
+   llega despues de siete capitulos y no puede parecer que sigue el texto. */
+.rec-cierre {
+  margin-top: 34px;
+  padding-top: 26px;
+  border-top: 1px solid var(--regla);
+}
+
+.rec-cierre .rec-titulo { margin-top: 6px; }
+.rec-cierre .rec-intro { margin-bottom: 26px; max-width: 54ch; }

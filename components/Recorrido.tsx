@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Idioma } from "@/lib/i18n";
 import { ev } from "@/lib/medicion";
 import LaminaRecinto from "@/components/LaminaRecinto";
+import Formulario from "@/components/Formulario";
 import {
   CAPITULOS,
   oraciones,
@@ -74,6 +75,10 @@ const T = {
     de: "de",
     sinVoz: "Sin voz: se lee el capítulo y el dibujo se mueve igual.",
     transcripcion: "Leer el texto completo",
+    ojoCierre: "Pedir disponibilidad",
+    tituloCierre: "Ya conoces el sitio",
+    introCierre:
+      "Dinos la fecha y cuánta gente esperas, y te contestamos con disponibilidad real y condiciones. En veinticuatro horas hábiles.",
   },
   en: {
     ojo: "Guided tour",
@@ -90,6 +95,10 @@ const T = {
     de: "of",
     sinVoz: "No voice: the chapter is read and the drawing moves all the same.",
     transcripcion: "Read the full text",
+    ojoCierre: "Request availability",
+    tituloCierre: "Now you know the site",
+    introCierre:
+      "Tell us the date and how many people you expect, and we reply with real availability and terms. Within twenty-four business hours.",
   },
 } as const;
 
@@ -116,6 +125,7 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
   const cap = CAPITULOS[indice];
   const texto = cap.texto[lang];
   const hitos = cap.hitos[lang] ?? [];
+  const ultimo = indice === CAPITULOS.length - 1;
 
   /**
    * Cuánto dura un capítulo cuando no hay voz.
@@ -341,6 +351,33 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
               </p>
 
               {hayAudio === false && <p className="rec-nota">{t.sinVoz}</p>}
+
+              {/**
+                * EL FORMULARIO, JUSTO AQUÍ, AL LLEGAR AL FINAL.
+                *
+                * Daniel, 4-sep-2026: «que al final puedan llenar el formulario
+                * ahí mismo para que se facilite mucho la conversión».
+                *
+                * Es el momento de más intención de toda la página: acaba de ver
+                * el terreno, sabe si cabe su evento, sabe qué pasa si llueve y
+                * sabe por dónde entra su camión. Mandarlo entonces a buscar el
+                * formulario más abajo es cobrar el viaje y no abrir la puerta.
+                *
+                * No añade descarga: `Formulario` es un componente cliente que ya
+                * viaja en el paquete de esta página. Solo añade marcado.
+                *
+                * Aparece **solo en el último capítulo**. Ponerlo desde el
+                * principio sería pedir el dato antes de haber contado nada, que
+                * es justo lo que el recorrido existe para no hacer.
+                */}
+              {ultimo && (
+                <div className="rec-cierre">
+                  <div className="ojo">{t.ojoCierre}</div>
+                  <h3 className="rec-titulo">{t.tituloCierre}</h3>
+                  <p className="rec-intro">{t.introCierre}</p>
+                  <Formulario lang={lang} />
+                </div>
+              )}
             </>
           )}
 

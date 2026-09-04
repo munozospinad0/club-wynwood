@@ -39,7 +39,27 @@ if (args.includes("--voces")) {
 
 const MODEL_ID = process.env.MODEL_ID || "eleven_multilingual_v2";
 const OUTPUT_FORMAT = process.env.OUTPUT_FORMAT || "mp3_44100_96";
-const VOICE = { es: process.env.VOICE_ES, en: process.env.VOICE_EN };
+/**
+ * LAS VOCES, y por qué estas dos.
+ *
+ * **Español: latinoamericano, no peninsular.** El público es Miami y
+ * Latinoamérica. Una voz de España en un venue de Wynwood suena a doblaje, y
+ * además choca con la regla de español neutro que gobierna todo el resto del
+ * texto de la marca.
+ *
+ * **Inglés: alguien hablando, no alguien locutando.** La descripción de esta voz
+ * dice literalmente «sounds like an actual person talking, not a performance», y
+ * conserva las vacilaciones naturales del habla. Encaja con el tono del sitio,
+ * que no promete nada y solo cuenta lo que hay: una voz de anuncio contradiría
+ * el mensaje mientras lo lee.
+ *
+ * Se pueden sustituir por entorno sin tocar el código. `--voces` lista las de la
+ * cuenta con su identificador.
+ */
+const VOICE = {
+  es: process.env.VOICE_ES || "cTZ1Li7htNiwd1cNPgUC", // Nestor · es-latin-american
+  en: process.env.VOICE_EN || "btaSeNTVh1pGx4pjFzub", // Jeremy B. · en-american
+};
 const AJUSTES = {
   stability: Number(process.env.STABILITY ?? 0.45),
   similarity_boost: Number(process.env.SIMILARITY ?? 0.8),

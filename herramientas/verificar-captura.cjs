@@ -91,6 +91,36 @@ function ok(nombre, bien, detalle) {
   ok("captura gbraid, el de iOS", d3.gbraid === "IOS_ABC", JSON.stringify(d3));
   await ctx2.close();
 
+  /**
+   * ── 4. Las rutas que NO montan el formulario del venue ───────────────────
+   *
+   * Aquí estaba el fallo. La captura colgaba del formulario, así que un anuncio
+   * apuntando a residencia o a preguntas frecuentes no dejaba cookie: el lead
+   * entraba sin identificador de clic y el informe lo daba por tráfico directo.
+   * Peor en el caso de Google, donde el referente hace que un clic pagado quede
+   * registrado como búsqueda orgánica.
+   */
+  for (const [nombre, ruta, parametro, valor] of [
+    ["residencia permanente", "/es/residencia-permanente", "fbclid", "FB_RESID_1"],
+    ["preguntas frecuentes", "/es/preguntas-frecuentes", "gclid", "GA_FAQ_1"],
+  ]) {
+    const c = await b.newContext();
+    const p = await c.newPage();
+    const r = await p.goto(`${BASE}${ruta}?${parametro}=${valor}`, {
+      waitUntil: "domcontentloaded", timeout: 60000,
+    });
+    if (!r || r.status() >= 400) {
+      ok(`${nombre}: la página existe`, false, `estado ${r ? r.status() : "sin respuesta"}`);
+      await c.close();
+      continue;
+    }
+    await p.waitForTimeout(1200);
+    const galleta = (await c.cookies()).find((x) => x.name === "cw_attr");
+    const datos = galleta ? JSON.parse(decodeURIComponent(galleta.value)) : {};
+    ok(`${nombre}: captura ${parametro}`, datos[parametro] === valor, JSON.stringify(datos));
+    await c.close();
+  }
+
   await b.close();
   if (errores.length) {
     console.log("\n  ERRORES EN CONSOLA:\n   " + errores.join("\n   "));

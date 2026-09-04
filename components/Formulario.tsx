@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import type { Idioma } from "@/lib/i18n";
 import { bandaInvitados, ev, horizonteFecha } from "@/lib/medicion";
 import { encolar, vaciarCola } from "@/lib/cola";
-import { capturar, paraElLead } from "@/lib/atribucion";
+import { paraElLead } from "@/lib/atribucion";
 
 /**
  * EL FORMULARIO. Va DIRECTO al CRM: ya no pasa por n8n.
@@ -104,6 +104,21 @@ const TIPOS = [
 
 interface Respuesta {
   ok?: boolean;
+  /**
+   * EL CAMPO QUE DECIDE SI ESTO SE GUARDÓ DE VERDAD.
+   *
+   * El CRM contesta 200 también cuando descarta un envío, y lo hace a propósito:
+   * decirle a un robot cuál de las cuatro capas lo cazó es enseñarle a saltarla.
+   * Pero **solo la respuesta de una solicitud guardada trae `id`**.
+   *
+   * Sin mirar este campo, el sitio celebraba los descartes: pintaba «Recibido» y
+   * disparaba `generate_lead` sin que existiera nada en el CRM. Da igual con un
+   * robot; el problema es que la primera capa que descarta es el ORIGEN, y esa
+   * no se rompe por ataque sino por despliegue. Un dominio nuevo sin añadir a la
+   * lista y todos los leads se pierden uno a uno, con el formulario diciendo que
+   * llegaron.
+   */
+  id?: string;
   calidad?: string | null;
   degradado?: boolean;
 }
@@ -133,11 +148,10 @@ export default function Formulario({ lang }: { lang: Idioma }) {
   const pintado = useRef(Date.now());
 
   useEffect(() => {
-    // La atribución vive en una cookie de 90 días, no en la sesión: quien ve el
-    // anuncio el lunes y escribe el jueves tiene que seguir trayendo su gclid.
-    // Ver lib/atribucion.ts.
-    capturar();
-
+    // La captura de atribución ya NO vive aquí: la hace <Atribucion /> desde el
+    // layout, para que también corra en las páginas que no montan formulario.
+    // Tenerla aquí dejaba /residencia/ y /preguntas-frecuentes/ sin cookie.
+    //
     // Si quedó algo sin entregar de una visita anterior, este es el momento.
     void vaciarCola(ENDPOINT);
   }, []);
@@ -214,7 +228,10 @@ export default function Formulario({ lang }: { lang: Idioma }) {
       event_id: eventId,
     };
 
-    if (r) {
+    // `r.id` y no solo `r`: una respuesta sin identificador significa que el CRM
+    // descartó el envío, y celebrarlo sería mentirle a la persona y contarle a
+    // GA4 un lead que no existe. Ver el comentario de `Respuesta.id`.
+    if (r?.id) {
       setEstado("ok");
       // Todo envío cuenta como generate_lead, pero SOLO el calificado es
       // conversión primaria. Contar todo entrena a las plataformas a traer

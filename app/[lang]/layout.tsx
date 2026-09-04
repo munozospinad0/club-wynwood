@@ -9,6 +9,7 @@ import { VENUE } from "@/lib/venue";
 import SelectorIdioma from "@/components/SelectorIdioma";
 import Revelado from "@/components/Revelado";
 import Medicion from "@/components/Medicion";
+import Atribucion from "@/components/Atribucion";
 
 export function generateStaticParams() {
   return IDIOMAS.map((lang) => ({ lang }));
@@ -72,6 +73,12 @@ export default async function Layout(
             de GTM si existe, GA4 directo si no. Sin ninguno de los dos, los
             eventos se acumulan en el dataLayer. Ver components/Medicion.tsx. */}
         <Medicion />
+
+        {/* La atribución se captura en TODAS las páginas. Antes solo corría
+            donde estaba el formulario del venue, y las rutas de preguntas
+            frecuentes y de residencia se quedaban sin cookie: los anuncios que
+            apuntaran ahí perdían su identificador de clic. Ver el componente. */}
+        <Atribucion />
 
         <script
           type="application/ld+json"

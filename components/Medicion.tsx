@@ -161,9 +161,21 @@ window.__cwAds = ${ads ? `'${ads}'` : "''"};`}
         </>
       ) : null}
 
-      {/* El píxel va suelto: no depende de GTM ni de gtag, y su único trabajo
-          imprescindible es dejar las cookies _fbp y _fbc. */}
-      {pixel ? (
+      {/**
+        * EL PÍXEL, SOLO SI NO HAY CONTENEDOR.
+        *
+        * Antes se cargaba fuera del condicional, y eso contradecía lo que
+        * promete el comentario de arriba y lo que dice `docs/11-PLATAFORMAS.md`:
+        * que al poner el contenedor las etiquetas directas se apagan solas.
+        *
+        * No era un problema hoy —no hay contenedor— pero era una trampa armada
+        * para el día que se pusiera: dos cargadores del mismo píxel significan
+        * **dos `PageView` por visita**, y dos `Lead` por formulario de los
+        * cuales solo uno lleva `eventID`. Meta no puede deduplicar dos eventos
+        * cuando a uno le falta el identificador, así que el informe saldría al
+        * doble y el coste por lead a la mitad del real.
+        */}
+      {pixel && !gtm ? (
         <>
           <Script id="meta-pixel" strategy="afterInteractive">
             {`!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -171,7 +183,10 @@ n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
 n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
 t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
 document,'script','https://connect.facebook.net/en_US/fbevents.js');
-fbq('init','${pixel}');fbq('track','PageView');`}
+fbq('init','${pixel}');fbq('track','PageView');
+// Lo mira lib/medicion.ts antes de disparar el Lead del navegador: si el píxel
+// lo cargara el contenedor y no nosotros, disparar aquí lo contaría dos veces.
+window.__cwPixel = true;`}
           </Script>
           <noscript>
             {/* eslint-disable-next-line @next/next/no-img-element */}

@@ -95,7 +95,16 @@ export default function FormularioLegal({ lang }: { lang: Idioma }) {
           trampa: d.trampa,
         }),
       });
-      setEstado(r.ok ? "ok" : "error");
+      /**
+       * `id` y no `r.ok`. El CRM contesta 200 también cuando descarta un envío
+       * —para no enseñarle a un robot qué capa lo cazó— y **solo la respuesta de
+       * una consulta guardada trae identificador**.
+       *
+       * Con `r.ok` a secas, un fallo de configuración del origen hacía que esta
+       * página dijera «Recibido» a todo el mundo mientras no se guardaba nada.
+       */
+      const cuerpo = (await r.json().catch(() => ({}))) as { id?: string };
+      setEstado(r.ok && cuerpo.id ? "ok" : "error");
     } catch {
       setEstado("error");
     }

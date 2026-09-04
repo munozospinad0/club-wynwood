@@ -47,6 +47,8 @@ declare global {
     __cwGa4Directo?: boolean;
     /** El `AW-XXXXXXXXX` de Google Ads, si está configurado. */
     __cwAds?: string;
+    /** true solo si el píxel de Meta lo cargó el sitio, no un contenedor. */
+    __cwPixel?: boolean;
   }
 }
 
@@ -109,7 +111,16 @@ function conversionCalificada(parametros: Record<string, unknown>): void {
     });
   }
 
-  if (typeof window.fbq === "function") {
+  /**
+   * `__cwPixel` y no solo `typeof fbq === "function"`.
+   *
+   * La diferencia importa el día que exista contenedor: si el píxel lo cargara
+   * GTM, `fbq` existiría igualmente y este disparo sumaría un segundo `Lead`
+   * junto al de la etiqueta del contenedor. Y solo uno de los dos llevaría
+   * `eventID`, así que Meta no podría reconocer que son el mismo hecho: el
+   * informe saldría al doble y el coste por lead a la mitad del real.
+   */
+  if (window.__cwPixel && typeof window.fbq === "function") {
     window.fbq(
       "track",
       "Lead",

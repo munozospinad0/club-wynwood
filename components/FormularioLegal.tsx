@@ -6,15 +6,31 @@ import type { Idioma } from "@/lib/i18n";
 /**
  * El formulario de la página de residencia permanente.
  *
- * Va a `/api/consulta-legal`, que lo reenvía al CRM de la firma. NO comparte
- * nada con el formulario del venue: ni endpoint, ni cualificación, ni eventos
- * de conversión. Son dos negocios distintos y mezclar sus leads sería contarle
- * a Meta que un caso de inmigración es un alquiler de espacio.
+ * ─────────────────────────────────────────────────────────────────────────
+ * A DÓNDE VA, Y POR QUÉ AHÍ
+ * ─────────────────────────────────────────────────────────────────────────
+ *
+ * Al MISMO CRM que las solicitudes del venue. Daniel: «que sea al CRM del Club
+ * Wynwood para que no nos compliquemos». Una sola bandeja que mirar.
+ *
+ * Llama directo a `/api/solicitud`, igual que el formulario del venue, y no a
+ * una ruta intermedia de este sitio: ese endpoint ya acepta este origen y trae
+ * sus cuatro defensas —origen, campo trampa, tiempo de relleno y ritmo por IP—
+ * además de la IP real de la persona. Un salto por el servidor las habría
+ * empeorado todas.
+ *
+ * Lo que lo distingue es `consulta: "legal"`. Con esa marca el CRM lo guarda
+ * con su propio origen, **no le cuenta nada a Meta** y lo deja fuera de
+ * Informes: una consulta de inmigración no es un alquiler, y contarla como tal
+ * ensucia las cifras del venue y le enseña a la campaña la señal equivocada.
  *
  * Pide poco a propósito. Quien consulta por una visa de inversión no va a
- * escribir su capital en un formulario público, y preguntarlo aquí solo baja
- * el número de personas que escriben. Lo que hace falta es poder llamarla.
+ * escribir su capital en un formulario público; lo que hace falta es poder
+ * llamarla.
  */
+
+const CRM = process.env.NEXT_PUBLIC_CRM_URL ?? "https://crm-wynwood.vercel.app";
+const ENDPOINT = `${CRM}/api/solicitud`;
 
 const PREFIJOS: Array<{ cc: string; iso: string; etiqueta: string }> = [
   { cc: "57", iso: "CO", etiqueta: "Colombia +57" },
@@ -31,6 +47,12 @@ const PREFIJOS: Array<{ cc: string; iso: string; etiqueta: string }> = [
 
 type Estado = "idle" | "enviando" | "ok" | "error";
 
+function idUnico(): string {
+  return typeof crypto !== "undefined" && crypto.randomUUID
+    ? crypto.randomUUID()
+    : `cw-legal-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+}
+
 export default function FormularioLegal({ lang }: { lang: Idioma }) {
   const es = lang === "es";
   const [estado, setEstado] = useState<Estado>("idle");
@@ -45,30 +67,32 @@ export default function FormularioLegal({ lang }: { lang: Idioma }) {
 
     const cc = d.prefijo || "57";
     const digitos = (d.telefono || "").replace(/\D/g, "");
-    const iso = PREFIJOS.find((p) => p.cc === cc)?.iso ?? "";
+    const pais = PREFIJOS.find((p) => p.cc === cc)?.iso ?? "";
 
-    // La atribución que dejó la visita al aterrizar, si la hay.
-    let attr: Record<string, string> = {};
+    let attr = {};
     try { attr = JSON.parse(sessionStorage.getItem("cw-attr") || "{}"); } catch { /* vacío */ }
 
     try {
-      const r = await fetch("/api/consulta-legal", {
+      const r = await fetch(ENDPOINT, {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
+          ...attr,
+          // El contrato del CRM llama `email` al correo y `tipo` al tipo de
+          // evento. Se manda con sus nombres, no con los de este formulario.
+          email: d.correo,
           nombre: d.nombre,
-          correo: d.correo,
           telefono: digitos ? `+${cc}${digitos}` : "",
           ciudad: d.ciudad,
-          pais: iso,
+          pais,
           mensaje: d.mensaje,
+          tipo: es ? "Consulta legal · EB-5" : "Legal enquiry · EB-5",
+          consulta: "legal",
           idioma: lang,
-          trampa: d.trampa,
+          enviado: new Date().toISOString(),
+          idempotencyKey: idUnico(),
           tardo: Date.now() - pintado.current,
-          utm_source: attr.utm_source,
-          utm_medium: attr.utm_medium,
-          utm_campaign: attr.utm_campaign,
-          gclid: attr.gclid,
+          trampa: d.trampa,
         }),
       });
       setEstado(r.ok ? "ok" : "error");
@@ -91,8 +115,8 @@ export default function FormularioLegal({ lang }: { lang: Idioma }) {
     return (
       <p className="respuesta" role="status">
         {es
-          ? "Recibido. La firma se comunica contigo por correo o teléfono. Recuerda que enviar este formulario todavía no crea una relación abogado-cliente."
-          : "Received. The firm will reach out by email or phone. Sending this form does not yet create an attorney-client relationship."}
+          ? "Recibido. Tu consulta pasa a Law Offices of Sandra Clavijo y la firma se comunica contigo. Enviar este formulario todavía no crea una relación abogado-cliente."
+          : "Received. Your enquiry goes to Law Offices of Sandra Clavijo and the firm will get back to you. Sending this form does not yet create an attorney-client relationship."}
       </p>
     );
   }
@@ -145,7 +169,7 @@ export default function FormularioLegal({ lang }: { lang: Idioma }) {
       <button className="boton" type="submit" disabled={estado === "enviando"} style={{ alignSelf: "flex-start" }}>
         {estado === "enviando"
           ? (es ? "Enviando…" : "Sending…")
-          : (es ? "Hablar con la firma" : "Talk to the firm")}
+          : (es ? "Enviar la consulta" : "Send the enquiry")}
       </button>
 
       {estado === "error" && (
@@ -153,14 +177,14 @@ export default function FormularioLegal({ lang }: { lang: Idioma }) {
           {es
             ? "No se pudo enviar. Escribe directamente a "
             : "It could not be sent. Write directly to "}
-          <a href="https://sclavijo.com/contacto" target="_blank" rel="noopener noreferrer">sclavijo.com</a>.
+          <a href="https://sclavijo.com" target="_blank" rel="noopener noreferrer">sclavijo.com</a>.
         </p>
       )}
 
       <p style={{ margin: 0, fontSize: 13, color: "var(--texto)", maxWidth: "62ch", lineHeight: 1.6 }}>
         {es
-          ? "Tus datos van a Law Offices of Sandra Clavijo, no al equipo del venue."
-          : "Your details go to Law Offices of Sandra Clavijo, not to the venue team."}
+          ? "Tu consulta la recibe el equipo de Club Wynwood y la traslada a Law Offices of Sandra Clavijo. No se usa para nada del alquiler del espacio."
+          : "Your enquiry is received by the Club Wynwood team and passed on to Law Offices of Sandra Clavijo. It is not used for anything related to renting the space."}
       </p>
     </form>
   );

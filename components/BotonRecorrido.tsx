@@ -26,7 +26,7 @@ export default function BotonRecorrido({ lang }: { lang: Idioma }) {
       }}
     >
       <span className="rec-play-icono" aria-hidden="true" />
-      {es ? "Ver el recorrido · 3 min" : "Watch the tour · 3 min"}
+      {es ? "Recorrido técnico · 3 min" : "Technical tour · 3 min"}
     </a>
   );
 }

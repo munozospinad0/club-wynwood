@@ -1,8 +1,8 @@
 {
-  "version": "2.1.0",
+  "version": "3.0.0",
   "modelo": "eleven_multilingual_v2",
   "voces": {
-    "es": "dQ0C8BEdKF2odmELvNee",
+    "es": "IaUx9NjPDJeDAwpNQMW2",
     "en": "nPczCjzI2devNBz1zQrb"
   },
   "total": 8,
@@ -18,21 +18,21 @@
   ],
   "duraciones": {
     "es": [
-      23.59,
-      17.6,
-      24.15,
       20.48,
-      25.4,
-      19.41,
-      14.58,
-      12.4
+      16.02,
+      20.71,
+      18.44,
+      27.12,
+      16.58,
+      12.77,
+      13.28
     ],
     "en": [
-      23.36,
+      23.03,
       19.6,
       24.29,
       20.53,
-      27.82,
+      32.93,
       22.29,
       14.63,
       13.56

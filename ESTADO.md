@@ -59,10 +59,87 @@ El mismo dibujo isométrico narrado, pero ahora se ve como un vídeo:
    velocidad 1,0).** Es la que está. En la prueba con Scribe, David leyó el
    capítulo 1 sin una palabra distinta; Cristian en v2 se comió tres.
 
-Las anteriores quedaron en `.qa/voz-anterior/` (v2 Nestor/Chris) y `.qa/voz-v3/`.
-Coste total del día: unos 15 000 créditos de 129 000. `auditar-recorrido.mjs`: sin
-errores. El manifiesto trae `duraciones` por capítulo (ffprobe): las usa la
-grabación del vídeo.
+4. Daniel oyó a David: «suena raro, no humano y natural». Se buscaron en la
+   **biblioteca compartida de ElevenLabs** los narradores latinos más usados y se
+   añadieron cuatro a la cuenta (Alberto Rodríguez, Enrique M. Nieto, Jhenny,
+   Tatiana Martin). Se generó el capítulo 1 con siete voces y ajustes naturales
+   (**sin speaker boost, similarity 0,75, stability 0,45, velocidad 1,0**) y se
+   armó una página de comparación con los audios (`.qa/voces2/comparacion.html`,
+   publicada como artefacto) para que Daniel elija oyendo. **Mientras decide, el
+   sitio va con Alberto Rodríguez** (`l1zE9xgNpUTaQCZzpNJa`): la voz latina de
+   narración más clonada de la biblioteca (1,09 M), sin errores de lectura.
+
+Las anteriores quedaron en `.qa/voz-anterior/` (v2 Nestor/Chris), `.qa/voz-v3/` y
+`.qa/voz-david/`. Coste total del día: unos 24 000 créditos de 129 000.
+`auditar-recorrido.mjs`: sin errores. El manifiesto trae `duraciones` por capítulo
+(ffprobe): las usa la grabación del vídeo.
+
+5. Daniel oyó la página de comparación: **«para español me gusta la de
+   Superior»** y «en inglés lo que se tiene está bien». **Es la definitiva:
+   Superior (`IaUx9NjPDJeDAwpNQMW2`) en ES y Brian en EN**, ajustes naturales.
+
+### La música, cambiada
+
+Daniel: «la música no le queda bien del todo, ajústala». Se generaron dos camas
+nuevas con **ElevenLabs Music** (`POST /v1/music`, 190 s, instrumental) hechas para
+este vídeo: **A · guitarra de nailon y piano** (la puesta) y B · ambiente. La
+anterior (junio, de otro proyecto) quedó en `.qa/musica/cama-anterior.mp3`. Las
+tres están en la página de comparación para que Daniel confirme.
+
+### El dibujo, rehecho como en las fotos (tercera versión)
+
+Daniel: «poco detallado, no veo mesas, veo cosas que no me dicen nada, necesito
+todo animado, de lo que vaya hablando, como lo hacemos en Loymark Academy» y «el
+dibujo no encaja con las fotos… del edificio también lo tiene que hacer».
+
+- **Geometría nueva** en `lib/recinto.geo.ts`, leída de las dos aéreas: paseo
+  central de la calle al edificio, palapa grande (100 × 37 ft) pegada al paseo por
+  el norte con techo largo a cuatro aguas y postes en tres hileras, ocho
+  **cabañas-pérgola** (postes, marco y listones blancos, sofá) al sur, dos hileras
+  de palmeras, setos y **estacionamiento con coches** fuera, el **edificio** al
+  fondo con su puerta donde termina el paseo y ventanas.
+- **Objetos reales**: mesas redondas con sus diez sillas (20 bajo la palapa, 10 en
+  el césped), pasillos de servicio, mesas de picnic, camión con cabina y ruedas,
+  escenario con tarima, torres de sonido, truss y focos con haz, barra con
+  taburetes, guirnaldas, público.
+- **Capas aditivas por frase** (`agregar`/`quitar` en los hitos → `data-capas`):
+  techo, postes, lados abiertos, portón, paseo, pasillos, picnic, cabañas,
+  edificio, tarima, sonido, truss, luces, barra-luz, público, guirnaldas. El
+  escenario se monta pieza a pieza mientras la voz lo nombra.
+- **Entrada con peso** (`lam-peso`: caída, rebote, escala) para todo lo que
+  aparece porque se nombra; **reposo con vida**: las palmeras se mecen, cada una a
+  su ritmo. Con mesas, gente o barra, **el techo de la palapa se vuelve
+  transparente** (sección de plano) para que se vea lo que hay debajo.
+- El guion cambió en dos frases y se regrabaron los capítulos 1 y 5: «Junto al
+  paseo, la palapa techada» (antes «en una esquina») y una frase nueva sobre el
+  edificio («El edificio del fondo, donde termina el paseo, tiene dos niveles…»).
+- **Botón permanente «Solicitar disponibilidad →»** en los mandos del cine: abre
+  el formulario en el panel mientras el recorrido sigue (Daniel: «un botón fácil
+  para llenar el form y conseguir más información»). Mide `form_start`.
+
+### Las fotos, nítidas
+
+Daniel: «que las fotos no se vean borrosas». Las aéreas vienen de Flickr
+(fotógrafa Joyce Frohman, descarga limitada a 1 024 px) y ampliarlas a 1080p las
+ablandaba. Ahora cada foto tiene `tamano` en `FOTOS`: **«lleno»** solo las de
+1 600 px o más (el montaje bajo la palapa y la cenital de noche); **«postal»** las
+demás, a su tamaño natural, enmarcadas en papel sobre el dibujo atenuado y con
+pie. Los recortes se hacen sin escalar (`fotos-nitidas.sh` en `.qa/`). La aérea
+completa no entra en el recorrido porque a tamaño natural se lee el rótulo del
+operador; queda solo en la portada del sitio, con su pie.
+
+### Nombres técnicos
+
+Daniel: «dale un nombre más técnico a las cosas». La interfaz dejó de hablar como
+un guía: «Plano del recinto · vista isométrica», «Recorrido técnico narrado»,
+«Simulador de aforo», capas «Plan de lluvia / Aforo sentado · 300 / Load-in ·
+camión 40 ft / Montaje nocturno», formatos «Banquete · sentados / Cóctel · de
+pie», capítulos con nombre técnico (El recinto · Aforo · Plan de lluvia · Acceso
+y load-in · Infraestructura incluida · Montaje tipo, nocturno · Tarifas y
+condiciones · Disponibilidad y visita técnica). Los MP4 se llaman
+`ClubWynwood_RecorridoTecnico_{ES,EN}_{1920x1080,1080x1920}.mp4`. Y en la
+cabecera del cine hay un conmutador **ES | EN** que abre la otra versión en el
+mismo capítulo (`?recorrido=auto&cap=N`).
 
 ### La música
 

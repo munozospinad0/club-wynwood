@@ -47,6 +47,9 @@ export interface Hito {
   segundos?: number;
   /** La cifra que se está diciendo, junto a la marca: «240 ft · 73 m». `null` la quita. */
   cifra?: string | null;
+  /** Capas aditivas que se encienden («pasillos», «truss», «luces»…) o se apagan al llegar la frase. */
+  agregar?: string[];
+  quitar?: string[];
 }
 
 /**
@@ -56,16 +59,23 @@ export interface Hito {
  * recortado por debajo del mural, y la cenital de un evento al anochecer.
  * `pos` es el `object-position`: dónde queda el encuadre al recortar.
  */
+/**
+ * `tamano`: «lleno» ocupa todo el cuadro (solo las que tienen píxeles para
+ * ello: 1 600 o más de ancho); «postal» se enseña a su tamaño natural como una
+ * foto enmarcada sobre el dibujo atenuado, con pie. Daniel: «que las fotos no se
+ * vean borrosas». Las aéreas vienen de Flickr a 1 024 px (la fotógrafa limita
+ * la descarga a ese tamaño) y ampliarlas a 1080p las ablanda; a tamaño natural
+ * se ven nítidas y la postal se lee como una elección, no como una carencia.
+ */
 export const FOTOS = {
-  /* La aérea completa lleva el rótulo del operador en el edificio del fondo,
-     legible a 1080p. Se encuadra hacia la izquierda y abajo —la palapa y el
-     paseo— para que el edificio quede fuera del recorte en 16:9. */
-  aerea: { src: "/assets/aerea-predio.jpg", pos: "22% 78%", alt: { es: "El predio desde el aire: la palapa, el paseo y el jardín", en: "The site from the air: the structure, the walk and the garden" } },
-  palmeras: { src: "/assets/palmeras-aerea.jpg", pos: "45% 50%", alt: { es: "Las dos hileras de palmeras sobre el césped y la palapa", en: "The two rows of palms over the turf and the structure" } },
-  palapa: { src: "/assets/venue-palapa.webp", pos: "50% 45%", alt: { es: "Bajo la palapa: paja sobre madera, abierta por los costados", en: "Under the structure: thatch on timber, open on the sides" } },
-  montaje: { src: "/assets/palapa-montaje.jpg", pos: "50% 50%", alt: { es: "Un montaje de sonido e iluminación bajo la palapa", en: "A sound and lighting setup under the structure" } },
-  paseo: { src: "/assets/paseo-palmeras.jpg", pos: "50% 50%", alt: { es: "El paseo pavimentado entre las dos hileras de palmeras", en: "The paved walk between the two rows of palms" } },
-  noche: { src: "/assets/recinto-noche.jpg", pos: "50% 50%", alt: { es: "El recinto al anochecer durante un evento, visto desde arriba", en: "The site at dusk during an event, seen from above" } },
+  /* La aérea completa lleva el rótulo del operador en el edificio del fondo.
+     Se encuadra hacia la izquierda y abajo para que quede fuera del recorte. */
+  aerea: { src: "/assets/aerea-predio.jpg", pos: "22% 78%", tamano: "postal", alt: { es: "El predio desde el aire: la palapa, el paseo y el jardín", en: "The site from the air: the structure, the walk and the garden" } },
+  palmeras: { src: "/assets/palmeras-aerea.jpg", pos: "45% 50%", tamano: "postal", alt: { es: "Las dos hileras de palmeras sobre el césped y la palapa", en: "The two rows of palms over the turf and the structure" } },
+  palapa: { src: "/assets/venue-palapa.webp", pos: "50% 45%", tamano: "postal", alt: { es: "Bajo la palapa: paja sobre madera, abierta por los costados", en: "Under the structure: thatch on timber, open on the sides" } },
+  montaje: { src: "/assets/palapa-montaje.jpg", pos: "50% 50%", tamano: "lleno", alt: { es: "Un montaje de sonido e iluminación bajo la palapa", en: "A sound and lighting setup under the structure" } },
+  paseo: { src: "/assets/paseo-palmeras.jpg", pos: "50% 50%", tamano: "postal", alt: { es: "El paseo pavimentado entre las dos hileras de palmeras", en: "The paved walk between the two rows of palms" } },
+  noche: { src: "/assets/recinto-noche.jpg", pos: "50% 50%", tamano: "lleno", alt: { es: "El recinto al anochecer durante un evento, visto desde arriba", en: "The site at dusk during an event, seen from above" } },
 } as const;
 export type FotoRecorrido = keyof typeof FOTOS;
 
@@ -75,6 +85,8 @@ export interface Capitulo {
   zona: ZonaRecorrido | null;
   punto: Pt | null;
   zoom: number;
+  /** Capas encendidas al empezar el capítulo. */
+  capas?: string[];
   pregunta: Record<Idioma, string>;
   texto: Record<Idioma, string>;
   hitos: Record<Idioma, Hito[]>;

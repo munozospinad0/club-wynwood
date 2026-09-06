@@ -900,6 +900,18 @@
 }
 .cine-marca { color: var(--papel); }
 .cine-ojo { color: var(--texto-3); flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cine-idioma { display: inline-flex; border: 1px solid var(--regla-osc); }
+.cine-idioma a {
+  padding: 8px 10px;
+  color: var(--texto-3);
+  text-decoration: none;
+  font: inherit;
+  letter-spacing: inherit;
+}
+.cine-idioma a + a { border-left: 1px solid var(--regla-osc); }
+.cine-idioma a[aria-current="true"] { color: var(--tinta); background: var(--papel); }
+.cine-idioma a:hover { color: var(--papel); }
+.cine-idioma a[aria-current="true"]:hover { color: var(--tinta); }
 .cine-salir {
   border: 1px solid var(--regla-osc);
   background: transparent;
@@ -1208,20 +1220,61 @@
   background: var(--tinta);
 }
 .lam-foto.visible { opacity: 1; }
+.lam-foto-marco { margin: 0; width: 100%; height: 100%; position: relative; }
+.lam-foto-marco figcaption { display: none; }
 .lam-foto img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
-  /* Ken Burns: un acercamiento lento y continuo. Una foto quieta sobre un
-     dibujo que se mueve se lee como un error de carga. */
+  /* Ken Burns: un acercamiento lento y continuo, corto para no ampliar de mas. */
   animation: lam-kenburns 9s linear both;
   transform-origin: 50% 50%;
 }
 @keyframes lam-kenburns {
-  from { transform: scale(1.02); }
-  to   { transform: scale(1.16); }
+  from { transform: scale(1.0); }
+  to   { transform: scale(1.08); }
 }
+
+/* La postal: la foto a su tamaño natural, enmarcada en papel sobre el dibujo
+   atenuado, con pie. Nunca se amplia por encima de sus pixeles. */
+.lam-foto.postal { background: rgba(33, 28, 21, .78); display: flex; align-items: center; justify-content: center; padding: 3%; }
+.lam-foto.postal .lam-foto-marco {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  background: var(--papel);
+  padding: 10px 10px 34px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, .35);
+  animation: lam-peso .7s cubic-bezier(.2, .8, .3, 1.05) both;
+  transform-origin: 50% 60%;
+}
+.lam-foto.postal img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: calc(100% - 44px);
+  object-fit: contain;
+  animation: none;
+  display: block;
+}
+.lam-foto.postal figcaption {
+  display: block;
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 10px;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--texto);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.lam.cine .lam-foto.postal figcaption { font-size: 10.5px; }
 /* Con la foto encima, la marca se esconde: señalaria un punto del dibujo que
    no se ve. */
 .lam-foto.visible ~ * .lam-guia-punto { opacity: 0; }
@@ -1400,4 +1453,145 @@
 
 @media (prefers-reduced-motion: reduce) {
   .lam-foto, .lam-foto img, .cine-portada img, .lam-guia-cifra, .lam[data-modo="barra"] .barra { animation: none; transition: none; }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TERCERA PASADA (6-sep-2026, noche): todo animado, con peso, como en Loymark
+
+   Daniel: «necesito todo animado, de lo que vaya hablando, como lo hacemos en
+   Loymark Academy». Regla de esa casa: la entrada tiene PESO (caida corta,
+   rebote, escala), no un fade; lo que se anima es lo que se esta diciendo; y
+   al terminar de montarse, reposo con vida.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* La entrada con peso, para todo lo que aparece porque la voz lo nombra. */
+@keyframes lam-peso {
+  0%   { transform: translateY(-9px) scale(.45); opacity: 0; }
+  55%  { transform: translateY(0) scale(1.1); opacity: 1; }
+  78%  { transform: translateY(0) scale(.96); }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+/* Las mesas: una a una, y las sillas de cada mesa despues, en corro. */
+.lam[data-modo="mesas"] .mesa {
+  animation: lam-peso .55s cubic-bezier(.2, .8, .3, 1.1) both;
+  animation-delay: calc(var(--i, 0) * 70ms);
+}
+.lam[data-modo="mesas"] .silla {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: lam-peso .4s cubic-bezier(.2, .8, .3, 1.1) both;
+  animation-delay: calc(var(--i, 0) * 70ms + 280ms + var(--k, 0) * 28ms);
+}
+
+/* La gente: llena el cesped de la palapa hacia el fondo. */
+.lam[data-modo="gente"] .persona { animation: lam-peso .4s ease-out both; animation-delay: calc(var(--i, 0) * 3.5ms); }
+
+/* Las capas aditivas que enciende el guion. */
+.lam .capa { display: none; }
+.lam[data-capas~="pasillos"] .capa-pasillos { display: block; }
+.lam[data-capas~="lados"] .capa-lados { display: block; }
+.lam[data-capas~="porton"] .capa-porton { display: block; }
+.lam[data-capas~="picnic"] .capa-picnic { display: block; }
+.lam[data-modo="noche"] .noche .capa { display: none; }
+.lam[data-modo="noche"][data-capas~="publico"] .capa-publico,
+.lam[data-modo="noche"][data-capas~="barra-luz"] .capa-barra-luz,
+.lam[data-modo="noche"][data-capas~="tarima"] .capa-tarima,
+.lam[data-modo="noche"][data-capas~="sonido"] .capa-sonido,
+.lam[data-modo="noche"][data-capas~="truss"] .capa-truss,
+.lam[data-modo="noche"][data-capas~="luces"] .capa-luces,
+.lam[data-modo="noche"][data-capas~="guirnaldas"] .capa-guirnaldas { display: block; }
+/* Sin capas dichas (modo manual «Montaje nocturno»): se enciende todo, escalonado. */
+.lam[data-modo="noche"]:not([data-capas]) .noche .capa,
+.lam[data-modo="noche"][data-capas=""] .noche .capa { display: block; }
+
+/* Cada capa entra con peso, y las piezas del escenario en orden. */
+.lam .capa-tarima > g, .lam .capa-sonido > g, .lam .capa-barra-luz > g,
+.lam .capa-truss { transform-box: fill-box; transform-origin: 50% 100%; animation: lam-peso .6s cubic-bezier(.2, .8, .3, 1.1) both; }
+.lam .capa-sonido > g:nth-child(2) { animation-delay: .18s; }
+.lam .pasillo { animation: lam-aparece .5s ease both; animation-delay: calc(var(--i, 0) * 180ms); }
+.lam .lado-flecha { transform-box: fill-box; transform-origin: center; animation: lam-peso .5s ease both; animation-delay: calc(var(--i, 0) * 140ms); }
+.lam .picnic-entra { transform-box: fill-box; transform-origin: 50% 100%; animation: lam-peso .5s ease both; animation-delay: calc(var(--i, 0) * 120ms); }
+.lam .porton { animation: lam-parpadeo 1.6s ease-in-out infinite; }
+.lam[data-capas~="postes"] .poste { stroke: var(--lam-ocre) !important; stroke-width: 2.2 !important; transition: stroke .3s ease, stroke-width .3s ease; }
+.lam[data-capas~="techo"] .palapa-cara { stroke: var(--lam-ocre) !important; stroke-width: 1.6 !important; }
+.lam[data-capas~="techo"] .palapa-cubierta { stroke: var(--lam-ocre) !important; stroke-width: 2.4 !important; }
+.lam[data-capas~="paseo"] .paseo-pav { stroke: var(--lam-ocre) !important; stroke-width: 1.8 !important; transition: stroke .3s ease; }
+
+/* Con mesas, gente o barra bajo la palapa, el techo se vuelve transparente: es
+   la seccion de un plano de arquitectura, y sin ella las mesas parecerian
+   puestas encima del techo. */
+.lam[data-modo="mesas"] .palapa-cara, .lam[data-modo="gente"] .palapa-cara, .lam[data-modo="barra"] .palapa-cara { fill-opacity: .22 !important; transition: fill-opacity .6s ease; }
+.lam[data-modo="mesas"] .palapa line.ap, .lam[data-modo="gente"] .palapa line.ap, .lam[data-modo="barra"] .palapa line.ap { opacity: .12 !important; }
+.lam .palapa-cara { transition: fill-opacity .6s ease; }
+
+/* La cifra puede ser larga («sin cocina · sin cerramiento · sin clima»): que
+   parta en lineas antes de salirse del papel. */
+.lam-guia-rotulo { white-space: normal; max-width: 290px; width: max-content; }
+.lam-guia-cifra { font-size: 15px; line-height: 1.1; }
+.lam.cine .lam-guia-cifra { font-size: 18px; }
+.lam[data-capas~="edificio"] .z-edificio path { stroke: var(--lam-ocre) !important; }
+.lam[data-capas~="cabanas"] .cabana { animation: lam-peso .55s cubic-bezier(.2, .8, .3, 1.1) both; animation-delay: calc(var(--i, 0) * 110ms); transform-box: fill-box; transform-origin: 50% 100%; }
+.lam[data-capas~="cabanas"] .cabana .tz, .lam[data-capas~="cabanas"] .cabana .rl { animation: none; stroke-dashoffset: 0; fill-opacity: 1; }
+.lam[data-capas~="coches"] .coche { animation: lam-peso .5s ease both; transform-box: fill-box; transform-origin: 50% 100%; }
+
+/* En modo noche, los focos y las bombillas se encienden uno a uno (ya definido
+   arriba con lam-aparece-noche); aqui solo el escalon del publico. */
+.lam[data-modo="noche"] .noche-persona { animation-delay: calc(var(--i, 0) * 5ms); }
+
+/* Reposo con vida: las palmeras se mecen, cada una a su ritmo. */
+.lam .palma {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: lam-vaiven var(--v, 6s) ease-in-out infinite;
+  animation-delay: var(--vd, 0s);
+}
+@keyframes lam-vaiven {
+  0%, 100% { transform: rotate(-1.4deg); }
+  50%      { transform: rotate(1.4deg); }
+}
+/* El camion rueda: las ruedas no giran (son elipses), pero el conjunto cabecea un poco. */
+.lam[data-modo="camion"] .camion > g { animation: lam-cabeceo .5s ease-in-out infinite alternate; }
+@keyframes lam-cabeceo { from { transform: translateY(0); } to { transform: translateY(-.6px); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .lam .palma, .lam .capa *, .lam .mesa, .lam .silla, .lam .cabana, .lam .coche, .lam .porton, .lam[data-modo="camion"] .camion > g { animation: none !important; opacity: 1; }
+}
+
+/* ── el boton permanente de pedir disponibilidad, en el cine ─────────────── */
+
+.cine-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 16px;
+  background: var(--ocre);
+  color: var(--papel);
+  border: 1px solid var(--ocre);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.cine-cta:hover { background: var(--papel); color: var(--tinta); border-color: var(--papel); }
+.lam.cine .rec-boton.cine-pausa { flex: none; }
+.cine-mandos .cine-cta { margin-left: auto; }
+.cine-volver {
+  background: transparent;
+  border: 1px solid var(--regla-osc);
+  color: var(--texto-3);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  padding: 9px 12px;
+  cursor: pointer;
+  margin-bottom: 14px;
+}
+.cine-volver:hover { color: var(--papel); border-color: var(--papel); }
+@media (max-width: 860px), (max-aspect-ratio: 1/1) {
+  .cine-mandos .cine-cta { margin-left: 0; flex: 1 1 100%; justify-content: center; }
 }

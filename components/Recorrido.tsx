@@ -63,89 +63,100 @@ import {
  * corrección del guion obligaría a recronometrar a oído, y nadie lo hace.
  */
 
+/**
+ * NOMBRES TÉCNICOS. Daniel, 6-sep-2026: «dale un nombre más técnico a las cosas».
+ * La primera versión hablaba como un guía («que te lo cuenten», «tu evento, en
+ * el dibujo»). El público son productores, planners y agencias: se nombra como
+ * en una ficha técnica —recorrido técnico narrado, simulador de aforo, plan de
+ * lluvia, load-in— y se dejan las cifras a la vista.
+ */
 const T = {
   es: {
-    ojo: "Recorrido guiado",
-    titulo: "Que te lo cuenten",
+    ojo: "Recorrido técnico narrado",
+    titulo: "El recinto, explicado en 3 minutos",
     intro:
-      "Ocho respuestas a las ocho preguntas que hace todo el que va a montar algo aquí, contadas sobre el dibujo. Tres minutos.",
-    reproducir: "Ver el recorrido",
+      "Ocho capítulos sobre el plano: superficie, aforo, plan de lluvia, load-in, infraestructura, montaje tipo, condiciones y siguiente paso. Con voz, subtítulos y fotografías del predio.",
+    reproducir: "Iniciar el recorrido",
     pausar: "Pausar",
-    seguir: "Seguir",
-    parar: "Salir",
+    seguir: "Reanudar",
+    parar: "Cerrar",
     siguiente: "Siguiente",
     anterior: "Anterior",
     capitulo: "Capítulo",
     de: "de",
-    sinVoz: "Sin voz: se lee el capítulo y el dibujo se mueve igual.",
-    transcripcion: "Leer el recorrido completo",
+    sinVoz: "Sin audio: el capítulo se lee y el plano se anima igual.",
+    transcripcion: "Transcripción completa del recorrido",
     capitulos: "capítulos",
     minutos: "min",
     musica: "Música",
-    texto: "Texto",
-    teclas: "Espacio pausa · flechas cambian de capítulo · Esc sale",
-    ojoCierre: "Pedir disponibilidad",
-    tituloCierre: "Ya conoces el sitio",
+    texto: "Transcripción",
+    idioma: "Idioma",
+    volverCapitulos: "Volver a los capítulos",
+    teclas: "Espacio pausa · flechas cambian de capítulo · Esc cierra",
+    ojoCierre: "Solicitar disponibilidad",
+    tituloCierre: "Ficha técnica y disponibilidad",
     introCierre:
-      "Dinos la fecha y cuánta gente esperas, y te contestamos con disponibilidad real y condiciones. En veinticuatro horas hábiles.",
-    aforoOjo: "Tu evento, en el dibujo",
-    aforoInvitados: "Invitados",
-    sentados: "Sentados",
-    pie: "De pie",
-    consultar: (n: number) => `Consultar para ${n} invitados`,
-    calcular: "Calcular el montaje con detalle",
+      "Indica fecha y aforo estimado. Respondemos con disponibilidad real, condiciones y la ficha técnica completa en 24 horas hábiles.",
+    aforoOjo: "Simulador de aforo",
+    aforoInvitados: "Asistentes",
+    sentados: "Banquete · sentados",
+    pie: "Cóctel · de pie",
+    consultar: (n: number) => `Solicitar disponibilidad · ${n} asistentes`,
+    calcular: "Calculadora de aforo y superficie",
     cabe: {
-      sentados: (n: number, mesas: number) => `Caben. Son ${mesas} mesas de diez en el jardín, y sobra pasillo entre mesa y mesa.`,
-      pie: (n: number, pct: number) => `Caben. De pie ocupan cerca del ${pct} % del jardín, y el resto queda libre para escenario, barra y circulación.`,
-      noSentados: "No caben sentados: el tope verificado es de unas trescientas personas. De pie sí, hasta seiscientas.",
-      noPie: "Por encima de seiscientas personas no entra, y preferimos decírtelo antes de la visita.",
+      sentados: (n: number, mesas: number) => `Cabe. ${n} asistentes en banquete son ${mesas} mesas de 10 en el Jardín, con pasillo de servicio entre mesas.`,
+      pie: (n: number, pct: number) => `Cabe. ${n} asistentes de pie ocupan ~${pct} % del Jardín; el resto queda para escenario, barra y circulación.`,
+      noSentados: "No cabe en banquete: el aforo verificado sentado es de ~300. En formato cóctel, hasta 600.",
+      noPie: "Supera el aforo verificado de ~600 de pie. Preferimos indicarlo antes de la visita técnica.",
     },
     tarjeta: {
       nombre: "Club Wynwood",
       linea: "Jardín de eventos al aire libre · Wynwood, Miami",
-      cta: "Pide disponibilidad en clubwynwood.com",
+      cta: "Solicita disponibilidad y ficha técnica en clubwynwood.com",
     },
   },
   en: {
-    ojo: "Guided tour",
-    titulo: "Have it explained",
+    ojo: "Narrated technical tour",
+    titulo: "The site, explained in 3 minutes",
     intro:
-      "Eight answers to the eight questions everyone asks before staging something here, told over the drawing. Three minutes.",
-    reproducir: "Watch the tour",
+      "Eight chapters over the plan: area, capacity, rain plan, load-in, infrastructure, sample setup, terms and next step. With voice, captions and photographs of the site.",
+    reproducir: "Start the tour",
     pausar: "Pause",
     seguir: "Resume",
-    parar: "Leave",
+    parar: "Close",
     siguiente: "Next",
     anterior: "Previous",
     capitulo: "Chapter",
     de: "of",
-    sinVoz: "No voice: the chapter is read and the drawing moves all the same.",
-    transcripcion: "Read the whole tour",
+    sinVoz: "No audio: the chapter is read and the plan animates all the same.",
+    transcripcion: "Full tour transcript",
     capitulos: "chapters",
     minutos: "min",
     musica: "Music",
-    texto: "Text",
-    teclas: "Space pauses · arrows change chapter · Esc leaves",
+    texto: "Transcript",
+    idioma: "Language",
+    volverCapitulos: "Back to the chapters",
+    teclas: "Space pauses · arrows change chapter · Esc closes",
     ojoCierre: "Request availability",
-    tituloCierre: "Now you know the site",
+    tituloCierre: "Spec sheet and availability",
     introCierre:
-      "Tell us the date and how many people you expect, and we reply with real availability and terms. Within twenty-four business hours.",
-    aforoOjo: "Your event, on the drawing",
+      "Give us the date and estimated headcount. We reply with real availability, terms and the full spec sheet within 24 business hours.",
+    aforoOjo: "Capacity simulator",
     aforoInvitados: "Guests",
-    sentados: "Seated",
-    pie: "Standing",
-    consultar: (n: number) => `Enquire for ${n} guests`,
-    calcular: "Work out the layout in detail",
+    sentados: "Banquet · seated",
+    pie: "Cocktail · standing",
+    consultar: (n: number) => `Request availability · ${n} guests`,
+    calcular: "Capacity and area calculator",
     cabe: {
-      sentados: (n: number, mesas: number) => `They fit. That is ${mesas} tables of ten in the garden, with room to walk between them.`,
-      pie: (n: number, pct: number) => `They fit. Standing, they take about ${pct}% of the garden, and the rest stays free for stage, bar and circulation.`,
-      noSentados: "They do not fit seated: the verified ceiling is about three hundred. Standing, yes, up to six hundred.",
-      noPie: "Above six hundred people it does not fit, and we would rather tell you before the visit.",
+      sentados: (n: number, mesas: number) => `It fits. ${n} guests in banquet layout are ${mesas} tables of 10 in the Garden, with service aisles between tables.`,
+      pie: (n: number, pct: number) => `It fits. ${n} guests standing take ~${pct}% of the Garden; the rest stays for stage, bar and circulation.`,
+      noSentados: "It does not fit as a banquet: verified seated capacity is ~300. In cocktail format, up to 600.",
+      noPie: "Above the verified capacity of ~600 standing. We would rather say so before the site visit.",
     },
     tarjeta: {
       nombre: "Club Wynwood",
       linea: "Open-air event garden · Wynwood, Miami",
-      cta: "Request availability at clubwynwood.com",
+      cta: "Request availability and the spec sheet at clubwynwood.com",
     },
   },
 } as const;
@@ -160,6 +171,13 @@ interface EstadoCapitulo {
   foto: FotoRecorrido | null;
   /** La cifra que se está diciendo, junto a la marca. */
   cifra: string | null;
+  /**
+   * CAPAS ADITIVAS. El modo es exclusivo (lluvia O noche O mesas); las capas se
+   * suman: «pasillos» encima de las mesas, «postes» encima de la palapa, el
+   * escenario montándose pieza a pieza. Es lo que permite que cada frase
+   * encienda exactamente lo que dice, como en Loymark Academy.
+   */
+  capas: string[];
 }
 
 /** Cómo se llama, en la lámina, la zona de la que se está hablando. */
@@ -197,6 +215,13 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
   const [manifiesto, setManifiesto] = useState<Manifiesto | null | false>(null);
   const [hayAudio, setHayAudio] = useState<boolean | null>(null);
   const [verTexto, setVerTexto] = useState(false);
+  /**
+   * EL FORMULARIO, A UN TOQUE, EN CUALQUIER MOMENTO. Daniel: «que esté un botón
+   * fácil para llenar el form y conseguir más información». Antes solo aparecía
+   * al llegar al último capítulo; ahora hay un botón ocre siempre a la vista en
+   * el cine, y el formulario se abre en el panel mientras el recorrido sigue.
+   */
+  const [verFormulario, setVerFormulario] = useState(false);
   /**
    * Qué capítulos ya se escucharon. La lista de capítulos son las preguntas de
    * la gente y se puede saltar a cualquiera; sin marcar por dónde se ha pasado,
@@ -305,6 +330,7 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
       zoom: cap.zoom ?? 1,
       foto: null,
       cifra: null,
+      capas: cap.capas ?? [],
     };
     for (const h of hitos as Hito[]) {
       const cuando = tiempoDeFrase(h.frase, texto, palabras, dur);
@@ -314,14 +340,24 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
       if (h.punto !== undefined) e = { ...e, punto: (h.punto as [number, number] | null) ?? null };
       if (h.zoom !== undefined) e = { ...e, zoom: h.zoom };
       if (h.cifra !== undefined) e = { ...e, cifra: h.cifra };
+      if (h.agregar) e = { ...e, capas: Array.from(new Set([...e.capas, ...h.agregar])) };
+      if (h.quitar) e = { ...e, capas: e.capas.filter((c) => !h.quitar!.includes(c)) };
       // La foto no se acumula: dura lo que dice el hito y se va sola.
       if (h.foto) e = { ...e, foto: segundo + 0.15 < cuando + (h.segundos ?? 4) ? h.foto : null };
     }
     return e;
   }, [cap, hitos, texto, palabras, dur, segundo]);
 
+  // Las capas se estabilizan por valor, como el punto: un array nuevo por
+  // cálculo haría repintar el dibujo sin motivo.
+  const capasClave = estado.capas.slice().sort().join(" ");
+  const capas = useMemo(() => (capasClave ? capasClave.split(" ") : []), [capasClave]);
+  // Con el formulario abierto en el panel, el cine sigue siendo la maqueta
+  // final: el subtítulo se queda arriba, compacto (misma clase que el cierre).
+  const panelFinal = ultimo || verFormulario;
+
   const fotoDirigida = useMemo(
-    () => (estado.foto ? { src: FOTOS[estado.foto].src, pos: FOTOS[estado.foto].pos, alt: FOTOS[estado.foto].alt[lang] } : null),
+    () => (estado.foto ? { src: FOTOS[estado.foto].src, pos: FOTOS[estado.foto].pos, alt: FOTOS[estado.foto].alt[lang], tamano: FOTOS[estado.foto].tamano } : null),
     [estado.foto, lang]
   );
 
@@ -586,6 +622,7 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
   /** Cuando la persona toca el dibujo o sale, el recorrido se aparta. */
   const soltarElMando = useCallback(() => {
     setVistaAforo(false);
+    setVerFormulario(false);
     if (!activo) return;
     audio.current?.pause();
     setSonando(false);
@@ -645,7 +682,7 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
   );
 
   const panel = (
-    <div className={`rec${activo ? " rec-cine" : ""}${grabando ? " rec-grabando" : ""}${activo && ultimo ? " rec-final" : ""}`} ref={raiz}>
+    <div className={`rec${activo ? " rec-cine" : ""}${grabando ? " rec-grabando" : ""}${activo && panelFinal ? " rec-final" : ""}`} ref={raiz}>
       {/* La cama musical. `preload="none"` y sin `src` hasta que alguien la
           encienda: son casi dos megas que no tienen por qué viajar. */}
       <audio ref={cama} loop preload="none" />
@@ -743,7 +780,18 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
           {/* ── la cabecera del cine ────────────────────────────────────── */}
           <div className="cine-cab">
             <span className="cine-marca">Club Wynwood</span>
-            <span className="cine-ojo">{t.capitulo} {indice + 1} {t.de} {CAPITULOS.length}</span>
+            <span className="cine-ojo">{indice + 1} / {CAPITULOS.length}</span>
+            {/* El idioma se cambia SIN perder el capítulo: la otra versión abre
+                sola en este mismo punto. Daniel: «que esté inglés y español». */}
+            {!grabando && (
+              <nav className="cine-idioma" aria-label={t.idioma}>
+                {(["es", "en"] as Idioma[]).map((l) => (
+                  <a key={l} href={`/${l}?recorrido=auto&cap=${indice + 1}`} aria-current={l === lang ? "true" : undefined}>
+                    {l.toUpperCase()}
+                  </a>
+                ))}
+              </nav>
+            )}
             {!grabando && (
               <button type="button" className="cine-salir" onClick={soltarElMando} aria-label={t.parar}>
                 {t.parar} <span aria-hidden="true">×</span>
@@ -761,7 +809,7 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
             ))}
           </div>
 
-          {!(ultimo && !grabando) && capitulos}
+          {!((ultimo || verFormulario) && !grabando) && capitulos}
 
           {/* ── el subtítulo, palabra a palabra ─────────────────────────── */}
           <div className="cine-sub" aria-live="polite">
@@ -793,8 +841,13 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
             * toda la página. Aparece **solo en el último capítulo**: ponerlo
             * desde el principio sería pedir el dato antes de haber contado nada.
             */}
-          {ultimo && !grabando && (
+          {(ultimo || verFormulario) && !grabando && (
             <div className="rec-cierre cine-cierre">
+              {verFormulario && !ultimo && (
+                <button type="button" className="cine-volver" onClick={() => setVerFormulario(false)}>
+                  ‹ {t.volverCapitulos}
+                </button>
+              )}
               <div className="ojo">{t.ojoCierre}</div>
               <h3 className="rec-titulo">{t.tituloCierre}</h3>
               <p className="rec-intro">{t.introCierre}</p>
@@ -830,6 +883,11 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
                 <span className={`rec-punto${verTexto ? " on" : ""}`} aria-hidden="true" />
                 {t.texto}
               </button>
+              {!ultimo && !verFormulario && (
+                <button type="button" className="cine-cta" onClick={() => { setVerFormulario(true); ev("form_start", { desde: "recorrido" }); }}>
+                  {t.ojoCierre} →
+                </button>
+              )}
               <span className="cine-teclas">{t.teclas}</span>
             </div>
           )}
@@ -861,9 +919,9 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
   // persona está probando su aforo, manda el aforo: mesas o gente en el jardín,
   // con la cámara un poco más cerca. Si no, nadie dirige.
   const dirigido = activo
-    ? { modo: estado.modo, zona: estado.zona, punto, zoom: estado.zoom }
+    ? { modo: estado.modo, zona: estado.zona, punto, zoom: estado.zoom, capas }
     : vistaAforo
-      ? { modo: (aforo.formato === "sentados" ? "mesas" : "gente") as Modo, zona: "jardin" as Zona, punto: null, zoom: 1.3 }
+      ? { modo: (aforo.formato === "sentados" ? "mesas" : "gente") as Modo, zona: (aforo.formato === "sentados" ? "tiki" : "jardin") as Zona, punto: null, zoom: 1.3, capas: [] as string[] }
       : null;
 
   return (
@@ -891,6 +949,7 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
         zonaDirigida={dirigido ? dirigido.zona : undefined}
         puntoDirigido={dirigido?.punto ?? null}
         zoomDirigido={dirigido?.zoom}
+        capasDirigidas={dirigido?.capas}
         rotuloPunto={activo && estado.zona ? NOMBRE_ZONA[estado.zona][lang] : undefined}
         cifraPunto={activo ? estado.cifra : null}
         fotoDirigida={activo ? fotoDirigida : null}

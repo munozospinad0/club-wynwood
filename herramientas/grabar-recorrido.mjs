@@ -151,7 +151,9 @@ async function grabar(lang, formato) {
   }
 
   await mkdir(SALIDA, { recursive: true });
-  const salida = join(SALIDA, `recorrido-${lang}-${formato}.mp4`);
+  // Nombre técnico, con idioma y resolución a la vista: es lo que ve quien lo
+  // recibe por WhatsApp o lo sube a la pauta. Daniel: «un nombre más técnico».
+  const salida = join(SALIDA, `ClubWynwood_RecorridoTecnico_${lang.toUpperCase()}_${tam.width}x${tam.height}.mp4`);
   process.stdout.write("   codificando… ");
   await ejecutar("ffmpeg", [
     "-y", "-hide_banner", "-loglevel", "error",

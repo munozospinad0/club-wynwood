@@ -81,8 +81,31 @@ const OUTPUT_FORMAT = process.env.OUTPUT_FORMAT || "mp3_44100_192";
  * Se pueden sustituir por entorno sin tocar el código. `--voces` lista las de
  * la cuenta con su identificador.
  */
+/**
+ * CUARTA PASADA (6-sep, noche): Daniel oyó a David y dijo «suena raro, no humano
+ * y natural». Se buscó en la biblioteca compartida de ElevenLabs a los
+ * narradores latinos más usados y se añadieron cuatro a la cuenta (Alberto
+ * Rodríguez, Enrique M. Nieto, Jhenny, Tatiana Martin). Se generó el capítulo 1
+ * con seis voces y ajustes «naturales», se transcribió cada una, y se armó una
+ * página de comparación para que Daniel elija oyendo (`.qa/voces2/`).
+ *
+ * Mientras decide, el sitio va con **Alberto Rodríguez**: es la voz latina de
+ * narración más clonada de toda la biblioteca (más de un millón de veces), leyó
+ * el capítulo sin una palabra distinta, y su etiqueta es la del encargo:
+ * «serious tone, ideal for narrations».
+ *
+ * AJUSTES NATURALES, y por qué: `use_speaker_boost` fuera (realza pero mete
+ * grano), `similarity_boost` en 0,75 (0,85 arrastra artefactos de la grabación
+ * original), `stability` 0,45 (algo de variación de entonación; 0,5 y más
+ * tiende a plano) y velocidad 1,0 (el `speed` distinto de 1 remuestrea y se
+ * nota). Todo lo anterior se puede pasar por entorno.
+ */
+/**
+ * DECISIÓN DE DANIEL (6-sep, noche), oyendo la página de comparación:
+ * «para español me gusta la de Superior» y «en inglés lo que se tiene está bien».
+ */
 const VOICE = {
-  es: process.env.VOICE_ES || "dQ0C8BEdKF2odmELvNee", // David C5 · es-latin-american · documentales, calmo
+  es: process.env.VOICE_ES || "IaUx9NjPDJeDAwpNQMW2", // Superior (LA) · es-latin-american · profesional · elegida por Daniel
   en: process.env.VOICE_EN || "nPczCjzI2devNBz1zQrb", // Brian · en-american · deep, resonant, comforting
 };
 
@@ -94,11 +117,11 @@ const AJUSTES = esV3
       speed: Number(process.env.SPEED ?? 1.0),
     }
   : {
-      stability: Number(process.env.STABILITY ?? 0.5),
-      similarity_boost: Number(process.env.SIMILARITY ?? 0.85),
+      stability: Number(process.env.STABILITY ?? 0.45),
+      similarity_boost: Number(process.env.SIMILARITY ?? 0.75),
       style: Number(process.env.STYLE ?? 0.2),
-      use_speaker_boost: true,
-      speed: Number(process.env.SPEED ?? 1.08),
+      use_speaker_boost: process.env.SPEAKER_BOOST === "1",
+      speed: Number(process.env.SPEED ?? 1.0),
     };
 
 const norm = (s) => String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9ñ]+/g, " ").trim();

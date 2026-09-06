@@ -1,11 +1,12 @@
 {
-  "version": "1.0.0",
+  "version": "2.0.0",
   "capitulos": [
     {
       "id": "recinto",
       "modo": "todo",
       "zona": null,
-      "punto": [120, 74],
+      "punto": [120, 46],
+      "zoom": 1,
       "pregunta": { "es": "¿Qué es esto?", "en": "What is this?" },
       "texto": {
         "es": "Bienvenido a Club Wynwood. Lo que ves es el recinto desde el aire: un jardín de doscientos cuarenta pies de largo, con césped a los lados, dos hileras de palmeras reales y setos alrededor. En una esquina, la palapa techada. Y de extremo a extremo, un paseo pavimentado por donde entra todo. Se alquila solo el exterior: tú traes la producción, nosotros entregamos el espacio.",
@@ -13,16 +14,16 @@
       },
       "hitos": {
         "es": [
-          { "frase": "un jardín de doscientos", "zona": "jardin", "punto": [150, 40] },
-          { "frase": "la palapa techada", "zona": "tiki", "punto": [41, 34] },
-          { "frase": "un paseo pavimentado", "zona": "acceso", "punto": [-10, 74] },
-          { "frase": "Se alquila solo", "zona": null, "punto": [120, 74] }
+          { "frase": "un jardín de doscientos", "zona": "jardin", "punto": [150, 38], "zoom": 1.35 },
+          { "frase": "la palapa techada", "zona": "tiki", "punto": [41, 34], "zoom": 1.8 },
+          { "frase": "un paseo pavimentado", "zona": "acceso", "punto": [-6, 74], "zoom": 1.55 },
+          { "frase": "Se alquila solo", "zona": null, "punto": [120, 46], "zoom": 1 }
         ],
         "en": [
-          { "frase": "a garden two hundred", "zona": "jardin", "punto": [150, 40] },
-          { "frase": "the thatched structure", "zona": "tiki", "punto": [41, 34] },
-          { "frase": "a paved walk", "zona": "acceso", "punto": [-10, 74] },
-          { "frase": "Only the outdoors", "zona": null, "punto": [120, 74] }
+          { "frase": "a garden two hundred", "zona": "jardin", "punto": [150, 38], "zoom": 1.35 },
+          { "frase": "the thatched structure", "zona": "tiki", "punto": [41, 34], "zoom": 1.8 },
+          { "frase": "a paved walk", "zona": "acceso", "punto": [-6, 74], "zoom": 1.55 },
+          { "frase": "Only the outdoors", "zona": null, "punto": [120, 46], "zoom": 1 }
         ]
       }
     },
@@ -30,20 +31,23 @@
       "id": "aforo",
       "modo": "todo",
       "zona": "jardin",
-      "punto": [150, 40],
+      "punto": [150, 36],
+      "zoom": 1.45,
       "pregunta": { "es": "¿Cabe mi evento?", "en": "Does my event fit?" },
       "texto": {
-        "es": "¿Cabe tu evento? Hasta seiscientas personas de pie, o unas trescientas sentadas, en el recinto completo. Para que lo veas y no tengas que creértelo, aquí van treinta mesas de diez dibujadas a la misma escala que el jardín: caben, y sobra pasillo entre mesa y mesa. Por encima de eso no entra, y preferimos decírtelo antes de la visita.",
-        "en": "Does your event fit? Up to six hundred people standing, or about three hundred seated, across the whole site. So you can see it rather than take our word for it, here are thirty tables of ten drawn at the same scale as the garden: they fit, with room to walk between them. Above that it does not fit, and we would rather tell you before the visit."
+        "es": "¿Cabe tu evento? Hasta seiscientas personas de pie: así se ven, a escala, dentro del jardín. O unas trescientas sentadas: aquí van treinta mesas de diez, dibujadas a la misma escala, y sobra pasillo entre mesa y mesa. Por encima de eso no entra, y preferimos decírtelo antes de la visita.",
+        "en": "Does your event fit? Up to six hundred people standing: this is what they look like, to scale, inside the garden. Or about three hundred seated: here are thirty tables of ten, drawn at the same scale, with room to walk between them. Above that it does not fit, and we would rather tell you before the visit."
       },
       "hitos": {
         "es": [
-          { "frase": "aquí van treinta mesas", "modo": "mesas" },
-          { "frase": "Por encima de eso", "punto": [200, 30] }
+          { "frase": "Hasta seiscientas personas", "modo": "gente" },
+          { "frase": "O unas trescientas sentadas", "modo": "mesas" },
+          { "frase": "Por encima de eso", "zona": null, "punto": [120, 46], "zoom": 1 }
         ],
         "en": [
-          { "frase": "here are thirty tables", "modo": "mesas" },
-          { "frase": "Above that it", "punto": [200, 30] }
+          { "frase": "Up to six hundred people", "modo": "gente" },
+          { "frase": "Or about three hundred seated", "modo": "mesas" },
+          { "frase": "Above that it", "zona": null, "punto": [120, 46], "zoom": 1 }
         ]
       }
     },
@@ -52,6 +56,7 @@
       "modo": "todo",
       "zona": "tiki",
       "punto": [41, 34],
+      "zoom": 1.8,
       "pregunta": { "es": "¿Y si llueve?", "en": "What if it rains?" },
       "texto": {
         "es": "¿Y si llueve? Para eso está la palapa: cuatro mil pies cuadrados bajo techo de paja, sobre postes de madera y abierta por los cuatro costados. Protege del sol y del agua que cae recta. Lo que no para es el viento con lluvia, así que para un evento de invierno conviene presupuestar carpa lateral. El resto del jardín queda al aire, y en Miami eso decide la fecha más que cualquier otra cosa.",
@@ -60,11 +65,13 @@
       "hitos": {
         "es": [
           { "frase": "Para eso está la palapa", "modo": "lluvia" },
-          { "frase": "El resto del jardín", "zona": "jardin", "punto": [150, 40] }
+          { "frase": "conviene presupuestar carpa lateral", "modo": "carpa" },
+          { "frase": "El resto del jardín", "zona": "jardin", "punto": [150, 40], "zoom": 1.1 }
         ],
         "en": [
           { "frase": "That is what the structure", "modo": "lluvia" },
-          { "frase": "The rest of the garden", "zona": "jardin", "punto": [150, 40] }
+          { "frase": "should budget for side tenting", "modo": "carpa" },
+          { "frase": "The rest of the garden", "zona": "jardin", "punto": [150, 40], "zoom": 1.1 }
         ]
       }
     },
@@ -72,7 +79,8 @@
       "id": "carga",
       "modo": "todo",
       "zona": "acceso",
-      "punto": [-10, 74],
+      "punto": [-6, 74],
+      "zoom": 1.7,
       "pregunta": { "es": "¿Por dónde entra la producción?", "en": "How does production get in?" },
       "texto": {
         "es": "¿Por dónde entra la producción? Por Northwest First Court, directo al paseo pavimentado, que cruza el recinto de lado a lado y va continuo y a nivel. Un camión de cuarenta pies llega hasta el fondo sin pisar césped. El ancho exacto del portón, la potencia disponible y el resto de las medidas se levantan contigo en la visita y se entregan por escrito.",
@@ -80,12 +88,14 @@
       },
       "hitos": {
         "es": [
-          { "frase": "Un camión de cuarenta", "modo": "camion", "zona": null, "punto": [120, 74] },
-          { "frase": "El ancho exacto", "punto": [200, 74] }
+          { "frase": "que cruza el recinto", "zona": null, "punto": [120, 74], "zoom": 1.2 },
+          { "frase": "Un camión de cuarenta", "modo": "camion", "zona": null, "punto": [150, 74], "zoom": 1.3 },
+          { "frase": "El ancho exacto", "zona": "acceso", "punto": [-6, 74], "zoom": 1.5 }
         ],
         "en": [
-          { "frase": "A forty-foot truck", "modo": "camion", "zona": null, "punto": [120, 74] },
-          { "frase": "The exact gate", "punto": [200, 74] }
+          { "frase": "which crosses the site", "zona": null, "punto": [120, 74], "zoom": 1.2 },
+          { "frase": "A forty-foot truck", "modo": "camion", "zona": null, "punto": [150, 74], "zoom": 1.3 },
+          { "frase": "The exact gate", "zona": "acceso", "punto": [-6, 74], "zoom": 1.5 }
         ]
       }
     },
@@ -94,6 +104,7 @@
       "modo": "todo",
       "zona": "cabanas",
       "punto": [160, 85],
+      "zoom": 1.7,
       "pregunta": { "es": "¿Qué hay, y qué no?", "en": "What is here, and what is not?" },
       "texto": {
         "es": "¿Qué hay, y qué no? Hay ocho cabañas amuebladas en hilera, mesas de picnic fijas y un área donde montar barra. El edificio de al lado se alquila aparte y tiene su propia lámina. Lo que no hay: cocina propia, así que el catering monta en el sitio; ni cerramiento fijo ni climatización, porque es un recinto al aire libre. Producción, sonido, iluminación y mobiliario los trae tu equipo, y esa libertad es justamente la propuesta.",
@@ -101,12 +112,42 @@
       },
       "hitos": {
         "es": [
-          { "frase": "El edificio de al lado", "zona": "edificio", "punto": [300, 46] },
-          { "frase": "Lo que no hay", "zona": null, "punto": [120, 74] }
+          { "frase": "un área donde montar barra", "zona": "tiki", "punto": [30, 40], "zoom": 1.6 },
+          { "frase": "El edificio de al lado", "zona": "edificio", "punto": [300, 46], "zoom": 1.25 },
+          { "frase": "Lo que no hay", "zona": null, "punto": [120, 46], "zoom": 1 }
         ],
         "en": [
-          { "frase": "The building next door", "zona": "edificio", "punto": [300, 46] },
-          { "frase": "What is not here", "zona": null, "punto": [120, 74] }
+          { "frase": "an area where a bar", "zona": "tiki", "punto": [30, 40], "zoom": 1.6 },
+          { "frase": "The building next door", "zona": "edificio", "punto": [300, 46], "zoom": 1.25 },
+          { "frase": "What is not here", "zona": null, "punto": [120, 46], "zoom": 1 }
+        ]
+      }
+    },
+    {
+      "id": "montado",
+      "modo": "todo",
+      "zona": null,
+      "punto": [130, 44],
+      "zoom": 1.1,
+      "pregunta": { "es": "¿Cómo se ve montado?", "en": "What does it look like set up?" },
+      "texto": {
+        "es": "¿Cómo se ve montado? Así, por ejemplo, de noche: el escenario al fondo del jardín, tu barra bajo la palapa, el público en el césped y luz de ambiente entre las palmeras. Todo lo que ves encendido lo monta tu equipo. Lo que no se ve, el piso firme, la sombra y el paseo por donde entró todo, ya estaba.",
+        "en": "What does it look like set up? Like this, for instance, at night: the stage at the far end of the garden, your bar under the thatched roof, the crowd on the turf and ambient light strung between the palms. Everything you see lit up is built by your team. What you do not see, the firm ground, the shade and the walk everything came in through, was already here."
+      },
+      "hitos": {
+        "es": [
+          { "frase": "de noche", "modo": "noche" },
+          { "frase": "el escenario al fondo", "zona": null, "punto": [222, 32], "zoom": 1.7 },
+          { "frase": "tu barra bajo la palapa", "zona": "tiki", "punto": [34, 40], "zoom": 1.7 },
+          { "frase": "el público en el césped", "zona": "jardin", "punto": [150, 35], "zoom": 1.35 },
+          { "frase": "Lo que no se ve", "zona": null, "punto": [130, 44], "zoom": 1.05 }
+        ],
+        "en": [
+          { "frase": "at night", "modo": "noche" },
+          { "frase": "the stage at the far end", "zona": null, "punto": [222, 32], "zoom": 1.7 },
+          { "frase": "your bar under the thatched", "zona": "tiki", "punto": [34, 40], "zoom": 1.7 },
+          { "frase": "the crowd on the turf", "zona": "jardin", "punto": [150, 35], "zoom": 1.35 },
+          { "frase": "What you do not see", "zona": null, "punto": [130, 44], "zoom": 1.05 }
         ]
       }
     },
@@ -114,7 +155,8 @@
       "id": "precio",
       "modo": "todo",
       "zona": null,
-      "punto": [120, 74],
+      "punto": null,
+      "zoom": 1,
       "pregunta": { "es": "¿Cuánto cuesta?", "en": "How much does it cost?" },
       "texto": {
         "es": "¿Cuánto cuesta? No publicamos tarifas, y no es por esconderlas: el paquete se arma contra tu evento, según la fecha, el espacio que uses y el montaje. Cuéntanos qué tienes en mente y respondemos con disponibilidad real y condiciones, por escrito.",
@@ -126,16 +168,14 @@
       "id": "ahora",
       "modo": "todo",
       "zona": null,
-      "punto": [-10, 74],
+      "punto": null,
+      "zoom": 1,
       "pregunta": { "es": "¿Y ahora?", "en": "What now?" },
       "texto": {
         "es": "¿Y ahora? Si el sitio te sirve, pide disponibilidad con tu fecha y tu número de invitados. Contestamos en veinticuatro horas hábiles, y si quieres verlo, coordinamos la visita y levantamos contigo la ficha técnica. Gracias por el recorrido.",
         "en": "What now? If the site works for you, request availability with your date and guest count. We reply within twenty-four business hours, and if you want to see it, we schedule the visit and survey the spec sheet with you. Thanks for taking the tour."
       },
-      "hitos": {
-        "es": [{ "frase": "Gracias por el recorrido", "punto": [120, 74] }],
-        "en": [{ "frase": "Thanks for taking", "punto": [120, 74] }]
-      }
+      "hitos": { "es": [], "en": [] }
     }
   ]
 }

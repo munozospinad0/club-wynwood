@@ -154,12 +154,13 @@ async function entregar(cuerpo: Record<string, unknown>): Promise<Respuesta | nu
  * También rompe el lector de pantalla, que anuncia la etiqueta de un campo que
  * no es el que va a rellenar.
  */
-export default function Formulario({ lang, idPrefijo }: { lang: Idioma; idPrefijo?: string }) {
+export default function Formulario({ lang, idPrefijo, invitadosInicial }: { lang: Idioma; idPrefijo?: string; invitadosInicial?: number }) {
   const es = lang === "es";
   const ide = (n: string) => (idPrefijo ? `${idPrefijo}-${n}` : n);
   const [estado, setEstado] = useState<Estado>("idle");
   const empezado = useRef(false);
   const pintado = useRef(Date.now());
+  const invitadosRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     // La captura de atribución ya NO vive aquí: la hace <Atribucion /> desde el
@@ -169,6 +170,32 @@ export default function Formulario({ lang, idPrefijo }: { lang: Idioma; idPrefij
     // Si quedó algo sin entregar de una visita anterior, este es el momento.
     void vaciarCola(ENDPOINT);
   }, []);
+
+  /**
+   * EL NÚMERO DE INVITADOS LLEGA YA PUESTO si la persona lo escribió antes en
+   * «Tu evento, en el dibujo» (components/Recorrido.tsx). Es el dato que más
+   * pesa en la cualificación y el que ya nos dio: pedírselo dos veces es
+   * hacerle repetir, y cada campo que hay que rellenar pierde gente.
+   *
+   * Llega por dos caminos: la prop, para el formulario que vive dentro del
+   * recorrido, y un evento del navegador más sessionStorage, para el del cierre
+   * de la página, que ya estaba montado cuando la persona escribió el número.
+   * Solo se rellena si el campo sigue vacío: lo que la persona escribió a mano
+   * manda.
+   */
+  useEffect(() => {
+    const el = invitadosRef.current;
+    if (!el) return;
+    const poner = (n: unknown) => {
+      const v = Number(n);
+      if (Number.isFinite(v) && v > 0 && !el.value) el.value = String(v);
+    };
+    if (invitadosInicial) poner(invitadosInicial);
+    else { try { poner(sessionStorage.getItem("cw-invitados")); } catch { /* bloqueado */ } }
+    const oir = (e: Event) => poner((e as CustomEvent).detail);
+    window.addEventListener("cw-invitados", oir);
+    return () => window.removeEventListener("cw-invitados", oir);
+  }, [invitadosInicial]);
 
   /** Solo la primera vez: mide cuánta gente empieza y no termina. */
   function alEmpezar() {
@@ -343,7 +370,7 @@ export default function Formulario({ lang, idPrefijo }: { lang: Idioma; idPrefij
         </div>
         <div>
           <label style={etiqueta} htmlFor={ide("invitados")}>{es ? "Invitados estimados" : "Estimated guests"}</label>
-          <input style={campo} id={ide("invitados")} name="invitados" inputMode="numeric" />
+          <input ref={invitadosRef} style={campo} id={ide("invitados")} name="invitados" inputMode="numeric" />
         </div>
         <div>
           <label style={etiqueta} htmlFor={ide("produccion")}>{es ? "Quién produce" : "Who produces it"}</label>

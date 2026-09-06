@@ -7,7 +7,7 @@ import {
   type ClaveRuta, type Idioma,
 } from "@/lib/i18n";
 import { PAGINAS, FAQ, pagina } from "@/lib/contenido";
-import { grafo, breadcrumb, faqPage } from "@/lib/schema";
+import { grafo, breadcrumb, faqPage, localBusiness, eventVenue, webPage } from "@/lib/schema";
 import Calculadora from "@/components/Calculadora";
 import Residencia from "@/components/Residencia";
 
@@ -89,7 +89,12 @@ export default async function PaginaInterior(
   // ---------------------------------------------------------------- FAQ
   if (clave === "faq") {
     const preguntas = FAQ.map((f) => ({ q: f.q[lang], a: f.a[lang] }));
+    // El negocio y el venue van en cada página del venue, no en el layout: así
+    // la de residencia permanente, que es otro negocio, no los hereda.
     const ld = grafo(
+      localBusiness(lang),
+      eventVenue(lang),
+      webPage(lang, "faq", es ? "Preguntas frecuentes sobre Club Wynwood" : "Frequently asked questions about Club Wynwood"),
       breadcrumb(lang, es ? "Preguntas frecuentes" : "FAQ", url("faq", lang)),
       faqPage(lang, preguntas)
     );
@@ -141,7 +146,7 @@ export default async function PaginaInterior(
   const p = pagina(clave);
   if (!p) notFound();
 
-  const ld = grafo(breadcrumb(lang, p.h1[lang], url(clave, lang)));
+  const ld = grafo(localBusiness(lang), eventVenue(lang), breadcrumb(lang, p.h1[lang], url(clave, lang)));
 
   return (
     <>

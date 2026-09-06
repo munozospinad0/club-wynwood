@@ -6,15 +6,19 @@
  *   .rl  un relleno: se lava después del trazo (fill-opacity)
  *   .ap  algo que aparece de golpe (opacity): cotas, gente, guías
  *
- * Y tres estados en la raíz .lam:
- *   .pendiente  todavía no entró en pantalla (solo lo pone el JS)
- *   .dibujar    entró: corre la secuencia
- *   .quieto     sin JS útil o con movimiento reducido: todo visible, nada se mueve
+ * Y cuatro estados en la raíz .lam:
+ *   .pendiente    todavía no entró en pantalla (solo lo pone el JS)
+ *   .dibujar      entró: corre la secuencia
+ *   .quieto       sin JS útil o con movimiento reducido: todo visible, nada se mueve
+ *   .recorriendo  alguien dirige el dibujo (el recorrido o el aforo)
+ *   .cine         pantalla completa sobre tinta, con el panel al lado
  *
  * El escalonado va por grupos con --d (segundos) heredado a los hijos.
  */
 
-.lam { --lam-ocre: #c4772b; }
+.lam { --lam-ocre: #c4772b; --lam-luz: #f3e2c4; }
+
+.lam-escenario { position: relative; }
 
 .lam-fig {
   position: relative;
@@ -24,7 +28,24 @@
   border: 1px solid var(--regla);
   overflow: hidden;
 }
-.lam-fig > svg {
+
+/*
+ * EL LIENZO ES LO QUE MUEVE LA CÁMARA. El SVG, la marca y los rótulos van
+ * dentro, así que una sola transformación los lleva a todos: acercarse a la
+ * palapa no recoloca nada, solo escala el conjunto desde la esquina.
+ *
+ * La transición es larga y con curva de cámara, no de interfaz: un plano que
+ * se cierra en medio segundo se lee como un salto; en uno y medio, como
+ * alguien acercándose.
+ */
+.lam-lienzo {
+  position: absolute;
+  inset: 0;
+  transform-origin: 0 0;
+  transition: transform 1.6s cubic-bezier(0.45, 0.02, 0.18, 1);
+  will-change: transform;
+}
+.lam-lienzo > svg {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -89,14 +110,19 @@
 .lam.enfocado .guia.activa line { stroke: var(--lam-ocre); stroke-width: 1.1; }
 .lam.enfocado .guia.activa circle { fill: var(--lam-ocre); }
 
-/* ---------- los tres modos ---------- */
-.lam .lluvia, .lam .mesas, .lam .camion { display: none; }
+/* ---------- las escenas ---------- */
+.lam .lluvia, .lam .mesas, .lam .gente, .lam .camion, .lam .carpa,
+.lam .anochecer, .lam .noche { display: none; }
 
 /* si llueve: llueve encima de todo, el césped se apaga y la cubierta se marca */
-.lam[data-modo="lluvia"] .lluvia { display: block; }
-.lam[data-modo="lluvia"] .cesped { opacity: 0.45; }
-.lam[data-modo="lluvia"] .palapa-cubierta { stroke: var(--lam-ocre); stroke-width: 2.2; }
-.lam[data-modo="lluvia"] .gota {
+.lam[data-modo="lluvia"] .lluvia,
+.lam[data-modo="carpa"] .lluvia { display: block; }
+.lam[data-modo="lluvia"] .cesped,
+.lam[data-modo="carpa"] .cesped { opacity: 0.45; }
+.lam[data-modo="lluvia"] .palapa-cubierta,
+.lam[data-modo="carpa"] .palapa-cubierta { stroke: var(--lam-ocre); stroke-width: 2.2; }
+.lam[data-modo="lluvia"] .gota,
+.lam[data-modo="carpa"] .gota {
   opacity: 0;
   animation: lam-gota 1.15s linear infinite;
   animation-delay: var(--t, 0s);
@@ -106,6 +132,18 @@
   15%  { opacity: 0.55; }
   85%  { opacity: 0.45; }
   to   { transform: translateY(48px); opacity: 0; }
+}
+
+/* la carpa lateral: los paños bajan del alero al suelo */
+.lam[data-modo="carpa"] .carpa { display: block; }
+.lam[data-modo="carpa"] .carpa-pano {
+  transform-box: fill-box;
+  transform-origin: top;
+  animation: lam-pano 0.9s cubic-bezier(0.3, 0.7, 0.2, 1) both;
+}
+@keyframes lam-pano {
+  from { transform: scaleY(0); opacity: 0; }
+  to   { transform: scaleY(1); opacity: 1; }
 }
 
 /* 300 sentados: las mesas aparecen una a una */
@@ -121,6 +159,19 @@
   to   { transform: scale(1); opacity: 1; }
 }
 
+/* 600 de pie: la multitud va llenando el césped, de la palapa hacia el fondo */
+.lam[data-modo="gente"] .gente { display: block; }
+.lam[data-modo="gente"] .persona {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: lam-persona 0.35s ease-out both;
+  animation-delay: calc(var(--i, 0) * 4ms);
+}
+@keyframes lam-persona {
+  from { transform: scale(0); opacity: 0; }
+  to   { transform: scale(1); opacity: 0.7; }
+}
+
 /* el camión: entra por el acceso y recorre el paseo */
 .lam[data-modo="camion"] .camion {
   display: block;
@@ -131,15 +182,65 @@
   to   { transform: translate(0, 0); }
 }
 
+/*
+ * ANOCHECE. El dibujo se apaga en dos segundos y sobre él se enciende el
+ * montaje: primero el escenario y la barra, después el público, y al final las
+ * guirnaldas, bombilla a bombilla. Es la única escena que cambia el fondo, y por
+ * eso es la que se recuerda: papel y tinta se dan la vuelta.
+ */
+.lam[data-modo="noche"] .anochecer {
+  display: block;
+  opacity: 0;
+  animation: lam-anochecer 2.2s ease-in-out forwards;
+}
+@keyframes lam-anochecer { to { opacity: 0.84; } }
+.lam[data-modo="noche"] .noche { display: block; }
+.lam[data-modo="noche"] .noche > g:not(.noche-foco):not(.noche-bombilla),
+.lam[data-modo="noche"] .noche > line,
+.lam[data-modo="noche"] .noche-hilo {
+  opacity: 0;
+  animation: lam-aparece-noche 0.9s ease forwards;
+  animation-delay: 1.4s;
+}
+.lam[data-modo="noche"] .noche-persona {
+  opacity: 0;
+  animation: lam-aparece-persona 0.5s ease forwards;
+  animation-delay: calc(1.8s + var(--i, 0) * 6ms);
+}
+.lam[data-modo="noche"] .noche-foco {
+  opacity: 0;
+  animation: lam-aparece-noche 0.4s ease forwards;
+  animation-delay: calc(2.4s + var(--i, 0) * 120ms);
+}
+.lam[data-modo="noche"] .noche-bombilla {
+  opacity: 0;
+  animation: lam-aparece-noche 0.35s ease forwards, lam-parpadeo 3.4s ease-in-out infinite;
+  animation-delay: calc(2.8s + var(--i, 0) * 22ms), calc(4s + var(--i, 0) * 37ms);
+}
+@keyframes lam-aparece-noche { to { opacity: 1; } }
+@keyframes lam-aparece-persona { to { opacity: 0.7; } }
+@keyframes lam-parpadeo {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.72; }
+}
+/* De noche, el césped y las cotas se apagan más que el resto: queda el volumen. */
+.lam[data-modo="noche"] .cesped { opacity: 0.35; }
+.lam[data-modo="noche"] .lam-cajetin { color: var(--papel); }
+.lam[data-modo="noche"] .lam-cajetin b { color: var(--papel); border-color: var(--papel); }
+
 /* ---------- quieto: sin JS útil o con movimiento reducido ---------- */
 .lam.quieto .tz, .lam.quieto .rl, .lam.quieto .ap { animation: none !important; }
 @media (prefers-reduced-motion: reduce) {
   .lam .tz, .lam .rl, .lam .ap, .lam .lam-etq, .lam .lam-cajetin,
-  .lam .gota, .lam .mesa, .lam .camion { animation: none !important; }
+  .lam .gota, .lam .mesa, .lam .persona, .lam .camion, .lam .carpa-pano,
+  .lam .anochecer, .lam .noche *, .lam .noche-persona, .lam .noche-foco, .lam .noche-bombilla { animation: none !important; opacity: 1; }
   .lam.pendiente .tz { stroke-dashoffset: 0; }
   .lam.pendiente .rl { fill-opacity: 1; }
   .lam.pendiente .ap, .lam.pendiente .lam-etq, .lam.pendiente .lam-cajetin { opacity: 1; }
-  .lam[data-modo="lluvia"] .gota { opacity: 0.45; }
+  .lam[data-modo="lluvia"] .gota, .lam[data-modo="carpa"] .gota { opacity: 0.45; }
+  .lam[data-modo="noche"] .anochecer { opacity: 0.84; }
+  .lam[data-modo="noche"] .noche-persona, .lam[data-modo="gente"] .persona { opacity: 0.7; }
+  .lam-lienzo { transition: none; }
 }
 
 /* ---------- los mandos ---------- */
@@ -187,6 +288,7 @@
   color: var(--texto);
   line-height: 1.55;
   pointer-events: none;
+  transition: color 1s ease;
 }
 .lam-cajetin b {
   display: block;
@@ -247,6 +349,13 @@
 .lam-etq.activa .lam-etq-n, .lam-item.activa .lam-item-n { background: var(--lam-ocre); }
 .lam-etq.activa .lam-etq-txt { border-color: var(--lam-ocre); }
 
+/* Mientras alguien dirige el dibujo, los rótulos, sus líneas de guía y el
+   cajetín se apagan: a doble tamaño taparían lo que la voz está enseñando, y
+   la marca ya dice dónde estamos. */
+.lam.recorriendo .lam-etq,
+.lam.recorriendo .lam-cajetin { opacity: 0 !important; pointer-events: none; transition: opacity 0.4s ease; }
+.lam.recorriendo .guia { opacity: 0 !important; transition: opacity 0.4s ease; }
+
 /* ---------- la lista de zonas ---------- */
 .lam-lista {
   list-style: none;
@@ -297,6 +406,26 @@
   padding-top: 7px;
 }
 
+/* Cada zona explicada: que es, para que sirve y con que te vas a encontrar.
+   El tercer bloque —el "ojo"— lleva un filete ocre a la izquierda porque es lo
+   que NO hay, y en este venue decir lo que no hay es la mitad del argumento. */
+.lam-item-sirve {
+  display: block;
+  padding-top: 9px;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--tinta-2);
+}
+.lam-item-ojo {
+  display: block;
+  margin-top: 9px;
+  padding-left: 11px;
+  border-left: 1px solid var(--ocre);
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--texto);
+}
+
 /* ---------- pantalla estrecha: los rótulos quedan como números ---------- */
 @media (max-width: 720px) {
   .lam-etq-txt { display: none; }
@@ -307,15 +436,10 @@
 
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   EL RECORRIDO GUIADO
+   EL RECORRIDO GUIADO — antes de empezar
 
    Va debajo del dibujo y comparte su lenguaje: esquinas rectas, filetes de 1px,
-   sin sombras. El único color de estado es el ocre, y aquí marca dos cosas y
-   nada más: el capítulo que suena y la frase que se está diciendo.
-
-   La regla de composición es que el protagonista es el DIBUJO. Estos controles
-   tienen que poder mirarse sin querer: si compitieran, la gente miraría los
-   botones mientras la voz describe algo que está pasando arriba.
+   sin sombras. El único color de estado es el ocre.
    ═══════════════════════════════════════════════════════════════════════════ */
 
 .rec {
@@ -323,8 +447,6 @@
   margin-top: 26px;
   padding-top: 22px;
 }
-
-/* ── el arranque ─────────────────────────────────────────────────────────── */
 
 .rec-inicio {
   display: flex;
@@ -367,9 +489,10 @@
   white-space: nowrap;
   transition: background .18s ease, color .18s ease, border-color .18s ease;
 }
-
 .rec-play:hover,
 .rec-boton:hover { background: var(--ocre); border-color: var(--ocre); }
+.rec-boton:disabled { opacity: .35; cursor: default; }
+.rec-boton:disabled:hover { background: inherit; border-color: inherit; }
 
 .rec-boton-plano {
   background: transparent;
@@ -396,58 +519,18 @@
   border-right: 3px solid currentColor;
 }
 
-/* ── la barra mientras suena ─────────────────────────────────────────────── */
-
-.rec-barra {
+.rec-arranque {
   display: flex;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 9px;
 }
-
-.rec-progreso {
-  flex: 1 1 160px;
-  height: 2px;
-  background: var(--regla);
-  min-width: 120px;
-}
-.rec-progreso-relleno {
-  height: 100%;
-  background: var(--ocre);
-  transition: width .2s linear;
-}
-
-.rec-cuenta {
+/* Cuanto dura. Es la primera pregunta de quien duda si darle al play, y no
+   decirlo hace que mucha gente no lo empiece. */
+.rec-duracion {
   font-family: var(--mono);
   font-size: 10px;
   letter-spacing: .16em;
-  text-transform: uppercase;
-  color: var(--texto);
-  white-space: nowrap;
-}
-
-/* ── el texto que se dice ────────────────────────────────────────────────── */
-
-/* Es también la transcripción: quien no puede o no quiere oír lee lo mismo.
-   Por eso no se oculta nunca ni se reduce a un subtítulo de una línea. */
-.rec-texto {
-  margin: 20px 0 0;
-  max-width: 68ch;
-  font-size: 16.5px;
-  line-height: 1.72;
-  color: var(--texto);
-}
-
-.rec-dicha {
-  color: var(--tinta);
-  box-shadow: inset 0 -1px 0 var(--ocre);
-}
-
-.rec-nota {
-  margin: 10px 0 0;
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: .14em;
   text-transform: uppercase;
   color: var(--texto);
 }
@@ -458,17 +541,17 @@
    saltar a la propia: poder ir directo a «y si llueve» vale más que el orden. */
 .rec-capitulos {
   list-style: none;
-  margin: 24px 0 0;
+  margin: 0;
   padding: 0;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
   gap: 0;
   border-top: 1px solid var(--regla);
 }
-
 .rec-capitulos li { border-bottom: 1px solid var(--regla); }
 
 .rec-cap {
+  position: relative;
   display: flex;
   align-items: baseline;
   gap: 12px;
@@ -483,7 +566,6 @@
   transition: color .16s ease;
 }
 .rec-cap:hover { color: var(--ocre); }
-
 .rec-cap-n {
   font-family: var(--mono);
   font-size: 10px;
@@ -491,46 +573,181 @@
   color: var(--texto);
   flex: none;
 }
-
 .rec-cap.activo { color: var(--ocre); }
 .rec-cap.activo .rec-cap-n { color: var(--ocre); }
-
+.rec-cap.activo .rec-cap-txt { font-weight: 500; }
 .rec-cap-txt { line-height: 1.35; }
+
+/* El progreso del capitulo que suena va DEBAJO de su propia fila. */
+.rec-cap-avance {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--ocre);
+  transform-origin: left;
+  transition: transform .2s linear;
+}
+/* Un capitulo ya escuchado se marca con un filete corto bajo su numero. */
+.rec-cap.oido .rec-cap-n { position: relative; color: var(--tinta); }
+.rec-cap.oido .rec-cap-n::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -4px;
+  height: 1px;
+  background: var(--ocre);
+}
+
+/* ── el texto que se dice (transcripción en línea) ───────────────────────── */
+
+.rec-texto {
+  margin: 20px 0 0;
+  max-width: 68ch;
+  font-size: 16.5px;
+  line-height: 1.72;
+  color: var(--texto);
+}
+.rec-dicha {
+  color: var(--tinta);
+  box-shadow: inset 0 -1px 0 var(--ocre);
+}
+.rec-nota {
+  margin: 10px 0 0;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--texto);
+}
+
+/* El punto del interruptor: lleno cuando esta encendido, hueco cuando no.
+   No depende del color para leerse, que es la regla de todo estado en este sitio. */
+.rec-punto {
+  width: 7px;
+  height: 7px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  flex: none;
+}
+.rec-punto.on { background: var(--ocre); border-color: var(--ocre); }
+
+/* ── tu evento, en el dibujo ─────────────────────────────────────────────── */
+
+.rec-aforo {
+  margin-top: 26px;
+  padding: 22px 24px 24px;
+  border: 1px solid var(--regla);
+  background: var(--papel);
+  display: grid;
+  gap: 16px;
+}
+.rec-aforo-mandos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 18px 28px;
+}
+.rec-aforo-mandos > .ojo { flex: 1 1 100%; }
+.rec-aforo-campo { display: grid; gap: 8px; }
+.rec-aforo-campo input {
+  width: 8.5ch;
+  padding: 11px 13px;
+  border: 1px solid var(--texto);
+  background: var(--papel);
+  font: inherit;
+  font-family: var(--display);
+  font-size: 26px;
+  line-height: 1;
+  color: var(--tinta);
+  -moz-appearance: textfield;
+}
+.rec-aforo-campo input::-webkit-inner-spin-button { opacity: 1; }
+.rec-aforo-formato { display: inline-flex; border: 1px solid var(--regla); }
+.rec-aforo-opcion {
+  padding: 12px 16px;
+  border: 0;
+  background: transparent;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--texto);
+  cursor: pointer;
+}
+.rec-aforo-opcion + .rec-aforo-opcion { border-left: 1px solid var(--regla); }
+.rec-aforo-opcion[aria-pressed="true"] { background: var(--tinta); color: var(--papel); }
+.rec-aforo-veredicto {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(18px, 2vw, 22px);
+  line-height: 1.32;
+  color: var(--tinta);
+  max-width: 52ch;
+}
+.rec-aforo-veredicto.no { color: var(--ocre); }
+.rec-aforo-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 24px;
+}
+.rec-enlace {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--texto);
+  text-decoration: none;
+}
+.rec-enlace:hover { color: var(--ocre); }
+
+/* ── la transcripción completa, plegada ──────────────────────────────────── */
+
+.rec-transcripcion { margin-top: 22px; border-top: 1px solid var(--regla); }
+.rec-transcripcion summary {
+  padding: 14px 0;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--texto);
+  cursor: pointer;
+  list-style: none;
+}
+.rec-transcripcion summary::-webkit-details-marker { display: none; }
+.rec-transcripcion summary::before { content: "+ "; color: var(--ocre); }
+.rec-transcripcion[open] summary::before { content: "− "; }
+.rec-transcripcion-cap { max-width: 68ch; padding: 6px 0 14px; }
+.rec-transcripcion-cap h3 {
+  font-family: var(--display);
+  font-size: 19px;
+  font-weight: 400;
+  margin: 0 0 6px;
+}
+.rec-transcripcion-cap p { margin: 0; font-size: 14.5px; line-height: 1.68; color: var(--texto); }
 
 @media (max-width: 620px) {
   .rec-inicio { flex-direction: column; align-items: stretch; }
   .rec-play { justify-content: center; }
+  .rec-arranque { align-items: stretch; }
   .rec-texto { font-size: 15.5px; }
 }
 
-/* Sin movimiento: la barra deja de animarse y las transiciones se apagan. */
 @media (prefers-reduced-motion: reduce) {
-  .rec-progreso-relleno { transition: none; }
-  .rec-play, .rec-boton, .rec-cap { transition: none; }
+  .rec-play, .rec-boton, .rec-cap, .rec-cap-avance { transition: none; }
 }
-
-
-/* El formulario al final del recorrido. Se separa con un filete y respira:
-   llega despues de siete capitulos y no puede parecer que sigue el texto. */
-.rec-cierre {
-  margin-top: 34px;
-  padding-top: 26px;
-  border-top: 1px solid var(--regla);
-}
-
-.rec-cierre .rec-titulo { margin-top: 6px; }
-.rec-cierre .rec-intro { margin-bottom: 26px; max-width: 54ch; }
 
 
 /* ═══════════════════════════════════════════════════════════════════════════
    LA MARCA QUE CAMINA POR EL DIBUJO
 
    El guion dice, en cada frase, a que punto del terreno se refiere. Esto lo
-   dibuja. Sin ella la voz habla del acceso mientras el dibujo entero se queda
-   igual, y hay que adivinar de que te estan hablando.
-
-   Viaja con una transicion larga y con curva de entrada y salida. El salto
-   instantaneo se lee como un parpadeo; el viaje se lee como alguien señalando.
+   dibuja. Viaja con una transicion larga: el salto instantaneo se lee como un
+   parpadeo; el viaje se lee como alguien señalando. Y se contra-escala con la
+   camara para no crecer con el plano.
    ═══════════════════════════════════════════════════════════════════════════ */
 
 .lam-guia-punto {
@@ -539,11 +756,9 @@
   height: 0;
   z-index: 4;
   pointer-events: none;
-  /* 1,1 s: mas lento que una animacion de interfaz, porque no es un control,
-     es un gesto. Menos que eso y parece un salto. */
-  transition: left 1.1s cubic-bezier(.32, .72, .18, 1), top 1.1s cubic-bezier(.32, .72, .18, 1);
+  transform: scale(calc(1 / var(--zoom, 1)));
+  transition: left 1.1s cubic-bezier(.32, .72, .18, 1), top 1.1s cubic-bezier(.32, .72, .18, 1), transform 1.6s cubic-bezier(0.45, 0.02, 0.18, 1);
 }
-
 .lam-guia-nucleo,
 .lam-guia-halo {
   position: absolute;
@@ -552,16 +767,12 @@
   top: 50%;
   transform: translate(-50%, -50%);
 }
-
 .lam-guia-nucleo {
   width: 9px;
   height: 9px;
   background: var(--ocre);
   box-shadow: 0 0 0 3px var(--papel);
 }
-
-/* El halo late despacio. Es lo unico del dibujo que se mueve solo cuando no
-   hay lluvia ni camion, y por eso el ojo lo encuentra sin buscarlo. */
 .lam-guia-halo {
   width: 34px;
   height: 34px;
@@ -569,16 +780,11 @@
   opacity: 0;
   animation: lam-latido 2.4s ease-out infinite;
 }
-
 @keyframes lam-latido {
   0%   { transform: translate(-50%, -50%) scale(.35); opacity: .85; }
   70%  { transform: translate(-50%, -50%) scale(1);   opacity: 0; }
   100% { transform: translate(-50%, -50%) scale(1);   opacity: 0; }
 }
-
-/* El rotulo dice el nombre de la zona con el vocabulario de la lamina, no con
-   otro: si la voz dice "la palapa" y el dibujo rotula "El Tiki Hut", la persona
-   se queda pensando si son dos cosas. */
 .lam-guia-rotulo {
   position: absolute;
   left: 18px;
@@ -593,152 +799,391 @@
   padding: 4px 8px;
   animation: lam-rotulo-entra .5s ease both;
 }
-
 @keyframes lam-rotulo-entra {
   from { opacity: 0; transform: translateX(-6px); }
   to   { opacity: 1; transform: none; }
 }
-
 @media (max-width: 620px) {
   .lam-guia-halo { width: 26px; height: 26px; }
   .lam-guia-rotulo { font-size: 8.5px; padding: 3px 6px; }
 }
-
-/* Sin movimiento: la marca sigue apareciendo donde toca, pero sin viaje ni
-   latido. Se pierde el gesto, no la informacion. */
 @media (prefers-reduced-motion: reduce) {
   .lam-guia-punto { transition: none; }
   .lam-guia-halo { animation: none; opacity: .5; transform: translate(-50%, -50%) scale(.7); }
   .lam-guia-rotulo { animation: none; }
 }
 
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   EL RECORRIDO, SEGUNDA PASADA
-
-   El problema que resuelve: el dibujo es muy ancho y a pantalla completa ocupa
-   casi todo el alto, asi que el texto de lo que se esta diciendo quedaba fuera
-   de la vista. Habia que elegir entre ver o leer, que es justo lo que un
-   recorrido guiado no puede pedir.
-   ═══════════════════════════════════════════════════════════════════════════ */
-
-/* Mientras narra, el dibujo se limita en alto para que quepan los dos. El
-   aspect-ratio sigue mandando el ancho; esto solo pone un techo. */
-.lam.recorriendo .lam-fig {
-  max-height: 52vh;
+/* Mientras dirige el aforo (sin cine), el dibujo se limita en alto para que
+   quepan el dibujo y el veredicto en la misma pantalla. */
+.lam.recorriendo:not(.cine) .lam-fig {
+  max-height: 60vh;
   transition: max-height .5s cubic-bezier(.4, 0, .2, 1);
 }
+.lam.recorriendo:not(.cine) .lam-modos { opacity: .45; }
+.lam.recorriendo:not(.cine) .lam-modos:hover,
+.lam.recorriendo:not(.cine) .lam-modos:focus-within { opacity: 1; }
 
-/* Y los controles de capa se apagan mientras narra: son el mando manual, y
-   competir con la voz por la atencion no ayuda a nadie. Siguen siendo
-   alcanzables —tocarlos interrumpe el recorrido a proposito— pero no gritan. */
-.lam.recorriendo .lam-modos { opacity: .45; }
-.lam.recorriendo .lam-modos:hover,
-.lam.recorriendo .lam-modos:focus-within { opacity: 1; }
 
-/* ── el arranque ─────────────────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════════════════
+   MODO CINE
 
-.rec-arranque {
+   La lamina entera ocupa la pantalla sobre tinta. El dibujo es la proyeccion
+   —papel iluminado en una sala oscura— y a su lado, o debajo en el movil, el
+   panel de la narracion: capitulos, subtitulo palabra a palabra y mandos.
+
+   Es el mismo componente que la seccion de la pagina: no hay dos dibujos ni dos
+   textos. Solo cambia donde se pinta cada cosa.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.lam.cine {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  background: var(--tinta);
+  color: var(--papel);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) clamp(340px, 32vw, 460px);
+  grid-template-rows: minmax(0, 1fr);
+  animation: cine-entra .5s ease both;
+}
+@keyframes cine-entra { from { opacity: 0; } to { opacity: 1; } }
+
+/* Lo que no es el escenario ni el panel, fuera. */
+.lam.cine > .lam-cabecera,
+.lam.cine > .lam-lista,
+.lam.cine > .lam-nota { display: none; }
+
+/* El escenario encuadra el dibujo sin deformarlo: cabe entero, centrado, con
+   la proporcion que trae. Unidades de contenedor: sin JavaScript que mida. */
+.lam.cine .lam-escenario {
+  container-type: size;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(16px, 2.4vw, 40px);
+  min-width: 0;
+  min-height: 0;
+}
+.lam.cine .lam-fig {
+  width: min(100%, calc(100cqh * var(--ratio, 1.75)));
+  max-height: 100%;
+  aspect-ratio: var(--ratio, 1.75);
+  border-color: var(--regla-osc);
+  box-shadow: 0 0 0 1px rgba(248, 243, 234, .06);
+}
+.lam.cine .lam-etq, .lam.cine .lam-cajetin { display: none; }
+
+/* ── el panel ─────────────────────────────────────────────────────────────── */
+
+.lam.cine .rec {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-left: 1px solid var(--regla-osc);
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  gap: 9px;
+  min-height: 0;
+  min-width: 0;
+  background: var(--tinta);
+  color: var(--papel);
 }
 
-/* Cuanto dura. Es la primera pregunta de quien duda si darle al play, y no
-   decirlo hace que mucha gente no lo empiece. */
-.rec-duracion {
+.cine-cab {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding: 22px 26px 14px;
   font-family: var(--mono);
   font-size: 10px;
-  letter-spacing: .16em;
+  letter-spacing: .18em;
   text-transform: uppercase;
-  color: var(--texto);
 }
+.cine-marca { color: var(--papel); }
+.cine-ojo { color: var(--texto-3); flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cine-salir {
+  border: 1px solid var(--regla-osc);
+  background: transparent;
+  color: var(--papel);
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+.cine-salir:hover { border-color: var(--ocre); color: var(--ocre); }
 
-/* ── los capitulos, ahora con estado ─────────────────────────────────────── */
-
-.rec-cap { position: relative; }
-
-/* El progreso del capitulo que suena va DEBAJO de su propia fila. Enseña lo
-   mismo que una barra global y ademas dice en cual estas, sin gastar una fila. */
-.rec-cap-avance {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -1px;
+/* La barra de historia: un segmento por capitulo. */
+.cine-segmentos {
+  display: flex;
+  gap: 4px;
+  padding: 0 26px 18px;
+}
+.cine-segmento {
+  position: relative;
+  flex: 1;
   height: 2px;
+  background: var(--regla-osc);
+  overflow: hidden;
+}
+.cine-segmento.hecho { background: var(--papel); opacity: .55; }
+.cine-segmento-relleno {
+  position: absolute;
+  inset: 0;
   background: var(--ocre);
   transform-origin: left;
   transition: transform .2s linear;
 }
 
-/* Un capitulo ya escuchado se marca con un filete corto bajo su numero. Sin
-   esto, al volver a la lista no hay forma de saber que falta, y la reaccion
-   normal es abandonarla. */
-.rec-cap.oido .rec-cap-n { position: relative; color: var(--tinta); }
-.rec-cap.oido .rec-cap-n::after {
-  content: "";
+/* Los capitulos, en el cine: una lista vertical compacta que se puede recorrer. */
+.lam.cine .cine-caps {
+  display: block;
+  border-top: 1px solid var(--regla-osc);
+  padding: 0 26px;
+  overflow-y: auto;
+  min-height: 0;
+  flex: 0 1 auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--regla-osc) transparent;
+}
+.lam.cine .cine-caps li { border-bottom: 1px solid var(--regla-osc); }
+.lam.cine .rec-cap { color: var(--texto-3); padding: 11px 0; font-size: 14px; }
+.lam.cine .rec-cap:hover { color: var(--papel); }
+.lam.cine .rec-cap.activo { color: var(--papel); text-decoration: none; }
+.lam.cine .rec-cap.activo .rec-cap-n { color: var(--ocre); }
+.lam.cine .rec-cap.oido .rec-cap-n { color: var(--papel); }
+
+/* ── el subtitulo ─────────────────────────────────────────────────────────── */
+
+/* Lo que se esta diciendo, palabra a palabra. La oracion entera esta puesta y
+   las palabras se encienden al llegar la voz: se lee lo que viene y se oye lo
+   que suena, que es como funciona un subtitulo bien hecho. */
+.cine-sub {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 22px 26px 18px;
+  border-top: 1px solid var(--regla-osc);
+}
+.cine-pregunta {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--ocre);
+  padding-bottom: 12px;
+}
+.cine-frase {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(20px, 1.55vw, 28px);
+  line-height: 1.32;
+  letter-spacing: -.012em;
+  color: var(--papel);
+  text-wrap: pretty;
+  animation: cine-frase-entra .35s ease both;
+}
+@keyframes cine-frase-entra {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: none; }
+}
+.cine-frase > span { color: var(--texto-3); transition: color .18s ease; }
+.cine-frase > span.dicha { color: var(--papel); }
+.lam.cine .rec-nota { color: var(--texto-3); }
+
+/* El texto completo del capitulo, si se pide. */
+.cine-texto {
+  margin: 0;
+  padding: 0 26px 14px;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--texto-3);
+  max-height: 22vh;
+  overflow-y: auto;
+}
+.cine-texto .rec-dicha { color: var(--papel); box-shadow: inset 0 -1px 0 var(--ocre); }
+
+/* ── los mandos ───────────────────────────────────────────────────────────── */
+
+.cine-mandos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 26px 20px;
+  border-top: 1px solid var(--regla-osc);
+}
+.lam.cine .rec-boton { background: var(--papel); color: var(--tinta); border-color: var(--papel); padding: 10px 14px; font-size: 13px; }
+.lam.cine .rec-boton:hover { background: var(--ocre); border-color: var(--ocre); color: var(--papel); }
+.lam.cine .rec-boton-plano { background: transparent; color: var(--texto-3); border-color: var(--regla-osc); padding: 10px 11px; font-size: 9.5px; letter-spacing: .14em; }
+.lam.cine .rec-boton-plano:hover { color: var(--papel); border-color: var(--papel); background: transparent; }
+.lam.cine .rec-boton-plano[aria-pressed="true"] { color: var(--papel); }
+.lam.cine .rec-boton:disabled:hover { background: transparent; border-color: var(--regla-osc); color: var(--texto-3); }
+.cine-teclas {
+  flex: 1 1 100%;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--texto-3);
+  opacity: .8;
+}
+
+/* ── el cierre: el formulario dentro del cine ─────────────────────────────── */
+
+.cine-cierre {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  margin: 0;
+  padding: 20px 26px 26px;
+  border-top: 1px solid var(--regla-osc);
+  scrollbar-width: thin;
+  scrollbar-color: var(--regla-osc) transparent;
+}
+.cine-cierre .ojo { color: var(--ocre); }
+.cine-cierre .rec-titulo { color: var(--papel); margin-top: 8px; }
+.cine-cierre .rec-intro { color: var(--texto-3); margin-bottom: 22px; }
+.cine-cierre form { max-width: none; }
+.cine-cierre label { color: var(--texto-3) !important; }
+.cine-cierre input, .cine-cierre select, .cine-cierre textarea {
+  background: #2b251d !important;
+  color: var(--papel) !important;
+  border-color: var(--regla-osc) !important;
+}
+.cine-cierre .boton { background: var(--papel); color: var(--tinta); }
+.cine-cierre p { color: var(--texto-3); }
+.cine-cierre .respuesta { color: var(--papel); }
+.lam.cine .rec-final .cine-sub { flex: 0 0 auto; }
+
+/* ── la tarjeta final del video exportado ─────────────────────────────────── */
+
+.cine-tarjeta {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 14px;
+  padding: 40px;
+  background: var(--tinta);
+  color: var(--papel);
+  animation: cine-entra 1.2s ease both;
+}
+.cine-tarjeta-nombre {
+  font-family: var(--display);
+  font-size: clamp(44px, 6vw, 96px);
+  line-height: .95;
+  letter-spacing: -.026em;
+}
+.cine-tarjeta-linea {
+  font-family: var(--mono);
+  font-size: clamp(10px, 1vw, 13px);
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--texto-3);
+  padding-top: 6px;
+}
+.cine-tarjeta-cta {
+  margin-top: 22px;
+  padding: 16px 26px;
+  background: var(--papel);
+  color: var(--tinta);
+  font-family: var(--mono);
+  font-size: clamp(10px, 1vw, 13px);
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+.cine-tarjeta-pie {
   position: absolute;
+  bottom: 34px;
   left: 0;
   right: 0;
-  bottom: -4px;
-  height: 1px;
-  background: var(--ocre);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--texto-3);
 }
 
-.rec-cap.activo .rec-cap-txt { font-weight: 500; }
-
-/* ── el texto que se dice ────────────────────────────────────────────────── */
-
-/* Con la maqueta comprimida, el texto tiene que leerse de un vistazo. La
-   oracion que suena va en tinta plena y el resto retrocede, para que el ojo
-   sepa donde esta sin buscarlo. */
-.rec-texto { transition: none; }
-.rec-dicha {
-  color: var(--tinta);
-  box-shadow: inset 0 -1px 0 var(--ocre);
+/* Grabando: sin mandos, sin cabecera de salida, todo al servicio del cuadro. */
+.rec-grabando .cine-salir { display: none; }
+.lam.cine .rec-grabando .cine-sub { padding-bottom: 30px; }
+.cine-pie {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 0 26px 26px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--texto-3);
+}
+.cine-pie span:first-child { color: var(--papel); }
+@media (max-width: 860px), (max-aspect-ratio: 1/1) {
+  .cine-pie { padding: 0 18px 22px; }
+}
+/* En vertical, con el subtitulo arriba, el pie queda solo al fondo. */
+@media (max-aspect-ratio: 9/15) {
+  .lam.cine .rec-grabando .cine-sub { flex: 0 0 auto; }
+  .cine-pie { font-size: 12px; padding-bottom: 34px; }
 }
 
-@media (max-width: 900px) {
-  .lam.recorriendo .lam-fig { max-height: 44vh; }
+/* ── vertical: el dibujo arriba, el panel debajo ──────────────────────────── */
+
+@media (max-width: 860px), (max-aspect-ratio: 1/1) {
+  .lam.cine {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 44%) minmax(0, 56%);
+  }
+  .lam.cine .lam-escenario { padding: 14px 14px 0; align-items: flex-end; }
+  .lam.cine .rec { border-left: 0; border-top: 0; }
+  .cine-cab { padding: 16px 18px 10px; }
+  .cine-segmentos { padding: 0 18px 12px; }
+  /* Los capitulos, en horizontal: una fila que se desliza, para que el
+     subtitulo tenga el alto. */
+  .lam.cine .cine-caps {
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0 18px;
+    flex: 0 0 auto;
+    scrollbar-width: none;
+  }
+  .lam.cine .cine-caps::-webkit-scrollbar { display: none; }
+  .lam.cine .cine-caps li { border-bottom: 0; flex: 0 0 auto; }
+  .lam.cine .rec-cap { padding: 10px 16px 12px 0; font-size: 13px; white-space: nowrap; }
+  .lam.cine .rec-cap-avance { bottom: 0; }
+  .cine-sub { padding: 16px 18px 12px; }
+  .cine-frase { font-size: clamp(18px, 4.6vw, 26px); }
+  .cine-mandos { padding: 10px 18px 16px; }
+  .cine-teclas { display: none; }
+  .cine-cierre { padding: 16px 18px 22px; }
+  .cine-tarjeta-nombre { font-size: clamp(40px, 11vw, 88px); }
+}
+
+/* En vertical (9:16, el movil en la mano o el video para reels): el papel es
+   mas alto, la camara arranca mas cerca, y el subtitulo va justo debajo del
+   dibujo, grande, en vez de al fondo. El ojo baja del dibujo al texto. */
+@media (max-aspect-ratio: 9/15) {
+  .lam.cine { grid-template-rows: minmax(0, 52%) minmax(0, 48%); }
+  .lam.cine .lam-escenario { align-items: center; padding: 18px 18px 0; }
+  .cine-sub { justify-content: flex-start; padding-top: 22px; }
+  .cine-frase { font-size: clamp(24px, 5.6vw, 44px); line-height: 1.24; }
+  .lam.cine .rec-cap { font-size: 15px; }
+  .lam.cine .rec-grabando .cine-frase { font-size: clamp(28px, 6.2vw, 50px); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .lam.recorriendo .lam-fig { transition: none; }
-  .rec-cap-avance { transition: none; }
-}
-
-
-/* El punto del interruptor de musica: lleno cuando suena, hueco cuando no.
-   No depende del color para leerse, que es la regla de todo estado en este
-   sitio. */
-.rec-punto {
-  width: 7px;
-  height: 7px;
-  border: 1px solid currentColor;
-  border-radius: 50%;
-  flex: none;
-}
-.rec-punto.on { background: var(--ocre); border-color: var(--ocre); }
-
-
-/* Cada zona explicada: que es, para que sirve y con que te vas a encontrar.
-   El tercer bloque —el "ojo"— lleva un filete ocre a la izquierda porque es lo
-   que NO hay, y en este venue decir lo que no hay es la mitad del argumento. */
-.lam-item-sirve {
-  display: block;
-  padding-top: 9px;
-  font-size: 13.5px;
-  line-height: 1.55;
-  color: var(--tinta-2);
-}
-
-.lam-item-ojo {
-  display: block;
-  margin-top: 9px;
-  padding-left: 11px;
-  border-left: 1px solid var(--ocre);
-  font-size: 12.5px;
-  line-height: 1.5;
-  color: var(--texto);
+  .lam.cine, .cine-frase, .cine-tarjeta { animation: none; }
+  .cine-segmento-relleno, .cine-frase > span { transition: none; }
 }

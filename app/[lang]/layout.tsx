@@ -5,8 +5,9 @@ import "../responsive.css";
 import "../lamina.css";
 import { BCP47, IDIOMAS, INDEXABLE, alternativas, asIdioma, href } from "@/lib/i18n";
 const asIdioma_ = (p: { lang: string }) => ({ lang: asIdioma(p.lang) });
-import { grafo, localBusiness, eventVenue } from "@/lib/schema";
 import { VENUE } from "@/lib/venue";
+import { PAGINAS } from "@/lib/contenido";
+import type { ClaveRuta } from "@/lib/i18n";
 import SelectorIdioma from "@/components/SelectorIdioma";
 import Revelado from "@/components/Revelado";
 import Medicion from "@/components/Medicion";
@@ -108,9 +109,26 @@ export default async function Layout(
   const { lang } = asIdioma_(await params);
   const es = lang === "es";
 
-  // El JSON-LD del negocio va en el layout: es el mismo en todas las páginas y
-  // duplicarlo por página haría que compitan varios @id iguales.
-  const ld = grafo(localBusiness(lang), eventVenue(lang));
+  // El JSON-LD del negocio YA NO va aquí. Iba, y tenía un efecto que marcó la
+  // auditoría del 5-sep: la página de residencia permanente —un servicio legal,
+  // otro negocio— heredaba LocalBusiness y EventVenue y se declaraba a sí misma
+  // como el venue. Ahora lo declara cada página del venue (app/[lang]/page.tsx y
+  // [slug]/page.tsx), y la de residencia solo sus migas.
+
+  /**
+   * EL PIE COMO MAPA DEL SITIO. La auditoría encontró tres páginas a las que no
+   * se llegaba navegando —aforos, guía y barrio—, y con ellas se perdía la
+   * calculadora, que es la mejor herramienta de cualificación del sitio. Para un
+   * rastreador una página sin enlaces entrantes casi no existe; para una
+   * persona, directamente no existe. El pie las enlaza todas, agrupadas como
+   * las piensa quien busca: qué alquilo, para qué, y cómo funciona.
+   */
+  const nombre = (clave: ClaveRuta) => PAGINAS.find((p) => p.clave === clave)?.h1[lang] ?? clave;
+  const GRUPOS: Array<{ titulo: string; claves: ClaveRuta[] }> = [
+    { titulo: es ? "Qué se alquila" : "What is rented", claves: ["jardin", "tikiHut", "aforos"] },
+    { titulo: es ? "Para qué" : "What for", claves: ["bodas", "quinces", "graduaciones", "corporativo", "finDeAno", "artbasel", "popups", "produccion", "pequenos"] },
+    { titulo: es ? "Cómo funciona" : "How it works", claves: ["guia", "barrio", "faq"] },
+  ];
 
   return (
     <html
@@ -129,12 +147,6 @@ export default async function Layout(
             frecuentes y de residencia se quedaban sin cookie: los anuncios que
             apuntaran ahí perdían su identificador de clic. Ver el componente. */}
         <Atribucion />
-
-        <script
-          type="application/ld+json"
-          // El contenido sale de lib/venue.ts, no de entrada de usuario.
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }}
-        />
 
         {/**
           * EL ENLACE PARA SALTAR AL CONTENIDO, que hasta ahora no servía.
@@ -202,32 +214,66 @@ export default async function Layout(
 
         <main id="contenido">{children}</main>
 
-        <footer style={{ background: "var(--tinta)", color: "var(--texto)", marginTop: 0 }}>
-          <div
-            className="reja"
-            style={{
-              display: "flex", justifyContent: "space-between", gap: 24, flexWrap: "wrap",
-              paddingBlock: 34, fontFamily: "var(--mono)", fontSize: 11,
-              letterSpacing: ".14em", textTransform: "uppercase",
-            }}
-          >
-            <div>Club Wynwood — {es ? VENUE.descriptorEs : VENUE.descriptorEn}</div>
-            <div>
-              {VENUE.direccion.calle} · {VENUE.direccion.ciudad} {VENUE.direccion.region}{" "}
-              {VENUE.direccion.cp}
-            </div>
-            <div>
-              {es
-                ? "Se alquila el exterior: jardín y estructura techada"
-                : "The exterior is what's rented: garden and covered structure"}
-            </div>
-            {/* El servicio legal de Sandra Clavijo vive en este dominio desde
-                el sitio anterior. Va SOLO en el pie: en la navegación
-                competiría con lo que el venue vende. */}
-            <div>
-              <a href={href("residencia", lang)} style={{ color: "var(--texto)" }}>
-                {es ? "Residencia permanente · EB-5" : "Permanent residency · EB-5"}
-              </a>
+        <footer style={{ background: "var(--tinta)", color: "var(--texto-3)", marginTop: 0 }}>
+          <div className="reja" style={{ paddingBlock: "52px 22px" }}>
+            <nav
+              aria-label={es ? "Todas las páginas" : "All pages"}
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+                gap: "32px 40px",
+                paddingBottom: 40,
+                borderBottom: "1px solid var(--regla-osc)",
+              }}
+            >
+              <div>
+                <div style={{ fontFamily: "var(--mono)", fontSize: 12, letterSpacing: ".18em", textTransform: "uppercase", color: "var(--papel)", paddingBottom: 14 }}>
+                  Club Wynwood
+                </div>
+                <p style={{ margin: 0, fontSize: 14, lineHeight: 1.6, color: "var(--texto-3)", maxWidth: "30ch" }}>
+                  {es ? VENUE.descriptorEs : VENUE.descriptorEn}.{" "}
+                  {es
+                    ? "Se alquila el exterior: jardín y estructura techada. Tú traes la producción."
+                    : "The exterior is what's rented: garden and covered structure. You bring the production."}
+                </p>
+                <p style={{ margin: "16px 0 0", fontSize: 14, lineHeight: 1.7 }}>
+                  {VENUE.direccion.calle}<br />
+                  {VENUE.direccion.ciudad}, {VENUE.direccion.region} {VENUE.direccion.cp}<br />
+                  <a href="tel:+13059707486" style={{ color: "var(--papel)", textDecoration: "none" }}>(305) 970-7486</a><br />
+                  <a href={`mailto:${VENUE.email}`} style={{ color: "var(--papel)", textDecoration: "none" }}>{VENUE.email}</a>
+                </p>
+              </div>
+              {GRUPOS.map((g) => (
+                <div key={g.titulo}>
+                  <div className="ojo" style={{ color: "var(--texto-3)", paddingBottom: 14 }}>{g.titulo}</div>
+                  <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "grid", gap: 9 }}>
+                    {g.claves.map((c) => (
+                      <li key={c}>
+                        <a href={href(c, lang)} style={{ color: "var(--papel)", textDecoration: "none", fontSize: 14 }}>
+                          {c === "faq" ? (es ? "Preguntas frecuentes" : "Frequently asked questions") : nombre(c)}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </nav>
+            <div
+              style={{
+                display: "flex", justifyContent: "space-between", gap: 24, flexWrap: "wrap",
+                paddingTop: 22, fontFamily: "var(--mono)", fontSize: 10,
+                letterSpacing: ".14em", textTransform: "uppercase",
+              }}
+            >
+              <div>© {new Date().getFullYear()} Club Wynwood · Wynwood Arts District, Miami</div>
+              {/* El servicio legal de Sandra Clavijo vive en este dominio desde
+                  el sitio anterior. Va SOLO en el pie: en la navegación
+                  competiría con lo que el venue vende. */}
+              <div>
+                <a href={href("residencia", lang)} style={{ color: "var(--texto-3)" }}>
+                  {es ? "Residencia permanente · EB-5" : "Permanent residency · EB-5"}
+                </a>
+              </div>
             </div>
           </div>
         </footer>

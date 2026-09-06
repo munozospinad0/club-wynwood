@@ -6,3 +6,6 @@ out/
 *.tsbuildinfo
 next-env.d.ts
 .stversions/
+
+# QA local: capturas, videos exportados, pruebas de voz
+.qa/

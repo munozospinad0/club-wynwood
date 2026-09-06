@@ -1,5 +1,6 @@
 import { VENUE, ESPACIOS, FICHA, TIEMPOS, NO_INCLUIDO } from "@/lib/venue";
 import { BASE, RUTAS, IDIOMAS, url, type ClaveRuta } from "@/lib/i18n";
+import guion from "@/lib/recorrido.guion.json";
 
 /**
  * /llms.txt — estándar emergente de AEO.
@@ -77,6 +78,16 @@ export function GET() {
 
     bloque("Tiempos desde el venue (aproximados)",
       TIEMPOS.map((t) => `- ${t.es}: ${t.valor}`)),
+
+    /**
+     * EL RECORRIDO GUIADO, EN TEXTO. Son las ocho preguntas que hace un
+     * productor antes de montar algo aquí, con la respuesta que da el sitio en
+     * voz. Es el bloque más citable del archivo: pregunta literal, respuesta
+     * autocontenida, sin adjetivos. Sale del mismo guion que la voz, así que
+     * no puede contradecir lo que el sitio dice.
+     */
+    bloque("Recorrido guiado: las ocho preguntas de un productor, respondidas",
+      guion.capitulos.flatMap((c) => [`### ${c.pregunta.es}`, c.texto.es, ""])),
 
     bloque("Tarifas", [
       "No se publican. Los paquetes se arman contra cada evento porque el precio",

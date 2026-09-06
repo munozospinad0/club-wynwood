@@ -75,3 +75,24 @@ se descarga una vez:
 ```bash
 ~/.venvs/scrapling/bin/python -m playwright install chromium
 ```
+
+---
+
+## El recorrido guiado: tres herramientas (6-sep-2026)
+
+    node herramientas/generar-recorrido.mjs [--seco] [--force] [--solo es|en] [--voces]
+    node herramientas/auditar-recorrido.mjs
+    node herramientas/grabar-recorrido.mjs [--lang es,en] [--formato 16x9,9x16] [--base URL] [--salida DIR] [--sin-musica]
+
+1. **Generar** locuta el guion (`lib/recorrido.guion.json`) con ElevenLabs
+   (`eleven_v3`, Cristian en español, Brian en inglés) y escribe los mp3, el
+   alineamiento palabra a palabra y `manifiesto.json` con las duraciones. Solo
+   regraba lo que cambió; cambiar de voz exige `--force`. Necesita
+   `ELEVENLABS_API_KEY` en el entorno (vive en `~/clientes/Merge/loymark-academy/.env`).
+2. **Auditar** comprueba que la voz diga lo que dice el guion y que cada hito
+   sea una frase encontrable en el audio. Correrlo SIEMPRE después de tocar el guion.
+3. **Grabar** saca los MP4 del sitio en marcha (`npm run build && npx next start -p 3200`):
+   abre la home con `recorrido=grabar` en la URL, graba con Playwright y pega la
+   voz con las marcas de tiempo que apunta la página. Unos cuatro minutos por archivo.
+
+Detalle y decisiones en `ESTADO.md`.

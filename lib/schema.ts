@@ -116,6 +116,32 @@ export function faqPage(lang: Idioma, preguntas: Pregunta[]) {
   };
 }
 
+/**
+ * LA PÁGINA COMO ENTIDAD, CON LO QUE SE PUEDE LEER EN VOZ ALTA.
+ *
+ * `speakable` es la señal que los asistentes de voz y los motores generativos
+ * usan para saber qué parte de la página es la respuesta. Aquí apunta a los
+ * bloques de respuesta (40-60 palabras, conclusión primero) y a la
+ * transcripción del recorrido guiado, que son exactamente las ocho preguntas
+ * que hace un productor con su respuesta. Un modelo que quiera citar «qué pasa
+ * si llueve en un venue de Wynwood» tiene ahí el párrafo entero, limpio.
+ */
+export function webPage(lang: Idioma, clave: "home" | "faq", nombre: string) {
+  return {
+    "@type": "WebPage",
+    "@id": `${url(clave, lang)}#webpage`,
+    url: url(clave, lang),
+    name: nombre,
+    inLanguage: lang === "es" ? "es-US" : "en-US",
+    about: { "@id": ID_VENUE },
+    isPartOf: { "@type": "WebSite", "@id": `${BASE}/#sitio`, url: BASE, name: VENUE.nombre },
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: [".respuesta", ".rec-transcripcion-cap"],
+    },
+  };
+}
+
 export function breadcrumb(lang: Idioma, nombre: string, href: string) {
   return {
     "@type": "BreadcrumbList",

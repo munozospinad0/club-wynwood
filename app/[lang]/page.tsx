@@ -2,7 +2,7 @@ import Image from "next/image";
 import { asIdioma, href } from "@/lib/i18n";
 import { FICHA, TIEMPOS, VENUE } from "@/lib/venue";
 import { PAGINAS, FAQ } from "@/lib/contenido";
-import { grafo, faqPage } from "@/lib/schema";
+import { grafo, faqPage, localBusiness, eventVenue, webPage } from "@/lib/schema";
 import Formulario from "@/components/Formulario";
 import Contacto from "@/components/Contacto";
 import LaminaEdificio from "@/components/LaminaEdificio";
@@ -30,20 +30,24 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
   const verificados = FICHA.filter((f) => f.estado === "verificado");
 
   /**
-   * SOLO el FAQPage.
+   * EL GRAFO DE LA HOME: negocio, venue, página y preguntas.
    *
-   * Aquí metí primero también LocalBusiness y EventVenue, dando por hecho que
-   * la home no tenía datos estructurados. Los tenía: **los inyecta el layout**,
-   * y yo había mirado solo esta página. El resultado eran dos LocalBusiness y
-   * dos EventVenue en el mismo documento, que es peor que no tener ninguno —
-   * un buscador que encuentra la misma entidad declarada dos veces no sabe cuál
-   * vale.
-   *
-   * Lo que sí faltaba es el FAQPage, y es el que importa para lo que buscamos:
-   * es lo que permite que una respuesta nuestra salga citada cuando alguien
-   * pregunta «¿qué pasa si llueve en un venue al aire libre en Wynwood?».
+   * Hasta el 6-sep-2026 LocalBusiness y EventVenue los inyectaba el LAYOUT, en
+   * todas las páginas. Tenía un efecto que la auditoría marcó: la página de
+   * residencia permanente —contenido legal de otro negocio— se declaraba a sí
+   * misma como el venue. Ahora cada página declara lo suyo, y la de residencia
+   * no declara el venue. Aquí van los dos, una sola vez —duplicarlos en el
+   * mismo documento es peor que no tenerlos: un buscador que encuentra la misma
+   * entidad dos veces no sabe cuál vale— más la WebPage con `speakable` y el
+   * FAQPage, que es lo que permite que una respuesta nuestra salga citada cuando
+   * alguien pregunta «¿qué pasa si llueve en un venue al aire libre en Wynwood?».
    */
-  const ld = grafo(faqPage(lang, FAQ.map((f) => ({ q: f.q[lang], a: f.a[lang] }))));
+  const ld = grafo(
+    localBusiness(lang),
+    eventVenue(lang),
+    webPage(lang, "home", es ? "Club Wynwood — Jardín de eventos al aire libre" : "Club Wynwood — Open-air event garden"),
+    faqPage(lang, FAQ.map((f) => ({ q: f.q[lang], a: f.a[lang] })))
+  );
   const enVisita = FICHA.filter((f) => f.estado === "en-visita");
 
   return (

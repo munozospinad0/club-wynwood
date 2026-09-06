@@ -9,13 +9,24 @@ import type { Idioma } from "@/lib/i18n";
  *
  * Cada capítulo contesta UNA pregunta de productor, en el orden en que las
  * hace. Los `hitos` son frases literales del guion: cuando la voz llega a esa
- * frase, el dibujo cambia (modo, zona, y a dónde camina el guía). Se anclan al
- * audio con el alineamiento palabra a palabra, nunca con tiempos fijos; es la
- * misma regla que en Loymark Academy, y por lo mismo: si el audio cambia, los
- * tiempos se recalculan solos.
+ * frase, el dibujo cambia (modo, zona, a dónde camina el guía y **cuánto se
+ * acerca la cámara**). Se anclan al audio con el alineamiento palabra a
+ * palabra, nunca con tiempos fijos; es la misma regla que en Loymark Academy, y
+ * por lo mismo: si el audio cambia, los tiempos se recalculan solos.
+ *
+ * ─────────────────────────────────────────────────────────────────────────
+ * LA CÁMARA (versión 2 del guion, 6-sep-2026)
+ * ─────────────────────────────────────────────────────────────────────────
+ *
+ * Daniel: «darle más calidad… un video más completo, animado». Lo que separaba
+ * al recorrido de un vídeo no era la voz ni el dibujo: era que el encuadre no
+ * se movía nunca. Una marca de nueve píxeles caminaba por un dibujo de dos mil,
+ * y la persona tenía que buscarla. Ahora cada hito trae `zoom`: la cámara se
+ * acerca a la zona de la que se habla y vuelve a abrir cuando la frase cambia
+ * de tema. Es el plano y el contraplano de un documental, hecho con CSS.
  */
 
-export type ModoRecorrido = "todo" | "lluvia" | "mesas" | "camion";
+export type ModoRecorrido = "todo" | "lluvia" | "carpa" | "mesas" | "gente" | "camion" | "noche";
 export type ZonaRecorrido = "jardin" | "tiki" | "cabanas" | "acceso" | "edificio";
 export type Pt = [number, number];
 
@@ -23,14 +34,17 @@ export interface Hito {
   frase: string;
   modo?: ModoRecorrido;
   zona?: ZonaRecorrido | null;
-  punto?: Pt;
+  punto?: Pt | null;
+  /** 1 = el recinto entero. 1,8 = la palapa llenando el encuadre. */
+  zoom?: number;
 }
 
 export interface Capitulo {
   id: string;
   modo: ModoRecorrido;
   zona: ZonaRecorrido | null;
-  punto: Pt;
+  punto: Pt | null;
+  zoom: number;
   pregunta: Record<Idioma, string>;
   texto: Record<Idioma, string>;
   hitos: Record<Idioma, Hito[]>;
@@ -46,6 +60,19 @@ export function rutaAudio(lang: Idioma, indice: number): { mp3: string; palabras
     mp3: `/audio/recorrido/${lang}/${nn}.mp3`,
     palabras: `/audio/recorrido/${lang}/${nn}.words.json`,
   };
+}
+
+/**
+ * Lo que escribe `generar-recorrido.mjs` al terminar. `duraciones` es nuevo:
+ * lo lee el modo de grabación para avanzar los capítulos con un reloj exacto
+ * aunque el navegador no reproduzca audio (en una grabación sin altavoces, por
+ * ejemplo). Sin él, el vídeo exportado y su pista de voz se desfasarían.
+ */
+export interface Manifiesto {
+  version: string;
+  total: number;
+  idiomas: Array<{ idioma: Idioma; capitulos: number }>;
+  duraciones?: Partial<Record<Idioma, number[]>>;
 }
 
 export interface Palabra { w: string; start: number; end: number }
@@ -109,15 +136,40 @@ export function tiempoDeFrase(frase: string, texto: string, palabras: Palabra[],
   return (pos / texto.length) * duracion;
 }
 
-/** Las oraciones del texto, con el segundo en que empieza cada una. */
-export function oraciones(texto: string, palabras: Palabra[], duracion: number): Array<{ texto: string; inicio: number }> {
-  const partes = texto.split(/(?<=[.?!])\s+/).map((s) => s.trim()).filter(Boolean);
+export interface Oracion {
+  texto: string;
+  inicio: number;
+  /** Cada palabra de la oración con el segundo en que se dice. Vacío si no hay alineamiento. */
+  palabras: Array<{ w: string; start: number }>;
+}
+
+/**
+ * Las oraciones del texto, con el segundo en que empieza cada una Y sus
+ * palabras cronometradas.
+ *
+ * Las palabras son lo que permite el subtítulo tipo karaoke: cada palabra se
+ * enciende cuando la voz llega a ella. Se emparejan por CONTEO, no por texto:
+ * la oración k-ésima consume tantas palabras del alineamiento como palabras
+ * tiene. Es robusto a las diferencias de puntuación y de normalización entre
+ * lo escrito y lo dicho, que era donde fallaba emparejar por igualdad.
+ */
+export function oraciones(texto: string, palabras: Palabra[], duracion: number): Oracion[] {
+  const partes = texto.split(/(?<=[.?!:;])\s+/).map((s) => s.trim()).filter(Boolean);
   let consumidas = 0;
   return partes.map((p) => {
-    const inicio = palabras.length
-      ? (palabras[Math.min(consumidas, palabras.length - 1)]?.start ?? 0)
-      : (duracion * texto.indexOf(p)) / Math.max(1, texto.length);
-    consumidas += p.split(/\s+/).length;
-    return { texto: p, inicio };
+    const tokens = p.split(/\s+/);
+    let inicio: number;
+    const cronometradas: Array<{ w: string; start: number }> = [];
+    if (palabras.length) {
+      inicio = palabras[Math.min(consumidas, palabras.length - 1)]?.start ?? 0;
+      tokens.forEach((w, i) => {
+        const al = palabras[Math.min(consumidas + i, palabras.length - 1)];
+        cronometradas.push({ w, start: al?.start ?? inicio });
+      });
+    } else {
+      inicio = (duracion * texto.indexOf(p)) / Math.max(1, texto.length);
+    }
+    consumidas += tokens.length;
+    return { texto: p, inicio, palabras: cronometradas };
   });
 }

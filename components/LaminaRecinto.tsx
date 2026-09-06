@@ -270,12 +270,37 @@ const T = {
       camion: "Por NW 1st Ct al paseo pavimentado, continuo y a nivel: un camión de 40 ft llega hasta el fondo sin pisar césped.",
     } as Record<Modo, string>,
     zonas: {
-      jardin: { nombre: "El Jardín", dato: "~18 000 ft² · al aire libre", lee: "Paseo pavimentado central, césped artificial a los lados, dos hileras de palmeras reales y setos perimetrales." },
-      tiki: { nombre: "El Tiki Hut", dato: "~4 000 ft² · techado", lee: "Palapa de paja a cuatro aguas sobre postes de madera, abierta por los cuatro costados. Es el plan de lluvia." },
-      cabanas: { nombre: "Ocho cabañas", dato: "amuebladas · en hilera", lee: "Van con el predio y quedan en el borde opuesto al paseo, entre las palmeras." },
-      acceso: { nombre: "Acceso", dato: "NW 1st Ct · al paseo", lee: "La producción entra directo al paseo pavimentado, que es continuo y a nivel hasta el fondo." },
-      edificio: { nombre: "El edificio", dato: "zona 02 · 2 niveles", lee: "El cascarón se alquila aparte y tiene su propia lámina, con 22 ft libres en la doble altura. Lo que hay montado hoy dentro no forma parte." },
-    } as Record<Zona, { nombre: string; dato: string; lee: string }>,
+      jardin: {
+        nombre: "El Jardín", dato: "~18 000 ft² · al aire libre",
+        lee: "Paseo pavimentado central, césped artificial a los lados, dos hileras de palmeras reales y setos perimetrales.",
+        sirve: "Es el volumen del recinto: ceremonia, cena larga o escenario con público de pie. El paseo lo parte en dos franjas de césped, y esa geometría manda en cualquier montaje.",
+        ojo: "Al aire libre y sin cerramiento. El césped es artificial, así que no se embarra; para cargas puntuales hay que repartir apoyo.",
+      },
+      tiki: {
+        nombre: "El Tiki Hut", dato: "~4 000 ft² · techado",
+        lee: "Palapa de paja a cuatro aguas sobre postes de madera, abierta por los cuatro costados. Es el plan de lluvia.",
+        sirve: "La sombra permanente del recinto. Cabe barra, escenario pequeño o las mesas que no quieras dejar al descubierto.",
+        ojo: "Para el agua que cae recta basta sola; con viento conviene cerrar los costados. La luz entre postes se levanta en la visita.",
+      },
+      cabanas: {
+        nombre: "Ocho cabañas", dato: "amuebladas · en hilera",
+        lee: "Van con el predio y quedan en el borde opuesto al paseo, entre las palmeras.",
+        sirve: "Camerino, guardarropa o rincón de descanso sin tener que montar nada.",
+        ojo: "Van con el predio: no se pueden mover ni retirar del montaje.",
+      },
+      acceso: {
+        nombre: "Acceso", dato: "NW 1st Ct · al paseo",
+        lee: "La producción entra directo al paseo pavimentado, que es continuo y a nivel hasta el fondo.",
+        sirve: "Por aquí entra todo: camión, catering, estructura y escenario, sin pisar césped.",
+        ojo: "El ancho exacto del portón y la potencia eléctrica disponible se levantan contigo en la visita y se entregan por escrito.",
+      },
+      edificio: {
+        nombre: "El edificio", dato: "zona 02 · 2 niveles",
+        lee: "El cascarón se alquila aparte y tiene su propia lámina, con 22 ft libres en la doble altura.",
+        sirve: "Es la zona 02 y va por separado. Sirve si el evento necesita interior además del jardín.",
+        ojo: "Lo que hay montado hoy dentro pertenece al operador del inmueble y no forma parte de lo que se alquila.",
+      },
+    } as Record<Zona, { nombre: string; dato: string; lee: string; sirve: string; ojo: string }>,
     cajetin: ["Club Wynwood", "El recinto · zona 01", "Vista noreste · sin escala"],
     escala: "50 ft",
     nota: "Esquema volumétrico, sin escala: las medidas salen de los pies cuadrados declarados y de la foto aérea, y se confirman en la visita técnica. Lo techado se dibuja en tinta y lo abierto en claro.",
@@ -294,12 +319,37 @@ const T = {
       camion: "From NW 1st Ct onto the paved walk, continuous and level: a 40 ft truck reaches the far end without crossing turf.",
     } as Record<Modo, string>,
     zonas: {
-      jardin: { nombre: "The Garden", dato: "~18,000 sq ft · open air", lee: "A central paved walk, artificial turf on both sides, two rows of real palms and perimeter hedges." },
-      tiki: { nombre: "The Tiki Hut", dato: "~4,000 sq ft · covered", lee: "Four-hip thatch structure on timber posts, open on all four sides. It is the rain plan." },
-      cabanas: { nombre: "Eight cabanas", dato: "furnished · in a row", lee: "They come with the site and line the edge opposite the walk, between the palms." },
-      acceso: { nombre: "Access", dato: "NW 1st Ct · onto the walk", lee: "Production drives straight onto the paved walk, continuous and level to the far end." },
-      edificio: { nombre: "The building", dato: "zone 02 · 2 levels", lee: "The shell is rented separately and has its own plate, with 22 ft clear in the double-height zone. Whatever is installed inside today is not part of it." },
-    } as Record<Zona, { nombre: string; dato: string; lee: string }>,
+      jardin: {
+        nombre: "The Garden", dato: "~18,000 sq ft · open air",
+        lee: "A central paved walk, artificial turf on both sides, two rows of real palms and perimeter hedges.",
+        sirve: "This is the volume of the site: ceremony, long-table dinner or a stage with a standing crowd. The walk splits it into two turf strips, and that geometry drives any layout.",
+        ojo: "Open air, no enclosure. The turf is artificial, so it will not turn to mud; point loads need spreading.",
+      },
+      tiki: {
+        nombre: "The Tiki Hut", dato: "~4,000 sq ft · covered",
+        lee: "Four-hip thatch structure on timber posts, open on all four sides. It is the rain plan.",
+        sirve: "The site's permanent shade. It takes a bar, a small stage, or the tables you would rather not leave uncovered.",
+        ojo: "For vertical rain it is enough on its own; with wind you will want the sides closed. Post spacing is surveyed at the visit.",
+      },
+      cabanas: {
+        nombre: "Eight cabanas", dato: "furnished · in a row",
+        lee: "They come with the site and line the edge opposite the walk, between the palms.",
+        sirve: "Green room, coat check or a quiet corner, without building anything.",
+        ojo: "They come with the site: they cannot be moved or taken out of the layout.",
+      },
+      acceso: {
+        nombre: "Access", dato: "NW 1st Ct · onto the walk",
+        lee: "Production drives straight onto the paved walk, continuous and level to the far end.",
+        sirve: "Everything comes in here: truck, catering, rigging and stage, without crossing turf.",
+        ojo: "Exact gate width and available power are surveyed with you at the visit and delivered in writing.",
+      },
+      edificio: {
+        nombre: "The building", dato: "zone 02 · 2 levels",
+        lee: "The shell is rented separately and has its own plate, with 22 ft clear in the double-height zone.",
+        sirve: "It is zone 02 and goes separately. Useful if the event needs indoor space as well as the garden.",
+        ojo: "Whatever is installed inside today belongs to the building's operator and is not part of the rental.",
+      },
+    } as Record<Zona, { nombre: string; dato: string; lee: string; sirve: string; ojo: string }>,
     cajetin: ["Club Wynwood", "The site · zone 01", "North-east view · not to scale"],
     escala: "50 ft",
     nota: "Volumetric diagram, not to scale: dimensions come from the declared square footage and the aerial photograph, and are confirmed at the technical visit. Roofed volumes in ink, open ground in light tone.",
@@ -685,6 +735,18 @@ export default function LaminaRecinto({
                       <span className="lam-item-nombre">{z.nombre}</span>
                       <span className="lam-item-dato">{z.dato}</span>
                       <span className="lam-item-lee">{z.lee}</span>
+
+                      {/**
+                        * PARA QUÉ SIRVE Y QUÉ HAY QUE SABER.
+                        *
+                        * Antes cada zona era una línea que decía qué es. Un
+                        * productor no necesita saber qué es: necesita saber si
+                        * le sirve y con qué se va a encontrar. Las dos frases
+                        * de abajo contestan justo eso, y la segunda dice lo que
+                        * NO hay, que es la mitad del argumento de este venue.
+                        */}
+                      <span className="lam-item-sirve">{z.sirve}</span>
+                      <span className="lam-item-ojo">{z.ojo}</span>
                     </span>
                   </button>
                 </li>

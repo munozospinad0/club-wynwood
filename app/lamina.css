@@ -707,3 +707,38 @@
   .lam.recorriendo .lam-fig { transition: none; }
   .rec-cap-avance { transition: none; }
 }
+
+
+/* El punto del interruptor de musica: lleno cuando suena, hueco cuando no.
+   No depende del color para leerse, que es la regla de todo estado en este
+   sitio. */
+.rec-punto {
+  width: 7px;
+  height: 7px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  flex: none;
+}
+.rec-punto.on { background: var(--ocre); border-color: var(--ocre); }
+
+
+/* Cada zona explicada: que es, para que sirve y con que te vas a encontrar.
+   El tercer bloque —el "ojo"— lleva un filete ocre a la izquierda porque es lo
+   que NO hay, y en este venue decir lo que no hay es la mitad del argumento. */
+.lam-item-sirve {
+  display: block;
+  padding-top: 9px;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--tinta-2);
+}
+
+.lam-item-ojo {
+  display: block;
+  margin-top: 9px;
+  padding-left: 11px;
+  border-left: 1px solid var(--ocre);
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--texto);
+}

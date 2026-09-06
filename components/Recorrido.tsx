@@ -77,6 +77,7 @@ const T = {
     transcripcion: "Leer el texto completo",
     capitulos: "capítulos",
     minutos: "minutos",
+    musica: "Música",
     ojoCierre: "Pedir disponibilidad",
     tituloCierre: "Ya conoces el sitio",
     introCierre:
@@ -99,6 +100,7 @@ const T = {
     transcripcion: "Read the full text",
     capitulos: "chapters",
     minutos: "minutes",
+    musica: "Music",
     ojoCierre: "Request availability",
     tituloCierre: "Now you know the site",
     introCierre:
@@ -142,6 +144,41 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
   const [oidos, setOidos] = useState<Set<number>>(new Set());
 
   const audio = useRef<HTMLAudioElement | null>(null);
+  const cama = useRef<HTMLAudioElement | null>(null);
+
+  /**
+   * LA MÚSICA DE FONDO, APAGADA POR DEFECTO.
+   *
+   * Un sitio que empieza a sonar solo es un sitio que se cierra. Mucha gente
+   * entra desde el móvil en la oficina o en la calle, y no hay forma de saber
+   * quién puede oír: la música tiene que ser una decisión de quien mira, nunca
+   * una sorpresa.
+   *
+   * Apagada también evita descargarla: son casi dos megas que solo viajan si
+   * alguien la enciende.
+   *
+   * Y va a volumen bajo y fijo, sin subir ni bajar con la voz. Una cama que se
+   * mueve llama la atención justo cuando la voz está diciendo algo.
+   */
+  const [musica, setMusica] = useState(false);
+
+  useEffect(() => {
+    try {
+      if (localStorage.getItem("cw-musica") === "on") setMusica(true);
+    } catch { /* almacenamiento bloqueado: se queda apagada */ }
+  }, []);
+
+  useEffect(() => {
+    const el = cama.current;
+    if (!el) return;
+    if (musica && activo && sonando) {
+      if (!el.src) el.src = "/audio/recorrido/cama.mp3";
+      el.volume = 0.16;
+      void el.play().catch(() => { /* el navegador puede negarse; no es grave */ });
+    } else {
+      el.pause();
+    }
+  }, [musica, activo, sonando]);
   /** Para el avance sin voz: un reloj que hace de reproductor. */
   const reloj = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -379,6 +416,10 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
       onManual={soltarElMando}
       panel={
         <div className="rec" ref={raiz}>
+          {/* La cama musical. `preload="none"` y sin `src` hasta que alguien la
+              encienda: son casi dos megas que no tienen por qué viajar. */}
+          <audio ref={cama} loop preload="none" />
+
           <audio
             ref={audio}
             preload="none"
@@ -426,6 +467,23 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
                 <span className="rec-cuenta">
                   {t.capitulo} {indice + 1} {t.de} {CAPITULOS.length}
                 </span>
+
+                <button
+                  type="button"
+                  className="rec-boton rec-boton-plano"
+                  aria-pressed={musica}
+                  onClick={() => {
+                    const v = !musica;
+                    setMusica(v);
+                    try { localStorage.setItem("cw-musica", v ? "on" : "off"); } catch { /* bloqueado */ }
+                  }}
+                >
+                  {/* El punto dice el estado sin depender del color: lleno
+                      cuando suena, hueco cuando no. `aria-pressed` lo dice
+                      para el lector de pantalla. */}
+                  <span className={`rec-punto${musica ? " on" : ""}`} aria-hidden="true" />
+                  {t.musica}
+                </button>
 
                 <button type="button" className="rec-boton rec-boton-plano" onClick={soltarElMando}>
                   {t.parar}

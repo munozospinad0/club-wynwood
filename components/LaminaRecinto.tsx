@@ -895,7 +895,9 @@ export default function LaminaRecinto({
                 <Dibujo lang={lang} zona={zona} aforo={aforo} alEntrar={alEntrar} alSalir={alSalir} alTocar={alTocar} />
 
                 {dirigiendo && puntoDirigido && (
-                  <div className="lam-guia-punto" style={pctCaja(p(puntoDirigido[0], puntoDirigido[1], 0))} aria-hidden="true">
+                  // Cerca del borde derecho, el rótulo se abre hacia la izquierda:
+                  // si no, la cifra se sale del papel (pasaba con el edificio).
+                  <div className={`lam-guia-punto${fracCaja(p(puntoDirigido[0], puntoDirigido[1], 0))[0] > 0.66 ? " izq" : ""}`} style={pctCaja(p(puntoDirigido[0], puntoDirigido[1], 0))} aria-hidden="true">
                     <span className="lam-guia-halo" />
                     <span className="lam-guia-nucleo" />
                     {(rotuloPunto || cifraPunto) && (

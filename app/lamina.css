@@ -1529,6 +1529,7 @@
 /* La cifra puede ser larga («sin cocina · sin cerramiento · sin clima»): que
    parta en lineas antes de salirse del papel. */
 .lam-guia-rotulo { white-space: normal; max-width: 290px; width: max-content; }
+.lam-guia-punto.izq .lam-guia-rotulo { left: auto; right: 18px; text-align: right; align-items: flex-end; }
 .lam-guia-cifra { font-size: 15px; line-height: 1.1; }
 .lam.cine .lam-guia-cifra { font-size: 18px; }
 .lam[data-capas~="edificio"] .z-edificio path { stroke: var(--lam-ocre) !important; }

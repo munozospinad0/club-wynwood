@@ -240,10 +240,9 @@ export default function LaminaEdificio({ lang }: { lang: Idioma }) {
           </aside>
 
           <figure style={{ margin: 0 }}>
-            <GiroSel lang={lang}
-                  vistas={[0, 1, 2, 3].map((gi) => (
-                    <DibujoEdificio key={gi} lang={lang} giro={gi as Giro} />
-                  ))} />
+            {/* El conmutador dibuja la vista activa por su cuenta. Antes se le
+                pasaban las cuatro ya dibujadas y ocultaba tres. Ver Giro.tsx. */}
+            <GiroSel lang={lang} />
 
             <figcaption className="ojo" style={{ paddingTop: 16, lineHeight: 1.75, maxWidth: "74ch" }}>
               {es

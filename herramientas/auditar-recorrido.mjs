@@ -40,17 +40,34 @@ let errores = 0, avisos = 0;
 const norm = (s) =>
   String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9ñ]+/g, " ").trim();
 
-/** La misma búsqueda que hace tiempoDeFrase: los dos primeros tokens, seguidos. */
+/**
+ * La MISMA búsqueda que hace `tiempoDeFrase` en `lib/recorrido.ts`.
+ *
+ * Si las dos divergen, este auditor deja de servir para lo único que existe:
+ * decir si el sitio va a encontrar el hito. Está duplicada porque el auditor es
+ * un script de Node suelto y el otro es TypeScript del paquete; al tocar una,
+ * tocar la otra.
+ */
 function buscar(frase, palabras) {
-  const tokens = norm(frase).split(" ").filter(Boolean);
-  const lista = palabras.map((p) => norm(p.w));
-  const n = Math.min(2, tokens.length);
-  for (let i = 0; i + n <= lista.length; i++) {
-    let ok = true;
-    for (let k = 0; k < n; k++) if (lista[i + k] !== tokens[k]) { ok = false; break; }
-    if (ok) return palabras[i].start;
+  const objetivo = norm(frase);
+  if (!objetivo || !palabras.length) return null;
+
+  const inicios = [];
+  let plano = "";
+  for (const p of palabras) {
+    const w = norm(p.w);
+    if (!w) { inicios.push(plano.length); continue; }
+    if (plano) plano += " ";
+    inicios.push(plano.length);
+    plano += w;
   }
-  return null;
+
+  const donde = plano.indexOf(objetivo);
+  if (donde < 0) return null;
+
+  let i = 0;
+  for (let k = 0; k < inicios.length; k++) if (inicios[k] <= donde) i = k; else break;
+  return palabras[i].start;
 }
 
 const guion = JSON.parse(await readFile(join(RAIZ, "lib", "recorrido.guion.json"), "utf8"));

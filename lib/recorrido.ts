@@ -56,20 +56,54 @@ const norm = (s: string) =>
 /**
  * En qué segundo empieza una frase del guion, según el alineamiento.
  *
- * Busca los dos primeros tokens de la frase, seguidos, en la lista de
- * palabras. Si no aparecen (una palabra con guion, un número que la voz dijo
- * distinto), estima por la posición de la frase en el texto, proporcional a
- * la duración: peor que exacto, mejor que no mover nada.
+ * ─────────────────────────────────────────────────────────────────────────
+ * POR QUÉ NO BUSCA POR TOKENS SUELTOS
+ * ─────────────────────────────────────────────────────────────────────────
+ *
+ * La primera versión comparaba los DOS primeros tokens de la frase contra la
+ * lista de palabras, una a una. Falla de dos maneras, y las dos aparecieron en
+ * el audio real en cuanto se auditó:
+ *
+ * 1. **Las palabras con guion nunca casan.** El alineamiento devuelve
+ *    `forty-foot` como UNA palabra; al normalizarla se convierte en dos
+ *    («forty foot») y ya no puede ser igual a un token suelto. El hito «A
+ *    forty-foot truck» no se encontraba nunca, y el dibujo cambiaba a ojo.
+ *
+ * 2. **Dos tokens no distinguen nada.** El hito «What is not here» arrancaba
+ *    con «what is», que son también las dos primeras palabras del capítulo
+ *    («What is here, and what is not?»). Casaba en el segundo 0,0: el dibujo
+ *    hacía el último cambio del capítulo antes de empezar a hablar.
+ *
+ * Ahora se busca la frase ENTERA sobre el texto aplanado, y se traduce la
+ * posición encontrada al índice de palabra. Es inmune a los guiones —el aplanado
+ * los deshace por igual en los dos lados— y una frase completa es única.
  */
 export function tiempoDeFrase(frase: string, texto: string, palabras: Palabra[], duracion: number): number {
-  const tokens = norm(frase).split(" ").filter(Boolean);
-  const lista = palabras.map((p) => norm(p.w));
-  const n = Math.min(2, tokens.length);
-  for (let i = 0; i + n <= lista.length; i++) {
-    let ok = true;
-    for (let k = 0; k < n; k++) if (lista[i + k] !== tokens[k]) { ok = false; break; }
-    if (ok) return palabras[i].start;
+  const objetivo = norm(frase);
+
+  if (objetivo && palabras.length) {
+    // El texto dicho, aplanado, con la posición donde empieza cada palabra.
+    const inicios: number[] = [];
+    let plano = "";
+    for (const p of palabras) {
+      const w = norm(p.w);
+      if (!w) { inicios.push(plano.length); continue; }
+      if (plano) plano += " ";
+      inicios.push(plano.length);
+      plano += w;
+    }
+
+    const donde = plano.indexOf(objetivo);
+    if (donde >= 0) {
+      // La última palabra que empieza en o antes de la posición encontrada.
+      let i = 0;
+      for (let k = 0; k < inicios.length; k++) if (inicios[k] <= donde) i = k; else break;
+      return palabras[i].start;
+    }
   }
+
+  // No está dicha así. Se estima por la posición de la frase en el texto,
+  // proporcional a la duración: peor que exacto, mejor que no mover nada.
   const pos = texto.indexOf(frase);
   if (pos < 0 || !duracion) return 0;
   return (pos / texto.length) * duracion;

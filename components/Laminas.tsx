@@ -79,8 +79,10 @@ export default function Laminas({
         </div>
       </div>
 
-      <div hidden={zona !== "planta"}>{planta}</div>
-      <div hidden={zona !== "edificio"}>{edificio}</div>
+      {/* Solo la lámina abierta, por lo mismo que en Giro: `hidden` esconde
+          pero no descarta, y aquí lo escondido son dos láminas técnicas
+          enteras de SVG. La pestaña cambia igual de rápido. */}
+      <div>{zona === "planta" ? planta : edificio}</div>
     </section>
   );
 }

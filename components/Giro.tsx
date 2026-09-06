@@ -3,20 +3,31 @@
 import { useState } from "react";
 import { VISTAS, type Giro as G } from "@/lib/iso";
 import type { Idioma } from "@/lib/i18n";
+import DibujoEdificio from "@/components/DibujoEdificio";
 
 /**
- * Conmutador de las cuatro vistas.
+ * Conmutador de las cuatro vistas del edificio.
  *
- * Las cuatro llegan YA DIBUJADAS desde el servidor y se ocultan con `hidden`,
- * no se generan al hacer clic. Cuesta HTML —cuatro veces el mismo dibujo— pero
- * mantiene los trazos y las cotas en el documento sin ejecutar JavaScript, que
- * es la propiedad que hace citable el sitio para un motor generativo. Generarlas
- * en cliente habría sido más ligero y habría tirado justo eso.
+ * ─────────────────────────────────────────────────────────────────────────
+ * LO QUE DECÍA ANTES, Y POR QUÉ ESTABA A MEDIAS
+ * ─────────────────────────────────────────────────────────────────────────
  *
- * Las vistas llegan como props y no se importan aquí: así este componente es
- * cliente (necesita estado) y las láminas siguen siendo Server Components.
+ * Las cuatro vistas llegaban ya dibujadas del servidor y se ocultaban tres con
+ * `hidden`. El argumento escrito era bueno: tener los trazos y las cotas en el
+ * documento **sin ejecutar JavaScript** es lo que hace citable el sitio para un
+ * motor generativo, y generarlas en cliente habría tirado justo eso.
+ *
+ * El argumento vale. Lo que no vale es la conclusión, porque **para esa
+ * propiedad basta UNA vista en el documento, no cuatro**. Las otras tres eran
+ * 828 nodos y ~105 KB que no se dibujaban nunca, y que además viajaban dos
+ * veces: como marcado y como datos serializados de React.
+ *
+ * Ahora el dibujo se importa aquí. Next renderiza los componentes de cliente
+ * también en el servidor, así que **la vista activa sigue estando en el HTML
+ * sin JavaScript** —la propiedad se conserva entera— y las otras tres se
+ * generan al pulsar, en el mismo fotograma.
  */
-export default function Giro({ lang, vistas }: { lang: Idioma; vistas: React.ReactNode[] }) {
+export default function Giro({ lang }: { lang: Idioma }) {
   const es = lang === "es";
   const [v, setV] = useState<G>(0);
 
@@ -53,9 +64,7 @@ export default function Giro({ lang, vistas }: { lang: Idioma; vistas: React.Rea
         </span>
       </div>
 
-      {vistas.map((n, i) => (
-        <div key={i} hidden={i !== v}>{n}</div>
-      ))}
+      <div><DibujoEdificio lang={lang} giro={v} /></div>
     </div>
   );
 }

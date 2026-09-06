@@ -94,8 +94,8 @@ export const PAGINAS: Pagina[] = [
     ojo: { es: "Espacio 02 · techado", en: "Space 02 · covered" },
     h1: { es: "El Tiki Hut", en: "The Tiki Hut" },
     respuesta: {
-      es: "El Tiki Hut son ~4.000 ft² de palapa: techo de paja a cuatro aguas sobre dos hileras de postes de madera, abierta por los cuatro costados. Es la zona de sombra permanente del recinto y el plan anti-lluvia de la fecha, sin alquilar carpa ni mover el evento de sede.",
-      en: "The Tiki Hut is ~4,000 sq ft of covered structure: a four-hipped thatched roof on two rows of timber posts, open on all four sides. It is the site's permanent shade zone and the rain plan for your date, without renting a tent or changing venue.",
+      es: "El Tiki Hut son ~4.000 ft² de palapa: techo de paja a cuatro aguas sobre dos hileras de postes de madera, abierta por los cuatro costados. Es la zona de sombra permanente del recinto y el plan anti-lluvia de la fecha, sin mover el evento de sede. Para el agua que cae recta basta sola; con viento conviene cerrar los costados.",
+      en: "The Tiki Hut is ~4,000 sq ft of covered structure: a four-hipped thatched roof on two rows of timber posts, open on all four sides. It is the site's permanent shade zone and the rain plan for your date, without changing venue. For vertical rain it is enough on its own; with wind you will want the sides closed.",
     },
     title: {
       es: "El Tiki Hut — ~4.000 ft² techados en Wynwood | Club Wynwood",
@@ -125,8 +125,8 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "Por qué importa en Miami", en: "Why it matters in Miami" },
         cuerpo: {
-          es: "Una fecha al aire libre en Miami depende del cielo. ~4.000 ft² techados significan que el evento tiene a dónde moverse sin cancelar y sin alquilar carpa. La cubierta es fija y ya está ahí.",
-          en: "An outdoor date in Miami depends on the sky. ~4,000 sq ft under roof means the event has somewhere to go without cancelling and without renting a tent. The cover is permanent and already there.",
+          es: "Una fecha al aire libre en Miami depende del cielo. ~4.000 ft² techados significan que el evento tiene a dónde moverse sin cancelar. La cubierta es fija y ya está ahí: para el agua que cae recta basta sola, y con viento conviene cerrar los costados.",
+          en: "An outdoor date in Miami depends on the sky. ~4,000 sq ft under roof means the event has somewhere to go without cancelling. The cover is permanent and already there: for vertical rain it is enough on its own, and with wind you will want the sides closed.",
         },
       },
       {
@@ -921,8 +921,8 @@ export const FAQ: Array<{ q: Record<Idioma, string>; a: Record<Idioma, string> }
   {
     q: { es: "¿Qué pasa si llueve?", en: "What happens if it rains?" },
     a: {
-      es: "El Tiki Hut es una palapa techada de ~4.000 ft² con techo de paja a cuatro aguas, abierta por los costados. Es cubierta fija: funciona como plan de lluvia sin alquilar carpa ni mover el evento de sede.",
-      en: "The Tiki Hut is a ~4,000 sq ft covered structure with a four-hipped thatched roof, open on the sides. It is permanent cover: it works as the rain plan without renting a tent or moving the event.",
+      es: "El Tiki Hut es una palapa techada de ~4.000 ft² con techo de paja a cuatro aguas, abierta por los costados. Es cubierta fija: funciona como plan de lluvia sin mover el evento de sede. Para el agua que cae recta basta sola; con viento conviene cerrar los costados.",
+      en: "The Tiki Hut is a ~4,000 sq ft covered structure with a four-hipped thatched roof, open on the sides. It is permanent cover: it works as the rain plan without moving the event. For vertical rain it is enough on its own; with wind you will want the sides closed.",
     },
   },
   {

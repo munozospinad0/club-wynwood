@@ -14,13 +14,13 @@
       "hitos": {
         "es": [
           { "frase": "un jardín de doscientos", "zona": "jardin", "punto": [150, 40] },
-          { "frase": "la palapa techada", "zona": "tiki", "punto": [41, 72] },
+          { "frase": "la palapa techada", "zona": "tiki", "punto": [41, 34] },
           { "frase": "un paseo pavimentado", "zona": "acceso", "punto": [-10, 74] },
           { "frase": "Se alquila solo", "zona": null, "punto": [120, 74] }
         ],
         "en": [
           { "frase": "a garden two hundred", "zona": "jardin", "punto": [150, 40] },
-          { "frase": "the thatched structure", "zona": "tiki", "punto": [41, 72] },
+          { "frase": "the thatched structure", "zona": "tiki", "punto": [41, 34] },
           { "frase": "a paved walk", "zona": "acceso", "punto": [-10, 74] },
           { "frase": "Only the outdoors", "zona": null, "punto": [120, 74] }
         ]
@@ -51,7 +51,7 @@
       "id": "lluvia",
       "modo": "todo",
       "zona": "tiki",
-      "punto": [41, 72],
+      "punto": [41, 34],
       "pregunta": { "es": "¿Y si llueve?", "en": "What if it rains?" },
       "texto": {
         "es": "¿Y si llueve? Para eso está la palapa: cuatro mil pies cuadrados bajo techo de paja, sobre postes de madera y abierta por los cuatro costados. Protege del sol y del agua que cae recta. Lo que no para es el viento con lluvia, así que para un evento de invierno conviene presupuestar carpa lateral. El resto del jardín queda al aire, y en Miami eso decide la fecha más que cualquier otra cosa.",
@@ -93,7 +93,7 @@
       "id": "que-hay",
       "modo": "todo",
       "zona": "cabanas",
-      "punto": [160, 78],
+      "punto": [160, 85],
       "pregunta": { "es": "¿Qué hay, y qué no?", "en": "What is here, and what is not?" },
       "texto": {
         "es": "¿Qué hay, y qué no? Hay ocho cabañas amuebladas en hilera, mesas de picnic fijas y un área donde montar barra. El edificio de al lado se alquila aparte y tiene su propia lámina. Lo que no hay: cocina propia, así que el catering monta en el sitio; ni cerramiento fijo ni climatización, porque es un recinto al aire libre. Producción, sonido, iluminación y mobiliario los trae tu equipo, y esa libertad es justamente la propuesta.",

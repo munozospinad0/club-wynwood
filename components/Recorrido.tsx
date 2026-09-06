@@ -75,6 +75,8 @@ const T = {
     de: "de",
     sinVoz: "Sin voz: se lee el capítulo y el dibujo se mueve igual.",
     transcripcion: "Leer el texto completo",
+    capitulos: "capítulos",
+    minutos: "minutos",
     ojoCierre: "Pedir disponibilidad",
     tituloCierre: "Ya conoces el sitio",
     introCierre:
@@ -95,6 +97,8 @@ const T = {
     de: "of",
     sinVoz: "No voice: the chapter is read and the drawing moves all the same.",
     transcripcion: "Read the full text",
+    capitulos: "chapters",
+    minutos: "minutes",
     ojoCierre: "Request availability",
     tituloCierre: "Now you know the site",
     introCierre:
@@ -105,7 +109,18 @@ const T = {
 interface EstadoCapitulo {
   modo: Modo;
   zona: Zona | null;
+  /** A qué parte del terreno se refiere la frase que suena ahora. */
+  punto: [number, number] | null;
 }
+
+/** Cómo se llama, en la lámina, la zona de la que se está hablando. */
+const NOMBRE_ZONA: Record<Zona, Record<"es" | "en", string>> = {
+  jardin: { es: "El Jardín", en: "The Garden" },
+  tiki: { es: "El Tiki Hut", en: "The Tiki Hut" },
+  cabanas: { es: "Las cabañas", en: "The cabanas" },
+  acceso: { es: "El acceso", en: "The entrance" },
+  edificio: { es: "El edificio", en: "The building" },
+};
 
 export default function Recorrido({ lang }: { lang: Idioma }) {
   const t = T[lang];
@@ -117,6 +132,14 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
   const [duracion, setDuracion] = useState(0);
   const [palabras, setPalabras] = useState<Palabra[]>([]);
   const [hayAudio, setHayAudio] = useState<boolean | null>(null);
+  /**
+   * Qué capítulos ya se escucharon.
+   *
+   * La lista de capítulos son las preguntas de la gente y se puede saltar a
+   * cualquiera. Sin marcar por dónde se ha pasado, al volver a la lista no hay
+   * forma de saber qué falta, y la reacción normal es abandonarla.
+   */
+  const [oidos, setOidos] = useState<Set<number>>(new Set());
 
   const audio = useRef<HTMLAudioElement | null>(null);
   /** Para el avance sin voz: un reloj que hace de reproductor. */
@@ -142,6 +165,12 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
 
   const dur = hayAudio && duracion > 0 ? duracion : duracionEstimada;
 
+  /** Cuánto dura el recorrido entero, redondeado hacia arriba, en minutos. */
+  const minutos = useMemo(() => {
+    const total = CAPITULOS.reduce((s, c) => s + c.texto[lang].length / 14, 0);
+    return Math.max(1, Math.round(total / 60));
+  }, [lang]);
+
   // ── el estado del dibujo en este segundo ─────────────────────────────────
 
   /**
@@ -150,12 +179,17 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
    * deja el dibujo como tiene que estar, y no como estaba antes de saltar.
    */
   const estado: EstadoCapitulo = useMemo(() => {
-    let e: EstadoCapitulo = { modo: cap.modo as Modo, zona: cap.zona as Zona | null };
+    let e: EstadoCapitulo = {
+      modo: cap.modo as Modo,
+      zona: cap.zona as Zona | null,
+      punto: (cap.punto as [number, number]) ?? null,
+    };
     for (const h of hitos as Hito[]) {
       const cuando = tiempoDeFrase(h.frase, texto, palabras, dur);
       if (segundo + 0.15 < cuando) break;
       if (h.modo) e = { ...e, modo: h.modo as Modo };
       if (h.zona !== undefined) e = { ...e, zona: h.zona as Zona | null };
+      if (h.punto) e = { ...e, punto: h.punto as [number, number] };
     }
     return e;
   }, [cap, hitos, texto, palabras, dur, segundo]);
@@ -230,6 +264,7 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
 
   const siguiente = useCallback(() => {
     setIndice((i) => {
+      setOidos((o) => new Set(o).add(i));
       if (i + 1 >= CAPITULOS.length) { setSonando(false); return i; }
       return i + 1;
     });
@@ -239,6 +274,35 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
   useEffect(() => {
     if (hayAudio === false && sonando && segundo >= duracionEstimada - 0.05) siguiente();
   }, [hayAudio, sonando, segundo, duracionEstimada, siguiente]);
+
+  /**
+   * EL VIGILANTE. Si el audio existe pero no avanza, se sigue sin él.
+   *
+   * Es el fallo que este componente tenía y que no daba ningún error: con el
+   * manifiesto presente, el reloj de respaldo no arranca porque se supone que
+   * manda el audio. Si ese audio carga pero nunca reproduce —red parada, un
+   * códec que el navegador no resuelve, una pestaña que el sistema silenció— el
+   * recorrido se queda clavado en el segundo cero. La cara visible es un dibujo
+   * quieto y un texto que no avanza, sin nada que explique por qué.
+   *
+   * Tres segundos sin que el tiempo se mueva y se pasa al reloj estimado. Se
+   * pierde el sincronismo fino; no se pierde el recorrido.
+   */
+  useEffect(() => {
+    if (!activo || !sonando || hayAudio !== true) return;
+    const partida = segundo;
+    const t = setTimeout(() => {
+      const el = audio.current;
+      const avanzo = el ? el.currentTime > partida + 0.05 : false;
+      if (!avanzo) {
+        console.warn("[recorrido] el audio no avanza; se sigue con el reloj estimado");
+        setHayAudio(false);
+      }
+    }, 3000);
+    return () => clearTimeout(t);
+    // `segundo` en las dependencias a propósito: mientras avance, el vigilante
+    // se reinicia y nunca salta. Solo salta si deja de avanzar.
+  }, [activo, sonando, hayAudio, segundo]);
 
   // ── el audio ─────────────────────────────────────────────────────────────
 
@@ -252,11 +316,30 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
     if (sonando) void el.play().catch(() => setHayAudio(false));
   }, [activo, hayAudio, indice, lang, sonando]);
 
+  const raiz = useRef<HTMLDivElement>(null);
+
+  /**
+   * Llevar el dibujo al centro de la pantalla al empezar.
+   *
+   * Se pulsa «empezar» desde abajo del dibujo, así que sin esto la narración
+   * arranca con el terreno medio fuera de cuadro. Se busca el `<figure>` porque
+   * es lo que hay que ver, no la sección entera.
+   */
+  function centrarElDibujo() {
+    const fig = raiz.current?.closest(".lam")?.querySelector(".lam-fig");
+    if (!fig) return;
+    const suave = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    fig.scrollIntoView({ behavior: suave ? "smooth" : "auto", block: "start" });
+  }
+
   function alEmpezar() {
     setActivo(true);
     setSonando(true);
     setIndice(0);
     setSegundo(0);
+    // Después del repintado: si se llama ahora, la maqueta todavía es la de
+    // antes de recolocar el dibujo y se centra en el sitio equivocado.
+    requestAnimationFrame(() => requestAnimationFrame(centrarElDibujo));
     ev("view_plate", { plate_name: "recorrido", chapter: CAPITULOS[0].id });
   }
 
@@ -291,9 +374,11 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
       lang={lang}
       modoDirigido={activo ? estado.modo : undefined}
       zonaDirigida={activo ? estado.zona : undefined}
+      puntoDirigido={activo ? estado.punto : null}
+      rotuloPunto={activo && estado.zona ? NOMBRE_ZONA[estado.zona][lang] : undefined}
       onManual={soltarElMando}
       panel={
-        <div className="rec">
+        <div className="rec" ref={raiz}>
           <audio
             ref={audio}
             preload="none"
@@ -313,10 +398,17 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
                 <h3 className="rec-titulo">{t.titulo}</h3>
                 <p className="rec-intro">{t.intro}</p>
               </div>
-              <button type="button" className="rec-play" onClick={alEmpezar}>
-                <span className="rec-play-icono" aria-hidden="true" />
-                {t.reproducir}
-              </button>
+              <div className="rec-arranque">
+                <button type="button" className="rec-play" onClick={alEmpezar}>
+                  <span className="rec-play-icono" aria-hidden="true" />
+                  {t.reproducir}
+                </button>
+                {/* Cuánto dura. Es la primera pregunta de quien duda si darle,
+                    y no decirlo hace que mucha gente no lo empiece. */}
+                <span className="rec-duracion">
+                  {CAPITULOS.length} {t.capitulos} · {minutos} {t.minutos}
+                </span>
+              </div>
             </div>
           ) : (
             <>
@@ -388,11 +480,21 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
               <li key={c.id}>
                 <button
                   type="button"
-                  className={`rec-cap${activo && i === indice ? " activo" : ""}`}
-                  onClick={() => { if (!activo) setActivo(true); irA(i); }}
+                  className={`rec-cap${activo && i === indice ? " activo" : ""}${oidos.has(i) ? " oido" : ""}`}
+                  aria-current={activo && i === indice ? "true" : undefined}
+                  onClick={() => {
+                    if (!activo) { setActivo(true); requestAnimationFrame(() => requestAnimationFrame(centrarElDibujo)); }
+                    irA(i);
+                  }}
                 >
                   <span className="rec-cap-n">{String(i + 1).padStart(2, "0")}</span>
                   <span className="rec-cap-txt">{c.pregunta[lang]}</span>
+                  {/* La barra de debajo es el progreso del capítulo que suena.
+                      Sustituye a una barra global aparte: enseña lo mismo y
+                      además dice EN CUAL estás, sin ocupar una fila más. */}
+                  {activo && i === indice && (
+                    <span className="rec-cap-avance" style={{ transform: `scaleX(${Math.min(1, segundo / dur)})` }} />
+                  )}
                 </button>
               </li>
             ))}

@@ -1,0 +1,14 @@
+{
+  "version": "1.0.0",
+  "total": 7,
+  "idiomas": [
+    {
+      "idioma": "es",
+      "capitulos": 7
+    },
+    {
+      "idioma": "en",
+      "capitulos": 7
+    }
+  ]
+}

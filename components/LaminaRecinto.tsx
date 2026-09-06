@@ -326,6 +326,8 @@ export default function LaminaRecinto({
   lang,
   modoDirigido,
   zonaDirigida,
+  puntoDirigido,
+  rotuloPunto,
   onManual,
   panel,
 }: {
@@ -333,6 +335,16 @@ export default function LaminaRecinto({
   modoDirigido?: Modo;
   /** `null` es un valor válido: significa «ninguna zona resaltada». */
   zonaDirigida?: Zona | null;
+  /**
+   * A DÓNDE ESTÁ MIRANDO LA NARRACIÓN, en coordenadas del terreno (pies).
+   *
+   * El guion del recorrido las trae desde el primer día y no se estaban usando:
+   * cada frase dice a qué parte del recinto se refiere. Sin esto, la voz habla
+   * del acceso mientras el dibujo entero se queda igual, y la persona tiene que
+   * adivinar de qué le están hablando. Con esto, una marca camina hasta ahí.
+   */
+  puntoDirigido?: [number, number] | null;
+  rotuloPunto?: string;
   onManual?: () => void;
   panel?: React.ReactNode;
 }) {
@@ -441,8 +453,21 @@ export default function LaminaRecinto({
   const radN = Math.atan2(n[1] - o[1], n[0] - o[0]);
   const angN = (radN * 180) / Math.PI + 90;
 
+  /**
+   * `recorriendo` cambia la maqueta mientras narra, y esa es la diferencia
+   * entre entenderlo y no.
+   *
+   * El dibujo es muy ancho, así que a pantalla completa ocupa casi todo el alto
+   * y el texto de lo que se está diciendo queda fuera de la vista. La persona
+   * tiene que elegir entre ver el dibujo o leer lo que le cuentan, que es
+   * exactamente lo que un recorrido guiado no debe pedir.
+   *
+   * Con la clase puesta, el dibujo se limita en alto y los dos caben juntos.
+   */
+  const dirigiendo = modoDirigido !== undefined;
+
   // «listo» conserva «dibujar»: los trazos ya animados se quedan como están.
-  const clase = `lam ${fase === "listo" ? "dibujar listo" : fase}${zona ? " enfocado" : ""}`;
+  const clase = `lam ${fase === "listo" ? "dibujar listo" : fase}${zona ? " enfocado" : ""}${dirigiendo ? " recorriendo" : ""}`;
   const zClase = (z: Zona) => `z z-${z}${zona === z ? " activa" : ""}`;
   const zProps = (z: Zona) => ({
     onMouseEnter: () => setZona(z),
@@ -594,6 +619,26 @@ export default function LaminaRecinto({
                 ))}
               </g>
             </svg>
+
+            {/**
+              * LA MARCA QUE CAMINA. Es lo que convierte la narración en visita.
+              *
+              * El guion trae, en cada frase, a qué punto del terreno se refiere.
+              * Sin dibujarlo, la voz habla del acceso mientras el dibujo entero
+              * se queda igual y la persona tiene que adivinar de qué le hablan.
+              *
+              * Se posiciona proyectando el punto con la MISMA función que dibuja
+              * todo lo demás, así que cae exactamente donde debe aunque cambie la
+              * geometría. Y viaja con una transición larga: el salto instantáneo
+              * se lee como un parpadeo, el viaje se lee como alguien señalando.
+              */}
+            {puntoDirigido && (
+              <div className="lam-guia-punto" style={pct(p(puntoDirigido[0], puntoDirigido[1], 0))} aria-hidden="true">
+                <span className="lam-guia-halo" />
+                <span className="lam-guia-nucleo" />
+                {rotuloPunto && <span className="lam-guia-rotulo">{rotuloPunto}</span>}
+              </div>
+            )}
 
             {/* ── cajetín y rótulos, en HTML: escalan con la página ───────── */}
             <div className="lam-cajetin" aria-hidden>

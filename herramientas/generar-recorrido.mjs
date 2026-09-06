@@ -58,7 +58,7 @@ const OUTPUT_FORMAT = process.env.OUTPUT_FORMAT || "mp3_44100_96";
  */
 const VOICE = {
   es: process.env.VOICE_ES || "cTZ1Li7htNiwd1cNPgUC", // Nestor · es-latin-american
-  en: process.env.VOICE_EN || "btaSeNTVh1pGx4pjFzub", // Jeremy B. · en-american
+  en: process.env.VOICE_EN || "iP95p4xoKVk53GoZ742B", // Chris · en-american
 };
 const AJUSTES = {
   stability: Number(process.env.STABILITY ?? 0.45),

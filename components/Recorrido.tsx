@@ -7,9 +7,11 @@ import LaminaRecinto, { type Aforo, type Modo, type Zona } from "@/components/La
 import Formulario from "@/components/Formulario";
 import {
   CAPITULOS,
+  FOTOS,
   oraciones,
   rutaAudio,
   tiempoDeFrase,
+  type FotoRecorrido,
   type Hito,
   type Manifiesto,
   type Palabra,
@@ -154,6 +156,10 @@ interface EstadoCapitulo {
   /** A qué parte del terreno se refiere la frase que suena ahora. */
   punto: [number, number] | null;
   zoom: number;
+  /** La foto que toca ahora, si el guion pidió una y todavía dura. */
+  foto: FotoRecorrido | null;
+  /** La cifra que se está diciendo, junto a la marca. */
+  cifra: string | null;
 }
 
 /** Cómo se llama, en la lámina, la zona de la que se está hablando. */
@@ -227,18 +233,19 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
   const cama = useRef<HTMLAudioElement | null>(null);
 
   /**
-   * LA MÚSICA DE FONDO, APAGADA POR DEFECTO. Un sitio que empieza a sonar solo
-   * es un sitio que se cierra: la música tiene que ser una decisión de quien
-   * mira. Apagada también evita descargarla (casi dos megas). Y va a volumen
-   * bajo y fijo: una cama que sube y baja llama la atención justo cuando la voz
-   * está diciendo algo.
+   * LA MÚSICA DE FONDO, ENCENDIDA POR DEFECTO desde el 6-sep-2026. Estaba
+   * apagada por prudencia —un sitio que suena solo es un sitio que se cierra—
+   * pero el recorrido solo arranca cuando la persona pulsa «ver», así que ya
+   * es su decisión, y Daniel: «la música no se oye». Va a un volumen que se
+   * oye bajo la voz sin taparla, fijo, y con el interruptor a la vista. Si
+   * alguien la apaga, se recuerda.
    */
-  const [musica, setMusica] = useState(false);
+  const [musica, setMusica] = useState(true);
 
   useEffect(() => {
     try {
-      if (localStorage.getItem("cw-musica") === "on") setMusica(true);
-    } catch { /* almacenamiento bloqueado: se queda apagada */ }
+      if (localStorage.getItem("cw-musica") === "off") setMusica(false);
+    } catch { /* almacenamiento bloqueado: se queda encendida */ }
   }, []);
 
   useEffect(() => {
@@ -246,7 +253,7 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
     if (!el) return;
     if (musica && activo && sonando && !grabando) {
       if (!el.src) el.src = "/audio/recorrido/cama.mp3";
-      el.volume = 0.14;
+      el.volume = 0.26;
       void el.play().catch(() => { /* el navegador puede negarse; no es grave */ });
     } else {
       el.pause();
@@ -296,6 +303,8 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
       zona: cap.zona as Zona | null,
       punto: (cap.punto as [number, number] | null) ?? null,
       zoom: cap.zoom ?? 1,
+      foto: null,
+      cifra: null,
     };
     for (const h of hitos as Hito[]) {
       const cuando = tiempoDeFrase(h.frase, texto, palabras, dur);
@@ -304,9 +313,17 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
       if (h.zona !== undefined) e = { ...e, zona: h.zona as Zona | null };
       if (h.punto !== undefined) e = { ...e, punto: (h.punto as [number, number] | null) ?? null };
       if (h.zoom !== undefined) e = { ...e, zoom: h.zoom };
+      if (h.cifra !== undefined) e = { ...e, cifra: h.cifra };
+      // La foto no se acumula: dura lo que dice el hito y se va sola.
+      if (h.foto) e = { ...e, foto: segundo + 0.15 < cuando + (h.segundos ?? 4) ? h.foto : null };
     }
     return e;
   }, [cap, hitos, texto, palabras, dur, segundo]);
+
+  const fotoDirigida = useMemo(
+    () => (estado.foto ? { src: FOTOS[estado.foto].src, pos: FOTOS[estado.foto].pos, alt: FOTOS[estado.foto].alt[lang] } : null),
+    [estado.foto, lang]
+  );
 
   // El punto se estabiliza por valor: como array nuevo en cada cálculo haría
   // que la lámina creyera que cambió y repintara la marca sin motivo.
@@ -494,7 +511,14 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
 
   const raiz = useRef<HTMLDivElement>(null);
 
-  const alEmpezar = useCallback((desde = 0) => {
+  /**
+   * LA PORTADA DEL VÍDEO. Solo grabando: tres segundos con el nombre, el
+   * descriptor y la aérea, antes de que empiece la voz. Un vídeo que arranca
+   * hablando en el primer cuadro parece cortado.
+   */
+  const [portada, setPortada] = useState(false);
+
+  const arrancar = useCallback((desde: number) => {
     setVistaAforo(false);
     setActivo(true);
     setSonando(true);
@@ -503,6 +527,28 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
     setSemilla((s) => s + 1);
     ev("view_plate", { plate_name: "recorrido", chapter: CAPITULOS[desde].id, mode: grabando ? "grabar" : "cine" });
   }, [grabando]);
+
+  const alEmpezar = useCallback((desde = 0) => {
+    // Las fotos se piden ahora, para que al llegar su frase ya estén: una foto
+    // que entra a medio cargar es un cuadro gris donde tenía que haber palmeras.
+    for (const f of Object.values(FOTOS)) { const i = new Image(); i.src = f.src; }
+    if (grabando && desde === 0) {
+      setPortada(true);
+      setTimeout(() => { setPortada(false); arrancar(0); }, 3400);
+      return;
+    }
+    arrancar(desde);
+  }, [grabando, arrancar]);
+
+  // La portada del sitio tiene un botón «Ver el recorrido»: manda este evento.
+  useEffect(() => {
+    const f = () => {
+      document.getElementById("terreno")?.scrollIntoView({ block: "start" });
+      alEmpezar(0);
+    };
+    window.addEventListener("cw-recorrido", f);
+    return () => window.removeEventListener("cw-recorrido", f);
+  }, [alEmpezar]);
 
   // Arranque automático por URL: se espera a las tipografías, porque el primer
   // cuadro del vídeo se graba con lo que haya cargado en ese instante.
@@ -618,31 +664,36 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
 
       {!activo ? (
         <>
-          <div className="rec-inicio">
-            <div>
+          {/**
+            * EL TABLERO: dos tarjetas, lado a lado. A la izquierda, el
+            * recorrido con sus ocho preguntas; a la derecha, «tu evento, en el
+            * dibujo». Antes todo esto iba apilado en una columna con tres
+            * titulares y dos listas, y Daniel: «la página tiene desorden, no
+            * se entiende». Dos cosas que hacer, dos tarjetas.
+            */}
+          <div className="rec-tablero">
+            <div className="rec-tarjeta rec-tarjeta-recorrido">
               <div className="ojo">{t.ojo}</div>
               <h3 className="rec-titulo">{t.titulo}</h3>
               <p className="rec-intro">{t.intro}</p>
+              <div className="rec-arranque">
+                <button type="button" className="rec-play" onClick={() => alEmpezar(0)}>
+                  <span className="rec-play-icono" aria-hidden="true" />
+                  {t.reproducir}
+                </button>
+                {/* Cuánto dura. Es la primera pregunta de quien duda si darle,
+                    y no decirlo hace que mucha gente no lo empiece. */}
+                <span className="rec-duracion">
+                  {CAPITULOS.length} {t.capitulos} · {minutos} {t.minutos}
+                </span>
+              </div>
+              {/* Los capítulos: son las preguntas que la gente hace, y poder
+                  saltar a la suya vale más que el orden del guion. */}
+              {capitulos}
             </div>
-            <div className="rec-arranque">
-              <button type="button" className="rec-play" onClick={() => alEmpezar(0)}>
-                <span className="rec-play-icono" aria-hidden="true" />
-                {t.reproducir}
-              </button>
-              {/* Cuánto dura. Es la primera pregunta de quien duda si darle,
-                  y no decirlo hace que mucha gente no lo empiece. */}
-              <span className="rec-duracion">
-                {CAPITULOS.length} {t.capitulos} · {minutos} {t.minutos}
-              </span>
-            </div>
-          </div>
-
-          {/* Los capítulos, siempre visibles: son las preguntas que la gente
-              hace, y poder saltar a la suya vale más que el orden del guion. */}
-          {capitulos}
 
           {/* ── tu evento, en el dibujo ──────────────────────────────────── */}
-          <div className="rec-aforo">
+          <div className="rec-aforo rec-tarjeta">
             <div className="rec-aforo-mandos">
               <div className="ojo">{t.aforoOjo}</div>
               <label className="rec-aforo-campo">
@@ -670,6 +721,7 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
               </button>
               <a className="rec-enlace" href={RUTA_AFOROS[lang]}>{t.calcular} →</a>
             </div>
+          </div>
           </div>
 
           {/* La transcripción completa, en la página. Es lo que un buscador y
@@ -815,18 +867,36 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
       : null;
 
   return (
-    <LaminaRecinto
-      lang={lang}
-      cine={activo}
-      semillaDibujo={semilla}
-      aforo={vistaAforo && !activo ? aforo : undefined}
-      modoDirigido={dirigido?.modo}
-      zonaDirigida={dirigido ? dirigido.zona : undefined}
-      puntoDirigido={dirigido?.punto ?? null}
-      zoomDirigido={dirigido?.zoom}
-      rotuloPunto={activo && estado.zona ? NOMBRE_ZONA[estado.zona][lang] : undefined}
-      onManual={soltarElMando}
-      panel={panel}
-    />
+    <>
+      {/* La portada del vídeo: tres segundos sobre la aérea, antes de la voz. */}
+      {portada && (
+        <div className="cine-portada" aria-hidden="true">
+          {/* La de palmeras y no la aérea: en la aérea se lee el rótulo del
+              operador en el edificio del fondo, y esa es la regla que manda. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={FOTOS.palmeras.src} alt="" style={{ objectPosition: FOTOS.palmeras.pos }} />
+          <div className="cine-portada-texto">
+            <div className="cine-tarjeta-nombre">{t.tarjeta.nombre}</div>
+            <div className="cine-tarjeta-linea">{t.tarjeta.linea}</div>
+            <div className="cine-portada-ojo">{t.ojo} · {CAPITULOS.length} {t.capitulos} · {minutos} {t.minutos}</div>
+          </div>
+        </div>
+      )}
+      <LaminaRecinto
+        lang={lang}
+        cine={activo}
+        semillaDibujo={semilla}
+        aforo={vistaAforo && !activo ? aforo : undefined}
+        modoDirigido={dirigido?.modo}
+        zonaDirigida={dirigido ? dirigido.zona : undefined}
+        puntoDirigido={dirigido?.punto ?? null}
+        zoomDirigido={dirigido?.zoom}
+        rotuloPunto={activo && estado.zona ? NOMBRE_ZONA[estado.zona][lang] : undefined}
+        cifraPunto={activo ? estado.cifra : null}
+        fotoDirigida={activo ? fotoDirigida : null}
+        onManual={soltarElMando}
+        panel={panel}
+      />
+    </>
   );
 }

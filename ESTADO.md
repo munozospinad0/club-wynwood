@@ -48,17 +48,55 @@ El mismo dibujo isométrico narrado, pero ahora se ve como un vídeo:
 - **Rendimiento:** el SVG (≈1 100 nodos) va en un componente memorizado y ya no
   se repinta con cada `timeupdate`; solo cuando cambian zona o aforo.
 
-### La voz, regrabada
+### La voz, regrabada (tres veces)
 
-`eleven_v3` (antes `eleven_multilingual_v2`), estabilidad 0,5, sin etiquetas de
-dirección (romperían los hitos). Voces: **Cristian (LA)** en español (narración,
-calma, mediana edad) y **Brian** en inglés (la del vídeo de anuncios de julio que
-Daniel aprobó). La voz anterior (Nestor/Chris) quedó en `.qa/voz-anterior/` por si
-hay que compararla. Coste: 5 292 créditos. `auditar-recorrido.mjs`: sin errores,
-todos los hitos encontrados; ritmo 153–211 ppm en ES, 158–189 en EN.
+1. `eleven_multilingual_v2` con Nestor y Chris → Daniel: «mejor voz».
+2. `eleven_v3` con Cristian y Brian → Daniel: «la voz es de mala calidad». Se
+   transcribió con Scribe para descartar que leyera mal: lee bien (0–1,5 % de
+   palabras distintas); lo que no convence es el timbre de v3.
+3. **`eleven_multilingual_v2` a 192 kbps con David C5 (ES, la voz de los reportes
+   ECUS, velocidad 1,08) y Brian (EN, la del vídeo de anuncios de julio,
+   velocidad 1,0).** Es la que está. En la prueba con Scribe, David leyó el
+   capítulo 1 sin una palabra distinta; Cristian en v2 se comió tres.
 
-El manifiesto trae ahora `duraciones` por capítulo (medidas con ffprobe): las
-usa la grabación del vídeo.
+Las anteriores quedaron en `.qa/voz-anterior/` (v2 Nestor/Chris) y `.qa/voz-v3/`.
+Coste total del día: unos 15 000 créditos de 129 000. `auditar-recorrido.mjs`: sin
+errores. El manifiesto trae `duraciones` por capítulo (ffprobe): las usa la
+grabación del vídeo.
+
+### La música
+
+Estaba apagada por defecto en el sitio y al 11 % en el vídeo (-35 dB de media
+contra -14 de la voz). Daniel: «la música no se oye». Ahora **encendida por
+defecto** en el recorrido (arranca con el clic de la persona, así que ya es su
+decisión) al 26 %, con el interruptor a la vista y memoria si la apagan; y en el
+vídeo al 38 % con **ducking** (compresor con la voz como llave) y limitador.
+
+### Fotos reales dentro del recorrido
+
+Daniel: «si puedes usar fotos también, haz el video más dinámico y detallado».
+Cada hito puede pedir una `foto` con sus `segundos`: entra con fundido y
+acercamiento lento (Ken Burns) encima del dibujo y se retira sola. Seis fotos,
+todas sin la marca del operador en cuadro (`lib/recorrido.ts`, `FOTOS`):
+palmeras desde el aire (recortada por el lado del rótulo), la aérea encuadrada
+abajo a la izquierda, bajo la palapa de día, el montaje de sonido bajo la palapa,
+el paseo entre palmeras (recortado por debajo del mural) y la cenital de noche.
+Las nuevas se prepararon con ffmpeg desde `Proyecto wynwood/fotos/godaddy-2026-09/usables/`.
+**La foto del paseo desde la entrada (`2W7A0764.jpg`) NO se usa**: el rótulo
+del operador ocupa el centro.
+
+También: **cifras junto a la marca** («240 ft · 73 m», «600 de pie», «40 ft»)
+cuando la voz las dice; **modo `barra`** (la barra a trazos bajo la palapa, solo
+desde el guion); **portada** de tres segundos en el vídeo; y el pie con la web.
+
+### La sección del terreno, reordenada
+
+Daniel: «la página web tiene desorden, no se entiende». Ahora el orden es:
+titular → dibujo → mandos de qué ver (debajo del dibujo, junto a lo que mandan)
+→ dos tarjetas lado a lado (el recorrido con sus ocho preguntas · «tu evento, en
+el dibujo») → transcripción plegada → **cinco pestañas de zona con UNA lectura**
+(antes cinco columnas de texto pequeño). La portada tiene además el botón
+«Ver el recorrido · 3 min» junto a «Solicitar disponibilidad».
 
 ### El vídeo exportado (MP4)
 
@@ -151,12 +189,15 @@ proporción, cambiarla en un solo sitio.
 
 ### Decisiones pendientes de Daniel
 
-- **Oír la voz nueva** (Cristian / Brian, v3) en `/es` y `/en`. Se cambia con
+- **Oír la voz** (David / Brian, multilingual_v2) en `/es` y `/en`. Se cambia con
   `VOICE_ES` / `VOICE_EN` y `--force`. Las cuatro voces latinas de la cuenta:
-  Cristian, David C5, Superior, Nestor.
+  David C5, Superior, Cristian, Nestor. Superior es la otra candidata seria (la
+  del vídeo de anuncios de julio en español).
 - **Ver los cuatro MP4** y decidir cuál va a pauta. El 9:16 es el de reels y
   stories; el 16:9, el de YouTube, WhatsApp y web.
-- La música de fondo: sigue apagada por defecto en el sitio; en el vídeo va al 11 %.
+- **Sesión de fotos propia.** Las seis que hay son las únicas sin la marca del
+  operador; falta el jardín vacío de día, el load-in, el parking y las cabañas
+  de cerca.
 
 ### Contenido que ya existe y no se ha usado
 

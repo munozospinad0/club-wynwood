@@ -72,7 +72,14 @@ import { ev } from "@/lib/medicion";
  * contrato de crm-wynwood/docs/04-MEDICION.md.
  */
 
-export type Modo = "todo" | "lluvia" | "carpa" | "mesas" | "gente" | "camion" | "noche";
+export type Modo = "todo" | "lluvia" | "carpa" | "mesas" | "gente" | "camion" | "noche" | "barra";
+
+/** Una foto real, unos segundos, encima del dibujo. La elige el guion. */
+export interface FotoDirigida {
+  src: string;
+  pos: string;
+  alt: string;
+}
 export type Zona = "jardin" | "tiki" | "cabanas" | "acceso" | "edificio";
 /** pendiente → dibujar (corre la secuencia) → listo (los rótulos entran).
  *  quieto: sin JS útil o con movimiento reducido, todo visible desde el principio. */
@@ -446,6 +453,7 @@ const T = {
       gente: "Seiscientas personas de pie, a ocho pies cuadrados cada una: ocupan cerca de un tercio del jardín. Es el aforo verificado, dibujado.",
       camion: "Por NW 1st Ct al paseo pavimentado, continuo y a nivel: un camión de 40 ft llega hasta el fondo sin pisar césped.",
       noche: "Un montaje posible, de noche: escenario al fondo del jardín, tu barra bajo la palapa, público en el césped y luz entre las palmeras. Todo lo encendido lo trae tu equipo; la luz colgada se aprueba en la visita.",
+      barra: "Bajo la palapa hay sitio para montar barra. La barra la trae tu equipo: aquí va dibujada a trazos, donde suele ir.",
     } as Record<Modo, string>,
     zonas: {
       jardin: {
@@ -498,6 +506,7 @@ const T = {
       gente: "Six hundred people standing, at eight square feet each: they take up about a third of the garden. That is the verified capacity, drawn.",
       camion: "From NW 1st Ct onto the paved walk, continuous and level: a 40 ft truck reaches the far end without crossing turf.",
       noche: "One possible setup, at night: a stage at the far end of the garden, your bar under the structure, a crowd on the turf and light between the palms. Everything lit is brought by your team; hung lighting is approved at the visit.",
+      barra: "Under the structure there is room to set up a bar. The bar comes with your team: here it is drawn dashed, where it usually goes.",
     } as Record<Modo, string>,
     zonas: {
       jardin: {
@@ -650,6 +659,10 @@ const Dibujo = memo(function Dibujo({ lang, zona, aforo, alEntrar, alSalir, alTo
         <Palapa g={g} />
       </g>
       <Carpa g={g} />
+      {/* la barra, a trazos: la trae el cliente, aquí solo se dice dónde cabe */}
+      <g className="barra" pointerEvents="none">
+        <Caja g={g} x={BARRA.x} y={BARRA.y} dx={BARRA.dx} dy={BARRA.dy} z1={BARRA.h} tapa="#fbf8f1" izq="#f3eee4" der="#ece6d9" borde={OCRE} w={1.1} animado={false} />
+      </g>
 
       {/* ── las mesas y la gente (solo en su modo) ───────────────── */}
       <g className="mesas" pointerEvents="none">
@@ -772,6 +785,8 @@ export default function LaminaRecinto({
   puntoDirigido,
   zoomDirigido,
   rotuloPunto,
+  cifraPunto,
+  fotoDirigida,
   aforo,
   cine = false,
   semillaDibujo = 0,
@@ -793,6 +808,10 @@ export default function LaminaRecinto({
   /** 1 = el recinto entero. Más, la cámara se acerca al punto dirigido. */
   zoomDirigido?: number;
   rotuloPunto?: string;
+  /** La cifra que se está diciendo, bajo el rótulo de la marca: «240 ft · 73 m». */
+  cifraPunto?: string | null;
+  /** Una foto real encima del dibujo, mientras el guion la pida. `null` = ninguna. */
+  fotoDirigida?: FotoDirigida | null;
   /** Cuántos invitados dibujar en los modos «mesas» y «gente». Sin él, el aforo verificado. */
   aforo?: Aforo;
   /** Pantalla completa sobre tinta, con el panel al lado. Lo enciende el recorrido. */
@@ -805,7 +824,19 @@ export default function LaminaRecinto({
   const t = T[lang];
   const [modoLocal, setModo] = useState<Modo>("todo");
   const [zonaLocal, setZona] = useState<Zona | null>(null);
+  /**
+   * LA ZONA QUE SE LEE. Antes la lectura de las cinco zonas iba en cinco
+   * columnas de texto pequeño debajo del dibujo, y Daniel: «la página tiene
+   * desorden, no se entiende». Ahora se lee UNA zona a la vez: la última que
+   * se tocó o se pasó por encima, y el Jardín por defecto. Las cinco siguen en
+   * el HTML para el buscador; solo se ve la que toca.
+   */
+  const [zonaLeida, setZonaLeida] = useState<Zona>("jardin");
   const [fase, setFase] = useState<Fase>("pendiente");
+  // La última foto que se pidió se conserva mientras se desvanece: si se
+  // quitara del DOM al momento, la salida sería un corte y no un fundido.
+  const [fotoVista, setFotoVista] = useState<FotoDirigida | null>(null);
+  useEffect(() => { if (fotoDirigida) setFotoVista(fotoDirigida); }, [fotoDirigida]);
   const raiz = useRef<HTMLDivElement>(null);
   const quieto = useRef(false);
 
@@ -901,11 +932,12 @@ export default function LaminaRecinto({
     if (m !== "todo") ev("toggle_layer", { layer: m });
   }
 
-  const alEntrar = useCallback((z: Zona) => setZona(z), []);
+  const alEntrar = useCallback((z: Zona) => { setZona(z); setZonaLeida(z); }, []);
   const alSalir = useCallback((z: Zona) => setZona((a) => (a === z ? null : a)), []);
   const alTocar = useCallback((z: Zona) => {
     onManual?.();
     setZona((actual) => (actual === z ? null : z));
+    setZonaLeida(z);
     ev("select_zone", { zone: z });
   }, [onManual]);
 
@@ -976,21 +1008,15 @@ export default function LaminaRecinto({
             <style>{`.lam.pendiente .tz{stroke-dashoffset:0}.lam.pendiente .rl{fill-opacity:1}.lam.pendiente .ap,.lam.pendiente .lam-etq,.lam.pendiente .lam-cajetin{opacity:1}`}</style>
           </noscript>
 
+          {/* La cabecera: qué es esto, en una frase. Los mandos van DEBAJO del
+              dibujo, junto a lo que controlan; antes iban aquí arriba y
+              competían con el titular. */}
           <div className="lam-cabecera">
             <div className="ojo" style={{ paddingBottom: 18 }}>{t.ojo}</div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: "12px 44px", alignItems: "end", paddingBottom: 22 }}>
               <h2 style={{ maxWidth: "16ch" }}>{t.titulo}</h2>
               <p className="respuesta" style={{ margin: 0, color: "var(--texto)", maxWidth: "46ch" }}>{t.intro}</p>
             </div>
-
-            <div className="lam-modos" role="group" aria-label={lang === "es" ? "Qué ver en el dibujo" : "What to show on the drawing"}>
-              {MODOS_MANUALES.map((m) => (
-                <button key={m} type="button" className="lam-modo" aria-pressed={modo === m} onClick={() => elegirModo(m)}>
-                  {t.modos[m]}
-                </button>
-              ))}
-            </div>
-            <p className="lam-explica" aria-live="polite">{t.explica[modo]}</p>
           </div>
 
           <div className="lam-escenario">
@@ -1009,12 +1035,20 @@ export default function LaminaRecinto({
                   * todo lo demás, así que cae exactamente donde debe aunque cambie la
                   * geometría. Y viaja con una transición larga: el salto instantáneo
                   * se lee como un parpadeo, el viaje se lee como alguien señalando.
+                  *
+                  * Debajo del nombre, la cifra que se está diciendo: cuando la voz
+                  * dice «doscientos cuarenta pies», la marca dice «240 ft · 73 m».
                   */}
                 {dirigiendo && puntoDirigido && (
                   <div className="lam-guia-punto" style={pctCaja(p(puntoDirigido[0], puntoDirigido[1], 0))} aria-hidden="true">
                     <span className="lam-guia-halo" />
                     <span className="lam-guia-nucleo" />
-                    {rotuloPunto && <span className="lam-guia-rotulo">{rotuloPunto}</span>}
+                    {(rotuloPunto || cifraPunto) && (
+                      <span className="lam-guia-rotulo">
+                        {rotuloPunto && <span className="lam-guia-nombre">{rotuloPunto}</span>}
+                        {cifraPunto && <span key={cifraPunto} className="lam-guia-cifra">{cifraPunto}</span>}
+                      </span>
+                    )}
                   </div>
                 )}
 
@@ -1044,7 +1078,37 @@ export default function LaminaRecinto({
                   );
                 })}
               </div>
+
+              {/**
+                * LA FOTO REAL, ENCIMA DEL DIBUJO. Daniel, 6-sep-2026: «si puedes
+                * usar fotos también, haz el video más dinámico». El guion pide
+                * una foto en frases concretas —«bienvenido», «dos hileras de
+                * palmeras», «de noche»— y se retira sola a los segundos. Entra
+                * con un fundido y un acercamiento lento (Ken Burns): una foto
+                * quieta sobre un dibujo que se mueve se lee como un error.
+                *
+                * Solo fotos sin la marca del operador en cuadro. Es la regla que
+                * manda sobre todo lo demás en este proyecto.
+                */}
+              <div className={`lam-foto${fotoDirigida ? " visible" : ""}`} aria-hidden={!fotoDirigida}>
+                {fotoVista && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img key={fotoVista.src} src={fotoVista.src} alt={fotoVista.alt} style={{ objectPosition: fotoVista.pos }} decoding="async" />
+                )}
+              </div>
             </figure>
+          </div>
+
+          {/* ── qué ver en el dibujo: los mandos, pegados a lo que mandan ── */}
+          <div className="lam-barra-modos">
+            <div className="lam-modos" role="group" aria-label={lang === "es" ? "Qué ver en el dibujo" : "What to show on the drawing"}>
+              {MODOS_MANUALES.map((m) => (
+                <button key={m} type="button" className="lam-modo" aria-pressed={modo === m} onClick={() => elegirModo(m)}>
+                  {t.modos[m]}
+                </button>
+              ))}
+            </div>
+            <p className="lam-explica" aria-live="polite">{t.explica[modo]}</p>
           </div>
 
           {/* El recorrido guiado, si lo hay. Va DEBAJO del dibujo a propósito:
@@ -1052,39 +1116,44 @@ export default function LaminaRecinto({
               modo cine, el CSS lo pone al lado. */}
           {panel}
 
-          {/* ── la lectura de cada zona ─────────────────────────────────── */}
-          <ol className="lam-lista">
-            {ORDEN_ZONAS.map((zk, i) => {
-              const z = t.zonas[zk];
-              return (
-                <li key={zk}>
-                  <button type="button" className={`lam-item${zona === zk ? " activa" : ""}`}
+          {/* ── la lectura de cada zona: cinco pestañas, una lectura ───────── */}
+          <div className="lam-zonas">
+            <div className="lam-zonas-tabs" role="tablist" aria-label={lang === "es" ? "Zonas del recinto" : "Zones of the site"}>
+              {ORDEN_ZONAS.map((zk, i) => {
+                const z = t.zonas[zk];
+                const activa = zonaLeida === zk;
+                return (
+                  <button key={zk} type="button" role="tab" id={`zona-tab-${zk}`} aria-selected={activa} aria-controls={`zona-panel-${zk}`}
+                          className={`lam-zona-tab${activa ? " activa" : ""}${zona === zk ? " resaltada" : ""}`}
                           onMouseEnter={() => setZona(zk)}
                           onMouseLeave={() => setZona((a) => (a === zk ? null : a))}
                           onClick={() => alTocar(zk)}>
                     <span className="lam-item-n" aria-hidden>{i + 1}</span>
-                    <span>
+                    <span className="lam-zona-tab-txt">
                       <span className="lam-item-nombre">{z.nombre}</span>
                       <span className="lam-item-dato">{z.dato}</span>
-                      <span className="lam-item-lee">{z.lee}</span>
-
-                      {/**
-                        * PARA QUÉ SIRVE Y QUÉ HAY QUE SABER.
-                        *
-                        * Antes cada zona era una línea que decía qué es. Un
-                        * productor no necesita saber qué es: necesita saber si
-                        * le sirve y con qué se va a encontrar. Las dos frases
-                        * de abajo contestan justo eso, y la segunda dice lo que
-                        * NO hay, que es la mitad del argumento de este venue.
-                        */}
-                      <span className="lam-item-sirve">{z.sirve}</span>
-                      <span className="lam-item-ojo">{z.ojo}</span>
                     </span>
                   </button>
-                </li>
+                );
+              })}
+            </div>
+            {ORDEN_ZONAS.map((zk) => {
+              const z = t.zonas[zk];
+              return (
+                <div key={zk} role="tabpanel" id={`zona-panel-${zk}`} aria-labelledby={`zona-tab-${zk}`} className="lam-lectura" hidden={zonaLeida !== zk}>
+                  <p className="lam-lectura-lee">{z.lee}</p>
+                  {/**
+                    * PARA QUÉ SIRVE Y QUÉ HAY QUE SABER. Un productor no
+                    * necesita saber qué es: necesita saber si le sirve y con qué
+                    * se va a encontrar. La segunda frase dice lo que NO hay, que
+                    * es la mitad del argumento de este venue.
+                    */}
+                  <p className="lam-lectura-sirve">{z.sirve}</p>
+                  <p className="lam-lectura-ojo">{z.ojo}</p>
+                </div>
               );
             })}
-          </ol>
+          </div>
 
           <p className="ojo lam-nota" style={{ paddingTop: 18, lineHeight: 1.75, maxWidth: "78ch" }}>{t.nota}</p>
         </div>

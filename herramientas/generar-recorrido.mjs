@@ -45,44 +45,44 @@ if (args.includes("--voces")) {
 }
 
 /**
- * EL MODELO: eleven_v3, y por qué se cambió (6-sep-2026).
+ * EL MODELO: eleven_multilingual_v2, a 192 kbps. Historia corta de tres pasadas
+ * (todas del 5 y 6 de septiembre de 2026):
  *
- * La primera grabación iba con eleven_multilingual_v2 y Daniel la oyó plana:
- * «mejor voz». v3 es el modelo expresivo de ElevenLabs: entona por sentido, no
- * por frase, respira donde hay puntuación y no suena a locutor leyendo. Se
- * comprobó antes de cambiarlo que el punto `/with-timestamps` lo acepta y
- * devuelve el alineamiento —sin él no hay hitos—: lo hace.
+ *   1. multilingual_v2 con Nestor (joven, conversacional) y Chris. Daniel:
+ *      «mejor voz».
+ *   2. eleven_v3 con Cristian y Brian. Es el modelo «expresivo», y con
+ *      timestamps funciona; pero Daniel: «la voz es de mala calidad». Se
+ *      transcribió con Scribe para descartar que leyera mal: lee bien (0–1,5 %
+ *      de palabras distintas). Lo que no convence es el timbre: v3 mete
+ *      respiraciones y un grano que en un audio sin imagen de apoyo suena a
+ *      máquina. ElevenLabs mismo describe v2 como el modelo «para voz en off».
+ *   3. multilingual_v2 con David (ES) y Brian (EN), a 192 kbps. Es esta.
  *
- * Dos cosas de v3 que no son como en v2:
- *   · `stability` va a saltos: 0 (creativo), 0.5 (natural) o 1 (robusto). Un
- *     0.45 lo redondea él. Se usa 0.5: expresivo pero fiel al texto.
- *   · Admite etiquetas de dirección como [pausa] dentro del texto. NO se usan:
- *     entrarían al alineamiento y romperían la búsqueda de hitos por frase.
- *     La pausa se dirige con puntuación.
+ * De v3 queda escrito por si alguien lo vuelve a intentar: `stability` va a
+ * saltos (0 / 0.5 / 1) y NO se pueden usar etiquetas como [pausa] en el guion,
+ * porque entran al alineamiento y rompen la búsqueda de hitos por frase.
  */
-const MODEL_ID = process.env.MODEL_ID || "eleven_v3";
-const OUTPUT_FORMAT = process.env.OUTPUT_FORMAT || "mp3_44100_128";
+const MODEL_ID = process.env.MODEL_ID || "eleven_multilingual_v2";
+const OUTPUT_FORMAT = process.env.OUTPUT_FORMAT || "mp3_44100_192";
 
 /**
  * LAS VOCES, y por qué estas dos.
  *
- * **Español: Cristian (LA).** Latinoamericano, no peninsular: el público es
- * Miami y Latinoamérica, y una voz de España en un venue de Wynwood suena a
- * doblaje. De las cuatro latinas de la cuenta es la única etiquetada como
- * narración, y la de más edad: la anterior (Nestor, joven, conversacional)
- * es la que Daniel oyó y no le convenció. Daniel ya la había probado en julio
- * para el vídeo de anuncios (`voz-cristian.mp3` en Proyecto wynwood).
+ * **Español: David C5** («Education, Tutorials & Documentaries», latino,
+ * calmo). Es la voz que Daniel ya aprobó y usa en todos los reportes mensuales
+ * de ECUS (ver la memoria `ecus-reporte-mensual-pipeline`): la conoce, y a
+ * 1,04 le pareció lenta, así que aquí va a 1,08. En la prueba con Scribe leyó
+ * el capítulo 1 sin una sola palabra distinta; Cristian, en v2, se comió tres.
  *
  * **Inglés: Brian.** «Deep, resonant and comforting». Es la voz del vídeo en
  * inglés que Daniel aprobó en julio (`Club-Wynwood-EN.mp4`), así que el sitio
- * y los anuncios suenan igual. La anterior (Chris, «down-to-earth, casual»)
- * encajaba con el tono pero no con el nivel de producción que se pide ahora.
+ * y los anuncios suenan igual. 0 % de palabras distintas en la prueba.
  *
  * Se pueden sustituir por entorno sin tocar el código. `--voces` lista las de
  * la cuenta con su identificador.
  */
 const VOICE = {
-  es: process.env.VOICE_ES || "WZOxu5tVZTrgbKo1DIXH", // Cristian (LA) · es-latin-american · narrative, calm
+  es: process.env.VOICE_ES || "dQ0C8BEdKF2odmELvNee", // David C5 · es-latin-american · documentales, calmo
   en: process.env.VOICE_EN || "nPczCjzI2devNBz1zQrb", // Brian · en-american · deep, resonant, comforting
 };
 
@@ -94,9 +94,9 @@ const AJUSTES = esV3
       speed: Number(process.env.SPEED ?? 1.0),
     }
   : {
-      stability: Number(process.env.STABILITY ?? 0.45),
-      similarity_boost: Number(process.env.SIMILARITY ?? 0.8),
-      style: Number(process.env.STYLE ?? 0.15),
+      stability: Number(process.env.STABILITY ?? 0.5),
+      similarity_boost: Number(process.env.SIMILARITY ?? 0.85),
+      style: Number(process.env.STYLE ?? 0.2),
       use_speaker_boost: true,
       speed: Number(process.env.SPEED ?? 1.08),
     };

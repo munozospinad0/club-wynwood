@@ -1,5 +1,5 @@
 {
-  "version": "2.0.0",
+  "version": "2.1.0",
   "capitulos": [
     {
       "id": "recinto",
@@ -14,14 +14,18 @@
       },
       "hitos": {
         "es": [
-          { "frase": "un jardín de doscientos", "zona": "jardin", "punto": [150, 38], "zoom": 1.35 },
-          { "frase": "la palapa techada", "zona": "tiki", "punto": [41, 34], "zoom": 1.8 },
+          { "frase": "Bienvenido a Club Wynwood", "foto": "palmeras", "segundos": 4.6 },
+          { "frase": "un jardín de doscientos", "zona": "jardin", "punto": [150, 38], "zoom": 1.35, "cifra": "240 ft · 73 m" },
+          { "frase": "dos hileras de palmeras", "foto": "paseo", "segundos": 3.6 },
+          { "frase": "la palapa techada", "zona": "tiki", "punto": [41, 34], "zoom": 1.8, "cifra": "~4 000 ft²" },
           { "frase": "un paseo pavimentado", "zona": "acceso", "punto": [-6, 74], "zoom": 1.55 },
           { "frase": "Se alquila solo", "zona": null, "punto": [120, 46], "zoom": 1 }
         ],
         "en": [
-          { "frase": "a garden two hundred", "zona": "jardin", "punto": [150, 38], "zoom": 1.35 },
-          { "frase": "the thatched structure", "zona": "tiki", "punto": [41, 34], "zoom": 1.8 },
+          { "frase": "Welcome to Club Wynwood", "foto": "palmeras", "segundos": 4.6 },
+          { "frase": "a garden two hundred", "zona": "jardin", "punto": [150, 38], "zoom": 1.35, "cifra": "240 ft · 73 m" },
+          { "frase": "two rows of real palms", "foto": "paseo", "segundos": 3.6 },
+          { "frase": "the thatched structure", "zona": "tiki", "punto": [41, 34], "zoom": 1.8, "cifra": "~4,000 sq ft" },
           { "frase": "a paved walk", "zona": "acceso", "punto": [-6, 74], "zoom": 1.55 },
           { "frase": "Only the outdoors", "zona": null, "punto": [120, 46], "zoom": 1 }
         ]
@@ -40,14 +44,14 @@
       },
       "hitos": {
         "es": [
-          { "frase": "Hasta seiscientas personas", "modo": "gente" },
-          { "frase": "O unas trescientas sentadas", "modo": "mesas" },
-          { "frase": "Por encima de eso", "zona": null, "punto": [120, 46], "zoom": 1 }
+          { "frase": "Hasta seiscientas personas", "modo": "gente", "cifra": "600 de pie" },
+          { "frase": "O unas trescientas sentadas", "modo": "mesas", "cifra": "300 sentados · 30 mesas" },
+          { "frase": "Por encima de eso", "zona": null, "punto": [120, 46], "zoom": 1, "cifra": null }
         ],
         "en": [
-          { "frase": "Up to six hundred people", "modo": "gente" },
-          { "frase": "Or about three hundred seated", "modo": "mesas" },
-          { "frase": "Above that it", "zona": null, "punto": [120, 46], "zoom": 1 }
+          { "frase": "Up to six hundred people", "modo": "gente", "cifra": "600 standing" },
+          { "frase": "Or about three hundred seated", "modo": "mesas", "cifra": "300 seated · 30 tables" },
+          { "frase": "Above that it", "zona": null, "punto": [120, 46], "zoom": 1, "cifra": null }
         ]
       }
     },
@@ -64,13 +68,15 @@
       },
       "hitos": {
         "es": [
-          { "frase": "Para eso está la palapa", "modo": "lluvia" },
-          { "frase": "conviene presupuestar carpa lateral", "modo": "carpa" },
+          { "frase": "Para eso está la palapa", "modo": "lluvia", "cifra": "~4 000 ft² techados" },
+          { "frase": "sobre postes de madera", "foto": "palapa", "segundos": 4.4 },
+          { "frase": "conviene presupuestar carpa lateral", "modo": "carpa", "cifra": null },
           { "frase": "El resto del jardín", "zona": "jardin", "punto": [150, 40], "zoom": 1.1 }
         ],
         "en": [
-          { "frase": "That is what the structure", "modo": "lluvia" },
-          { "frase": "should budget for side tenting", "modo": "carpa" },
+          { "frase": "That is what the structure", "modo": "lluvia", "cifra": "~4,000 sq ft covered" },
+          { "frase": "on timber posts", "foto": "palapa", "segundos": 4.4 },
+          { "frase": "should budget for side tenting", "modo": "carpa", "cifra": null },
           { "frase": "The rest of the garden", "zona": "jardin", "punto": [150, 40], "zoom": 1.1 }
         ]
       }
@@ -88,14 +94,16 @@
       },
       "hitos": {
         "es": [
+          { "frase": "directo al paseo pavimentado", "foto": "aerea", "segundos": 4.2 },
           { "frase": "que cruza el recinto", "zona": null, "punto": [120, 74], "zoom": 1.2 },
-          { "frase": "Un camión de cuarenta", "modo": "camion", "zona": null, "punto": [150, 74], "zoom": 1.3 },
-          { "frase": "El ancho exacto", "zona": "acceso", "punto": [-6, 74], "zoom": 1.5 }
+          { "frase": "Un camión de cuarenta", "modo": "camion", "zona": null, "punto": [150, 74], "zoom": 1.3, "cifra": "camión de 40 ft" },
+          { "frase": "El ancho exacto", "zona": "acceso", "punto": [-6, 74], "zoom": 1.5, "cifra": null }
         ],
         "en": [
+          { "frase": "straight onto the paved walk", "foto": "aerea", "segundos": 4.2 },
           { "frase": "which crosses the site", "zona": null, "punto": [120, 74], "zoom": 1.2 },
-          { "frase": "A forty-foot truck", "modo": "camion", "zona": null, "punto": [150, 74], "zoom": 1.3 },
-          { "frase": "The exact gate", "zona": "acceso", "punto": [-6, 74], "zoom": 1.5 }
+          { "frase": "A forty-foot truck", "modo": "camion", "zona": null, "punto": [150, 74], "zoom": 1.3, "cifra": "40-foot truck" },
+          { "frase": "The exact gate", "zona": "acceso", "punto": [-6, 74], "zoom": 1.5, "cifra": null }
         ]
       }
     },
@@ -112,14 +120,18 @@
       },
       "hitos": {
         "es": [
-          { "frase": "un área donde montar barra", "zona": "tiki", "punto": [30, 40], "zoom": 1.6 },
-          { "frase": "El edificio de al lado", "zona": "edificio", "punto": [300, 46], "zoom": 1.25 },
-          { "frase": "Lo que no hay", "zona": null, "punto": [120, 46], "zoom": 1 }
+          { "frase": "Hay ocho cabañas", "cifra": "8 cabañas" },
+          { "frase": "un área donde montar barra", "modo": "barra", "zona": "tiki", "punto": [30, 40], "zoom": 1.6, "cifra": "tu barra" },
+          { "frase": "El edificio de al lado", "modo": "todo", "zona": "edificio", "punto": [300, 46], "zoom": 1.25, "cifra": null },
+          { "frase": "Lo que no hay", "zona": null, "punto": [120, 46], "zoom": 1 },
+          { "frase": "Producción, sonido, iluminación", "foto": "montaje", "segundos": 4.8 }
         ],
         "en": [
-          { "frase": "an area where a bar", "zona": "tiki", "punto": [30, 40], "zoom": 1.6 },
-          { "frase": "The building next door", "zona": "edificio", "punto": [300, 46], "zoom": 1.25 },
-          { "frase": "What is not here", "zona": null, "punto": [120, 46], "zoom": 1 }
+          { "frase": "Eight furnished cabanas", "cifra": "8 cabanas" },
+          { "frase": "an area where a bar", "modo": "barra", "zona": "tiki", "punto": [30, 40], "zoom": 1.6, "cifra": "your bar" },
+          { "frase": "The building next door", "modo": "todo", "zona": "edificio", "punto": [300, 46], "zoom": 1.25, "cifra": null },
+          { "frase": "What is not here", "zona": null, "punto": [120, 46], "zoom": 1 },
+          { "frase": "Production, sound, lighting", "foto": "montaje", "segundos": 4.8 }
         ]
       }
     },
@@ -136,17 +148,19 @@
       },
       "hitos": {
         "es": [
-          { "frase": "de noche", "modo": "noche" },
-          { "frase": "el escenario al fondo", "zona": null, "punto": [222, 32], "zoom": 1.7 },
-          { "frase": "tu barra bajo la palapa", "zona": "tiki", "punto": [34, 40], "zoom": 1.7 },
-          { "frase": "el público en el césped", "zona": "jardin", "punto": [150, 35], "zoom": 1.35 },
+          { "frase": "Así, por ejemplo, de noche", "modo": "noche", "foto": "noche", "segundos": 4.2 },
+          { "frase": "el escenario al fondo", "zona": null, "punto": [222, 32], "zoom": 1.7, "cifra": "escenario" },
+          { "frase": "tu barra bajo la palapa", "zona": "tiki", "punto": [34, 40], "zoom": 1.7, "cifra": "tu barra" },
+          { "frase": "el público en el césped", "zona": "jardin", "punto": [150, 35], "zoom": 1.35, "cifra": null },
+          { "frase": "Todo lo que ves encendido", "foto": "montaje", "segundos": 4.6 },
           { "frase": "Lo que no se ve", "zona": null, "punto": [130, 44], "zoom": 1.05 }
         ],
         "en": [
-          { "frase": "at night", "modo": "noche" },
-          { "frase": "the stage at the far end", "zona": null, "punto": [222, 32], "zoom": 1.7 },
-          { "frase": "your bar under the thatched", "zona": "tiki", "punto": [34, 40], "zoom": 1.7 },
-          { "frase": "the crowd on the turf", "zona": "jardin", "punto": [150, 35], "zoom": 1.35 },
+          { "frase": "Like this, for instance, at night", "modo": "noche", "foto": "noche", "segundos": 4.2 },
+          { "frase": "the stage at the far end", "zona": null, "punto": [222, 32], "zoom": 1.7, "cifra": "stage" },
+          { "frase": "your bar under the thatched", "zona": "tiki", "punto": [34, 40], "zoom": 1.7, "cifra": "your bar" },
+          { "frase": "the crowd on the turf", "zona": "jardin", "punto": [150, 35], "zoom": 1.35, "cifra": null },
+          { "frase": "Everything you see lit up", "foto": "montaje", "segundos": 4.6 },
           { "frase": "What you do not see", "zona": null, "punto": [130, 44], "zoom": 1.05 }
         ]
       }
@@ -162,7 +176,20 @@
         "es": "¿Cuánto cuesta? No publicamos tarifas, y no es por esconderlas: el paquete se arma contra tu evento, según la fecha, el espacio que uses y el montaje. Cuéntanos qué tienes en mente y respondemos con disponibilidad real y condiciones, por escrito.",
         "en": "How much does it cost? We do not publish rates, and it is not to hide them: the package is built around your event, by date, by the space you use and by the setup. Tell us what you have in mind and we reply with real availability and terms, in writing."
       },
-      "hitos": { "es": [], "en": [] }
+      "hitos": {
+        "es": [
+          { "frase": "según la fecha", "zona": null, "punto": [120, 46], "zoom": 1.05, "cifra": "1 · la fecha" },
+          { "frase": "el espacio que uses", "zona": "jardin", "punto": [150, 38], "zoom": 1.2, "cifra": "2 · el espacio" },
+          { "frase": "y el montaje", "zona": "tiki", "punto": [41, 34], "zoom": 1.3, "cifra": "3 · el montaje" },
+          { "frase": "Cuéntanos qué tienes", "zona": null, "punto": [120, 46], "zoom": 1, "cifra": null }
+        ],
+        "en": [
+          { "frase": "by date", "zona": null, "punto": [120, 46], "zoom": 1.05, "cifra": "1 · the date" },
+          { "frase": "by the space you use", "zona": "jardin", "punto": [150, 38], "zoom": 1.2, "cifra": "2 · the space" },
+          { "frase": "and by the setup", "zona": "tiki", "punto": [41, 34], "zoom": 1.3, "cifra": "3 · the setup" },
+          { "frase": "Tell us what you have", "zona": null, "punto": [120, 46], "zoom": 1, "cifra": null }
+        ]
+      }
     },
     {
       "id": "ahora",
@@ -175,7 +202,16 @@
         "es": "¿Y ahora? Si el sitio te sirve, pide disponibilidad con tu fecha y tu número de invitados. Contestamos en veinticuatro horas hábiles, y si quieres verlo, coordinamos la visita y levantamos contigo la ficha técnica. Gracias por el recorrido.",
         "en": "What now? If the site works for you, request availability with your date and guest count. We reply within twenty-four business hours, and if you want to see it, we schedule the visit and survey the spec sheet with you. Thanks for taking the tour."
       },
-      "hitos": { "es": [], "en": [] }
+      "hitos": {
+        "es": [
+          { "frase": "coordinamos la visita", "foto": "palmeras", "segundos": 4 },
+          { "frase": "Gracias por el recorrido", "foto": "noche", "segundos": 6 }
+        ],
+        "en": [
+          { "frase": "we schedule the visit", "foto": "palmeras", "segundos": 4 },
+          { "frase": "Thanks for taking", "foto": "noche", "segundos": 6 }
+        ]
+      }
     }
   ]
 }

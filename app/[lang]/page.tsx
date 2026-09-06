@@ -11,6 +11,7 @@ import LaminaPlanta from "@/components/LaminaPlanta";
 import Recorrido from "@/components/Recorrido";
 import Dudas from "@/components/Dudas";
 import Cifras from "@/components/Cifras";
+import BotonRecorrido from "@/components/BotonRecorrido";
 
 /**
  * Home. El orden sigue cómo decide un productor:
@@ -90,9 +91,15 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
               : "Club Wynwood is ~22,000 sq ft of outdoor space in Miami's Wynwood Arts District, with a ~4,000 sq ft covered structure for when it rains. You bring the production; we hand over the space."}
           </p>
 
-          <a href="#disponibilidad" className="boton" style={{ alignSelf: "flex-start" }}>
-            {es ? "Solicitar disponibilidad" : "Request availability"} <span aria-hidden>→</span>
-          </a>
+          {/* Las dos cosas que se pueden hacer, en la portada: pedir fecha o
+              ver el sitio contado. Antes el recorrido no se anunciaba hasta
+              mitad de página. */}
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 12, alignSelf: "flex-start" }}>
+            <a href="#disponibilidad" className="boton">
+              {es ? "Solicitar disponibilidad" : "Request availability"} <span aria-hidden>→</span>
+            </a>
+            <BotonRecorrido lang={lang} />
+          </div>
         </div>
 
         <figure style={{ margin: 0, position: "relative", minHeight: "clamp(320px,62vh,660px)" }}>

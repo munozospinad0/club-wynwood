@@ -125,14 +125,22 @@ async function grabar(lang, formato) {
   }
   const durSalida = Math.min(durVideo - corteInicio, ultimoFin + 6.5);
 
+  /**
+   * LA MÚSICA SE TIENE QUE OÍR. La primera mezcla la ponía al 11 % (unos -35 dB
+   * de media contra -14 de la voz) y Daniel: «la música no se oye». Ahora va al
+   * 38 % y con «ducking»: un compresor con la voz como llave la baja mientras
+   * alguien habla y la deja subir en los silencios, que es como se mezcla un
+   * documental. Limitador al final para que nada sature.
+   */
   const cama = join(RAIZ, "public", "audio", "recorrido", "cama.mp3");
   let mezcla;
   if (!SIN_MUSICA && existsSync(cama)) {
     entradas.push("-stream_loop", "-1", "-i", cama);
     const k = entradas.filter((e) => e === "-i").length - 1;
-    filtros.push(`${etiquetas.join("")}amix=inputs=${etiquetas.length}:normalize=0[voz]`);
-    filtros.push(`[${k}:a]aresample=44100,volume=0.11,afade=t=in:st=0:d=1.5,afade=t=out:st=${(durSalida - 3).toFixed(2)}:d=3[cama]`);
-    filtros.push(`[voz][cama]amix=inputs=2:normalize=0:duration=first,alimiter=limit=0.95[out]`);
+    filtros.push(`${etiquetas.join("")}amix=inputs=${etiquetas.length}:normalize=0,asplit=2[voz][llave]`);
+    filtros.push(`[${k}:a]aresample=44100,volume=0.38,afade=t=in:st=0:d=1.2,afade=t=out:st=${(durSalida - 3.5).toFixed(2)}:d=3.5[cama]`);
+    filtros.push(`[cama][llave]sidechaincompress=threshold=0.035:ratio=5:attack=60:release=700:makeup=1[camaduck]`);
+    filtros.push(`[voz][camaduck]amix=inputs=2:normalize=0:duration=first,alimiter=limit=0.95[out]`);
     mezcla = "[out]";
   } else {
     filtros.push(`${etiquetas.join("")}amix=inputs=${etiquetas.length}:normalize=0,alimiter=limit=0.95[out]`);

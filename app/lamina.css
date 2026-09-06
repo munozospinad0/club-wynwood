@@ -112,7 +112,7 @@
 
 /* ---------- las escenas ---------- */
 .lam .lluvia, .lam .mesas, .lam .gente, .lam .camion, .lam .carpa,
-.lam .anochecer, .lam .noche { display: none; }
+.lam .anochecer, .lam .noche, .lam .barra { display: none; }
 
 /* si llueve: llueve encima de todo, el césped se apaga y la cubierta se marca */
 .lam[data-modo="lluvia"] .lluvia,
@@ -1186,4 +1186,218 @@
 @media (prefers-reduced-motion: reduce) {
   .lam.cine, .cine-frase, .cine-tarjeta { animation: none; }
   .cine-segmento-relleno, .cine-frase > span { transition: none; }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SEGUNDA PASADA (6-sep-2026, tarde): fotos, cifras, barra, orden de la seccion
+
+   Daniel: «si puedes usar fotos tambien, haz el video mas dinamico y detallado»
+   y «la pagina web tiene desorden, no se entiende».
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── la foto real encima del dibujo ─────────────────────────────────────── */
+
+.lam-foto {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .9s ease;
+  background: var(--tinta);
+}
+.lam-foto.visible { opacity: 1; }
+.lam-foto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  /* Ken Burns: un acercamiento lento y continuo. Una foto quieta sobre un
+     dibujo que se mueve se lee como un error de carga. */
+  animation: lam-kenburns 9s linear both;
+  transform-origin: 50% 50%;
+}
+@keyframes lam-kenburns {
+  from { transform: scale(1.02); }
+  to   { transform: scale(1.16); }
+}
+/* Con la foto encima, la marca se esconde: señalaria un punto del dibujo que
+   no se ve. */
+.lam-foto.visible ~ * .lam-guia-punto { opacity: 0; }
+
+/* ── la cifra, bajo el nombre de la zona ─────────────────────────────────── */
+
+.lam-guia-rotulo { display: flex; flex-direction: column; gap: 3px; padding: 5px 9px 6px; }
+.lam-guia-nombre { display: block; }
+.lam-guia-cifra {
+  display: block;
+  font-family: var(--display);
+  font-size: 17px;
+  letter-spacing: -.01em;
+  text-transform: none;
+  line-height: 1.05;
+  animation: lam-rotulo-entra .45s ease both;
+}
+.lam.cine .lam-guia-cifra { font-size: 20px; }
+
+/* ── la barra, a trazos, donde suele ir ──────────────────────────────────── */
+
+.lam[data-modo="barra"] .barra { display: block; }
+.lam[data-modo="barra"] .barra path { stroke-dasharray: 3 2.2; }
+.lam[data-modo="barra"] .barra {
+  animation: lam-aparece .6s ease both;
+}
+
+/* ── los mandos, debajo del dibujo ───────────────────────────────────────── */
+
+.lam-barra-modos {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 10px 28px;
+  align-items: start;
+  padding: 14px 0 0;
+}
+.lam-barra-modos .lam-modos { padding: 0; }
+.lam-barra-modos .lam-explica { margin: 4px 0 0; min-height: 0; font-size: 14px; }
+@media (max-width: 860px) {
+  .lam-barra-modos { grid-template-columns: 1fr; gap: 8px; }
+}
+.lam.cine .lam-barra-modos { display: none; }
+
+/* ── las zonas: cinco pestañas, una lectura ──────────────────────────────── */
+
+.lam-zonas { margin-top: 28px; border-top: 1px solid var(--regla); }
+.lam-zonas-tabs {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  border-bottom: 1px solid var(--regla);
+}
+.lam-zona-tab {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+  padding: 16px 12px 16px 0;
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  min-width: 0;
+}
+.lam-zona-tab-txt { min-width: 0; }
+.lam-zona-tab .lam-item-nombre { font-size: 15px; }
+.lam-zona-tab .lam-item-dato { padding-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lam-zona-tab.activa { border-bottom-color: var(--tinta); }
+.lam-zona-tab.activa .lam-item-n, .lam-zona-tab.resaltada .lam-item-n { background: var(--lam-ocre); }
+.lam-lectura {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px 36px;
+  padding: 22px 0 6px;
+}
+.lam-lectura p { margin: 0; font-size: 14.5px; line-height: 1.6; }
+.lam-lectura-lee { color: var(--texto); }
+.lam-lectura-sirve { color: var(--tinta-2); }
+.lam-lectura-ojo { padding-left: 12px; border-left: 1px solid var(--ocre); color: var(--texto); font-size: 13.5px !important; }
+@media (max-width: 860px) {
+  .lam-zonas-tabs { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .lam-zona-tab { grid-template-columns: 1fr; gap: 6px; padding: 12px 6px 12px 0; }
+  .lam-zona-tab .lam-item-nombre { font-size: 13px; }
+  .lam-zona-tab .lam-item-dato { display: none; }
+}
+@media (max-width: 520px) {
+  .lam-zona-tab .lam-item-nombre { font-size: 12px; }
+}
+.lam.cine .lam-zonas { display: none; }
+
+/* ── el tablero: recorrido y aforo, lado a lado ──────────────────────────── */
+
+.rec-tablero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: 20px;
+  align-items: stretch;
+}
+.rec-tarjeta {
+  border: 1px solid var(--regla);
+  background: var(--papel);
+  padding: 24px 26px 22px;
+}
+.rec-tarjeta-recorrido { display: flex; flex-direction: column; }
+.rec-tarjeta-recorrido .rec-arranque { flex-direction: row; align-items: center; gap: 16px; margin: 18px 0 16px; }
+.rec-tarjeta-recorrido .rec-capitulos { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 20px; }
+.rec-tarjeta-recorrido .rec-cap { padding: 9px 8px 9px 0; font-size: 14px; }
+.rec-aforo { margin-top: 0; }
+@media (max-width: 900px) {
+  .rec-tablero { grid-template-columns: 1fr; }
+  .rec-tarjeta-recorrido .rec-capitulos { grid-template-columns: 1fr; }
+  .rec-tarjeta-recorrido .rec-arranque { flex-wrap: wrap; }
+}
+
+/* ── el boton de la portada que abre el recorrido ────────────────────────── */
+
+.boton-recorrido {
+  background: transparent;
+  color: var(--tinta);
+  border: 1px solid var(--tinta);
+}
+@media (hover: hover) and (pointer: fine) {
+  .boton-recorrido:hover { background: var(--tinta); color: var(--papel); }
+}
+
+/* ── la portada del video ────────────────────────────────────────────────── */
+
+.cine-portada {
+  position: fixed;
+  inset: 0;
+  z-index: 95;
+  background: var(--tinta);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.cine-portada img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: .34;
+  animation: lam-kenburns 6s linear both;
+}
+.cine-portada::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(33,28,21,.25), rgba(33,28,21,.75));
+}
+.cine-portada-texto {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  color: var(--papel);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 40px;
+  animation: cine-frase-entra 1s ease both;
+}
+.cine-portada-ojo {
+  margin-top: 18px;
+  font-family: var(--mono);
+  font-size: clamp(10px, 1vw, 12px);
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--ocre);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lam-foto, .lam-foto img, .cine-portada img, .lam-guia-cifra, .lam[data-modo="barra"] .barra { animation: none; transition: none; }
 }

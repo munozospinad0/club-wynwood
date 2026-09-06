@@ -26,7 +26,7 @@ import type { Idioma } from "@/lib/i18n";
  * de tema. Es el plano y el contraplano de un documental, hecho con CSS.
  */
 
-export type ModoRecorrido = "todo" | "lluvia" | "carpa" | "mesas" | "gente" | "camion" | "noche";
+export type ModoRecorrido = "todo" | "lluvia" | "carpa" | "mesas" | "gente" | "camion" | "noche" | "barra";
 export type ZonaRecorrido = "jardin" | "tiki" | "cabanas" | "acceso" | "edificio";
 export type Pt = [number, number];
 
@@ -37,7 +37,37 @@ export interface Hito {
   punto?: Pt | null;
   /** 1 = el recinto entero. 1,8 = la palapa llenando el encuadre. */
   zoom?: number;
+  /**
+   * UNA FOTO REAL, unos segundos, encima del dibujo. Daniel, 6-sep-2026:
+   * «si puedes usar fotos también, haz el video más dinámico». La foto entra
+   * cuando la voz llega a la frase y se retira sola a los `segundos`; el dibujo
+   * sigue debajo, así que al retirarse ya está en el encuadre que toca.
+   */
+  foto?: keyof typeof FOTOS;
+  segundos?: number;
+  /** La cifra que se está diciendo, junto a la marca: «240 ft · 73 m». `null` la quita. */
+  cifra?: string | null;
 }
+
+/**
+ * LAS FOTOS QUE PUEDE ENSEÑAR EL RECORRIDO. Solo las que no llevan la marca
+ * del operador en cuadro: las dos aéreas, el interior de la palapa (de día
+ * con luz verde y de noche con un montaje de sonido), el paseo entre palmeras
+ * recortado por debajo del mural, y la cenital de un evento al anochecer.
+ * `pos` es el `object-position`: dónde queda el encuadre al recortar.
+ */
+export const FOTOS = {
+  /* La aérea completa lleva el rótulo del operador en el edificio del fondo,
+     legible a 1080p. Se encuadra hacia la izquierda y abajo —la palapa y el
+     paseo— para que el edificio quede fuera del recorte en 16:9. */
+  aerea: { src: "/assets/aerea-predio.jpg", pos: "22% 78%", alt: { es: "El predio desde el aire: la palapa, el paseo y el jardín", en: "The site from the air: the structure, the walk and the garden" } },
+  palmeras: { src: "/assets/palmeras-aerea.jpg", pos: "45% 50%", alt: { es: "Las dos hileras de palmeras sobre el césped y la palapa", en: "The two rows of palms over the turf and the structure" } },
+  palapa: { src: "/assets/venue-palapa.webp", pos: "50% 45%", alt: { es: "Bajo la palapa: paja sobre madera, abierta por los costados", en: "Under the structure: thatch on timber, open on the sides" } },
+  montaje: { src: "/assets/palapa-montaje.jpg", pos: "50% 50%", alt: { es: "Un montaje de sonido e iluminación bajo la palapa", en: "A sound and lighting setup under the structure" } },
+  paseo: { src: "/assets/paseo-palmeras.jpg", pos: "50% 50%", alt: { es: "El paseo pavimentado entre las dos hileras de palmeras", en: "The paved walk between the two rows of palms" } },
+  noche: { src: "/assets/recinto-noche.jpg", pos: "50% 50%", alt: { es: "El recinto al anochecer durante un evento, visto desde arriba", en: "The site at dusk during an event, seen from above" } },
+} as const;
+export type FotoRecorrido = keyof typeof FOTOS;
 
 export interface Capitulo {
   id: string;

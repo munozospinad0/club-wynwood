@@ -467,7 +467,9 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
                   <div className="ojo">{t.ojoCierre}</div>
                   <h3 className="rec-titulo">{t.tituloCierre}</h3>
                   <p className="rec-intro">{t.introCierre}</p>
-                  <Formulario lang={lang} />
+                  {/* Con prefijo: la home monta este y el del cierre, y sin
+                      distinguirlos los trece identificadores se repiten. */}
+                  <Formulario lang={lang} idPrefijo="rec" />
                 </div>
               )}
             </>

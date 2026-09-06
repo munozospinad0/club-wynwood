@@ -16,9 +16,17 @@
   --regla-osc: #423c30;
   --ocre: #c4772b;
 
-  --display: "Fraunces", Georgia, "Times New Roman", serif;
-  --cuerpo: "Geist", "Helvetica Neue", Helvetica, system-ui, sans-serif;
-  --mono: "Geist Mono", ui-monospace, SFMono-Regular, monospace;
+  /* Las familias las carga next/font desde app/[lang]/layout.tsx y las expone
+     como --f-*. Los respaldos se mantienen: si la fuente no llega, el sitio se
+     ve peor pero se lee igual. Antes NO se cargaba ninguna y todo salía en
+     Georgia y en la sans del sistema, sin que nada avisara. */
+  --display: var(--f-display), Georgia, "Times New Roman", serif;
+  --cuerpo: var(--f-cuerpo), "Helvetica Neue", Helvetica, system-ui, sans-serif;
+  --mono: var(--f-mono), ui-monospace, SFMono-Regular, monospace;
+
+  /* Fraunces es variable: sin fijar los ejes, cae en los valores por defecto y
+     deja de parecerse a la letra del kit de marca. */
+  font-variation-settings: "SOFT" 0, "WONK" 1;
 
   --reja: 1280px;
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
@@ -143,3 +151,61 @@ p { line-height: 1.66; text-wrap: pretty; }
   .rv { transform: none; }
   .rv.dentro { transition: opacity 0.3s ease; }
 }
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ARREGLOS DE ACCESIBILIDAD (5-sep-2026, tras una auditoria por lentes)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Saltar al contenido. Estaba escondido con left:-9999px EN LINEA y sin clase
+   en ningun CSS: un estilo en linea gana a cualquier regla, asi que no habia
+   forma de que apareciera al enfocarlo. Quien navega con teclado pasaba por los
+   nueve enlaces de la barra en cada pagina, siempre. */
+.saltar {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  background: var(--tinta);
+  color: var(--papel);
+  padding: 12px 18px;
+  text-decoration: none;
+}
+.saltar:focus {
+  left: 0;
+  outline: 2px solid var(--papel);
+  outline-offset: -4px;
+}
+
+/* CONTRASTE. --texto (#7D725F) daba 4.28:1 sobre papel y 3.95:1 sobre papel-2,
+   por debajo del 4.5:1 que pide AA para texto normal. Se oscurece lo justo para
+   pasar sin cambiar el caracter del color: sigue siendo el mismo pardo, un paso
+   mas cerrado. Lo mismo con --texto-3, que llegaba a 2.28:1 en las pestanas
+   inactivas y ahi el texto era practicamente invisible. */
+:root {
+  --texto: #6b6151;
+  --texto-3: #8a7f6c;
+}
+
+/* El anillo de foco en ocre daba 2.92:1 sobre papel-2, por debajo del 3:1 que
+   pide AA para componentes. Se le anade un segundo anillo en tinta: el ocre
+   sigue marcando la marca y la tinta garantiza que se vea sobre cualquier
+   fondo del sitio. */
+:focus-visible {
+  outline: 2px solid var(--ocre);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px var(--tinta);
+}
+
+/* Los campos del formulario no tenian limite perceptible: el borde daba 1.35:1
+   contra su propio fondo. Un campo que no se distingue del fondo es un campo
+   que la gente no ve que puede rellenar. */
+.rec input, .rec select, .rec textarea,
+#disponibilidad input, #disponibilidad select, #disponibilidad textarea {
+  border-color: var(--texto) !important;
+}
+
+/* El capitulo activo del recorrido se marcaba SOLO con color, y en ocre a
+   2.92:1. Se le anade peso y el filete de progreso, que no dependen del color:
+   quien no distingue el ocre sigue viendo cual esta sonando. */
+.rec-cap.activo { text-decoration: underline; text-underline-offset: 5px; }

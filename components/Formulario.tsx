@@ -141,8 +141,22 @@ async function entregar(cuerpo: Record<string, unknown>): Promise<Respuesta | nu
   return null;
 }
 
-export default function Formulario({ lang }: { lang: Idioma }) {
+/**
+ * IDENTIFICADORES CON PREFIJO, porque la home monta DOS formularios.
+ *
+ * Uno vive al final del recorrido guiado y otro en el cierre de la página. Con
+ * identificadores literales los trece campos se repetían, y un identificador
+ * duplicado no da error: el navegador se queda con el primero. Consecuencia
+ * concreta: pulsar «Nombre» en el formulario de abajo enfocaba el campo del
+ * formulario de arriba, que además está fuera de la vista. La persona ve que su
+ * clic no hace nada.
+ *
+ * También rompe el lector de pantalla, que anuncia la etiqueta de un campo que
+ * no es el que va a rellenar.
+ */
+export default function Formulario({ lang, idPrefijo }: { lang: Idioma; idPrefijo?: string }) {
   const es = lang === "es";
+  const ide = (n: string) => (idPrefijo ? `${idPrefijo}-${n}` : n);
   const [estado, setEstado] = useState<Estado>("idle");
   const empezado = useRef(false);
   const pintado = useRef(Date.now());
@@ -274,48 +288,48 @@ export default function Formulario({ lang }: { lang: Idioma }) {
           ya lo detectan— sino posición fuera de pantalla, y queda excluida de
           la navegación por teclado y de los lectores de pantalla. */}
       <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", top: 0, width: 1, height: 1, overflow: "hidden" }}>
-        <label htmlFor="cw-web">No rellenar</label>
-        <input id="cw-web" name="trampa" type="text" tabIndex={-1} autoComplete="off" />
+        <label htmlFor={ide("cw-web")}>No rellenar</label>
+        <input id={ide("cw-web")} name="trampa" type="text" tabIndex={-1} autoComplete="off" />
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))", gap: 18 }}>
         <div>
-          <label style={etiqueta} htmlFor="nombre">{es ? "Nombre" : "Name"}</label>
-          <input style={campo} id="nombre" name="nombre" required autoComplete="name" />
+          <label style={etiqueta} htmlFor={ide("nombre")}>{es ? "Nombre" : "Name"}</label>
+          <input style={campo} id={ide("nombre")} name="nombre" required autoComplete="name" />
         </div>
         <div>
-          <label style={etiqueta} htmlFor="empresa">{es ? "Empresa / productora" : "Company"}</label>
-          <input style={campo} id="empresa" name="empresa" autoComplete="organization" />
+          <label style={etiqueta} htmlFor={ide("empresa")}>{es ? "Empresa / productora" : "Company"}</label>
+          <input style={campo} id={ide("empresa")} name="empresa" autoComplete="organization" />
         </div>
         <div>
-          <label style={etiqueta} htmlFor="email">Email</label>
-          <input style={campo} id="email" name="email" type="email" required autoComplete="email" />
+          <label style={etiqueta} htmlFor={ide("email")}>Email</label>
+          <input style={campo} id={ide("email")} name="email" type="email" required autoComplete="email" />
         </div>
 
         <div>
-          <label style={etiqueta} htmlFor="telefono">{es ? "Teléfono" : "Phone"}</label>
+          <label style={etiqueta} htmlFor={ide("telefono")}>{es ? "Teléfono" : "Phone"}</label>
           <div style={{ display: "flex", gap: 8 }}>
             <select
               style={{ ...campo, width: "auto", flex: "0 0 auto" }}
-              id="prefijo" name="prefijo" defaultValue="1"
+              id={ide("prefijo")} name="prefijo" defaultValue="1"
               aria-label={es ? "Prefijo de país" : "Country code"}
             >
               {PREFIJOS.map((p) => (
                 <option key={p.cc + p.iso} value={p.cc}>{p.etiqueta}</option>
               ))}
             </select>
-            <input style={campo} id="telefono" name="telefono" type="tel" inputMode="tel" autoComplete="tel-national" />
+            <input style={campo} id={ide("telefono")} name="telefono" type="tel" inputMode="tel" autoComplete="tel-national" />
           </div>
         </div>
 
         <div>
-          <label style={etiqueta} htmlFor="ciudad">{es ? "Ciudad" : "City"}</label>
-          <input style={campo} id="ciudad" name="ciudad" autoComplete="address-level2" />
+          <label style={etiqueta} htmlFor={ide("ciudad")}>{es ? "Ciudad" : "City"}</label>
+          <input style={campo} id={ide("ciudad")} name="ciudad" autoComplete="address-level2" />
         </div>
 
         <div>
-          <label style={etiqueta} htmlFor="tipo">{es ? "Tipo de evento" : "Event type"}</label>
-          <select style={campo} id="tipo" name="tipo" defaultValue="">
+          <label style={etiqueta} htmlFor={ide("tipo")}>{es ? "Tipo de evento" : "Event type"}</label>
+          <select style={campo} id={ide("tipo")} name="tipo" defaultValue="">
             <option value="">—</option>
             {TIPOS.map((t) => (
               <option key={t.valor} value={t.valor}>{es ? t.es : t.en}</option>
@@ -324,16 +338,16 @@ export default function Formulario({ lang }: { lang: Idioma }) {
         </div>
 
         <div>
-          <label style={etiqueta} htmlFor="fecha">{es ? "Fecha estimada" : "Estimated date"}</label>
-          <input style={campo} id="fecha" name="fecha" type="date" />
+          <label style={etiqueta} htmlFor={ide("fecha")}>{es ? "Fecha estimada" : "Estimated date"}</label>
+          <input style={campo} id={ide("fecha")} name="fecha" type="date" />
         </div>
         <div>
-          <label style={etiqueta} htmlFor="invitados">{es ? "Invitados estimados" : "Estimated guests"}</label>
-          <input style={campo} id="invitados" name="invitados" inputMode="numeric" />
+          <label style={etiqueta} htmlFor={ide("invitados")}>{es ? "Invitados estimados" : "Estimated guests"}</label>
+          <input style={campo} id={ide("invitados")} name="invitados" inputMode="numeric" />
         </div>
         <div>
-          <label style={etiqueta} htmlFor="produccion">{es ? "Quién produce" : "Who produces it"}</label>
-          <select style={campo} id="produccion" name="produccion" defaultValue="">
+          <label style={etiqueta} htmlFor={ide("produccion")}>{es ? "Quién produce" : "Who produces it"}</label>
+          <select style={campo} id={ide("produccion")} name="produccion" defaultValue="">
             <option value="">—</option>
             <option value="productora">{es ? "Trabajo con una productora" : "I work with a production company"}</option>
             <option value="equipo">{es ? "Lo produce mi equipo" : "My team produces it"}</option>
@@ -341,8 +355,8 @@ export default function Formulario({ lang }: { lang: Idioma }) {
           </select>
         </div>
         <div>
-          <label style={etiqueta} htmlFor="presupuesto">{es ? "Presupuesto (USD)" : "Budget (USD)"}</label>
-          <select style={campo} id="presupuesto" name="presupuesto" defaultValue="">
+          <label style={etiqueta} htmlFor={ide("presupuesto")}>{es ? "Presupuesto (USD)" : "Budget (USD)"}</label>
+          <select style={campo} id={ide("presupuesto")} name="presupuesto" defaultValue="">
             <option value="">—</option>
             <option value="alto">{es ? "Más de 15 000" : "Over 15,000"}</option>
             <option value="medio">6 000 – 15 000</option>
@@ -353,8 +367,8 @@ export default function Formulario({ lang }: { lang: Idioma }) {
       </div>
 
       <div>
-        <label style={etiqueta} htmlFor="mensaje">{es ? "Qué necesitas del espacio" : "What you need from the space"}</label>
-        <textarea style={{ ...campo, minHeight: 110, resize: "vertical" }} id="mensaje" name="mensaje" />
+        <label style={etiqueta} htmlFor={ide("mensaje")}>{es ? "Qué necesitas del espacio" : "What you need from the space"}</label>
+        <textarea style={{ ...campo, minHeight: 110, resize: "vertical" }} id={ide("mensaje")} name="mensaje" />
       </div>
 
       <button className="boton" type="submit" disabled={estado === "enviando"}>

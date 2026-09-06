@@ -53,7 +53,6 @@ export function localBusiness(lang: Idioma) {
       { "@type": "City", name: "Miami" },
       { "@type": "AdministrativeArea", name: "Miami-Dade County" },
     ],
-    priceRange: "$$$",
     currenciesAccepted: "USD",
     knowsLanguage: ["es", "en"],
     // Con cita previa: el horario público del predio es el del OPERADOR, no el

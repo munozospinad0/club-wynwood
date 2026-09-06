@@ -51,7 +51,7 @@ export async function generateMetadata(
       description: lang === "es"
         ? "Qué incluye el alquiler, cuánta gente cabe, qué pasa si llueve, dónde queda y cómo se cotiza Club Wynwood."
         : "What renting includes, how many people fit, what happens if it rains, where it is and how Club Wynwood is quoted.",
-      alternates: alternativas("faq"),
+      alternates: alternativas("faq", lang),
     };
   }
 
@@ -63,7 +63,7 @@ export async function generateMetadata(
       description: lang === "es"
         ? "Servicio de Law Offices of Sandra Clavijo, firma de abogados de inmigración en Miami: asesoría en residencia por inversión EB-5 Direct. Servicio independiente del alquiler del venue."
         : "A service of Law Offices of Sandra Clavijo, a Miami immigration law firm: EB-5 Direct residency-by-investment counsel. Independent from the venue rental.",
-      alternates: alternativas("residencia"),
+      alternates: alternativas("residencia", lang),
     };
   }
 
@@ -72,7 +72,7 @@ export async function generateMetadata(
   return {
     title: p.title[lang].split(" | ")[0],
     description: p.description[lang],
-    alternates: alternativas(clave),
+    alternates: alternativas(clave, lang),
     openGraph: { images: [{ url: p.foto.src }] },
   };
 }

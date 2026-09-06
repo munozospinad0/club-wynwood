@@ -114,11 +114,27 @@ export function href(clave: ClaveRuta, lang: Idioma): string {
  * /en/ tiene que apuntar de vuelta. Generarlo desde una función lo garantiza;
  * escribirlo a mano es donde se rompe siempre.
  */
-export function alternativas(clave: ClaveRuta) {
+export function alternativas(clave: ClaveRuta, lang: Idioma = IDIOMA_POR_DEFECTO) {
   const languages: Record<string, string> = {};
   for (const l of IDIOMAS) languages[BCP47[l]] = url(clave, l);
   languages["x-default"] = url(clave, IDIOMA_POR_DEFECTO);
-  return { canonical: url(clave, IDIOMA_POR_DEFECTO), languages };
+
+  /**
+   * LA CANÓNICA ES LA DE ESTA PÁGINA, NO LA DEL IDIOMA POR DEFECTO.
+   *
+   * Antes esta función no recibía el idioma y devolvía siempre la URL en
+   * español. O sea que **las diecisiete páginas en inglés se declaraban a sí
+   * mismas copia de su gemela española**: le estaban pidiendo a Google que no
+   * las indexara.
+   *
+   * Y de paso anulaba el hreflang entero, porque Google exige que cada versión
+   * se autorreferencie antes de aceptar el grupo de alternativas. Es decir: el
+   * trabajo de traducir el sitio no habría servido de nada.
+   *
+   * Está dormido mientras el sitio siga en `noindex`. Se despierta entero el día
+   * que se mueva el dominio, que es justo cuando nadie lo estaría mirando.
+   */
+  return { canonical: url(clave, lang), languages };
 }
 
 /** Todas las páginas de todos los idiomas. Lo usan sitemap y llms.txt. */

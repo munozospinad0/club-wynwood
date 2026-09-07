@@ -168,19 +168,23 @@ export default function LaminaPlanta({ lang }: { lang: Idioma }) {
                 <line key={`ps${i}`} x1={fx(x)} y1={fy(PARKING_S.y + 4)} x2={fx(x)} y2={fy(PARKING_S.y + PARKING_S.dy)} stroke="#c4bcae" strokeWidth="0.6" />
               ))}
               {/* coches en las mismas plazas que el dibujo en perspectiva */}
-              {plazasE.slice(0, -1).map((y, i) => (i % 3 !== 1 ? (
-                <g key={`ce${i}`}>
-                  <rect x={fx(PARKING_E.x + 6)} y={fy(y + 1.5)} width={16 * U} height={((PARKING_E.dy - 12) / PARKING_E.plazas - 3) * U} rx="2" fill="#d9d3c6" stroke={TINTA} strokeWidth="0.45" />
-                  <rect x={fx(PARKING_E.x + 10)} y={fy(y + 3)} width={7.5 * U} height={((PARKING_E.dy - 12) / PARKING_E.plazas - 6) * U} rx="1" fill="#b9b3a7" opacity="0.6" />
-                </g>
-              ) : null))}
+              {plazasE.slice(0, -1).map((y, i) => {
+                if (i % 3 === 1) return null;
+                const alto = (PARKING_E.dy - 12) / PARKING_E.plazas, y0 = y + (alto - 6.5) / 2;
+                return (
+                  <g key={`ce${i}`}>
+                    <rect x={fx(PARKING_E.x + 7)} y={fy(y0)} width={16 * U} height={6.5 * U} rx="2" fill="#d9d3c6" stroke={TINTA} strokeWidth="0.45" />
+                    <rect x={fx(PARKING_E.x + 7 + 4.8)} y={fy(y0 + 0.55)} width={8.8 * U} height={5.4 * U} rx="1.2" fill="#b9b3a7" opacity="0.6" />
+                  </g>
+                );
+              })}
               {plazasS.slice(0, -1).map((x, i) => {
                 const ancho = (PARKING_S.dx - 8) / PARKING_S.plazas;
                 if ((i * 5) % 4 === 2 || (x + ancho > PASEO.x - 12 && x < PASEO.x + PASEO.dx + 6)) return null;
                 return (
                   <g key={`cs${i}`}>
-                    <rect x={fx(x + 1.2)} y={fy(PARKING_S.y + 3)} width={(ancho - 2.4) * U} height={16 * U} rx="2" fill="#d9d3c6" stroke={TINTA} strokeWidth="0.45" />
-                    <rect x={fx(x + 2.6)} y={fy(PARKING_S.y + 6)} width={(ancho - 5.2) * U} height={7.5 * U} rx="1" fill="#b9b3a7" opacity="0.6" />
+                    <rect x={fx(x + (ancho - 6.5) / 2)} y={fy(PARKING_S.y + 3)} width={6.5 * U} height={16 * U} rx="2" fill="#d9d3c6" stroke={TINTA} strokeWidth="0.45" />
+                    <rect x={fx(x + (ancho - 6.5) / 2 + 0.55)} y={fy(PARKING_S.y + 3 + 4.8)} width={5.4 * U} height={8.8 * U} rx="1.2" fill="#b9b3a7" opacity="0.6" />
                   </g>
                 );
               })}

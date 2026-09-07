@@ -1,5 +1,5 @@
 {
-  "version": "5.1.0",
+  "version": "5.2.0",
   "capitulos": [
     {
       "id": "recinto",
@@ -39,7 +39,20 @@
             "frase": "dos hileras de palmeras",
             "foto": "paseo",
             "segundos": 3.6,
-            "cifra": null
+            "cifra": null,
+            "agregar": [
+              "palmeras"
+            ]
+          },
+          {
+            "frase": "y setos alrededor",
+            "agregar": [
+              "setos"
+            ],
+            "quitar": [
+              "palmeras"
+            ],
+            "cifra": "setos perimetrales"
           },
           {
             "frase": "Junto al paseo, la palapa",
@@ -49,7 +62,10 @@
               139
             ],
             "zoom": 2.1,
-            "cifra": "~4 000 ft²"
+            "cifra": "~4 000 ft²",
+            "quitar": [
+              "setos"
+            ]
           },
           {
             "frase": "un paseo pavimentado",
@@ -74,7 +90,11 @@
             "zoom": 1,
             "quitar": [
               "paseo"
-            ]
+            ],
+            "agregar": [
+              "exterior"
+            ],
+            "cifra": "solo el exterior"
           }
         ],
         "en": [
@@ -97,7 +117,20 @@
             "frase": "two rows of real palms",
             "foto": "paseo",
             "segundos": 3.6,
-            "cifra": null
+            "cifra": null,
+            "agregar": [
+              "palmeras"
+            ]
+          },
+          {
+            "frase": "and hedges all around",
+            "agregar": [
+              "setos"
+            ],
+            "quitar": [
+              "palmeras"
+            ],
+            "cifra": "perimeter hedges"
           },
           {
             "frase": "Along the walk, the thatched",
@@ -107,7 +140,10 @@
               139
             ],
             "zoom": 2.1,
-            "cifra": "~4,000 sq ft"
+            "cifra": "~4,000 sq ft",
+            "quitar": [
+              "setos"
+            ]
           },
           {
             "frase": "a paved walk",
@@ -132,7 +168,11 @@
             "zoom": 1,
             "quitar": [
               "paseo"
-            ]
+            ],
+            "agregar": [
+              "exterior"
+            ],
+            "cifra": "outdoors only"
           }
         ]
       }
@@ -385,7 +425,10 @@
         "es": [
           {
             "frase": "por el estacionamiento",
-            "cifra": "estacionamiento propio · este y sur"
+            "cifra": "estacionamiento propio · este y sur",
+            "agregar": [
+              "parking"
+            ]
           },
           {
             "frase": "directo al paseo pavimentado",
@@ -393,7 +436,10 @@
               "paseo"
             ],
             "foto": "puerta",
-            "segundos": 4.2
+            "segundos": 4.2,
+            "quitar": [
+              "parking"
+            ]
           },
           {
             "frase": "hasta la puerta del edificio",
@@ -403,7 +449,10 @@
               122
             ],
             "zoom": 1.4,
-            "cifra": "paseo · continuo y a nivel"
+            "cifra": "paseo · continuo y a nivel",
+            "agregar": [
+              "puerta"
+            ]
           },
           {
             "frase": "Un camión de cuarenta",
@@ -416,7 +465,8 @@
             "zoom": 1.4,
             "cifra": "camión de 40 ft",
             "quitar": [
-              "porton"
+              "porton",
+              "puerta"
             ]
           },
           {
@@ -438,13 +488,19 @@
             "cifra": "portón · potencia: en visita",
             "quitar": [
               "paseo"
+            ],
+            "agregar": [
+              "porton"
             ]
           }
         ],
         "en": [
           {
             "frase": "through the parking lot",
-            "cifra": "on-site parking · east and south"
+            "cifra": "on-site parking · east and south",
+            "agregar": [
+              "parking"
+            ]
           },
           {
             "frase": "straight onto the paved walk",
@@ -452,7 +508,10 @@
               "paseo"
             ],
             "foto": "puerta",
-            "segundos": 4.2
+            "segundos": 4.2,
+            "quitar": [
+              "parking"
+            ]
           },
           {
             "frase": "to the building door",
@@ -462,7 +521,10 @@
               122
             ],
             "zoom": 1.4,
-            "cifra": "walk · continuous and level"
+            "cifra": "walk · continuous and level",
+            "agregar": [
+              "puerta"
+            ]
           },
           {
             "frase": "A forty-foot truck",
@@ -475,7 +537,8 @@
             "zoom": 1.4,
             "cifra": "40-foot truck",
             "quitar": [
-              "porton"
+              "porton",
+              "puerta"
             ]
           },
           {
@@ -497,6 +560,9 @@
             "cifra": "gate · power: at the visit",
             "quitar": [
               "paseo"
+            ],
+            "agregar": [
+              "porton"
             ]
           }
         ]
@@ -963,7 +1029,8 @@
               139
             ],
             "zoom": 1.4,
-            "cifra": "3 · el montaje"
+            "cifra": "3 · el montaje",
+            "modo": "noche"
           },
           {
             "frase": "Cuéntanos qué tienes",
@@ -973,7 +1040,8 @@
               170
             ],
             "zoom": 1,
-            "cifra": null
+            "cifra": null,
+            "modo": "todo"
           }
         ],
         "en": [
@@ -1005,7 +1073,8 @@
               139
             ],
             "zoom": 1.4,
-            "cifra": "3 · the setup"
+            "cifra": "3 · the setup",
+            "modo": "noche"
           },
           {
             "frase": "Tell us what you have",
@@ -1015,7 +1084,8 @@
               170
             ],
             "zoom": 1,
-            "cifra": null
+            "cifra": null,
+            "modo": "todo"
           }
         ]
       }
@@ -1037,6 +1107,13 @@
       "hitos": {
         "es": [
           {
+            "frase": "pide disponibilidad con tu fecha",
+            "agregar": [
+              "cta"
+            ],
+            "cifra": "solicitar disponibilidad"
+          },
+          {
             "frase": "coordinamos la visita",
             "foto": "aereaPalapa",
             "segundos": 4
@@ -1044,10 +1121,20 @@
           {
             "frase": "Gracias por el recorrido",
             "foto": "noche",
-            "segundos": 6
+            "segundos": 6,
+            "quitar": [
+              "cta"
+            ]
           }
         ],
         "en": [
+          {
+            "frase": "request availability with your date",
+            "agregar": [
+              "cta"
+            ],
+            "cifra": "request availability"
+          },
           {
             "frase": "we schedule the visit",
             "foto": "aereaPalapa",
@@ -1056,7 +1143,10 @@
           {
             "frase": "Thanks for taking",
             "foto": "noche",
-            "segundos": 6
+            "segundos": 6,
+            "quitar": [
+              "cta"
+            ]
           }
         ]
       }

@@ -73,9 +73,15 @@ export const CABANAS = { x: 88, y0: 132, dx: 11, dy: 11, n: 8, paso: 13, h: 9 };
 export const CESPED_O = { x: 4, y: 108, dx: PASEO.x - 4, dy: 130 };
 export const CESPED_E = { x: PASEO.x + PASEO.dx, y: ARENA.y + ARENA.dy, dx: 106 - PASEO.x - PASEO.dx + 3, dy: 238 - ARENA.y - ARENA.dy };
 
-/** Palmeras reales: dos hileras junto al paseo y las de la palapa. */
-export const PALMERAS_O: Pt[] = Array.from({ length: 7 }, (_, i) => [PASEO.x - 3, 118 + i * 17]);
-export const PALMERAS_E: Pt[] = Array.from({ length: 7 }, (_, i) => [PASEO.x + PASEO.dx + 3, 126 + i * 17]);
+/**
+ * Palmeras reales: dos hileras junto al paseo y las de la palapa. Son palmas
+ * reales de ~30 ft, más altas que la cumbrera de la palapa (26): por eso sus
+ * copas pasan POR ENCIMA del techo y no se montan con él (Daniel, 7-sep: «veo
+ * superposición»). La hilera oeste va a 1,5 ft del borde del paseo.
+ */
+export const PALMERA_ALTO = 30;
+export const PALMERAS_O: Pt[] = Array.from({ length: 7 }, (_, i) => [PASEO.x - 1.5, 118 + i * 17]);
+export const PALMERAS_E: Pt[] = Array.from({ length: 7 }, (_, i) => [PASEO.x + PASEO.dx + 1.5, 126 + i * 17]);
 export const PALMERAS_PALAPA: Pt[] = [[PALAPA.x - 2, PALAPA.y + 6], [PALAPA.x - 2, PALAPA.y + 30], [PALAPA.x + 20, PALAPA.y + PALAPA.dy + 4], [PALAPA.x + 44, PALAPA.y + PALAPA.dy + 4], [PALAPA.x + 28, PALAPA.y - 4]];
 
 /** Setos: a lo largo de NW 1st Ct (oeste) y cerrando el sur del césped. */

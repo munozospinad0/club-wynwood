@@ -238,6 +238,44 @@ móvil; `contain: layout paint` en la figura; la cámara respira en el cine (`la
 Notas largas acortadas (lámina, planta), FAQ recortada, la planta con los mismos objetos que
 el dibujo (palmeras, mesas con sillas, pérgolas con sofá, coches).
 
+### Segunda tanda del 7-sep: galería, coches, superposiciones y más voz→animación
+
+Daniel: «una zona con las fotos para poder ver», «no sé qué es esto» (los coches: dos
+cajas de 15 ft de ancho), «veo superposición» (palmeras sobre el techo de la palapa, gente
+sobre palmeras), «súper animado, lo más animado que puedas, y ve analizando frame por frame
+cómo animarlo y unirlo con la voz».
+
+- **Galería** (`components/Galeria.tsx` + `lib/galeria.ts`): trece fotos en columnas con su
+  proporción real, pie numerado con fuente, visor `<dialog>` a tamaño natural (nunca
+  amplía), flechas y Esc. Va justo debajo del recorrido. Mide `view_plate` con
+  `plate_name: "galeria"` y el id de la foto.
+- **Coches** modelados: 16 × 6,5 ft, carrocería, cabina en trapecio con vidrios, cuatro
+  ruedas con llanta, pilotos o faros según el extremo que mira a la cámara, parachoques,
+  línea de puerta; sedán y SUV alternados; caras pintadas por profundidad.
+- **Superposiciones**: `PALMERA_ALTO = 30` (las palmas reales son más altas que la
+  cumbrera de 26 ft, así que las copas pasan por encima del techo); la hilera oeste a 1,5 ft
+  del paseo; los peatones se pintan ANTES de los objetos, así las copas les pasan por
+  encima y no al revés.
+- **Reposo con vida, segunda tanda**: cortinas de las pérgolas que se mecen (`skewX`),
+  goteras que escurren del alero con lluvia, uno de cada cinco del público se mueve.
+- **Capas ligadas a la voz** (guion 5.2.0, `.qa/guion-capas.mjs`): `palmeras` (se mecen
+  fuerte y se marcan en ocre) → `setos` (perímetro en ocre) → `exterior` (el edificio se
+  apaga y el lote late) en el capítulo 1; `parking`, `puerta` y `porton` en el 4; el
+  montaje nocturno se enciende cuando la voz dice «y el montaje» en el 7 y vuelve al día en
+  «Cuéntanos»; el botón de disponibilidad late (`cta`) cuando la voz lo pide en el 8.
+- **Tercera tanda de detalle** (Daniel: «si necesitas modelos hazlos súper detallados,
+  dedícate de lleno a pulir esto»): el paseo losa a losa en dos tonos con su junta; acera
+  con juntas entre la calle y el lote; el mural en bandas onduladas (sin rótulo); ventanas
+  con carpintería y apliques de luz junto a la puerta; textura de paja (patrón de trazos
+  inclinados) sobre las cuatro aguas de la palapa, que se atenúa cuando el techo es
+  transparente; zapatas en los postes; racimo de cocos bajo cada copa; sombrillas con
+  remate que se mecen; jardineras con planta junto a cada pérgola; rampa trasera del camión
+  que baja al paseo cuando llega; el público de noche respira.
+- **Revisión fotograma a fotograma**: `.qa/hojas-contacto.mjs <log> es|en` saca un
+  fotograma 1,3 s después de cada hito (con los arranques de capítulo del log del grabador
+  y el alineamiento de palabras) y arma una hoja de contacto por capítulo en `.qa/hojas/`.
+  Es la manera de comprobar que lo que se ve es lo que la voz dice.
+
 ### Medir hasta dónde se ve el recorrido
 
 Daniel: «que podamos ver y medir cuánta gente ve el video hasta dónde, así podemos

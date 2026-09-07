@@ -1727,3 +1727,133 @@
   .lam .peaton, .lam .figura .pierna, .lam .figura .brazo, .lam .rueda ellipse, .lam .noche-haz, .lam .noche-pantalla,
   .lam .noche-figura, .lam .int-pieza, .lam .cuadrilla > *, .lam.cine .lam-fig { animation: none !important; }
 }
+
+/* ── reposo con vida, segunda tanda: cortinas, sombrillas, público ─────────── */
+
+.lam .cortina { transform-box: fill-box; transform-origin: 50% 0; animation: lam-cortina 5.2s ease-in-out infinite alternate; animation-delay: calc(var(--i, 0) * -.7s); }
+@keyframes lam-cortina { from { transform: skewX(-1.2deg); } to { transform: skewX(1.2deg); } }
+.lam[data-modo="gente"] .persona:nth-child(5n) { animation: lam-peso .4s ease-out both, lam-bailar .9s ease-in-out infinite alternate; animation-delay: calc(var(--i, 0) * 3.5ms), calc(var(--i, 0) * -37ms); }
+/* Con lluvia, el agua escurre del alero. */
+.lam .gotera { opacity: 0; }
+.lam[data-modo="lluvia"] .gotera, .lam[data-modo="carpa"] .gotera { animation: lam-gotera .9s linear infinite; animation-delay: var(--t, 0s); }
+@keyframes lam-gotera {
+  from { transform: translateY(0); opacity: 0; }
+  20%  { opacity: .55; }
+  to   { transform: translateY(14px); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lam .cortina, .lam .gotera, .lam[data-modo="gente"] .persona:nth-child(5n) { animation: none !important; }
+}
+
+/* ── tercera tanda de detalle: textura de paja, sombrillas, rampa, público que respira ── */
+.lam[data-modo="mesas"] .palapa-textura, .lam[data-modo="gente"] .palapa-textura,
+.lam[data-modo="barra"] .palapa-textura, .lam[data-modo="noche"] .palapa-textura { fill-opacity: .12 !important; transition: fill-opacity .6s ease; }
+.lam .palapa-textura { transition: fill-opacity .6s ease; }
+.lam .sombrilla { transform-box: fill-box; transform-origin: 50% 100%; animation: lam-sombrilla 7s ease-in-out infinite alternate; }
+@keyframes lam-sombrilla { from { transform: rotate(-.9deg); } to { transform: rotate(.9deg); } }
+.lam .rampa { opacity: 0; }
+.lam[data-modo="camion"] .rampa { animation: lam-aparece .4s ease both; animation-delay: 2.6s; }
+.lam[data-modo="noche"] .noche-persona { transform-box: fill-box; transform-origin: 50% 100%; }
+.lam[data-modo="noche"][data-capas~="publico"] .noche-persona,
+.lam[data-modo="noche"]:not([data-capas]) .noche-persona,
+.lam[data-modo="noche"][data-capas=""] .noche-persona {
+  animation: lam-aparece-persona .5s ease forwards, lam-respira 2.4s ease-in-out infinite alternate;
+  animation-delay: calc(1.8s + var(--i, 0) * 6ms), calc(var(--i, 0) * -71ms);
+}
+@keyframes lam-respira { from { transform: translateY(0); } to { transform: translateY(-.55px); } }
+@media (prefers-reduced-motion: reduce) { .lam .sombrilla, .lam .rampa, .lam .noche-persona { animation: none !important; } }
+
+/* ── capas nuevas del guion: lo que la voz nombra se enciende ──────────────── */
+
+.lam[data-capas~="setos"] .seto path, .lam[data-capas~="setos"] .seto ellipse { stroke: var(--lam-ocre) !important; stroke-width: .9 !important; transition: stroke .3s ease; }
+.lam[data-capas~="palmeras"] .palma { animation: lam-vaiven-fuerte 1.5s ease-in-out infinite; animation-delay: calc(var(--vd, 0s) * .25); }
+@keyframes lam-vaiven-fuerte { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
+.lam[data-capas~="palmeras"] .palma > path:not(:first-child) { stroke: var(--lam-ocre) !important; stroke-width: .5 !important; }
+.lam[data-capas~="exterior"] .z-edificio { opacity: .28; transition: opacity .7s ease; }
+.lam[data-capas~="exterior"] .lote { stroke: var(--lam-ocre) !important; stroke-width: 2.2 !important; animation: lam-parpadeo 1.4s ease-in-out infinite; }
+.lam[data-capas~="parking"] .parking { fill: var(--lam-ocre) !important; fill-opacity: .2 !important; animation: lam-parpadeo 1.4s ease-in-out infinite; }
+.lam[data-capas~="puerta"] .puerta { fill: var(--lam-ocre) !important; animation: lam-parpadeo 1s ease-in-out infinite; }
+.lam[data-capas~="cta"] .cine-cta { animation: lam-cta 1s ease-in-out infinite alternate; }
+@keyframes lam-cta { from { transform: scale(1); box-shadow: 0 0 0 0 rgba(196, 119, 43, .0); } to { transform: scale(1.06); box-shadow: 0 0 0 6px rgba(196, 119, 43, .25); } }
+@media (prefers-reduced-motion: reduce) {
+  .lam[data-capas~="palmeras"] .palma, .lam[data-capas~="exterior"] .lote, .lam[data-capas~="parking"] .parking, .lam[data-capas~="puerta"] .puerta, .lam[data-capas~="cta"] .cine-cta { animation: none !important; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   LA GALERÍA DE FOTOS (components/Galeria.tsx)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.gal {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  columns: 3 260px;
+  column-gap: 18px;
+}
+.gal-item { break-inside: avoid; margin: 0 0 18px; }
+.gal-boton {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 1px solid var(--regla);
+  background: var(--papel);
+  cursor: zoom-in;
+}
+.gal-boton:hover, .gal-boton:focus-visible { border-color: var(--ocre); outline: none; }
+.gal-boton img { display: block; width: 100%; height: auto; }
+.gal-pie {
+  display: flex;
+  gap: 9px;
+  padding-top: 7px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  line-height: 1.5;
+  color: var(--texto);
+}
+.gal-n { color: var(--ocre); flex: none; }
+
+.gal-visor {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  max-width: 96vw;
+  max-height: 96vh;
+  overflow: visible;
+}
+.gal-visor::backdrop { background: rgba(33, 28, 21, .9); }
+.gal-visor-marco {
+  margin: 0;
+  background: var(--papel);
+  padding: 10px 10px 12px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, .35);
+  animation: lam-peso .5s cubic-bezier(.2, .8, .3, 1.05) both;
+}
+.gal-visor-marco img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: min(92vw, 100%);
+  max-height: 76vh;
+}
+.gal-visor-pie {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  padding-top: 10px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--texto);
+  max-width: 92vw;
+}
+.gal-fuente { color: var(--texto-3, var(--texto)); }
+.gal-visor-mandos { display: flex; gap: 8px; padding-top: 12px; }
+@media (max-width: 620px) {
+  .gal { columns: 2 150px; column-gap: 12px; }
+  .gal-item { margin-bottom: 12px; }
+  .gal-pie { font-size: 9px; }
+}
+@media (prefers-reduced-motion: reduce) { .gal-visor-marco { animation: none; } }

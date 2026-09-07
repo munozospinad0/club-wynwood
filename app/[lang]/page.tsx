@@ -12,6 +12,7 @@ import Recorrido from "@/components/Recorrido";
 import Dudas from "@/components/Dudas";
 import Cifras from "@/components/Cifras";
 import BotonRecorrido from "@/components/BotonRecorrido";
+import Galeria from "@/components/Galeria";
 
 /**
  * Home. El orden sigue cómo decide un productor:
@@ -143,6 +144,8 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           hay que regrabarlo entero cuando cambia una cifra. Y funciona sin voz,
           así que la página no depende de que los audios existan. */}
       <Recorrido lang={lang} />
+      {/* Las fotos, todas juntas y a su tamaño (Daniel, 7-sep: «que haya una zona con las fotos»). */}
+      <Galeria lang={lang} />
 
       {/* ---------------- QUÉ SE ALQUILA ---------------- */}
       <section style={{ borderBottom: "1px solid var(--regla)" }}>

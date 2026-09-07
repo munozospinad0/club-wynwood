@@ -148,9 +148,24 @@ con asiento y respaldo; pérgolas con postes finos y listones; mesas de picnic c
 coches; camión con cabina y ruedas mirando a la cámara. En mesas, gente, barra y noche el
 techo de la palapa se vuelve transparente.
 
-**Pendiente derivado:** `LaminaPlanta.tsx`, `LaminaEdificio.tsx` y `Cifras.tsx` siguen con
-la geometría vieja (240 × 92) y hay que rehacerlos con este plano; y `lib/venue.ts`
-(`GEOMETRIA`) también.
+**La planta, las cifras y `GEOMETRIA` ya van sobre el plano real** (misma noche):
+`LaminaPlanta.tsx` importa la geometría de `lib/recinto.geo.ts` (no declara ni una
+medida), norte arriba, con el edificio rayado «del operador · se alquila aparte», el camión
+entrando por NW 21st Ct y las respuestas en HTML en la columna de al lado (una nueva: «¿Y el
+edificio?»). La leyenda de las mesas pasó del SVG a un `figcaption`: dentro del dibujo
+pisaba las mesas del césped sur. `Cifras.tsx` dibuja el lote real (edificio en claro, palapa
+al suroeste) y `lib/venue.ts` `GEOMETRIA` resume el plano. `LaminaEdificio.tsx` no cambia: es la
+sección interior del edificio sacada de los planos del operador (niveles, cocina 580 ft²),
+independiente de la geometría del recinto exterior.
+
+**Las 30 mesas ya no pisan nada.** La geometría anterior ponía 7 a `PASEO.x − 12` (dentro
+de la palapa, encima de las 16) y 7 a `PASEO.x + PASEO.dx + 14` (encima de las pérgolas).
+Ahora: 16 bajo la palapa, 8 en el césped al sur y 6 en fila sobre el paseo, que mide 15 ft
+y una mesa con sillas ocupa 10.
+
+**La foto del paseo perdió la franja superior.** `paseo-palmeras.jpg` pasó de 1280 × 528 a
+1280 × 400: en el vídeo se leía el rótulo del operador en el mural, encima de la puerta.
+Regla de siempre: mirar los fotogramas exportados, no solo el sitio.
 
 ### Medir hasta dónde se ve el recorrido
 

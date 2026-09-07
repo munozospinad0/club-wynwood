@@ -80,12 +80,21 @@ export const PARKING_S = { x: 4, y: 240, dx: 146, dy: 22, plazas: 15 };
 export const CALLE_O = { x: -30, dx: 30 };
 export const CALLE_S = { y: LOTE.dy, dy: 30 };
 
-/** Mesas de diez: 16 bajo la palapa (4 × 4) y 14 en el césped oeste y junto al paseo. */
+/**
+ * Mesas de diez: 16 bajo la palapa (4 × 4), 8 en el césped al sur de la palapa
+ * (4 × 2) y 6 en fila sobre el paseo, delante de la puerta.
+ *
+ * La versión anterior ponía 7 a `PASEO.x - 12` (dentro de la palapa, encima de
+ * las 16) y 7 a `PASEO.x + PASEO.dx + 14` (encima de las pérgolas). Se veían
+ * mesas sobre postes y sobre cabañas: el dibujo diciendo algo falso. Ninguna
+ * mesa pisa ahora otro objeto; las del paseo caben porque mide 15 ft y una mesa
+ * con sillas ocupa 10.
+ */
 export const MESAS: Pt[] = (() => {
   const out: Pt[] = [];
   for (let c = 0; c < 4; c++) for (let f = 0; f < 4; f++) out.push([PALAPA.x + 7 + c * 13.3, PALAPA.y + 7 + f * 13.3]);
-  for (let f = 0; f < 7; f++) out.push([PASEO.x - 12, 120 + f * 16]);
-  for (let f = 0; f < 7; f++) out.push([PASEO.x + PASEO.dx + 14, 128 + f * 15]);
+  for (let c = 0; c < 4; c++) for (let f = 0; f < 2; f++) out.push([PALAPA.x + 7 + c * 13.3, PALAPA.y + PALAPA.dy + 6 + f * 13]);
+  for (let f = 0; f < 6; f++) out.push([PASEO.x + PASEO.dx / 2, PASEO.y0 + 12 + f * 14]);
   return out;
 })();
 

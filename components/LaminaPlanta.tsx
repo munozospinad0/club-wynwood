@@ -1,91 +1,47 @@
 import type { Idioma } from "@/lib/i18n";
+import {
+  LOTE, EDIF, PUERTA, PASEO, PALAPA, PALAPA_POSTES, ARENA, PICNIC, CABANAS,
+  CESPED_O, CESPED_E, PALMERAS_O, PALMERAS_E, PALMERAS_PALAPA, PARKING_E, PARKING_S,
+  CALLE_O, CALLE_S, MESAS, CAMION,
+} from "@/lib/recinto.geo";
 
 /**
- * PLANTA — la lámina que sí contesta preguntas.
+ * PLANTA — el recinto visto desde arriba, según el PLANO DEL SITIO.
  *
  * ─────────────────────────────────────────────────────────────────────────
- * DIAGNÓSTICO DE LA VERSIÓN ANTERIOR
+ * DE DÓNDE SALE, Y POR QUÉ CAMBIÓ
  * ─────────────────────────────────────────────────────────────────────────
  *
- * Daniel: «no nos dan explicativos, son cero lógicos, cero ayuda».
+ * Las dos plantas anteriores se dibujaron de los pies cuadrados declarados: un
+ * rectángulo de 240 × 92 con la palapa en un extremo y el paseo cruzando de lado
+ * a lado. Era otro sitio. El flyer de Newmark (LoopNet, «Site Plan & Photos»)
+ * trae el plano de verdad, y dice otra cosa: lote de esquina (NW 1st Ct al
+ * oeste, NW 21st Ct al sur), el edificio al norte, el paseo bajando de su
+ * puerta hacia el sur, la palapa al suroeste, arena con picnic entre las dos,
+ * ocho pérgolas al este del paseo y estacionamiento propio al este y al sur.
  *
- * Tenía razón, y el motivo es concreto: **cada anotación era una medida y
- * ninguna era una respuesta.** La lámina 04 decía 240 FT, 92 FT, CUBIERTO
- * ~4.000 ft², ABIERTO ~18.000 ft². Todo cierto y todo inútil, porque quien mira
- * el plano no está preguntando cuántos pies mide: está preguntando si su evento
- * cabe, por dónde entra el camión y qué pasa si llueve. «18.000 ft²» no
- * contesta ninguna de las tres.
- *
- * Un plano de arquitectura documenta. Éste tiene que **vender y tranquilizar**,
- * que es otro oficio. La convención de dibujo se respeta; lo que cambia es qué
- * se rotula.
+ * La geometría vive en `lib/recinto.geo.ts` y es LA MISMA que usa el dibujo
+ * en perspectiva y el recorrido. Aquí no se declara ni una medida: si el plano
+ * se corrige en un sitio, se corrige en los dos.
  *
  * ─────────────────────────────────────────────────────────────────────────
- * LAS TRES DECISIONES
+ * LO QUE SE MANTIENE DE LA VERSIÓN ANTERIOR
  * ─────────────────────────────────────────────────────────────────────────
  *
- * 1. EL SVG DIBUJA, EL HTML EXPLICA.
- *    Las láminas viejas hornean el texto dentro del SVG. Por eso en el móvil se
- *    lee a 6 px, no se puede seleccionar, y —lo que más cuesta— los buscadores
- *    de IA no lo pueden citar, que es media razón de ser del sitio. Aquí el
- *    dibujo lleva lo mínimo y las respuestas van en HTML al lado: escalan, se
- *    copian, se traducen y se indexan.
- *
- * 2. EL AFORO SE DIBUJA, NO SE ENUNCIA.
- *    Ésta es la que de verdad cambia la lámina. «~300 sentados» es un número
- *    que hay que creerse; treinta mesas de diez dibujadas a escala real sobre
- *    el jardín se ven, y de un vistazo se sabe si aquello queda holgado o
- *    apretado. No es un montaje propuesto: es la misma cifra verificada,
- *    puesta en una forma que se puede juzgar.
- *
- *    El camión de 40 ft cumple lo mismo para la carga: dibujado sobre el paseo,
- *    a escala, contesta «¿entra mi camión?» sin que nadie haga una cuenta.
- *
- * 3. LA GEOMETRÍA, LA BUENA.
- *    Palapa ≈ 63 × 63 ft, no el rectángulo largo de las láminas portadas. Sale
- *    de cruzar los ~4.000 ft² declarados con la forma casi cuadrada que se ve en
- *    la foto aérea y en el cenital del vídeo. Ver VIDEOS.md.
+ * 1. EL SVG DIBUJA, EL HTML EXPLICA. Las respuestas van al lado, en HTML:
+ *    escalan, se copian, se traducen y las cita un buscador de IA.
+ * 2. EL AFORO SE DIBUJA, NO SE ENUNCIA. Las treinta mesas de diez van a escala
+ *    real sobre el plano, en ocre porque no son el sitio: son la respuesta.
+ *    El camión de 40 ft, igual, sobre el paseo.
+ * 3. Lo techado, en tinta: tener techo es EL dato.
  *
  * Lo que NO se hace: inventar aforos por zona. El único aforo verificado es el
- * del conjunto (~600 de pie / ~300 sentados). Repartirlo por zonas con una
- * regla de tres daría un número con pinta de dato que nadie ha medido.
+ * del conjunto (~600 de pie / ~300 sentados).
  */
 
-const U = 3.1;                                   // píxeles por pie
-const LOTE = { dx: 240, dy: 92 };
-const PALAPA = { x: 10, y: 4, dx: 63, dy: 63 };  // ~4.000 ft², casi cuadrada
-const PASEO = { y: 70, dy: 12 };                 // el paseo pavimentado, de extremo a extremo
-/**
- * Las ocho cabañas, en fila sobre el borde opuesto al paseo.
- *
- * Las medidas se eligen para que las ocho QUEPAN DENTRO del lote, que no es
- * obvio: con 18 ft de ancho y 4 de hueco, ocho cabañas necesitan 172 ft y
- * empezando en el 96 acababan en el 268 — fuera del recinto, que mide 240.
- * Un plano que se sale de su propio solar no es un detalle estético: es el
- * dibujo diciendo algo falso.
- *   8 × 14 + 7 × 4 = 140 ft, del 88 al 228. Dentro, con margen a los dos lados.
- */
-const CABANAS = { x: 88, y: 84, dx: 14, dy: 8, n: 8, hueco: 4 };
-
-/**
- * Los ~300 sentados verificados, como 30 mesas de diez a escala real.
- *
- * 10 columnas × 3 filas. La separación (15 ft entre centros en X, 18 en Y) deja
- * pasillo de servicio entre mesas: una mesa de 60" con sillas ocupa unos 10 ft
- * de diámetro, así que quedan ~5 ft para pasar. Es un montaje plausible, no uno
- * apretado — si hubiera que apretarlas para que entren, el dibujo estaría
- * diciendo lo contrario de lo que dice el número.
- */
-const MESAS: Array<[number, number]> = [];
-for (let f = 0; f < 3; f++) {
-  for (let c = 0; c < 10; c++) MESAS.push([90 + c * 15, 20 + f * 18]);
-}
-
-const M = { izq: 30, der: 30, arr: 34, aba: 46 };
-const VB = {
-  w: LOTE.dx * U + M.izq + M.der,
-  h: LOTE.dy * U + M.arr + M.aba,
-};
+const U = 2;                                     // píxeles por pie
+const M = { izq: CALLE_O.dx * U + 14, der: 40, arr: 34, aba: CALLE_S.dy * U + 10 };
+const VB = { w: LOTE.dx * U + M.izq + M.der, h: LOTE.dy * U + M.arr + M.aba };
 const fx = (ft: number) => M.izq + ft * U;
 const fy = (ft: number) => M.arr + ft * U;
 
@@ -93,32 +49,63 @@ const TINTA = "#211c15";
 const GRIS = "#8a8071";
 const PAPEL = "#f6f3ea";
 const OCRE = "#c4772b";
+const CESPED = "#e6e3cf";
+const ARENA_C = "#eee3cc";
+const PAV = "#faf7f0";
+const ASFALTO = "#e7e2d8";
+const CALLE = "#ddd6c9";
+const MONO = "ui-monospace,monospace";
 
 export default function LaminaPlanta({ lang }: { lang: Idioma }) {
   const es = lang === "es";
 
   /** Cota con flechas. En gris y fina: es referencia, no protagonista. */
-  const Cota = ({ x1, y1, x2, y2, txt, arriba = false }:
-    { x1: number; y1: number; x2: number; y2: number; txt: string; arriba?: boolean }) => (
+  const Cota = ({ x1, y1, x2, y2, txt, vertical = false, arriba = false }:
+    { x1: number; y1: number; x2: number; y2: number; txt: string; vertical?: boolean; arriba?: boolean }) => (
     <g>
       <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={GRIS} strokeWidth="0.7" />
-      <path d={`M${x1 + 5},${y1 - 3} L${x1},${y1} L${x1 + 5},${y1 + 3}`} fill="none" stroke={GRIS} strokeWidth="0.7" />
-      <path d={`M${x2 - 5},${y2 - 3} L${x2},${y2} L${x2 - 5},${y2 + 3}`} fill="none" stroke={GRIS} strokeWidth="0.7" />
-      <text x={(x1 + x2) / 2} y={y1 + (arriba ? -6 : 12)} fill={GRIS} textAnchor="middle"
-            fontFamily="ui-monospace,monospace" fontSize="8.5" letterSpacing="1.2">{txt}</text>
+      {vertical ? (
+        <>
+          <path d={`M${x1 - 3},${y1 + 5} L${x1},${y1} L${x1 + 3},${y1 + 5}`} fill="none" stroke={GRIS} strokeWidth="0.7" />
+          <path d={`M${x2 - 3},${y2 - 5} L${x2},${y2} L${x2 + 3},${y2 - 5}`} fill="none" stroke={GRIS} strokeWidth="0.7" />
+          <text transform={`translate(${x1 + 10},${(y1 + y2) / 2}) rotate(90)`} fill={GRIS} textAnchor="middle"
+                fontFamily={MONO} fontSize="8.5" letterSpacing="1.2">{txt}</text>
+        </>
+      ) : (
+        <>
+          <path d={`M${x1 + 5},${y1 - 3} L${x1},${y1} L${x1 + 5},${y1 + 3}`} fill="none" stroke={GRIS} strokeWidth="0.7" />
+          <path d={`M${x2 - 5},${y2 - 3} L${x2},${y2} L${x2 - 5},${y2 + 3}`} fill="none" stroke={GRIS} strokeWidth="0.7" />
+          <text x={(x1 + x2) / 2} y={arriba ? y1 - 6 : y1 + 12} fill={GRIS} textAnchor="middle"
+                fontFamily={MONO} fontSize="8.5" letterSpacing="1.2">{txt}</text>
+        </>
+      )}
     </g>
   );
 
   /** Etiqueta de zona, dentro del dibujo. Sin caja: la caja añade ruido. */
-  const Zona = ({ x, y, txt, sub, claro = false }:
-    { x: number; y: number; txt: string; sub: string; claro?: boolean }) => (
-    <g textAnchor="middle">
-      <text x={x} y={y} fill={claro ? PAPEL : TINTA} fontFamily="ui-monospace,monospace"
-            fontSize="10.5" letterSpacing="2">{txt}</text>
-      <text x={x} y={y + 13} fill={claro ? PAPEL : GRIS} fontFamily="ui-monospace,monospace"
-            fontSize="8" letterSpacing="1" opacity={claro ? 0.85 : 1}>{sub}</text>
+  const Zona = ({ x, y, txt, sub, claro = false, ancla = "middle" }:
+    { x: number; y: number; txt: string; sub?: string; claro?: boolean; ancla?: "middle" | "start" | "end" }) => (
+    <g textAnchor={ancla}>
+      <text x={x} y={y} fill={claro ? PAPEL : TINTA} fontFamily={MONO} fontSize="9.5" letterSpacing="1.8">{txt}</text>
+      {sub && (
+        <text x={x} y={y + 11} fill={claro ? PAPEL : GRIS} fontFamily={MONO} fontSize="7.2" letterSpacing="1"
+              opacity={claro ? 0.85 : 1}>{sub}</text>
+      )}
     </g>
   );
+
+  /** Una palmera en planta: el tronco es un punto, la copa un asterisco. */
+  const Palma = ({ x, y }: { x: number; y: number }) => (
+    <g stroke={TINTA} strokeWidth="0.6" opacity="0.55">
+      {[0, 45, 90, 135].map((a) => (
+        <line key={a} x1={x - 4.5} y1={y} x2={x + 4.5} y2={y} transform={`rotate(${a} ${x} ${y})`} />
+      ))}
+      <circle cx={x} cy={y} r="1" fill={TINTA} stroke="none" />
+    </g>
+  );
+
+  const plazasE = Array.from({ length: PARKING_E.plazas + 1 }, (_, i) => PARKING_E.y + 6 + i * ((PARKING_E.dy - 12) / PARKING_E.plazas));
+  const plazasS = Array.from({ length: PARKING_S.plazas + 1 }, (_, i) => PARKING_S.x + 4 + i * ((PARKING_S.dx - 8) / PARKING_S.plazas));
 
   return (
     <section aria-label={es ? "Planta del recinto" : "Site plan"}>
@@ -130,166 +117,196 @@ export default function LaminaPlanta({ lang }: { lang: Idioma }) {
             {es ? "Planta — el recinto visto desde arriba" : "Plan — the site seen from above"}
           </div>
           <div className="ojo">
-            {es ? "Lo techado, en tinta" : "What has a roof, in ink"}
+            {es ? "Norte arriba · según el plano del sitio · lo techado, en tinta" : "North up · from the site plan · what has a roof, in ink"}
           </div>
         </div>
 
-        <div style={{ display: "grid", gap: 28, gridTemplateColumns: "minmax(0,1fr)", marginTop: 26 }}>
+        <div style={{ display: "grid", gap: "28px 40px", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+                      alignItems: "start", marginTop: 26 }}>
 
           <figure style={{ margin: 0 }}>
             <svg viewBox={`0 0 ${VB.w.toFixed(0)} ${VB.h.toFixed(0)}`} role="img"
                  aria-label={es
-                   ? "Planta del recinto: rectángulo de 240 por 92 pies. La palapa techada ocupa un extremo; el paseo pavimentado lo cruza de lado a lado y las cabañas se alinean en el borde opuesto. El acceso está en el extremo oeste."
-                   : "Site plan: a 240 by 92 foot rectangle. The covered structure occupies one end; the paved walk crosses end to end and the cabanas line the opposite edge. Access is at the west end."}
-                 style={{ width: "100%", height: "auto", display: "block" }}>
+                   ? "Planta del recinto, norte arriba. Lote de esquina entre NW 1st Court al oeste y NW 21st Court al sur, de unos 150 por 265 pies. El edificio del operador ocupa el norte; de su puerta baja hacia el sur un paseo pavimentado de unos 105 pies con palmeras a los dos lados. Al suroeste, la palapa techada de 54 por 54 pies; entre la palapa y el edificio, un área de arena con mesas de picnic. Al este del paseo, ocho cabañas en hilera y, más allá, el estacionamiento. Otra franja de estacionamiento cierra el sur, sobre NW 21st Court, por donde entra la producción."
+                   : "Site plan, north up. Corner lot between NW 1st Court to the west and NW 21st Court to the south, about 150 by 265 feet. The operator's building takes the north; from its door a paved walk of about 105 feet runs south with palms on both sides. To the south-west, the 54 by 54 foot thatched structure; between it and the building, a sand area with picnic tables. East of the walk, eight cabanas in a row and, beyond them, parking. Another parking strip closes the south on NW 21st Court, where production comes in."}
+                 style={{ width: "100%", height: "auto", maxHeight: "80vh", display: "block" }}>
 
-              {/* ---------- el suelo: el fondo, casi blanco ---------- */}
-              <rect x={fx(0)} y={fy(0)} width={LOTE.dx * U} height={LOTE.dy * U}
-                    fill={PAPEL} stroke="#c6beb0" strokeWidth="1" />
+              <defs>
+                <pattern id="planta-edif" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                  <line x1="0" y1="0" x2="0" y2="6" stroke="#cfc7b8" strokeWidth="0.7" />
+                </pattern>
+              </defs>
 
-              {/* césped: un tono, sin trama. La trama competía con la paja. */}
-              <rect x={fx(0)} y={fy(0)} width={LOTE.dx * U} height={PASEO.y * U}
-                    fill="#ece7d5" stroke="none" />
+              {/* ---------- las calles ---------- */}
+              <rect x={fx(CALLE_O.x)} y={fy(0)} width={CALLE_O.dx * U} height={(LOTE.dy + CALLE_S.dy) * U} fill={CALLE} />
+              <rect x={fx(CALLE_O.x)} y={fy(CALLE_S.y)} width={(CALLE_O.dx + LOTE.dx + 14) * U} height={CALLE_S.dy * U} fill={CALLE} />
+              <text transform={`translate(${fx(CALLE_O.x + CALLE_O.dx / 2) + 3},${fy(150)}) rotate(-90)`} fill={GRIS} textAnchor="middle"
+                    fontFamily={MONO} fontSize="8" letterSpacing="1.6">NW 1ST CT</text>
+              <text x={fx(0)} y={fy(CALLE_S.y + 16)} fill={GRIS}
+                    fontFamily={MONO} fontSize="8" letterSpacing="1.6">NW 21ST CT</text>
+
+              {/* ---------- el lote ---------- */}
+              <rect x={fx(0)} y={fy(0)} width={LOTE.dx * U} height={LOTE.dy * U} fill={PAPEL} stroke="#c6beb0" strokeWidth="1" />
+
+              {/* ---------- el edificio: del operador, rayado y en claro ---------- */}
+              <rect x={fx(EDIF.x)} y={fy(EDIF.y)} width={EDIF.dx * U} height={EDIF.dy * U} fill="#f1ede4" stroke={TINTA} strokeWidth="0.9" />
+              <rect x={fx(EDIF.x)} y={fy(EDIF.y)} width={EDIF.dx * U} height={EDIF.dy * U} fill="url(#planta-edif)" />
+              <rect x={fx(PUERTA.x)} y={fy(EDIF.dy) - 2} width={PUERTA.dx * U} height="4" fill={PAPEL} stroke={TINTA} strokeWidth="0.9" />
+
+              {/* ---------- césped, arena, estacionamiento ---------- */}
+              <rect x={fx(CESPED_O.x)} y={fy(CESPED_O.y)} width={CESPED_O.dx * U} height={CESPED_O.dy * U} fill={CESPED} />
+              <rect x={fx(CESPED_E.x)} y={fy(CESPED_E.y)} width={CESPED_E.dx * U} height={CESPED_E.dy * U} fill={CESPED} />
+              <rect x={fx(ARENA.x)} y={fy(ARENA.y)} width={ARENA.dx * U} height={ARENA.dy * U} fill={ARENA_C} stroke="#d8cdb4" strokeWidth="0.6" />
+
+              <rect x={fx(PARKING_E.x)} y={fy(PARKING_E.y)} width={PARKING_E.dx * U} height={PARKING_E.dy * U} fill={ASFALTO} stroke="#cfc7b8" strokeWidth="0.6" />
+              {plazasE.map((y, i) => (
+                <line key={`pe${i}`} x1={fx(PARKING_E.x + PARKING_E.dx - 18)} y1={fy(y)} x2={fx(PARKING_E.x + PARKING_E.dx)} y2={fy(y)} stroke="#c4bcae" strokeWidth="0.6" />
+              ))}
+              <rect x={fx(PARKING_S.x)} y={fy(PARKING_S.y)} width={PARKING_S.dx * U} height={PARKING_S.dy * U} fill={ASFALTO} stroke="#cfc7b8" strokeWidth="0.6" />
+              {plazasS.map((x, i) => (
+                <line key={`ps${i}`} x1={fx(x)} y1={fy(PARKING_S.y + 4)} x2={fx(x)} y2={fy(PARKING_S.y + PARKING_S.dy)} stroke="#c4bcae" strokeWidth="0.6" />
+              ))}
 
               {/* ---------- el paseo: la espina, y también el acceso de carga ---------- */}
-              <rect x={fx(0)} y={fy(PASEO.y)} width={LOTE.dx * U} height={PASEO.dy * U}
-                    fill="#faf7f0" stroke="#c6beb0" strokeWidth="0.8" />
-              {Array.from({ length: 12 }, (_, i) => (
-                <line key={i} x1={fx(20 * (i + 1))} y1={fy(PASEO.y)}
-                      x2={fx(20 * (i + 1))} y2={fy(PASEO.y + PASEO.dy)}
+              <rect x={fx(PASEO.x)} y={fy(PASEO.y0)} width={PASEO.dx * U} height={(PASEO.y1 - PASEO.y0) * U}
+                    fill={PAV} stroke="#c6beb0" strokeWidth="0.8" />
+              {Array.from({ length: 10 }, (_, i) => (
+                <line key={i} x1={fx(PASEO.x)} y1={fy(PASEO.y0 + 12 * (i + 1))} x2={fx(PASEO.x + PASEO.dx)} y2={fy(PASEO.y0 + 12 * (i + 1))}
                       stroke="#d8d0c0" strokeWidth="0.6" />
               ))}
 
-              {/* ---------- la palapa: en tinta, porque tener techo es EL dato ---------- */}
-              <rect x={fx(PALAPA.x) + 3} y={fy(PALAPA.y) + 3} width={PALAPA.dx * U} height={PALAPA.dy * U}
-                    fill={TINTA} opacity="0.1" />
-              <rect x={fx(PALAPA.x)} y={fy(PALAPA.y)} width={PALAPA.dx * U} height={PALAPA.dy * U}
-                    fill="#5c5445" stroke={TINTA} strokeWidth="1.4" />
-              {/* SIN limatesas, y es deliberado.
-                  Se dibujaron primero, porque una cubierta a cuatro aguas vista
-                  en planta son cuatro diagonales al centro. El problema es que
-                  sobre un cuadrado eso es exactamente una X, y el ojo lee una X
-                  como «anulado» antes de leerla como «techo». Aflojarlas no lo
-                  arregla: solo la vuelve una X pálida.
-                  Lo que dice «esto tiene techo» es la masa oscura contra el
-                  suelo claro, y el alero. La forma de la cubierta ya se explica
-                  en la sección y en la isométrica, que es donde se ve. */}
-              <rect x={fx(PALAPA.x) + 3.5} y={fy(PALAPA.y) + 3.5}
-                    width={PALAPA.dx * U - 7} height={PALAPA.dy * U - 7}
-                    fill="none" stroke="#a89d88" strokeWidth="0.7" opacity="0.45" />
+              {/* ---------- setos: NW 1st Ct y el borde sur del césped ---------- */}
+              <rect x={fx(0)} y={fy(CESPED_O.y)} width={3 * U} height={(PARKING_S.y - CESPED_O.y) * U} fill="#b9b79a" />
+              <rect x={fx(0)} y={fy(PARKING_S.y - 3)} width={(PASEO.x - 2) * U} height={3 * U} fill="#b9b79a" />
+              <rect x={fx(PASEO.x + PASEO.dx + 2)} y={fy(PARKING_S.y - 3)} width={(PARKING_E.x - PASEO.x - PASEO.dx - 4) * U} height={3 * U} fill="#b9b79a" />
 
-              {/* ---------- las cabañas ---------- */}
-              {Array.from({ length: CABANAS.n }, (_, i) => (
-                <rect key={i}
-                      x={fx(CABANAS.x + i * (CABANAS.dx + CABANAS.hueco))} y={fy(CABANAS.y)}
-                      width={CABANAS.dx * U} height={CABANAS.dy * U}
-                      fill="#c9c0ad" stroke={TINTA} strokeWidth="0.8" />
-              ))}
-
-              {/* ══════════ EL AFORO, DIBUJADO ══════════
-                   Treinta mesas de diez = los ~300 sentados verificados, a la
-                   misma escala que el recinto. No es un montaje propuesto: es la
-                   cifra que ya publicamos, puesta donde se puede juzgar. De un
-                   vistazo se ve que quedan holgadas, que es exactamente lo que
-                   un productor quiere saber y lo que «~18 000 ft²» no le dice.
-                   Van en ocre porque no son el sitio: son la respuesta. */}
-              {MESAS.map(([x, y], i) => (
-                <g key={i}>
-                  {/* el hueco que ocupa con las sillas, en tono muy suave */}
-                  <circle cx={fx(x)} cy={fy(y)} r={5 * U} fill={OCRE} opacity="0.07" />
-                  <circle cx={fx(x)} cy={fy(y)} r={2.5 * U} fill="none" stroke={OCRE}
-                          strokeWidth="0.9" opacity="0.75" />
+              {/* ---------- picnic sobre la arena ---------- */}
+              {PICNIC.map(([x, y], i) => (
+                <g key={`pic${i}`}>
+                  <circle cx={fx(x)} cy={fy(y)} r={4.5 * U} fill="none" stroke="#c9bfa6" strokeWidth="0.6" strokeDasharray="1.5 1.5" />
+                  <rect x={fx(x - 3)} y={fy(y - 1.5)} width={6 * U} height={3 * U} fill="#cdbf9f" stroke={TINTA} strokeWidth="0.5" />
                 </g>
               ))}
 
-              {/* camión de 40 ft sobre el paseo, a escala */}
+              {/* ---------- la palapa: en tinta, porque tener techo es EL dato ---------- */}
+              <rect x={fx(PALAPA.x) + 3} y={fy(PALAPA.y) + 3} width={PALAPA.dx * U} height={PALAPA.dy * U} fill={TINTA} opacity="0.1" />
+              <rect x={fx(PALAPA.x)} y={fy(PALAPA.y)} width={PALAPA.dx * U} height={PALAPA.dy * U} fill="#5c5445" stroke={TINTA} strokeWidth="1.4" />
+              {/* Sin limatesas: sobre un cuadrado son una X, y el ojo lee «anulado» antes que «techo».
+                  Lo que dice «esto tiene techo» es la masa oscura y el alero. */}
+              <rect x={fx(PALAPA.x) + 3.5} y={fy(PALAPA.y) + 3.5} width={PALAPA.dx * U - 7} height={PALAPA.dy * U - 7}
+                    fill="none" stroke="#a89d88" strokeWidth="0.7" opacity="0.45" />
+              {PALAPA_POSTES.map(([x, y], i) => (
+                <circle key={`po${i}`} cx={fx(x)} cy={fy(y)} r="1.3" fill={PAPEL} opacity="0.8" />
+              ))}
+
+              {/* ---------- las cabañas ---------- */}
+              {Array.from({ length: CABANAS.n }, (_, i) => (
+                <g key={`cab${i}`}>
+                  <rect x={fx(CABANAS.x)} y={fy(CABANAS.y0 + i * CABANAS.paso)} width={CABANAS.dx * U} height={CABANAS.dy * U}
+                        fill="#c9c0ad" stroke={TINTA} strokeWidth="0.8" />
+                  {[0.33, 0.66].map((f) => (
+                    <line key={f} x1={fx(CABANAS.x)} y1={fy(CABANAS.y0 + i * CABANAS.paso + CABANAS.dy * f)}
+                          x2={fx(CABANAS.x + CABANAS.dx)} y2={fy(CABANAS.y0 + i * CABANAS.paso + CABANAS.dy * f)}
+                          stroke={PAPEL} strokeWidth="0.6" opacity="0.8" />
+                  ))}
+                </g>
+              ))}
+
+              {/* ---------- palmeras ---------- */}
+              {[...PALMERAS_O, ...PALMERAS_E, ...PALMERAS_PALAPA].map(([x, y], i) => <Palma key={`pal${i}`} x={fx(x)} y={fy(y)} />)}
+
+              {/* ══════════ EL AFORO, DIBUJADO ══════════
+                   Treinta mesas de diez = los ~300 sentados verificados, a la
+                   misma escala que el recinto y en los mismos puntos que el
+                   dibujo en perspectiva. Van en ocre porque no son el sitio:
+                   son la respuesta. */}
+              {MESAS.map(([x, y], i) => (
+                <g key={`m${i}`}>
+                  <circle cx={fx(x)} cy={fy(y)} r={5 * U} fill={OCRE} opacity="0.09" />
+                  <circle cx={fx(x)} cy={fy(y)} r={2.5 * U} fill="none" stroke={OCRE} strokeWidth="0.9" opacity="0.8" />
+                </g>
+              ))}
+
+              {/* camión de 40 ft, a escala, entrando desde NW 21st Ct al estacionamiento sur:
+                  la mitad ya dentro del lote, la otra mitad todavía en la calle */}
               <g>
-                <rect x={fx(168)} y={fy(71.5)} width={40 * U} height={9 * U} rx="2"
-                      fill="#faf7f0" stroke={OCRE} strokeWidth="1.3" />
-                <line x1={fx(178)} y1={fy(71.5)} x2={fx(178)} y2={fy(80.5)}
-                      stroke={OCRE} strokeWidth="1.1" />
-                {[172, 174.5, 200, 202.5].map((cx, i) => (
-                  <rect key={i} x={fx(cx)} y={fy(70.6)} width={1.6 * U} height={1.6 * U}
-                        fill={OCRE} opacity="0.55" />
-                ))}
+                <rect x={fx(95)} y={fy(CALLE_S.y - 15)} width={CAMION.dx * U} height={CAMION.dy * U} rx="1.5"
+                      fill={PAV} stroke={OCRE} strokeWidth="1.2" />
+                <line x1={fx(95)} y1={fy(CALLE_S.y - 15 + 9)} x2={fx(95 + CAMION.dx)} y2={fy(CALLE_S.y - 15 + 9)}
+                      stroke={OCRE} strokeWidth="1" />
+                <text x={fx(95 + CAMION.dx) + 5} y={fy(CALLE_S.y + 16)} fill={OCRE} fontFamily={MONO} fontSize="6.8" letterSpacing="1">
+                  {es ? "CAMIÓN 40 FT" : "40 FT TRUCK"}
+                </text>
               </g>
 
-              {/* ---------- acceso ---------- */}
+              {/* ---------- acceso: desde NW 21st Ct, por el estacionamiento sur, al paseo ---------- */}
               <g>
-                <path d={`M${fx(-8)},${fy(76)} L${fx(-1)},${fy(76)}`} stroke={TINTA} strokeWidth="1.6" />
-                <path d={`M${fx(-3)},${fy(73)} L${fx(-1)},${fy(76)} L${fx(-3)},${fy(79)}`}
-                      fill="none" stroke={TINTA} strokeWidth="1.6" />
-                <text x={fx(-8)} y={fy(69)} fill={TINTA} fontFamily="ui-monospace,monospace"
-                      fontSize="8" letterSpacing="1.4">{es ? "ACCESO" : "ACCESS"}</text>
-                <text x={fx(-8)} y={fy(62)} fill={GRIS} fontFamily="ui-monospace,monospace"
-                      fontSize="7" letterSpacing="1">NW 1ST CT</text>
+                <path d={`M${fx(PASEO.x - 4)},${fy(LOTE.dy + 27)} L${fx(PASEO.x - 4)},${fy(PARKING_S.y + 4)}`}
+                      stroke={TINTA} strokeWidth="1.5" />
+                <path d={`M${fx(PASEO.x - 4) - 3.5},${fy(PARKING_S.y + 4) + 5} L${fx(PASEO.x - 4)},${fy(PARKING_S.y + 4)} L${fx(PASEO.x - 4) + 3.5},${fy(PARKING_S.y + 4) + 5}`}
+                      fill="none" stroke={TINTA} strokeWidth="1.5" />
+                <text x={fx(PASEO.x)} y={fy(CALLE_S.y + 16)} fill={TINTA} fontFamily={MONO} fontSize="8" letterSpacing="1.4">
+                  {es ? "ACCESO" : "ACCESS"}
+                </text>
               </g>
 
               {/* ---------- etiquetas ---------- */}
-              <Zona x={fx(PALAPA.x + PALAPA.dx / 2)} y={fy(PALAPA.y + PALAPA.dy / 2) - 4}
-                    txt="TIKI HUT"
-                    sub={es ? "TECHADO · ~4 000 ft²" : "ROOFED · ~4,000 sq ft"} claro />
-              <Zona x={fx(157)} y={fy(9)}
-                    txt={es ? "EL JARDÍN" : "THE GARDEN"}
-                    sub={es ? "AL AIRE LIBRE · ~18 000 ft²" : "OPEN AIR · ~18,000 sq ft"} />
-
-              {/* la línea que hace que el dibujo de las mesas signifique algo */}
-              <text x={fx(157)} y={fy(67)} fill={OCRE} textAnchor="middle"
-                    fontFamily="ui-monospace,monospace" fontSize="8" letterSpacing="1.3">
-                {es ? "30 MESAS DE 10 · LOS ~300 SENTADOS, A ESCALA"
-                    : "30 TABLES OF 10 · THE ~300 SEATED, TO SCALE"}
+              <Zona x={fx(EDIF.x + EDIF.dx / 2)} y={fy(EDIF.dy / 2) - 2}
+                    txt={es ? "EDIFICIO" : "BUILDING"}
+                    sub={es ? "DEL OPERADOR · 2 NIVELES · SE ALQUILA APARTE" : "OPERATOR'S · 2 LEVELS · LEASED SEPARATELY"} />
+              <Zona x={fx(PALAPA.x + PALAPA.dx / 2)} y={fy(PALAPA.y + PALAPA.dy / 2) - 1}
+                    txt="TIKI HUT" sub={es ? "TECHADO · ~4 000 ft²" : "ROOFED · ~4,000 sq ft"} claro />
+              <Zona x={fx(ARENA.x + ARENA.dx / 2)} y={fy(ARENA.y + 8)}
+                    txt={es ? "ARENA · PICNIC" : "SAND · PICNIC"} />
+              <Zona x={fx(6)} y={fy(PARKING_S.y - 6.5)} ancla="start" txt={es ? "EL JARDÍN" : "THE GARDEN"} />
+              <text x={fx(CABANAS.x + CABANAS.dx + 3)} y={fy(CABANAS.y0 + 3.5 * CABANAS.paso)} fill={GRIS}
+                    fontFamily={MONO} fontSize="7.2" letterSpacing="1.2">{es ? "8 CABAÑAS" : "8 CABANAS"}</text>
+              <text transform={`translate(${fx(PARKING_E.x + PARKING_E.dx / 2 - 6)},${fy(PARKING_E.y + PARKING_E.dy / 2)}) rotate(-90)`}
+                    fill={GRIS} textAnchor="middle" fontFamily={MONO} fontSize="7.2" letterSpacing="1.4">
+                {es ? "ESTACIONAMIENTO" : "PARKING"}
               </text>
-
-              {/* rótulo del camión, dentro del propio camión */}
-              <text x={fx(188)} y={fy(77)} fill={OCRE} textAnchor="middle"
-                    fontFamily="ui-monospace,monospace" fontSize="7.4" letterSpacing="1">
-                {es ? "CAMIÓN 40 FT" : "40 FT TRUCK"}
-              </text>
-
-              {/* las cabañas, que sin rótulo eran ocho cajas grises sin sentido */}
-              <text x={fx(84)} y={fy(90)} fill={GRIS} textAnchor="end"
-                    fontFamily="ui-monospace,monospace" fontSize="7.4" letterSpacing="1.2">
-                {es ? "8 CABAÑAS" : "8 CABANAS"}
-              </text>
-
-              {/* el paseo, rotulado: es la espina y a la vez el acceso de carga */}
-              <text x={fx(60)} y={fy(78)} fill={GRIS}
-                    fontFamily="ui-monospace,monospace" fontSize="7.4" letterSpacing="1.2">
-                {es ? "PASEO PAVIMENTADO · DE EXTREMO A EXTREMO"
-                    : "PAVED WALK · END TO END"}
+              <text x={fx(PARKING_S.x + 30)} y={fy(PARKING_S.y + PARKING_S.dy / 2) + 2.5} fill={GRIS}
+                    fontFamily={MONO} fontSize="7.2" letterSpacing="1.4">{es ? "ESTACIONAMIENTO" : "PARKING"}</text>
+              {/* el paseo, en el tramo libre entre la última mesa y el estacionamiento */}
+              <text transform={`translate(${fx(PASEO.x + PASEO.dx / 2) + 2.5},${fy(214)}) rotate(-90)`}
+                    fill={GRIS} textAnchor="middle" fontFamily={MONO} fontSize="6.8" letterSpacing="1.2">
+                {es ? "PASEO" : "WALK"}
               </text>
 
               {/* ---------- cotas ---------- */}
-              <Cota x1={fx(0)} y1={fy(LOTE.dy) + 22} x2={fx(LOTE.dx)} y2={fy(LOTE.dy) + 22}
-                    txt="≈ 240 FT · 73 M" />
-              <Cota x1={fx(PALAPA.x)} y1={fy(0) - 14} x2={fx(PALAPA.x + PALAPA.dx)} y2={fy(0) - 14}
-                    txt="≈ 63 FT · 19 M" arriba />
+              <Cota x1={fx(0)} y1={fy(0) - 14} x2={fx(LOTE.dx)} y2={fy(0) - 14} txt="≈ 150 FT · 46 M" arriba />
+              <Cota x1={fx(LOTE.dx) + 12} y1={fy(0)} x2={fx(LOTE.dx) + 12} y2={fy(LOTE.dy)} txt="≈ 265 FT · 81 M" vertical />
+              <Cota x1={fx(CALLE_O.x) - 6} y1={fy(PALAPA.y)} x2={fx(CALLE_O.x) - 6} y2={fy(PALAPA.y + PALAPA.dy)} txt="≈ 54 FT" vertical />
 
               {/* norte */}
-              <g transform={`translate(${VB.w - 22},${M.arr + 6})`}>
+              <g transform={`translate(${VB.w - 16},${M.arr + 22})`}>
                 <path d="M0,14 L0,-10 M-3,-4 L0,-11 L3,-4" fill="none" stroke={TINTA} strokeWidth="1" />
-                <text x="-2.5" y="25" fontFamily="ui-monospace,monospace" fontSize="8" fill={GRIS}>N</text>
+                <text x="-2.5" y="25" fontFamily={MONO} fontSize="8" fill={GRIS}>N</text>
               </g>
             </svg>
+            {/* La línea que hace que el dibujo de las mesas signifique algo. En HTML,
+                no dentro del SVG: se lee en el móvil y no pisa ninguna mesa. */}
+            <figcaption className="ojo" style={{ paddingTop: 12, lineHeight: 1.7, maxWidth: "62ch" }}>
+              <span style={{ color: OCRE }}>
+                {es ? "○ 30 mesas de 10 = los ~300 sentados, a la misma escala que el recinto · camión de 40 ft entrando por NW 21st Ct."
+                    : "○ 30 tables of 10 = the ~300 seated, at the same scale as the site · 40 ft truck coming in from NW 21st Ct."}
+              </span>
+              <br />
+              {es ? "El jardín: ~18 000 ft² al aire libre · la palapa: ~4 000 ft² techados." : "The garden: ~18,000 sq ft open air · the structure: ~4,000 sq ft roofed."}
+            </figcaption>
           </figure>
 
           {/* ────────────────────────────────────────────────────────────────
-              LAS RESPUESTAS, EN HTML.
-              Aquí es donde esta lámina se separa de las otras cuatro. No son
-              cotas: son las preguntas que hace de verdad quien está decidiendo
-              si alquila, contestadas en el orden en que las hace.
-              En HTML y no dentro del SVG para que se lean en el móvil, se puedan
-              copiar y las pueda citar un buscador de IA.
+              LAS RESPUESTAS, EN HTML: las preguntas que hace de verdad quien
+              está decidiendo si alquila, contestadas en el orden en que las hace.
              ──────────────────────────────────────────────────────────────── */}
-          <dl style={{ margin: 0, display: "grid", gap: 0,
-                       gridTemplateColumns: "repeat(auto-fit,minmax(240px,1fr))",
-                       borderTop: "1px solid var(--regla)" }}>
+          <dl style={{ margin: 0, display: "grid", gap: 0, gridTemplateColumns: "minmax(0,1fr)", borderTop: "1px solid var(--regla)" }}>
             {[
               {
                 p: es ? "¿Cabe mi evento?" : "Will my event fit?",
                 r: es
-                  ? "Hasta ~600 personas de pie o ~300 sentadas en el recinto completo. Por encima de eso no entra, y lo decimos antes de la visita para no hacerte perder el viaje."
-                  : "Up to ~600 standing or ~300 seated across the whole site. Above that it does not fit, and we say so before the visit rather than waste your trip.",
+                  ? "Hasta ~600 personas de pie o ~300 sentadas en el recinto exterior completo. Por encima de eso no entra, y lo decimos antes de la visita para no hacerte perder el viaje."
+                  : "Up to ~600 standing or ~300 seated across the whole outdoor site. Above that it does not fit, and we say so before the visit rather than waste your trip.",
               },
               {
                 p: es ? "¿Y si llueve?" : "What if it rains?",
@@ -300,8 +317,14 @@ export default function LaminaPlanta({ lang }: { lang: Idioma }) {
               {
                 p: es ? "¿Por dónde entra la producción?" : "How does production get in?",
                 r: es
-                  ? "Por NW 1st Ct, al paseo pavimentado que cruza el recinto de extremo a extremo. Es continuo y a nivel: un camión de 40 ft llega hasta el fondo sin pisar césped."
-                  : "From NW 1st Ct onto the paved walk that runs the full length of the site. It is continuous and level: a 40 ft truck reaches the far end without crossing turf.",
+                  ? "Por NW 21st Ct, al estacionamiento sur, y de ahí al paseo pavimentado que sube recto hasta la puerta del edificio: unos 105 ft continuos y a nivel. Un camión de 40 ft llega hasta el fondo sin pisar césped."
+                  : "From NW 21st Ct into the south parking lot, then onto the paved walk that runs straight up to the building door: about 105 ft, continuous and level. A 40 ft truck reaches the far end without crossing turf.",
+              },
+              {
+                p: es ? "¿Y el edificio?" : "What about the building?",
+                r: es
+                  ? "No es parte del alquiler. Lo ocupa otro negocio y se alquila aparte; lo que aquí se ofrece es el recinto exterior: el jardín, la palapa, las cabañas y el estacionamiento propio."
+                  : "Not part of the rental. Another business occupies it and it is leased separately; what is offered here is the outdoor site: the garden, the thatched structure, the cabanas and the on-site parking.",
               },
               {
                 p: es ? "¿Qué NO hay?" : "What is NOT here?",
@@ -311,10 +334,8 @@ export default function LaminaPlanta({ lang }: { lang: Idioma }) {
               },
             ].map(({ p, r }) => (
               <div key={p} style={{ padding: "18px 20px 20px 0", borderBottom: "1px solid var(--regla)" }}>
-                <dt style={{ font: "600 15px/1.35 var(--display), Georgia, serif", color: "var(--tinta)",
-                             paddingBottom: 7 }}>{p}</dt>
-                <dd style={{ margin: 0, font: "400 13.5px/1.65 var(--texto-f), system-ui, sans-serif",
-                             color: "var(--texto)", maxWidth: "46ch" }}>{r}</dd>
+                <dt style={{ font: "600 15px/1.35 var(--display), Georgia, serif", color: "var(--tinta)", paddingBottom: 7 }}>{p}</dt>
+                <dd style={{ margin: 0, font: "400 13.5px/1.65 var(--texto-f), system-ui, sans-serif", color: "var(--texto)", maxWidth: "46ch" }}>{r}</dd>
               </div>
             ))}
           </dl>
@@ -322,8 +343,8 @@ export default function LaminaPlanta({ lang }: { lang: Idioma }) {
 
         <p className="ojo" style={{ paddingTop: 18, lineHeight: 1.75, maxWidth: "78ch" }}>
           {es
-            ? "Planta aproximada, no un levantamiento. El camión y la mesa de diez están dibujados a la misma escala que el recinto: sirven para calcular a ojo, no son parte del montaje. Las medidas exactas se confirman en la visita técnica."
-            : "Approximate plan, not a survey. The truck and the ten-seat table are drawn to the same scale as the site: they are there to judge size by eye, not part of any layout. Exact dimensions are confirmed at the technical visit."}
+            ? "Planta según el plano del sitio del flyer comercial del predio, no un levantamiento: la disposición es la real; las medidas son aproximadas y se confirman en la visita técnica. El camión y las mesas de diez están dibujados a la misma escala que el recinto: sirven para calcular a ojo, no son parte del montaje."
+            : "Plan drawn from the property's commercial site plan, not a survey: the layout is the real one; dimensions are approximate and confirmed at the technical visit. The truck and the ten-seat tables are drawn to the same scale as the site: they are there to judge size by eye, not part of any layout."}
         </p>
       </div>
     </section>

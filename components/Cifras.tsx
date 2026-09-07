@@ -1,4 +1,5 @@
 import type { Idioma } from "@/lib/i18n";
+import { LOTE, EDIF, PALAPA } from "@/lib/recinto.geo";
 
 /**
  * LAS CIFRAS, DIBUJADAS.
@@ -37,21 +38,26 @@ const TINTA = "#211c15";
 const OCRE = "#c4772b";
 const SUAVE = "#c9c0ad";
 
-/** El lote a escala: 240 × 92 ft, con la palapa de 63 × 63 en su sitio. */
+/**
+ * El lote a escala, norte arriba, con la misma geometría que el plano y el
+ * dibujo (`lib/recinto.geo.ts`): el edificio del operador al norte, en claro,
+ * y la palapa de 54 × 54 al suroeste. La versión anterior dibujaba 240 × 92 con
+ * la palapa en una esquina: otro sitio.
+ */
 function Plano({ techado }: { techado: boolean }) {
-  // 0,62 px por pie. La primera versión iba a 0,29 y el dibujo salía a 70 px:
-  // a ese tamaño la palapa era una mancha y el glifo se leía como decoración,
-  // que es exactamente lo contrario de lo que se busca. Un dibujo que informa
-  // tiene que competir en peso con el número que acompaña.
-  const U = 0.62;
-  const w = 240 * U, h = 92 * U;
-  const px = 10 * U, py = 4 * U, ps = 63 * U;
+  // 0,22 px por pie: el lote es alto (265 ft) y la celda mide 62 px de alto.
+  // Más pequeño, la palapa era una mancha y el glifo se leía como decoración.
+  const U = 0.22;
+  const w = LOTE.dx * U, h = LOTE.dy * U;
   return (
     <svg viewBox={`-1 -1 ${w + 2} ${h + 2}`} width={w + 2} height={h + 2}
          aria-hidden style={{ display: "block" }}>
       <rect x="0" y="0" width={w} height={h} fill="none"
             stroke={techado ? SUAVE : TINTA} strokeWidth="0.9" />
-      <rect x={px} y={py} width={ps} height={ps}
+      {/* el edificio: no se alquila, así que en claro y sin peso */}
+      <rect x={EDIF.x * U} y={EDIF.y * U} width={EDIF.dx * U} height={EDIF.dy * U}
+            fill={SUAVE} opacity="0.3" />
+      <rect x={PALAPA.x * U} y={PALAPA.y * U} width={PALAPA.dx * U} height={PALAPA.dy * U}
             fill={techado ? OCRE : SUAVE}
             opacity={techado ? 0.9 : 0.35}
             stroke={techado ? OCRE : "none"} strokeWidth="0.9" />
@@ -109,7 +115,7 @@ const CELDAS: Celda[] = [
     etiqueta: { es: "Superficie total", en: "Total area" },
     valor: "~22 000 ft²", sub: "2 045 m²",
     glifo: <Plano techado={false} />,
-    lectura: { es: "Todo el recinto", en: "The whole site" },
+    lectura: { es: "Todo el exterior; el edificio, en claro, no", en: "The whole outdoor site; the building, in grey, is not" },
   },
   {
     etiqueta: { es: "Techado", en: "Covered" },

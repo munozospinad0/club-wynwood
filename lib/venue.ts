@@ -145,14 +145,25 @@ export const TIEMPOS = [
   { es: "Miami Beach", en: "Miami Beach", valor: "18 min", valorEn: "18 min" },
 ];
 
-/** Medidas del modelo/dibujo. Estimadas: no hay site plan del propietario. */
+/**
+ * Medidas del modelo/dibujo, leídas del PLANO DEL SITIO del flyer comercial del
+ * predio (Newmark, LoopNet, 2026). La fuente única de la geometría es
+ * `lib/recinto.geo.ts`; esto es el resumen legible.
+ */
 export const GEOMETRIA = {
-  predioFt: { largo: 240, ancho: 92 },
-  palapaFt: { largo: 134, ancho: 30 },
-  postes: { filas: 2, porFila: 6, entreEjesFt: 27 },
+  /** Lote de esquina: NW 1st Ct al oeste, NW 21st Ct al sur. ±0,78 acres. */
+  predioFt: { esteOeste: 150, norteSur: 265 },
+  /** Del operador, al norte; se alquila aparte. 16 000 SF con el altillo. */
+  edificioFt: { ancho: 120, fondo: 104, niveles: 2 },
+  /** De la puerta del edificio al estacionamiento sur. */
+  paseoFt: { ancho: 15, largo: 132 },
+  /** Al suroeste, junto al seto de NW 1st Ct. */
+  palapaFt: { largo: 54, ancho: 54 },
+  postes: { filas: 3, porFila: 3, entreEjesFt: 24 },
   aleroFt: 11,
   cumbreraFt: 26,
+  cabanas: 8,
   nota:
-    "Medidas estimadas a partir de los pies² declarados y del video del venue. " +
-    "No existe plano CAD del propietario: el dibujo se rotula siempre como esquema sin escala.",
+    "Disposición según el plano del sitio del flyer comercial del predio; medidas aproximadas. " +
+    "El dibujo se rotula como esquema sin escala fina hasta contrastarlo con el boundary survey.",
 } as const;

@@ -195,6 +195,14 @@ const RUTA_AFOROS: Record<Idioma, string> = { es: "/es/aforo-y-montajes", en: "/
 const TOPE = { sentados: 300, pie: 600 };
 const JARDIN_FT2 = 18000;
 
+/**
+ * Cuánto se queda el dibujo al acabar la voz de cada capítulo, en segundos,
+ * antes de pasar al siguiente. Daniel (7-sep): «hay que darle un poco más de
+ * tiempo a las cosas para poder verlas». Vale para el reloj sin voz, para la
+ * grabación del MP4 y (menos 0,3 s de la propia cola del audio) para el sitio.
+ */
+const COLA_CAPITULO = 1.7;
+
 declare global {
   interface Window {
     /** Lo escribe el modo de grabación: cuándo empezó cada capítulo, en reloj de pared. */
@@ -300,7 +308,7 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
    */
   const duracionEstimada = useMemo(() => {
     const real = manifiesto && manifiesto.duraciones?.[lang]?.[indice];
-    if (typeof real === "number" && real > 0) return real + 0.45;
+    if (typeof real === "number" && real > 0) return real + COLA_CAPITULO;
     return Math.max(8, texto.length / 14);
   }, [manifiesto, lang, indice, texto]);
 
@@ -332,8 +340,10 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
       cifra: null,
       capas: cap.capas ?? [],
     };
-    for (const h of hitos as Hito[]) {
-      const cuando = tiempoDeFrase(h.frase, texto, palabras, dur);
+    const cuandos = (hitos as Hito[]).map((h) => tiempoDeFrase(h.frase, texto, palabras, dur));
+    for (let k = 0; k < hitos.length; k++) {
+      const h = hitos[k] as Hito;
+      const cuando = cuandos[k];
       if (segundo + 0.15 < cuando) break;
       if (h.modo) e = { ...e, modo: h.modo as Modo };
       if (h.zona !== undefined) e = { ...e, zona: h.zona as Zona | null };
@@ -342,8 +352,18 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
       if (h.cifra !== undefined) e = { ...e, cifra: h.cifra };
       if (h.agregar) e = { ...e, capas: Array.from(new Set([...e.capas, ...h.agregar])) };
       if (h.quitar) e = { ...e, capas: e.capas.filter((c) => !h.quitar!.includes(c)) };
-      // La foto no se acumula: dura lo que dice el hito y se va sola.
-      if (h.foto) e = { ...e, foto: segundo + 0.15 < cuando + (h.segundos ?? 4) ? h.foto : null };
+      // La foto no se acumula: dura lo que dice el hito y se va sola. Daniel
+      // (7-sep): «hay que darle un poco más de tiempo a las cosas para poder
+      // verlas»: cada foto gana un segundo, pero nunca pisa el hito siguiente
+      // (se va 0,4 s antes de que llegue) ni baja de 1,8 s.
+      if (h.foto) {
+        const pedido = h.segundos ?? 4;
+        const proximo = cuandos[k + 1];
+        const fin = proximo === undefined
+          ? cuando + pedido + 1
+          : Math.min(cuando + pedido + 1, Math.max(cuando + Math.min(pedido, 1.8), proximo - 0.4));
+        e = { ...e, foto: segundo + 0.15 < fin ? h.foto : null };
+      }
     }
     return e;
   }, [cap, hitos, texto, palabras, dur, segundo]);
@@ -446,7 +466,9 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
    * decir una palabra. El vídeo exportado salió de 98 s en vez de 170, y en
    * el sitio sin voz pasaba lo mismo. No daba ningún error.
    */
+  const cola = useRef<number | null>(null);
   const siguiente = useCallback(() => {
+    if (cola.current) { clearTimeout(cola.current); cola.current = null; }
     setSegundo(0);
     setIndice((i) => {
       setOidos((o) => new Set(o).add(i));
@@ -639,6 +661,10 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
     // Las fotos se piden ahora, para que al llegar su frase ya estén: una foto
     // que entra a medio cargar es un cuadro gris donde tenía que haber palmeras.
     for (const f of Object.values(FOTOS)) { const i = new Image(); i.src = f.src; }
+    // La sección que contiene el cine puede no haberse revelado todavía (botón
+    // de la portada en un teléfono): se revela a mano, porque un ancestro con
+    // transform anula el position: fixed del cine. Refuerza a `.rv:has(.lam.cine)`.
+    raiz.current?.closest(".rv")?.classList.add("dentro");
     if (grabando && desde === 0) {
       setPortada(true);
       setTimeout(() => { setPortada(false); arrancar(0); }, 3400);
@@ -773,7 +799,12 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
           if (!grabando) setHayAudio(true);
         }}
         onTimeUpdate={(e) => setSegundo(e.currentTarget.currentTime)}
-        onEnded={siguiente}
+        onEnded={() => {
+          // Con voz, el capítulo no cambia en seco al callarse: el dibujo se
+          // queda un momento para que se vea lo último que se dijo.
+          if (cola.current) clearTimeout(cola.current);
+          cola.current = window.setTimeout(() => { cola.current = null; siguiente(); }, (COLA_CAPITULO - 0.3) * 1000);
+        }}
         onError={() => setHayAudio(false)}
       />
 

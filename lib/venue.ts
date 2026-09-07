@@ -152,18 +152,18 @@ export const TIEMPOS = [
  */
 export const GEOMETRIA = {
   /** Lote de esquina: NW 1st Ct al oeste, NW 21st Ct al sur. ±0,78 acres. */
-  predioFt: { esteOeste: 150, norteSur: 265 },
+  predioFt: { esteOeste: 131, norteSur: 258 },
   /** Del operador, al norte; se alquila aparte. 16 000 SF con el altillo. */
   edificioFt: { ancho: 120, fondo: 104, niveles: 2 },
-  /** De la puerta del edificio al estacionamiento sur. */
-  paseoFt: { ancho: 15, largo: 132 },
-  /** Al suroeste, junto al seto de NW 1st Ct. */
-  palapaFt: { largo: 54, ancho: 54 },
+  /** De la puerta del edificio a la calle de maniobra del estacionamiento sur. */
+  paseoFt: { ancho: 15, largo: 108 },
+  /** En la esquina suroeste, contra el seto de NW 1st Ct y con el estacionamiento sur delante; cumbrera paralela al paseo. */
+  palapaFt: { largo: 60, ancho: 54 },
   postes: { filas: 3, porFila: 3, entreEjesFt: 24 },
   aleroFt: 11,
-  cumbreraFt: 26,
+  cumbreraFt: 34,
   cabanas: 8,
   nota:
-    "Disposición según el plano del sitio del flyer comercial del predio; medidas aproximadas. " +
+    "Disposición según el plano del sitio del flyer comercial del predio, contrastado con la foto cenital y las aéreas; medidas aproximadas. " +
     "El dibujo se rotula como esquema sin escala fina hasta contrastarlo con el boundary survey.",
 } as const;

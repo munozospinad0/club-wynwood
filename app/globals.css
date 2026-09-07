@@ -151,6 +151,12 @@ p { line-height: 1.66; text-wrap: pretty; }
   .rv { transform: none; }
   .rv.dentro { transition: opacity 0.3s ease; }
 }
+/* El cine (position: fixed) vive dentro de una sección revelable. Si el
+   recorrido arranca antes de que esa sección entre en pantalla (el botón de la
+   portada en un teléfono, o la URL con ?recorrido=auto), el translateY del
+   revelado convierte al ancestro en contenedor del fixed y el cine queda
+   invisible, dentro del flujo. Daniel, 7-sep: «desde teléfono no se ve». */
+.rv:has(.lam.cine) { opacity: 1 !important; transform: none !important; transition: none !important; }
 
 
 /* ═══════════════════════════════════════════════════════════════════════════

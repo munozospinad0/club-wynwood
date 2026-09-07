@@ -1,7 +1,7 @@
 import type { Idioma } from "@/lib/i18n";
 import {
   LOTE, EDIF, PUERTA, PASEO, PALAPA, PALAPA_POSTES, ARENA, PICNIC, CABANAS,
-  CESPED_O, CESPED_E, PALMERAS_O, PALMERAS_E, PALMERAS_PALAPA, PARKING_E, PARKING_S,
+  CESPED_O, CESPED_E, PALMERAS_O, PALMERAS_E, PALMERAS_PALAPA, PARKING_E, PARKING_S, PLAZA, JARDINERAS, ESCENARIO,
   CALLE_O, CALLE_S, MESAS, MESA_LARGA, CAMION,
 } from "@/lib/recinto.geo";
 
@@ -129,8 +129,8 @@ export default function LaminaPlanta({ lang }: { lang: Idioma }) {
           <figure style={{ margin: 0 }}>
             <svg viewBox={`0 0 ${VB.w.toFixed(0)} ${VB.h.toFixed(0)}`} role="img"
                  aria-label={es
-                   ? "Planta del recinto, norte arriba. Lote de esquina entre NW 1st Court al oeste y NW 21st Court al sur, de unos 150 por 265 pies. El edificio del operador ocupa el norte; de su puerta baja hacia el sur un paseo pavimentado de unos 105 pies con palmeras a los dos lados. Al oeste del paseo y pegada al edificio, la palapa techada de 54 por 54 pies, con el jardín abierto al sur. Al este del paseo, junto a la puerta, un área de arena con mesas de picnic; después, ocho cabañas en hilera y, más allá, el estacionamiento. Otra franja de estacionamiento cierra el sur, sobre NW 21st Court, por donde entra la producción."
-                   : "Site plan, north up. Corner lot between NW 1st Court to the west and NW 21st Court to the south, about 150 by 265 feet. The operator's building takes the north; from its door a paved walk of about 105 feet runs south with palms on both sides. West of the walk and right next to the building, the 54 by 54 foot thatched structure, with the open garden south of it. East of the walk, by the door, a sand area with picnic tables; then eight cabanas in a row and, beyond them, parking. Another parking strip closes the south on NW 21st Court, where production comes in."}
+                   ? "Planta del recinto, norte arriba. Lote de esquina entre NW 1st Court al oeste y NW 21st Court al sur, de unos 131 por 258 pies. El edificio del operador ocupa el norte; de su puerta baja hacia el sur un paseo pavimentado de unos 108 pies con palmeras a los dos lados. Al oeste del paseo, en la esquina suroeste, la palapa techada de 54 por 60 pies sobre césped, con un apron pavimentado y una franja de césped entre ella y el edificio. Al este del paseo, junto a la puerta, un área de arena con mesas de picnic; después, ocho cabañas en hilera y, más allá, el estacionamiento. Dos filas de estacionamiento con calle de maniobra cierran el sur, sobre NW 21st Court, por donde entra la producción."
+                   : "Site plan, north up. Corner lot between NW 1st Court to the west and NW 21st Court to the south, about 131 by 258 feet. The operator's building takes the north; from its door a paved walk of about 108 feet runs south with palms on both sides. West of the walk, in the south-west corner, the 54 by 60 foot thatched structure on turf, with a paved apron and a strip of turf between it and the building. East of the walk, by the door, a sand area with picnic tables; then eight cabanas in a row and, beyond them, parking. Two rows of parking with a drive aisle close the south on NW 21st Court, where production comes in."}
                  style={{ width: "100%", height: "auto", maxHeight: "80vh", display: "block" }}>
 
               <defs>
@@ -158,6 +158,9 @@ export default function LaminaPlanta({ lang }: { lang: Idioma }) {
               {/* ---------- césped, arena, estacionamiento ---------- */}
               <rect x={fx(CESPED_O.x)} y={fy(CESPED_O.y)} width={CESPED_O.dx * U} height={CESPED_O.dy * U} fill={CESPED} />
               <rect x={fx(CESPED_E.x)} y={fy(CESPED_E.y)} width={CESPED_E.dx * U} height={CESPED_E.dy * U} fill={CESPED} />
+              {/* el apron pavimentado contra la fachada, con sus jardineras */}
+              <rect x={fx(PLAZA.x)} y={fy(PLAZA.y)} width={PLAZA.dx * U} height={PLAZA.dy * U} fill={PAV} stroke="#c6beb0" strokeWidth="0.6" />
+              {JARDINERAS.map(([jx, jy], i) => <rect key={`jar${i}`} x={fx(jx - 2.6)} y={fy(jy - 1)} width={5.2 * U} height={2 * U} fill="#b9b79a" />)}
               <rect x={fx(ARENA.x)} y={fy(ARENA.y)} width={ARENA.dx * U} height={ARENA.dy * U} fill={ARENA_C} stroke="#d8cdb4" strokeWidth="0.6" />
 
               <rect x={fx(PARKING_E.x)} y={fy(PARKING_E.y)} width={PARKING_E.dx * U} height={PARKING_E.dy * U} fill={ASFALTO} stroke="#cfc7b8" strokeWidth="0.6" />
@@ -165,9 +168,11 @@ export default function LaminaPlanta({ lang }: { lang: Idioma }) {
                 <line key={`pe${i}`} x1={fx(PARKING_E.x + PARKING_E.dx - 18)} y1={fy(y)} x2={fx(PARKING_E.x + PARKING_E.dx)} y2={fy(y)} stroke="#c4bcae" strokeWidth="0.6" />
               ))}
               <rect x={fx(PARKING_S.x)} y={fy(PARKING_S.y)} width={PARKING_S.dx * U} height={PARKING_S.dy * U} fill={ASFALTO} stroke="#cfc7b8" strokeWidth="0.6" />
-              {plazasS.map((x, i) => (
-                <line key={`ps${i}`} x1={fx(x)} y1={fy(PARKING_S.y + 4)} x2={fx(x)} y2={fy(PARKING_S.y + PARKING_S.dy)} stroke="#c4bcae" strokeWidth="0.6" />
-              ))}
+              {/* dos filas de plazas con la calle de maniobra entre ellas, como en el plano de Newmark */}
+              {[PARKING_S.y, PARKING_S.y + PARKING_S.fila + PARKING_S.calle].map((fy0, f) => plazasS.map((x, i) => (
+                <line key={`ps${f}-${i}`} x1={fx(x)} y1={fy(fy0 + 1)} x2={fx(x)} y2={fy(fy0 + PARKING_S.fila - 1)} stroke="#c4bcae" strokeWidth="0.6" />
+              )))}
+              <line x1={fx(PARKING_S.x + 3)} y1={fy(PARKING_S.y + PARKING_S.fila + PARKING_S.calle / 2)} x2={fx(PARKING_S.x + PARKING_S.dx - 3)} y2={fy(PARKING_S.y + PARKING_S.fila + PARKING_S.calle / 2)} stroke="#c4bcae" strokeWidth="0.6" strokeDasharray="3 2" />
               {/* coches en las mismas plazas que el dibujo en perspectiva */}
               {plazasE.slice(0, -1).map((y, i) => {
                 if (i % 3 === 1) return null;
@@ -179,16 +184,18 @@ export default function LaminaPlanta({ lang }: { lang: Idioma }) {
                   </g>
                 );
               })}
-              {plazasS.slice(0, -1).map((x, i) => {
+              {[PARKING_S.y, PARKING_S.y + PARKING_S.fila + PARKING_S.calle].map((fy0, f) => plazasS.slice(0, -1).map((x, i) => {
                 const ancho = (PARKING_S.dx - 8) / PARKING_S.plazas;
-                if ((i * 5) % 4 === 2 || (x + ancho > PASEO.x - 12 && x < PASEO.x + PASEO.dx + 6)) return null;
+                const cx = x + ancho / 2;
+                if ((i * 5 + f) % 4 === 2 || (cx > PASEO.x - 10 && cx < PASEO.x + PASEO.dx + 10)) return null;
+                if (f === 0 && cx > ESCENARIO.x - 9 && cx < ESCENARIO.x + ESCENARIO.dx + 9) return null;
                 return (
-                  <g key={`cs${i}`}>
-                    <rect x={fx(x + (ancho - 6.5) / 2)} y={fy(PARKING_S.y + 3)} width={6.5 * U} height={16 * U} rx="2" fill="#d9d3c6" stroke={TINTA} strokeWidth="0.45" />
-                    <rect x={fx(x + (ancho - 6.5) / 2 + 0.55)} y={fy(PARKING_S.y + 3 + 4.8)} width={5.4 * U} height={8.8 * U} rx="1.2" fill="#b9b3a7" opacity="0.6" />
+                  <g key={`cs${f}-${i}`}>
+                    <rect x={fx(x + (ancho - 6.5) / 2)} y={fy(fy0 + 0.5)} width={6.5 * U} height={16 * U} rx="2" fill="#d9d3c6" stroke={TINTA} strokeWidth="0.45" />
+                    <rect x={fx(x + (ancho - 6.5) / 2 + 0.55)} y={fy(fy0 + 0.5 + (f === 0 ? 2.4 : 4.8))} width={5.4 * U} height={8.8 * U} rx="1.2" fill="#b9b3a7" opacity="0.6" />
                   </g>
                 );
-              })}
+              }))}
 
               {/* ---------- el paseo: la espina, y también el acceso de carga ---------- */}
               <rect x={fx(PASEO.x)} y={fy(PASEO.y0)} width={PASEO.dx * U} height={(PASEO.y1 - PASEO.y0) * U}
@@ -295,7 +302,7 @@ export default function LaminaPlanta({ lang }: { lang: Idioma }) {
                     txt="TIKI HUT" sub={es ? "TECHADO · ~4 000 ft²" : "ROOFED · ~4,000 sq ft"} claro />
               <Zona x={fx(ARENA.x + ARENA.dx / 2)} y={fy(ARENA.y + 8)}
                     txt={es ? "ARENA · PICNIC" : "SAND · PICNIC"} />
-              <Zona x={fx(6)} y={fy(PARKING_S.y - 6.5)} ancla="start" txt={es ? "EL JARDÍN" : "THE GARDEN"} />
+              <Zona x={fx(6)} y={fy(CESPED_O.y + 10)} ancla="start" txt={es ? "EL JARDÍN" : "THE GARDEN"} />
               <text x={fx(CABANAS.x + CABANAS.dx + 3)} y={fy(CABANAS.y0 + 3.5 * CABANAS.paso)} fill={GRIS}
                     fontFamily={MONO} fontSize="7.2" letterSpacing="1.2">{es ? "8 CABAÑAS" : "8 CABANAS"}</text>
               <text transform={`translate(${fx(PARKING_E.x + PARKING_E.dx / 2 - 6)},${fy(PARKING_E.y + PARKING_E.dy / 2)}) rotate(-90)`}
@@ -305,14 +312,14 @@ export default function LaminaPlanta({ lang }: { lang: Idioma }) {
               <text x={fx(PARKING_S.x + 30)} y={fy(PARKING_S.y + PARKING_S.dy / 2) + 2.5} fill={GRIS}
                     fontFamily={MONO} fontSize="7.2" letterSpacing="1.4">{es ? "ESTACIONAMIENTO" : "PARKING"}</text>
               {/* el paseo, en el tramo libre entre la última mesa y el estacionamiento */}
-              <text transform={`translate(${fx(PASEO.x + PASEO.dx / 2) + 2.5},${fy(214)}) rotate(-90)`}
+              <text transform={`translate(${fx(PASEO.x + PASEO.dx / 2) + 2.5},${fy(204)}) rotate(-90)`}
                     fill={GRIS} textAnchor="middle" fontFamily={MONO} fontSize="6.8" letterSpacing="1.2">
                 {es ? "PASEO" : "WALK"}
               </text>
 
               {/* ---------- cotas ---------- */}
-              <Cota x1={fx(0)} y1={fy(0) - 14} x2={fx(LOTE.dx)} y2={fy(0) - 14} txt="≈ 150 FT · 46 M" arriba />
-              <Cota x1={fx(LOTE.dx) + 12} y1={fy(0)} x2={fx(LOTE.dx) + 12} y2={fy(LOTE.dy)} txt="≈ 265 FT · 81 M" vertical />
+              <Cota x1={fx(0)} y1={fy(0) - 14} x2={fx(LOTE.dx)} y2={fy(0) - 14} txt="≈ 131 FT · 40 M" arriba />
+              <Cota x1={fx(LOTE.dx) + 12} y1={fy(0)} x2={fx(LOTE.dx) + 12} y2={fy(LOTE.dy)} txt="≈ 258 FT · 79 M" vertical />
               <Cota x1={fx(CALLE_O.x) - 6} y1={fy(PALAPA.y)} x2={fx(CALLE_O.x) - 6} y2={fy(PALAPA.y + PALAPA.dy)} txt="≈ 54 FT" vertical />
 
               {/* norte */}

@@ -8,6 +8,7 @@ import {
   LOTE, EDIF, PUERTA, PASEO, PALAPA, PALAPA_ALERO, PALAPA_CUMBRE, PALAPA_CUMBRERA, PALAPA_POSTES,
   ARENA, ARENA_CABECERA, PICNIC, CABANAS, CESPED_O, PALMERAS_O, PALMERAS_E, PALMERAS_PALAPA, SETO,
   PARKING_E, PARKING_S, CALLE_O, CALLE_S, MESAS, MESA_LARGA, ESCENARIO, BARRA, CAMION, MULTITUD, GENTE_SUELTA,
+  MULTITUD_PALAPA, MULTITUD_PASEO, PLAZA, JARDINERAS,
   CENTRO, CAMARA, PALMERA_ALTO, type Pt,
 } from "@/lib/recinto.geo";
 
@@ -243,19 +244,20 @@ function Palapa({ g, mesasN }: { g: GeoPerspectiva; mesasN: number }) {
   const { x, y, dx, dy } = PALAPA;
   const cx = x + dx / 2, cy = y + dy / 2;
   const A = p(x, y, PALAPA_ALERO), B = p(x + dx, y, PALAPA_ALERO), C = p(x + dx, y + dy, PALAPA_ALERO), D = p(x, y + dy, PALAPA_ALERO);
-  const R1 = p(cx - PALAPA_CUMBRERA / 2, cy, PALAPA_CUMBRE), R2 = p(cx + PALAPA_CUMBRERA / 2, cy, PALAPA_CUMBRE);
-  // Orden de atrás hacia delante para la cámara del sur: norte, oeste, este, sur.
+  // La cumbrera va paralela al paseo (norte-sur), como en la cenital: R1 al norte, R2 al sur.
+  const R1 = p(cx, cy - PALAPA_CUMBRERA / 2, PALAPA_CUMBRE), R2 = p(cx, cy + PALAPA_CUMBRERA / 2, PALAPA_CUMBRE);
+  // Orden de atrás hacia delante para la cámara del sur: norte (triángulo), oeste, este, sur (triángulo).
   // Paja, no lámina: tonos de paja en escala de tinta, con la cara sur (la que mira a la cámara y al sol del suroeste) más clara.
   const caras: Array<{ pts: [Pt, Pt, Pt, Pt]; tono: string; n: number }> = [
-    { pts: [A, B, R2, R1], tono: "#8b7857", n: 8 },
-    { pts: [D, A, R1, R1], tono: "#ad956b", n: 7 },
-    { pts: [B, C, R2, R2], tono: "#9a845c", n: 7 },
-    { pts: [C, D, R1, R2], tono: "#bfa878", n: 9 },
+    { pts: [A, B, R1, R1], tono: "#8b7857", n: 8 },
+    { pts: [D, A, R1, R2], tono: "#ad956b", n: 7 },
+    { pts: [B, C, R2, R1], tono: "#9a845c", n: 7 },
+    { pts: [C, D, R2, R2], tono: "#bfa878", n: 9 },
   ];
   const postes = PALAPA_POSTES.slice().sort((m, n) => g.profundidad(...m) - g.profundidad(...n));
   const mesas = MESAS.slice(0, Math.min(16, mesasN));
   // Vigas a la altura del alero: tres hileras y tres filas que atan los postes.
-  const filas = [y + 3, y + 27, y + 51], cols = [x + 3, x + 27, x + 51];
+  const filas = [y + 3, y + dy / 2, y + dy - 3], cols = [x + 3, x + dx / 2, x + dx - 3];
   const vigas: Array<[Pt, Pt]> = [];
   for (const fy of filas) vigas.push([p(cols[0], fy, PALAPA_ALERO - 0.6), p(cols[2], fy, PALAPA_ALERO - 0.6)]);
   for (const cxp of cols) vigas.push([p(cxp, filas[0], PALAPA_ALERO - 0.6), p(cxp, filas[2], PALAPA_ALERO - 0.6)]);
@@ -264,7 +266,7 @@ function Palapa({ g, mesasN }: { g: GeoPerspectiva; mesasN: number }) {
     const u = lerp(c.pts[0], c.pts[1], t), v = lerp(c.pts[3], c.pts[2], t);
     return <line key={`${ci}-${t}`} className="ap cabio" x1={u[0]} y1={u[1]} x2={v[0]} y2={v[1]} stroke="#3f3a32" strokeWidth="0.45" opacity="0.45" />;
   }));
-  const cumbrera = poly(p(cx - PALAPA_CUMBRERA / 2 - 0.6, cy, PALAPA_CUMBRE), p(cx + PALAPA_CUMBRERA / 2 + 0.6, cy, PALAPA_CUMBRE), p(cx + PALAPA_CUMBRERA / 2 + 0.6, cy, PALAPA_CUMBRE + 0.9), p(cx - PALAPA_CUMBRERA / 2 - 0.6, cy, PALAPA_CUMBRE + 0.9));
+  const cumbrera = poly(p(cx, cy - PALAPA_CUMBRERA / 2 - 0.6, PALAPA_CUMBRE), p(cx, cy + PALAPA_CUMBRERA / 2 + 0.6, PALAPA_CUMBRE), p(cx, cy + PALAPA_CUMBRERA / 2 + 0.6, PALAPA_CUMBRE + 0.9), p(cx, cy - PALAPA_CUMBRERA / 2 - 0.6, PALAPA_CUMBRE + 0.9));
   return (
     <g className="palapa-todo">
       {/* la sombra que el techo echa sobre el césped, hacia el noreste como en la aérea de la tarde */}
@@ -516,17 +518,33 @@ function Coche({ g, x, y, eje, tono, suv = false }: { g: GeoPerspectiva; x: numb
     { d: poly(P(a0, c1, z1), P(a1, c1, z1), P(b1, c1, z2), P(b0, c1, z2)), fill: vidrio, prof: prof((a0 + a1) / 2, c1) },
     { d: poly(P(b0, c0, z2), P(b1, c0, z2), P(b1, c1, z2), P(b0, c1, z2)), fill: tono, prof: prof((b0 + b1) / 2, W / 2) - 0.01 },
   ].sort((m, n) => n.prof - m.prof);
-  const profCentro = prof(L / 2, W / 2);
-  const ruedas = [[0.2 * L, 0.55], [0.2 * L, W - 0.55], [0.8 * L, 0.55], [0.8 * L, W - 0.55]].map(([u, v]) => {
+  /**
+   * Las ruedas van DEBAJO de la carrocería, no encima (Daniel, 7-sep: «los
+   * carros tienen las ruedas raras»: se pintaban las cercanas después de las
+   * caras y quedaban como discos pegados al costado). Desde esta cámara alta
+   * la carrocería tapa la mitad de arriba de cada rueda y solo asoma el arco
+   * de abajo. Además la rueda es un disco vertical: en los coches que van de
+   * norte a sur (eje «y») se ve de canto, casi una raya; en los del sur (eje
+   * «x») se ve de frente. Y en vez de aro blanco, un cubo gris discreto.
+   */
+  const ladoVisibleV = eje === "x" ? W - 0.7 : (M(L / 2, W / 2)[0] < g.camara.ojo[0] ? W - 0.7 : 0.7);
+  const ruedas = [[0.2 * L, 0.7], [0.2 * L, W - 0.7], [0.8 * L, 0.7], [0.8 * L, W - 0.7]].map(([u, v]) => {
     const [wx, wy] = M(u, v);
-    return { q: p(wx, wy, 1.1), prof: prof(u, v), r: g.escala(wx, wy) * 0.95 };
+    const r = g.escala(wx, wy) * 1.0;
+    return { q: p(wx, wy, 1.0), rx: eje === "y" ? r * 0.38 : r, ry: r * 0.96, visible: v === ladoVisibleV };
   });
-  const rueda = (w: { q: Pt; r: number }, k: number) => (
+  const rueda = (w: { q: Pt; rx: number; ry: number }, k: number) => (
     <g key={k}>
-      <circle cx={w.q[0].toFixed(1)} cy={w.q[1].toFixed(1)} r={w.r.toFixed(2)} fill="#2f2a24" />
-      <circle cx={w.q[0].toFixed(1)} cy={w.q[1].toFixed(1)} r={(w.r * 0.45).toFixed(2)} fill="none" stroke={PAPEL} strokeWidth={(w.r * 0.25).toFixed(2)} opacity="0.8" />
+      <ellipse cx={w.q[0].toFixed(1)} cy={w.q[1].toFixed(1)} rx={w.rx.toFixed(2)} ry={w.ry.toFixed(2)} fill="#2a2620" />
+      <ellipse cx={w.q[0].toFixed(1)} cy={w.q[1].toFixed(1)} rx={(w.rx * 0.42).toFixed(2)} ry={(w.ry * 0.42).toFixed(2)} fill="#7d766b" opacity="0.9" />
     </g>
   );
+  // El arco de abajo de las dos ruedas del costado que mira a la cámara: lo que de verdad asoma bajo la carrocería.
+  const arco = (w: { q: Pt; rx: number; ry: number }, k: number) => {
+    const [cx0, cy0] = w.q;
+    const d = `M${(cx0 - w.rx).toFixed(1)},${cy0.toFixed(1)} A${w.rx.toFixed(2)},${w.ry.toFixed(2)} 0 0 0 ${(cx0 + w.rx).toFixed(1)},${cy0.toFixed(1)} Z`;
+    return <path key={`a${k}`} d={d} fill="#2a2620" />;
+  };
   // El extremo que mira a la cámara: el trasero en los del sur (pilotos), el morro o la cola en los del este según de qué lado queden.
   const extremo = eje === "y" ? L : (M(L / 2, 0)[0] > g.camara.ojo[0] ? 0 : L);
   const luz = extremo === 0 ? LUZ : "#a8463b";
@@ -538,12 +556,12 @@ function Coche({ g, x, y, eje, tono, suv = false }: { g: GeoPerspectiva; x: numb
   return (
     <g className="coche">
       <Elipse g={g} x={cx} y={cy} r={L * 0.42} fill={TINTA} opacity="0.09" />
-      {ruedas.filter((w) => w.prof >= profCentro).map(rueda)}
+      {ruedas.map(rueda)}
       {caras.map((c, k) => <path key={k} d={c.d} fill={c.fill} stroke={GRIS} strokeWidth="0.4" strokeLinejoin="round" />)}
       {luces.map((d, k) => <path key={`l${k}`} d={d} fill={luz} stroke="none" />)}
       <line x1={parachoques[0][0]} y1={parachoques[0][1]} x2={parachoques[1][0]} y2={parachoques[1][1]} stroke={GRIS} strokeWidth="0.5" />
       <line x1={puerta[0][0]} y1={puerta[0][1]} x2={puerta[1][0]} y2={puerta[1][1]} stroke={GRIS} strokeWidth="0.35" opacity="0.8" />
-      {ruedas.filter((w) => w.prof < profCentro).map(rueda)}
+      {ruedas.filter((w) => w.visible).map(arco)}
     </g>
   );
 }
@@ -621,17 +639,25 @@ function Noche({ g }: { g: GeoPerspectiva }) {
    * haces barren (CSS), pozos de luz sobre el césped y un público con brazos en
    * alto en las primeras filas.
    */
+  /**
+   * El escenario está sobre el estacionamiento sur y MIRA AL NORTE: su frente
+   * es la arista `E.y` y la pantalla va al fondo (`E.y + E.dy`). Desde la
+   * cámara del sur se ve por detrás, como en la típica foto de concierto desde
+   * atrás del escenario: los haces barren hacia el público, que está en el paseo
+   * y bajo la palapa, de cara a nosotros.
+   */
   const E = ESCENARIO;
   const cxE = E.x + E.dx / 2;
-  const m1a = p(E.x, E.y + E.dy, E.h), m1b = p(E.x, E.y + E.dy, E.truss);
-  const m2a = p(E.x + E.dx, E.y + E.dy, E.h), m2b = p(E.x + E.dx, E.y + E.dy, E.truss);
+  const m1a = p(E.x, E.y, E.h), m1b = p(E.x, E.y, E.truss);
+  const m2a = p(E.x + E.dx, E.y, E.h), m2b = p(E.x + E.dx, E.y, E.truss);
   const focos = [0.1, 0.26, 0.42, 0.58, 0.74, 0.9].map((t) => lerp(m1b, m2b, t));
-  const haz = (f: Pt, s: number) => `M${f[0].toFixed(1)},${f[1].toFixed(1)} L${(f[0] - 22 * s).toFixed(1)},${(f[1] + 54).toFixed(1)} L${(f[0] - 5 * s).toFixed(1)},${(f[1] + 58).toFixed(1)} Z`;
-  const pantalla = poly(p(cxE - 11, E.y + 1.4, E.h + 0.8), p(cxE + 11, E.y + 1.4, E.h + 0.8), p(cxE + 11, E.y + 1.4, E.h + 9.2), p(cxE - 11, E.y + 1.4, E.h + 9.2));
-  const pozos: Array<[number, number, number]> = [[cxE - 11, E.y + E.dy + 12, 7], [cxE, E.y + E.dy + 15, 8], [cxE + 11, E.y + E.dy + 12, 7]];
+  // los haces salen hacia el norte (arriba en pantalla) y se estrechan con la distancia
+  const haz = (f: Pt, s: number) => `M${f[0].toFixed(1)},${f[1].toFixed(1)} L${(f[0] - 16 * s).toFixed(1)},${(f[1] - 46).toFixed(1)} L${(f[0] - 4 * s).toFixed(1)},${(f[1] - 49).toFixed(1)} Z`;
+  const pantalla = poly(p(cxE - 11, E.y + E.dy - 1.4, E.h + 0.8), p(cxE + 11, E.y + E.dy - 1.4, E.h + 0.8), p(cxE + 11, E.y + E.dy - 1.4, E.h + 9.2), p(cxE - 11, E.y + E.dy - 1.4, E.h + 9.2));
+  const pozos: Array<[number, number, number]> = [[cxE - 11, E.y - 12, 7], [cxE, E.y - 15, 8], [cxE + 11, E.y - 12, 7]];
   const frente: Array<[number, number, "arriba" | "abajo"]> = [
-    [cxE - 11, E.y + E.dy + 6, "arriba"], [cxE - 6, E.y + E.dy + 8, "abajo"], [cxE - 1, E.y + E.dy + 5.5, "arriba"], [cxE + 4, E.y + E.dy + 8, "arriba"], [cxE + 9, E.y + E.dy + 6, "abajo"],
-    [cxE - 14, E.y + E.dy + 12, "abajo"], [cxE - 8, E.y + E.dy + 13, "arriba"], [cxE - 2, E.y + E.dy + 12.5, "abajo"], [cxE + 6, E.y + E.dy + 13, "arriba"], [cxE + 13, E.y + E.dy + 12, "arriba"],
+    [cxE - 11, E.y - 6, "arriba"], [cxE - 6, E.y - 8, "abajo"], [cxE - 1, E.y - 5.5, "arriba"], [cxE + 4, E.y - 8, "arriba"], [cxE + 9, E.y - 6, "abajo"],
+    [cxE - 14, E.y - 12, "abajo"], [cxE - 8, E.y - 13, "arriba"], [cxE - 2, E.y - 12.5, "abajo"], [cxE + 6, E.y - 13, "arriba"], [cxE + 13, E.y - 12, "arriba"],
   ];
   const cP = p(BARRA.x - 6, BARRA.y + BARRA.dy / 2, 0);
   const taburetes = Array.from({ length: 6 }, (_, i): Pt => [BARRA.x + BARRA.dx + 2, BARRA.y + 3 + i * 5]);
@@ -639,15 +665,17 @@ function Noche({ g }: { g: GeoPerspectiva }) {
   const pendientes = [0.2, 0.5, 0.8].map((t) => p(BARRA.x + BARRA.dx / 2, BARRA.y + BARRA.dy * t, 8));
   const bolardos: Pt[] = [];
   for (let yy = PASEO.y0 + 10; yy < PASEO.y1; yy += 18) { bolardos.push([PASEO.x - 1.4, yy]); bolardos.push([PASEO.x + PASEO.dx + 1.4, yy]); }
-  const hilosPalapa: Array<[Pt, Pt]> = [0, 1, 2, 3, 4].map((k) => [p(PALAPA.x + 3, PALAPA.y + 3 + k * 12, 9.6), p(PALAPA.x + 51, PALAPA.y + 3 + k * 12, 9.6)]);
+  const hilosPalapa: Array<[Pt, Pt]> = [0, 1, 2, 3, 4].map((k) => [p(PALAPA.x + 3, PALAPA.y + 3 + k * ((PALAPA.dy - 6) / 4), 9.6), p(PALAPA.x + PALAPA.dx - 3, PALAPA.y + 3 + k * ((PALAPA.dy - 6) / 4), 9.6)]);
   const bombillasPalapa: Pt[] = hilosPalapa.flatMap(([a, b]) => Array.from({ length: 11 }, (_, k) => lerp(a, b, (k + 0.5) / 11)));
-  const perimetro = PALAPA_POSTES.filter(([px, py]) => px === PALAPA.x + 3 || px === PALAPA.x + 51 || py === PALAPA.y + 3 || py === PALAPA.y + 51);
-  // De noche la palapa es el volumen más cálido del predio: paja iluminada por dentro, postes en luz, suelo encendido y un lounge de mesas altas debajo.
+  const perimetro = PALAPA_POSTES.filter(([px, py]) => px === PALAPA.x + 3 || px === PALAPA.x + PALAPA.dx - 3 || py === PALAPA.y + 3 || py === PALAPA.y + PALAPA.dy - 3);
+  // De noche la palapa es el volumen más cálido del predio: paja iluminada por dentro, postes en luz, suelo encendido y un lounge de mesas altas debajo (en la mitad norte; la mitad sur, de cara al escenario, es público).
   const pcx = PALAPA.x + PALAPA.dx / 2, pcy = PALAPA.y + PALAPA.dy / 2;
   const PA = p(PALAPA.x, PALAPA.y, PALAPA_ALERO), PB = p(PALAPA.x + PALAPA.dx, PALAPA.y, PALAPA_ALERO), PC = p(PALAPA.x + PALAPA.dx, PALAPA.y + PALAPA.dy, PALAPA_ALERO), PD = p(PALAPA.x, PALAPA.y + PALAPA.dy, PALAPA_ALERO);
-  const PR1 = p(pcx - PALAPA_CUMBRERA / 2, pcy, PALAPA_CUMBRE), PR2 = p(pcx + PALAPA_CUMBRERA / 2, pcy, PALAPA_CUMBRE);
-  const techoNoche: Pt[][] = [[PA, PB, PR2, PR1], [PD, PA, PR1, PR1], [PB, PC, PR2, PR2], [PC, PD, PR1, PR2]];
-  const lounge: Pt[] = [[PALAPA.x + 14, PALAPA.y + 20], [PALAPA.x + 26, PALAPA.y + 16], [PALAPA.x + 38, PALAPA.y + 22], [PALAPA.x + 16, PALAPA.y + 36], [PALAPA.x + 30, PALAPA.y + 40], [PALAPA.x + 42, PALAPA.y + 34]];
+  const PR1 = p(pcx, pcy - PALAPA_CUMBRERA / 2, PALAPA_CUMBRE), PR2 = p(pcx, pcy + PALAPA_CUMBRERA / 2, PALAPA_CUMBRE);
+  const techoNoche: Pt[][] = [[PA, PB, PR1, PR1], [PD, PA, PR1, PR2], [PB, PC, PR2, PR1], [PC, PD, PR2, PR2]];
+  const lounge: Pt[] = [[PALAPA.x + 12, PALAPA.y + 8], [PALAPA.x + 24, PALAPA.y + 6], [PALAPA.x + 36, PALAPA.y + 10], [PALAPA.x + 14, PALAPA.y + 20], [PALAPA.x + 28, PALAPA.y + 22], [PALAPA.x + 40, PALAPA.y + 19]];
+  // El público de noche: sobre el paseo y en la mitad sur de la palapa, de cara al escenario del sur.
+  const publicoNoche: Pt[] = [...MULTITUD_PASEO, ...MULTITUD_PALAPA.filter(([, py]) => py > PALAPA.y + PALAPA.dy * 0.5)];
   // Luces del inmueble que también se encienden de noche: la puerta de vidrio, sus dos apliques y la lámpara de cada cabaña.
   const puertaNoche = poly(p(PUERTA.x, EDIF.dy, 0), p(PUERTA.x + PUERTA.dx, EDIF.dy, 0), p(PUERTA.x + PUERTA.dx, EDIF.dy, PUERTA.h), p(PUERTA.x, EDIF.dy, PUERTA.h));
   const lucesInmueble: Pt[] = [
@@ -669,12 +697,13 @@ function Noche({ g }: { g: GeoPerspectiva }) {
         {/* público del césped, de frente a la pantalla (bajo la palapa va el lounge): siluetas verticales en tono
             medio con la cabeza en luz, raleadas con ruido para romper las columnas de la retícula, y más luz junto
             a la tarima y en el centro. La opacidad va en los hijos: el grupo lo gobierna lam-aparece-persona. */}
-        {MULTITUD.slice(289).map(([x, y], k) => {
-          if (y < E.y + E.dy + 4) return null;
-          const fila = Math.floor(k / 26), col = k % 26;
+        {publicoNoche.map(([x, y], k) => {
+          if (y > E.y - 4) return null;
           const r = Math.sin(k * 12.9898 + 4.1) * 43758.5453;
           if (r - Math.floor(r) > 0.6) return null;
-          const luz = (0.4 + 0.6 * (1 - fila / 11)) * (1 - (0.3 * Math.abs(col - 12.5)) / 12.5);
+          // más luz cerca del escenario (al sur) y en el eje de la pantalla
+          const cerca = Math.max(0, Math.min(1, (y - 130) / 80));
+          const luz = (0.4 + 0.6 * cerca) * (1 - (0.3 * Math.min(1, Math.abs(x - cxE) / 50)));
           const [a, b] = p(x, y, 0), [, bt] = p(x, y, 5.5), h = b - bt;
           return (
             <g key={k} className="noche-persona" style={cssVars({ "--i": k })}>
@@ -712,22 +741,22 @@ function Noche({ g }: { g: GeoPerspectiva }) {
       <g className="capa capa-tarima">
         <Caja g={g} x={E.x} y={E.y} dx={E.dx} dy={E.dy} z1={E.h} tapa="#3a3327" izq="#2e2920" der="#26211a" borde={LUZ} w={1} animado={false} />
         <g>
-          <Caja g={g} x={cxE - 12} y={E.y} dx={24} dy={1.4} z0={E.h} z1={E.h + 10} tapa="#2e2920" izq="#26211a" der="#1e1a14" borde={LUZ} w={0.7} animado={false} />
+          {/* la cabina del DJ y sus monitores, cerca del frente (norte), de espaldas a la cámara */}
+          <Caja g={g} x={cxE - 5} y={E.y + 3} dx={10} dy={3} z0={E.h} z1={E.h + 3.5} tapa="#3a3327" izq="#2e2920" der="#26211a" borde={LUZ} w={0.7} animado={false} />
+          <g className="noche-dj"><Persona g={g} x={cxE} y={E.y + 7} z={E.h} tono={LUZ} clase="" opacidad={0.9} brazos="arriba" /></g>
+          {[cxE - 9, cxE + 7].map((mx, i) => <Caja key={i} g={g} x={mx} y={E.y + 1} dx={3} dy={2} z0={E.h} z1={E.h + 1.4} tapa="#3a3327" izq="#2e2920" der="#26211a" borde={LUZ} w={0.5} animado={false} />)}
+        </g>
+        <g>
+          {/* la pantalla LED al fondo (sur): desde aquí se ve su dorso y el resplandor que se escapa por los bordes */}
           <path className="noche-pantalla" d={pantalla} fill={OCRE} opacity="0.32" />
-        </g>
-        <g>
-          <Caja g={g} x={cxE - 5} y={E.y + 6} dx={10} dy={3} z0={E.h} z1={E.h + 3.5} tapa="#3a3327" izq="#2e2920" der="#26211a" borde={LUZ} w={0.7} animado={false} />
-          <g className="noche-dj"><Persona g={g} x={cxE} y={E.y + 5.2} z={E.h} tono={LUZ} clase="" opacidad={0.9} brazos="arriba" /></g>
-        </g>
-        <g>
-          {[cxE - 9, cxE + 7].map((mx, i) => <Caja key={i} g={g} x={mx} y={E.y + E.dy - 3} dx={3} dy={2} z0={E.h} z1={E.h + 1.4} tapa="#3a3327" izq="#2e2920" der="#26211a" borde={LUZ} w={0.5} animado={false} />)}
+          <Caja g={g} x={cxE - 12} y={E.y + E.dy - 1.4} dx={24} dy={1.4} z0={E.h} z1={E.h + 10} tapa="#2e2920" izq="#26211a" der="#1e1a14" borde={LUZ} w={0.7} animado={false} />
         </g>
       </g>
       <g className="capa capa-sonido">
         {[E.x - 6, E.x + E.dx + 2].map((sx, i) => (
           <g key={i}>
-            <Caja g={g} x={sx} y={E.y + E.dy - 5} dx={4} dy={4} z1={4.5} tapa="#2e2920" izq="#26211a" der="#1e1a14" borde={LUZ} w={0.7} animado={false} />
-            <Caja g={g} x={sx + 0.4} y={E.y + E.dy - 4.6} dx={3.2} dy={3.2} z0={4.5} z1={9.5} tapa="#2e2920" izq="#26211a" der="#1e1a14" borde={LUZ} w={0.7} animado={false} />
+            <Caja g={g} x={sx} y={E.y + 1} dx={4} dy={4} z1={4.5} tapa="#2e2920" izq="#26211a" der="#1e1a14" borde={LUZ} w={0.7} animado={false} />
+            <Caja g={g} x={sx + 0.4} y={E.y + 1.4} dx={3.2} dy={3.2} z0={4.5} z1={9.5} tapa="#2e2920" izq="#26211a" der="#1e1a14" borde={LUZ} w={0.7} animado={false} />
           </g>
         ))}
       </g>
@@ -977,28 +1006,28 @@ const T = {
     ojo: "Plano del recinto · vista desde el sur",
     titulo: "~18 000 ft² al aire libre con palapa techada de ~4 000 ft².",
     intro: "El recinto exterior visto desde el sur, como en la foto aérea, a partir del plano del sitio y las fotografías. Selecciona una zona para ver su ficha, o activa una capa de montaje: plan de lluvia, aforo sentado, load-in o montaje nocturno.",
-    aria: "Perspectiva del recinto desde el sur: el edificio de dos niveles al fondo con su puerta, el paseo pavimentado bajando hacia la cámara, la palapa de paja a la izquierda pegada al edificio y el jardín abierto al sur de ella, el área de arena con mesas de picnic a la derecha de la puerta, ocho cabañas-pérgola a la derecha del paseo, palmeras, setos y estacionamiento al este y al sur.",
+    aria: "Perspectiva del recinto desde el sur: el edificio de dos niveles al fondo con su puerta, el paseo pavimentado bajando hacia la cámara, la palapa de paja a la izquierda en la esquina suroeste sobre césped, con una franja de césped y un apron pavimentado entre ella y el edificio, el área de arena con mesas de picnic a la derecha de la puerta, ocho cabañas-pérgola a la derecha del paseo, palmeras, setos, estacionamiento al este y dos filas de estacionamiento al sur.",
     modos: { todo: "Vista general", lluvia: "Plan de lluvia", mesas: "Aforo sentado · 300", camion: "Load-in · camión 40 ft", noche: "Montaje nocturno" } as Partial<Record<Modo, string>>,
     explica: {
       todo: "Lo techado va en tinta y lo abierto en claro. El paseo baja de la puerta del edificio hacia el estacionamiento sur y es por donde entra todo. Fuera de los setos, la calle.",
       lluvia: "La palapa cubre ~4 000 ft² con techo de paja, abierta por los cuatro costados: para el sol y el agua que cae recta. Lo demás queda al aire, y para un evento de invierno conviene carpa lateral.",
       carpa: "Con viento la lluvia entra de lado. Para un evento de invierno se cierran los costados con carpa lateral, que trae tu proveedor: aquí va dibujada a trazos.",
       mesas: "Veinticuatro mesas redondas de diez (dieciséis bajo la palapa, ocho en el césped) y una mesa imperial de sesenta a lo largo del paseo, a escala. Son los ~300 sentados verificados, con pasillo de servicio entre mesas.",
-      gente: "Seiscientas personas de pie, a ocho pies cuadrados cada una, bajo la palapa y en el césped oeste. Es el aforo verificado, dibujado.",
+      gente: "Seiscientas personas de pie, a ocho pies cuadrados cada una, bajo la palapa, en el césped y sobre el paseo. Es el aforo verificado, dibujado.",
       camion: "Desde la calle, por el estacionamiento sur, al paseo pavimentado, continuo y a nivel: un camión de 40 ft llega hasta la puerta del edificio sin pisar césped.",
-      noche: "Un montaje posible, de noche: escenario con pantalla y truss al fondo del césped, torre de sonido a cada lado, tu barra bajo la palapa, público de pie y guirnaldas entre las palmeras. Todo lo encendido lo trae tu equipo; la luz colgada se aprueba en la visita.",
+      noche: "Un montaje posible, de noche: escenario con pantalla y truss sobre el estacionamiento sur, mirando al paseo y a la palapa, torre de sonido a cada lado, tu barra bajo la palapa, público de pie y guirnaldas entre las palmeras. Todo lo encendido lo trae tu equipo; la luz colgada se aprueba en la visita.",
       barra: "Bajo la palapa, del lado del paseo, hay sitio para montar barra. La barra la trae tu equipo: aquí va dibujada a trazos, donde suele ir.",
     } as Record<Modo, string>,
     zonas: {
       jardin: {
         nombre: "El Jardín", dato: "~18 000 ft² · al aire libre",
-        lee: "Césped artificial a los dos lados del paseo, un área de arena con mesas de picnic bajo sombrillas, palmeras reales y setos perimetrales.",
-        sirve: "Es el volumen del recinto: recepción de pie, cena larga a lo largo del paseo o escenario al fondo con público en el césped. El paseo lo parte en dos, y esa geometría manda en cualquier montaje.",
+        lee: "Césped artificial del lado de la palapa y arena del lado de las cabañas, un área de arena con mesas de picnic bajo sombrillas junto a la puerta, palmeras reales y setos perimetrales.",
+        sirve: "Es el volumen del recinto: recepción de pie, cena larga a lo largo del paseo o escenario sobre el estacionamiento sur con público en el paseo y bajo la palapa. El paseo lo parte en dos, y esa geometría manda en cualquier montaje.",
         ojo: "Al aire libre y sin cerramiento. El césped es artificial, así que no se embarra; para cargas puntuales hay que repartir apoyo.",
       },
       tiki: {
         nombre: "El Tiki Hut", dato: "~4 000 ft² · techado",
-        lee: "Palapa cuadrada de paja a cuatro aguas sobre postes de madera, en la esquina suroeste junto a NW 1st Ct, abierta por los cuatro costados. Es el plan de lluvia.",
+        lee: "Palapa de paja a cuatro aguas de unos 54 por 60 pies sobre postes de madera, en la esquina suroeste junto a NW 1st Ct y con el estacionamiento sur delante, abierta por los cuatro costados. Es el plan de lluvia.",
         sirve: "La sombra permanente del recinto. Caben dieciséis mesas de diez, la barra del cliente del lado del paseo, o un escenario pequeño.",
         ojo: "Para el agua que cae recta basta sola; con viento conviene cerrar los costados. La luz libre entre postes se levanta en la visita.",
       },
@@ -1032,28 +1061,28 @@ const T = {
     ojo: "Site plan · view from the south",
     titulo: "~18,000 sq ft outdoors with a ~4,000 sq ft thatched structure.",
     intro: "The outdoor site seen from the south, as in the aerial photograph, from the site plan and the photographs. Select a zone to see its data, or turn on a layout layer: rain plan, seated capacity, load-in or night setup.",
-    aria: "Perspective of the site from the south: the two-level building at the far end with its door, the paved walk coming down towards the camera, the thatched structure on the left right next to the building with the open garden south of it, the sand area with picnic tables to the right of the door, eight pergola cabanas on the right of the walk, palms, hedges and parking to the east and south.",
+    aria: "Perspective of the site from the south: the two-level building at the far end with its door, the paved walk coming down towards the camera, the thatched structure on the left in the south-west corner on turf, with a strip of turf and a paved apron between it and the building, the sand area with picnic tables to the right of the door, eight pergola cabanas on the right of the walk, palms, hedges, parking to the east and two rows of parking to the south.",
     modos: { todo: "Overview", lluvia: "Rain plan", mesas: "Seated capacity · 300", camion: "Load-in · 40 ft truck", noche: "Night setup" } as Partial<Record<Modo, string>>,
     explica: {
       todo: "Roofed volumes are drawn in ink, open ground in light tone. The walk runs from the building door down to the south parking, and it is how everything gets in. Beyond the hedges, the street.",
       lluvia: "The structure covers ~4,000 sq ft under thatch, open on all four sides: it stops sun and vertical rain. The rest stays open-air, and a winter event should budget for side tenting.",
       carpa: "With wind, rain comes in sideways. A winter event closes the sides with side tenting, which your supplier brings: here it is drawn dashed.",
       mesas: "Twenty-four round tables of ten (sixteen under the structure, eight on the turf) and one sixty-seat banquet table along the walk, to scale. These are the verified ~300 seated, with service aisles between tables.",
-      gente: "Six hundred people standing, at eight square feet each, under the structure and on the west turf. That is the verified capacity, drawn.",
+      gente: "Six hundred people standing, at eight square feet each, under the structure, on the turf and along the walk. That is the verified capacity, drawn.",
       camion: "From the street, through the south parking, onto the paved walk, continuous and level: a 40 ft truck reaches the building door without crossing turf.",
-      noche: "One possible setup, at night: a stage with screen and truss at the far end of the turf, a sound tower on each side, your bar under the structure, a standing crowd and string lights between the palms. Everything lit is brought by your team; hung lighting is approved at the visit.",
+      noche: "One possible setup, at night: a stage with screen and truss on the south parking, facing the walk and the structure, a sound tower on each side, your bar under the structure, a standing crowd and string lights between the palms. Everything lit is brought by your team; hung lighting is approved at the visit.",
       barra: "Under the structure, on the walk side, there is room to set up a bar. The bar comes with your team: here it is drawn dashed, where it usually goes.",
     } as Record<Modo, string>,
     zonas: {
       jardin: {
         nombre: "The Garden", dato: "~18,000 sq ft · open air",
-        lee: "Artificial turf on both sides of the walk, a sand area with picnic tables under umbrellas, real palms and perimeter hedges.",
-        sirve: "This is the volume of the site: standing reception, a long dinner along the walk, or a stage at the far end with a crowd on the turf. The walk splits it in two, and that geometry drives any layout.",
+        lee: "Artificial turf on the structure's side and sand on the cabanas' side, a sand area with picnic tables under umbrellas by the door, real palms and perimeter hedges.",
+        sirve: "This is the volume of the site: standing reception, a long dinner along the walk, or a stage on the south parking with a crowd on the walk and under the structure. The walk splits it in two, and that geometry drives any layout.",
         ojo: "Open air, no enclosure. The turf is artificial, so it will not turn to mud; point loads need spreading.",
       },
       tiki: {
         nombre: "The Tiki Hut", dato: "~4,000 sq ft · covered",
-        lee: "A square four-hip thatch roof on timber posts, in the south-west corner by NW 1st Ct, open on all four sides. It is the rain plan.",
+        lee: "A four-hip thatch roof of about 54 by 60 feet on timber posts, in the south-west corner by NW 1st Ct with the south parking in front, open on all four sides. It is the rain plan.",
         sirve: "The site's permanent shade. It takes sixteen tables of ten, the client's bar on the walk side, or a small stage.",
         ojo: "For vertical rain it is enough on its own; with wind you will want the sides closed. Clear span between posts is surveyed at the visit.",
       },
@@ -1115,10 +1144,10 @@ const Dibujo = memo(function Dibujo({ lang, zona, aforo, alEntrar, alSalir, alTo
   const GOTAS = Array.from({ length: 360 }, () => ({ x: VB.x + azar() * VB.w, y: VB.y + azar() * VB.h, t: -(azar() * 1.1).toFixed(2) }));
   // ondas de impacto en el paseo y el césped (nunca bajo la palapa) y charcos en el paseo
   const ONDAS: Array<[number, number]> = [
-    ...Array.from({ length: 10 }, (_, i): [number, number] => [PASEO.x + 3 + (i * 5) % 11, PASEO.y0 + 30 + i * 17]),
-    ...Array.from({ length: 6 }, (_, i): [number, number] => [12 + i * 9, PALAPA.y + PALAPA.dy + 10 + (i * 13) % 60]),
+    ...Array.from({ length: 8 }, (_, i): [number, number] => [PASEO.x + 3 + (i * 5) % 11, PASEO.y0 + 24 + i * 12]),
+    ...Array.from({ length: 6 }, (_, i): [number, number] => [PASEO.x + PASEO.dx + 3 + (i % 2) * 2.5, 138 + i * 12]),
   ];
-  const CHARCOS: Array<[number, number]> = [[PASEO.x + 4, 150], [PASEO.x + 11, 175], [PASEO.x + 5, 200], [PASEO.x + 10, 222], [20, 250], [90, 250], [128, 250]];
+  const CHARCOS: Array<[number, number]> = [[PASEO.x + 4, 140], [PASEO.x + 11, 165], [PASEO.x + 5, 190], [PASEO.x + 10, 208], [24, PARKING_S.y + 22], [92, PARKING_S.y + 22], [120, PARKING_S.y + 22]];
 
   // El paseo, losa a losa: cada 8 ft una losa con su junta, en dos tonos alternos, como en la foto.
   const juntas = [];
@@ -1141,13 +1170,23 @@ const Dibujo = memo(function Dibujo({ lang, zona, aforo, alEntrar, alSalir, alTo
     plazas.push(<line key={`e${i}`} className="ap" x1={a[0]} y1={a[1]} x2={b[0]} y2={b[1]} stroke="#cfc7b6" strokeWidth="0.5" />);
     if (i < PARKING_E.plazas && i % 3 !== 1) coches.push({ prof: g.profundidad(PARKING_E.x + 14, y + pE / 2), el: <Coche key={`ce${i}`} g={g} x={PARKING_E.x + 7} y={y + (pE - 6.5) / 2} eje="x" tono={tonos[i % tonos.length]} suv={i % 2 === 0} /> });
   }
+  // Al sur, dos filas de plazas con la calle de maniobra entre ellas (plano de Newmark). La boca del paseo queda libre
+  // en las dos filas (por ahí entra el camión) y, en la fila de arriba, también el tramo donde se monta el escenario.
   const pS = PARKING_S.dx / PARKING_S.plazas;
-  for (let i = 0; i <= PARKING_S.plazas; i++) {
-    const x = PARKING_S.x + i * pS;
-    const a = p(x, PARKING_S.y + 1, 0.02), b = p(x, PARKING_S.y + PARKING_S.dy - 1, 0.02);
-    plazas.push(<line key={`s${i}`} className="ap" x1={a[0]} y1={a[1]} x2={b[0]} y2={b[1]} stroke="#cfc7b6" strokeWidth="0.5" />);
-    if (i < PARKING_S.plazas && (i * 5) % 4 !== 2 && (x < PASEO.x - 12 || x > PASEO.x + PASEO.dx + 6)) coches.push({ prof: g.profundidad(x + pS / 2, PARKING_S.y + 11), el: <Coche key={`cs${i}`} g={g} x={x + (pS - 6.5) / 2} y={PARKING_S.y + 3} eje="y" tono={tonos[(i + 2) % tonos.length]} suv={i % 3 === 0} /> });
-  }
+  const filasS = [PARKING_S.y, PARKING_S.y + PARKING_S.fila + PARKING_S.calle];
+  filasS.forEach((fy, f) => {
+    for (let i = 0; i <= PARKING_S.plazas; i++) {
+      const x = PARKING_S.x + i * pS;
+      const a = p(x, fy + 1, 0.02), b = p(x, fy + PARKING_S.fila - 1, 0.02);
+      plazas.push(<line key={`s${f}-${i}`} className="ap" x1={a[0]} y1={a[1]} x2={b[0]} y2={b[1]} stroke="#cfc7b6" strokeWidth="0.5" />);
+      const cxs = x + pS / 2;
+      const boca = cxs > PASEO.x - 10 && cxs < PASEO.x + PASEO.dx + 10;
+      const escenario = f === 0 && cxs > ESCENARIO.x - 9 && cxs < ESCENARIO.x + ESCENARIO.dx + 9;
+      if (i < PARKING_S.plazas && (i * 5 + f) % 4 !== 2 && !boca && !escenario) coches.push({ prof: g.profundidad(cxs, fy + 8), el: <Coche key={`cs${f}-${i}`} g={g} x={x + (pS - 6.5) / 2} y={fy + 0.5} eje="y" tono={tonos[(i + 2 + f) % tonos.length]} suv={(i + f) % 3 === 0} /> });
+    }
+  });
+  // La calle de maniobra: una raya central discontinua, como en el plano.
+  const calleS = [p(PARKING_S.x + 2, PARKING_S.y + PARKING_S.fila + PARKING_S.calle / 2, 0.02), p(PARKING_S.x + PARKING_S.dx - 2, PARKING_S.y + PARKING_S.fila + PARKING_S.calle / 2, 0.02)];
 
   // Los cuatro costados abiertos de la palapa: flechas hacia fuera.
   const cP: Pt = [PALAPA.x + PALAPA.dx / 2, PALAPA.y + PALAPA.dy / 2];
@@ -1157,7 +1196,7 @@ const Dibujo = memo(function Dibujo({ lang, zona, aforo, alEntrar, alSalir, alTo
     [p(PALAPA.x, cP[1], 5), p(PALAPA.x - 7, cP[1], 5)],
     [p(PALAPA.x + PALAPA.dx, cP[1], 5), p(PALAPA.x + PALAPA.dx + 7, cP[1], 5)],
   ];
-  const pasillos = [1.5, 2.5].map((f) => [p(PALAPA.x + 3, PALAPA.y + 7 + f * 13.3 - 6.6, 0.1), p(PALAPA.x + PALAPA.dx - 3, PALAPA.y + 7 + f * 13.3 - 6.6, 0.1)] as [Pt, Pt]);
+  const pasillos = [1.5, 2.5].map((f) => [p(PALAPA.x + 3, PALAPA.y + 8 + f * 14.6 - 7.3, 0.1), p(PALAPA.x + PALAPA.dx - 3, PALAPA.y + 8 + f * 14.6 - 7.3, 0.1)] as [Pt, Pt]);
 
   // Los objetos sueltos, ordenados por profundidad: lo lejano se pinta primero.
   const objetos: Array<{ prof: number; el: React.ReactNode }> = [
@@ -1184,6 +1223,13 @@ const Dibujo = memo(function Dibujo({ lang, zona, aforo, alEntrar, alSalir, alTo
     ...MESAS.slice(16, mesasN).map(([x, y], i) => ({ prof: g.profundidad(x, y), el: <g key={`mesa${i}`} className="mesas"><Mesa g={g} x={x} y={y} i={i + 16} /></g> })),
     ...(sillasLargas > 0 ? [{ prof: g.profundidad(MESA_LARGA.x + 2, MESA_LARGA.y + 30), el: <g key="mesa-larga" className="mesas"><MesaLarga g={g} sillas={sillasLargas} /></g> }] : []),
     ...GENTE_SUELTA.map(([x, y], i) => ({ prof: g.profundidad(x, y), el: <g key={`gs${i}`} className="parado gente-suelta" style={cssVars({ "--i": i })}><Persona g={g} x={x} y={y} clase="" tono={i % 2 ? "#55504a" : "#3e3a34"} /></g> })),
+    // las jardineras contra la fachada, con sus plantas (cenital)
+    ...JARDINERAS.map(([jx, jy], i) => ({ prof: g.profundidad(jx, jy), el: (
+      <g key={`jf${i}`}>
+        <Caja g={g} x={jx - 2.6} y={jy - 1} dx={5.2} dy={2} z1={1.6} tapa="#cfc8ba" izq="#c5bdae" der="#bab2a3" borde={GRIS} w={0.35} animado={false} />
+        {[[-1.6, 0], [-0.4, 0.3], [0.8, -0.2], [1.9, 0.2]].map(([ox, oy], k) => <Elipse key={k} g={g} x={jx + ox} y={jy + oy} r={0.9} z={2.2 + (k % 2) * 0.3} fill={k % 2 ? "#6a7752" : "#4f5a3e"} />)}
+      </g>
+    ) })),
     { prof: g.profundidad(CAMION.x, CAMION.y + 20), el: (
       <g key="camion" className="camion" pointerEvents="none" style={cssVars({ "--cx": `${desplazamiento.cx.toFixed(1)}px`, "--cy": `${desplazamiento.cy.toFixed(1)}px`, "--s": escalaCamion.toFixed(3) })}>
         <Camion g={g} />
@@ -1226,6 +1272,7 @@ const Dibujo = memo(function Dibujo({ lang, zona, aforo, alEntrar, alSalir, alTo
         <path className="rl tz lote" pathLength={1} d={techo(0, 0, LOTE.dx, LOTE.dy, 0)} fill="#f4efe3" stroke={GRIS} strokeWidth="0.8" />
         <path className="rl parking" d={techo(PARKING_E.x, PARKING_E.y, PARKING_E.dx, PARKING_E.dy, 0.01)} fill="#e8e2d6" />
         <path className="rl parking" d={techo(PARKING_S.x, PARKING_S.y, PARKING_S.dx, PARKING_S.dy, 0.01)} fill="#e8e2d6" />
+        <line className="ap" x1={calleS[0][0]} y1={calleS[0][1]} x2={calleS[1][0]} y2={calleS[1][1]} stroke="#cfc7b6" strokeWidth="0.5" strokeDasharray="4 3" />
         {plazas}
         <g className={zClase("jardin")} {...zProps("jardin")}>
           <path className="rl" d={techo(ARENA.x, ARENA.y, ARENA.dx, ARENA.dy, 0.02)} fill="#efe6d2" />
@@ -1234,6 +1281,18 @@ const Dibujo = memo(function Dibujo({ lang, zona, aforo, alEntrar, alSalir, alTo
           <path className="rl" d={techo(ARENA_CABECERA.x, ARENA_CABECERA.y, ARENA_CABECERA.dx, ARENA_CABECERA.dy, 0.02)} fill="url(#lam-arena)" opacity="0.7" />
           <path className="rl cesped" d={techo(CESPED_O.x, CESPED_O.y, CESPED_O.dx, CESPED_O.dy, 0.02)} fill="#dfe0c6" />
           <path className="rl cesped" d={techo(CESPED_O.x, CESPED_O.y, CESPED_O.dx, CESPED_O.dy, 0.02)} fill="url(#lam-cesped)" opacity="0.6" />
+          {/* el apron pavimentado contra la fachada, con losas y juntas de césped como el paseo (cenital) */}
+          <path className="rl" d={techo(PLAZA.x, PLAZA.y, PLAZA.dx, PLAZA.dy, 0.04)} fill={PAPEL} stroke="#d8d0c0" strokeWidth="0.4" />
+          {Array.from({ length: Math.ceil(PLAZA.dx / 9) }, (_, i) => i).map((i) => {
+            const x0 = PLAZA.x + i * 9, w = Math.min(9, PLAZA.x + PLAZA.dx - x0);
+            return (
+              <g key={`pl${i}`}>
+                {i % 2 === 1 && <path className="rl" d={techo(x0, PLAZA.y, w, PLAZA.dy, 0.045)} fill="#ece7db" />}
+                {i > 0 && <path className="rl" d={techo(x0 - 0.3, PLAZA.y, 0.6, PLAZA.dy, 0.05)} fill="#9faa86" />}
+              </g>
+            );
+          })}
+          <path className="rl" d={techo(PLAZA.x, PLAZA.y + PLAZA.dy / 2 - 0.3, PLAZA.dx, 0.6, 0.05)} fill="#9faa86" />
           {/* al este del paseo no hay césped: es arena (ARENA cubre toda la franja) */}
         </g>
         <path className="rl tz paseo-pav" pathLength={1} d={techo(PASEO.x, PASEO.y0, PASEO.dx, PASEO.y1 - PASEO.y0 + 6, 0.04)} fill={PAPEL} stroke={GRIS} strokeWidth="0.7" />
@@ -1242,7 +1301,7 @@ const Dibujo = memo(function Dibujo({ lang, zona, aforo, alEntrar, alSalir, alTo
         <text className="ap" transform={`translate(${puntoCalleO[0].toFixed(1)},${puntoCalleO[1].toFixed(1)}) rotate(-72)`} fill={GRIS} fontFamily="ui-monospace,monospace" fontSize="7" letterSpacing="1.6" textAnchor="middle">{t.calleO}</text>
         <text className="ap" transform={`translate(${puntoCalleS[0].toFixed(1)},${puntoCalleS[1].toFixed(1)})`} fill={GRIS} fontFamily="ui-monospace,monospace" fontSize="7.5" letterSpacing="1.8" textAnchor="middle">{t.calleS}</text>
         <text className="ap" transform={`translate(${p(PARKING_E.x + PARKING_E.dx - 7, PARKING_E.y + 5, 0)[0].toFixed(1)},${p(PARKING_E.x + PARKING_E.dx - 7, PARKING_E.y + 5, 0)[1].toFixed(1)})`} fill={GRIS} fontFamily="ui-monospace,monospace" fontSize="7" textAnchor="middle">{t.parking}</text>
-        <text className="ap" transform={`translate(${p(PARKING_S.x + 2.5 * pS, PARKING_S.y + 12, 0)[0].toFixed(1)},${p(PARKING_S.x + 2.5 * pS, PARKING_S.y + 12, 0)[1].toFixed(1)})`} fill={GRIS} fontFamily="ui-monospace,monospace" fontSize="7" textAnchor="middle">{t.parking}</text>
+        <text className="ap" transform={`translate(${p(PARKING_S.x + PARKING_S.dx - 14, PARKING_S.y + PARKING_S.fila + PARKING_S.calle / 2 + 2, 0)[0].toFixed(1)},${p(PARKING_S.x + PARKING_S.dx - 14, PARKING_S.y + PARKING_S.fila + PARKING_S.calle / 2 + 2, 0)[1].toFixed(1)})`} fill={GRIS} fontFamily="ui-monospace,monospace" fontSize="7" textAnchor="middle">{t.parking}</text>
       </g>
 
       {/* ── la gente de pie (solo en su modo), sobre el suelo ─────── */}
@@ -1274,7 +1333,7 @@ const Dibujo = memo(function Dibujo({ lang, zona, aforo, alEntrar, alSalir, alTo
         <Seto g={g} x={0} y={PARKING_S.y - SETO.ancho} dx={PASEO.x - 6} dy={SETO.ancho} />
         <Seto g={g} x={PASEO.x + PASEO.dx + 6} y={PARKING_S.y - SETO.ancho} dx={PARKING_E.x - PASEO.x - PASEO.dx - 6} dy={SETO.ancho} />
         {/* el muro verde alto del fondo de las cabañas, entre la arena y el estacionamiento este */}
-        <Seto g={g} x={PARKING_E.x - SETO.ancho} y={PARKING_E.y} dx={SETO.ancho} dy={236 - PARKING_E.y} alto={8.5} />
+        <Seto g={g} x={PARKING_E.x - SETO.ancho} y={PARKING_E.y} dx={SETO.ancho} dy={PARKING_S.y - PARKING_E.y} alto={8.5} />
       </g>
 
       {/* ── la gente que anda por el paseo (reposo con vida): va ANTES de los
@@ -1345,8 +1404,8 @@ const Dibujo = memo(function Dibujo({ lang, zona, aforo, alEntrar, alSalir, alTo
 
       {/* ── cotas, norte, escala ─────────────────────────────────── */}
       <g pointerEvents="none" style={cssVars({ "--d": "1.9s" })}>
-        <Cota g={g} a={[0, PARKING_S.y + PARKING_S.dy + 3]} b={[LOTE.dx, PARKING_S.y + PARKING_S.dy + 3]} texto="≈ 150 FT · 46 M" t={0.28} />
-        <Cota g={g} a={[LOTE.dx + 4, EDIF.dy]} b={[LOTE.dx + 4, PARKING_S.y]} texto="≈ 135 FT · 41 M" lado={-1} />
+        <Cota g={g} a={[0, LOTE.dy + 3]} b={[LOTE.dx, LOTE.dy + 3]} texto="≈ 131 FT · 40 M" t={0.28} />
+        <Cota g={g} a={[LOTE.dx + 4, EDIF.dy]} b={[LOTE.dx + 4, LOTE.dy]} texto="≈ 154 FT · 47 M" lado={-1} />
         <Cota g={g} a={[PALAPA.x, PALAPA.y + PALAPA.dy + 5]} b={[PALAPA.x + PALAPA.dx, PALAPA.y + PALAPA.dy + 5]} texto="≈ 54 FT" clase="cota-palapa" />
 
         <g className="ap" transform={`translate(${(VB.x + VB.w - 30).toFixed(1)},${(VB.y + 40).toFixed(1)})`}>
@@ -1490,7 +1549,7 @@ export default function LaminaRecinto({
   const rotulo = (z: Zona, ancla: Pt, dx: number, dy: number, lado: "" | "der" = "", vert: "" | "inf" = "") =>
     ({ zona: z, ancla, fin: [ancla[0] + dx, ancla[1] + dy] as Pt, lado, vert });
   const ROTULOS = [
-    rotulo("jardin", p(22, 190, 0), -28, 40, "der", "inf"),
+    rotulo("jardin", p(PASEO.x + 3, 198, 0), -14, 60, "der", "inf"),
     rotulo("tiki", p(cxP, cyP, PALAPA_CUMBRE), -26, -50, "der"),
     rotulo("cabanas", p(CABANAS.x + CABANAS.dx / 2, CABANAS.y0 + 3 * CABANAS.paso + 5, CABANAS.h), 96, -74),
     rotulo("acceso", p(PASEO.x + PASEO.dx / 2 + 6, LOTE.dy + 14, 0), 30, -4),

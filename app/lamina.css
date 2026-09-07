@@ -1056,6 +1056,76 @@
   opacity: .8;
 }
 
+/* ── el cine en un teléfono ───────────────────────────────────────────────────
+   Daniel, 7-sep-2026: «en PC la experiencia se ve perfecta, pero desde teléfono
+   no se ve». No había reglas móviles: la rejilla de dos columnas dejaba 50 px al
+   dibujo, y el panel, sin sitio, pintaba el subtítulo encima de los mandos.
+   Aquí el dibujo va arriba a todo el ancho, los capítulos en una tira que se
+   desliza, el subtítulo con el espacio que quede y los mandos abajo. */
+@media (max-width: 720px) {
+  .lam.cine {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+  }
+  .lam.cine .lam-escenario {
+    container-type: normal;
+    display: block;
+    padding: max(8px, env(safe-area-inset-top)) 10px 0;
+  }
+  /* En vertical el papel es cuadrado (--ratio 1, la cámara arranca a 1,35×, como
+     en el MP4 9:16). El alto se fija por el ancho, nunca con max-height: una
+     max-height sobre una figura con aspect-ratio dejaba la fila de la rejilla
+     con el alto intrínseco y un hueco negro de 60 px bajo el dibujo. */
+  .lam.cine .lam-fig {
+    width: min(100%, 50vh);
+    aspect-ratio: var(--ratio, 1);
+    max-height: none;
+    margin: 0 auto;
+  }
+  .lam.cine .rec { border-left: 0; overflow: hidden; }
+  .cine-cab { padding: 10px 14px 8px; gap: 10px; align-items: center; }
+  .cine-idioma a { padding: 7px 9px; }
+  .cine-salir { padding: 7px 10px; }
+  .cine-segmentos { padding: 0 14px 8px; }
+  .lam.cine .cine-caps {
+    display: flex;
+    gap: 16px;
+    padding: 0 14px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    flex: 0 0 auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .lam.cine .cine-caps::-webkit-scrollbar { display: none; }
+  .lam.cine .cine-caps li { border-bottom: 0; flex: 0 0 auto; }
+  .lam.cine .rec-cap { padding: 8px 0; font-size: 12.5px; white-space: nowrap; }
+  .lam.cine .rec-cap.activo { box-shadow: inset 0 -2px 0 var(--ocre); }
+  .cine-sub {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    justify-content: flex-start;
+    padding: 12px 14px 8px;
+  }
+  .cine-pregunta { padding-bottom: 6px; }
+  .cine-frase { font-size: 18px; line-height: 1.3; }
+  .cine-texto { max-height: 16vh; padding: 0 14px 8px; font-size: 12.5px; }
+  .cine-mandos {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 6px;
+    padding: 8px 14px calc(10px + env(safe-area-inset-bottom));
+    scrollbar-width: none;
+  }
+  .cine-mandos::-webkit-scrollbar { display: none; }
+  .lam.cine .rec-boton { padding: 9px 12px; font-size: 12.5px; flex: 0 0 auto; }
+  .lam.cine .rec-boton-plano { padding: 9px 10px; }
+  .cine-teclas { display: none; }
+  .cine-cta { flex: 0 0 auto; }
+  .cine-cierre { padding: 14px 14px 18px; }
+}
+
 /* ── el cierre: el formulario dentro del cine ─────────────────────────────── */
 
 .cine-cierre {
@@ -1825,6 +1895,13 @@
 .lam[data-modo="lluvia"] .onda, .lam[data-modo="carpa"] .onda { transform-box: fill-box; transform-origin: center; animation: lam-onda 1.4s ease-out infinite; animation-delay: var(--t, 0s); }
 @keyframes lam-onda { 0% { transform: scale(.15); opacity: .55; } 100% { transform: scale(1); opacity: 0; } }
 .lam[data-modo="lluvia"] .peatones, .lam[data-modo="lluvia"] .gente-suelta, .lam[data-modo="carpa"] .peatones, .lam[data-modo="carpa"] .gente-suelta { display: none; }
+/* Cuando se habla del edificio (capa `edificio`), lo que tiene delante se aparta:
+   las palmeras y la palapa se atenúan y los peatones se van. Daniel (7-sep):
+   «cuando se habla del edificio del fondo, no se ve bien». Con !important para
+   ganarle a las animaciones de entrada que fijan la opacidad. */
+.lam .palma, .lam .palapa-todo { transition: opacity .7s ease; }
+.lam[data-capas~="edificio"] .palma, .lam[data-capas~="edificio"] .palapa-todo { opacity: .1 !important; }
+.lam[data-capas~="edificio"] .peatones, .lam[data-capas~="edificio"] .gente-suelta { display: none; }
 .lam .a-cubierto { display: none; }
 .lam[data-modo="lluvia"] .a-cubierto, .lam[data-modo="carpa"] .a-cubierto { display: block; }
 /* El suelo mojado se oscurece, no se aclara. */

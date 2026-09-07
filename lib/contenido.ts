@@ -37,7 +37,7 @@ export const PAGINAS: Pagina[] = [
     ojo: { es: "Espacio 01 · al aire libre", en: "Space 01 · open-air" },
     h1: { es: "El Jardín", en: "The Garden" },
     respuesta: {
-      es: "El Jardín son ~18.000 ft² de exterior continuo en Wynwood, Miami: la superficie mayor del recinto y la que admite montaje libre. Un paseo pavimentado baja de la puerta del edificio al estacionamiento, con césped artificial a los lados, dos hileras de palmeras reales, un área de arena con mesas de picnic y ocho cabañas amuebladas.",
+      es: "El Jardín son ~18.000 ft² de exterior continuo en Wynwood, Miami: la superficie mayor del recinto y la que admite montaje libre. Un paseo pavimentado baja de la puerta del edificio al estacionamiento, con césped artificial del lado de la palapa y arena del lado de las cabañas, dos hileras de palmeras reales, un área de arena con mesas de picnic y ocho cabañas amuebladas.",
       en: "The Garden is ~18,000 sq ft of continuous outdoor space in Wynwood, Miami: the larger surface of the site and the one that takes an open build. A paved walk runs from the building door down to the parking lot, with artificial turf on both sides, two rows of real palms, a sand area with picnic tables and eight furnished cabanas.",
     },
     title: {
@@ -68,7 +68,7 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "Qué hay en el suelo", en: "What's on the ground" },
         cuerpo: {
-          es: "Paseo pavimentado central de extremo a extremo, con césped artificial a ambos lados. Setos perimetrales cierran el recinto y mesas de picnic fijas completan el mobiliario existente. Es superficie firme: no hay que resolver piso antes de montar.",
+          es: "Paseo pavimentado central de la puerta al estacionamiento, con césped artificial a un lado y arena al otro. Setos perimetrales cierran el recinto y mesas de picnic fijas completan el mobiliario existente. Es superficie firme: no hay que resolver piso antes de montar.",
           en: "A central paved walk running end to end, with artificial turf on both sides. Perimeter hedges close the site and fixed picnic tables complete the existing furniture. It is firm ground: you do not have to solve flooring before you build.",
         },
       },

@@ -283,6 +283,31 @@ cómo animarlo y unirlo con la voz».
   Regla: **una foto nunca más larga que la distancia al hito siguiente menos 1 s**, y un
   cambio de modo necesita al menos 3 s de voz por delante.
 
+### Quinta tanda del 7-sep: la geometría de verdad (la cenital manda)
+
+Daniel puso la cenital al lado del dibujo: «viendo las fotos no hay nada al lado así, no es
+acorde a la realidad». La palapa NO está pegada al edificio con un jardín al sur: está en la
+**esquina suroeste**, con un seto y enseguida **dos filas de estacionamiento** con calle de
+maniobra antes de NW 21st Ct (plano de Newmark, página 10, leído ahora con la cenital
+encima). Entre la palapa y la fachada: un apron pavimentado con jardineras y una franja de
+césped. Lote ≈131 × 258 ft. Todo en `lib/recinto.geo.ts` (cuarta geometría). Lecciones:
+
+- **Orientar la cenital antes de leerla**: en esa foto el norte está a la IZQUIERDA (el
+  edificio), el sur a la derecha, el oeste abajo. Leída con el norte arriba, la palapa
+  «quedaba» junto al edificio. La aérea a pie de paseo (`aerea-predio.jpg`) fija la regla:
+  palapa a la izquierda del paseo, cabañas a la derecha, y los coches al fondo de cada lado.
+- **La cámara del sur no ve lo que queda detrás de la palapa** (cumbrera a 34 ft): el
+  escenario del montaje pasó al estacionamiento sur mirando al norte, y se dibuja por
+  detrás, con los haces hacia el público del paseo y de la palapa. El guion del capítulo 6
+  cambió («el escenario sobre el estacionamiento, de frente al paseo») y se regrabó.
+- **El cine en teléfono no tenía reglas móviles** (dos columnas: 50 px para el dibujo). Y
+  el «no se ve» real: la sección `.rv` con `translateY` convierte al ancestro en contenedor
+  del `position: fixed` si el cine se abre antes de hacer scroll. `.rv:has(.lam.cine)` +
+  `closest('.rv').classList.add('dentro')`. Y `max-height` sobre una figura con
+  `aspect-ratio` deja la fila de la rejilla con el alto intrínseco (hueco negro de 60 px).
+- **Ritmo**: `COLA_CAPITULO` (1,7 s al acabar cada capítulo, también en el MP4) y las fotos
+  ganan un segundo sin pisar el hito siguiente (clamp en `Recorrido.tsx`, no a mano).
+
 ### Cuarta tanda del 7-sep: crítica con agentes, objeto por objeto contra las fotos
 
 Daniel: «¿algo más para pulir? dedícate otra tanda», «re-mira el video varias veces hasta que

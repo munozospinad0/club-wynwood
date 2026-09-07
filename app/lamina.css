@@ -1757,11 +1757,15 @@
 @keyframes lam-sombrilla { from { transform: rotate(-.9deg); } to { transform: rotate(.9deg); } }
 /* (la rampa: regla nueva en la cuarta tanda, más abajo) */
 .lam[data-modo="noche"] .noche-persona { transform-box: fill-box; transform-origin: 50% 100%; }
-.lam[data-modo="noche"][data-capas~="publico"] .noche-persona,
 .lam[data-modo="noche"]:not([data-capas]) .noche-persona,
 .lam[data-modo="noche"][data-capas=""] .noche-persona {
   animation: lam-aparece-persona .5s ease forwards, lam-respira 2.4s ease-in-out infinite alternate;
   animation-delay: calc(1.8s + var(--i, 0) * 6ms), calc(var(--i, 0) * -71ms);
+}
+/* En el recorrido el público entra con su frase («el público en el césped»): en menos de un segundo, no en cuatro. */
+.lam[data-modo="noche"][data-capas~="publico"] .noche-persona {
+  animation: lam-aparece-persona .4s ease forwards, lam-respira 2.4s ease-in-out infinite alternate;
+  animation-delay: calc(.1s + var(--i, 0) * 2.2ms), calc(var(--i, 0) * -71ms);
 }
 @keyframes lam-respira { from { transform: translateY(0); } to { transform: translateY(-.55px); } }
 @media (prefers-reduced-motion: reduce) { .lam .sombrilla, .lam .rampa, .lam .noche-persona { animation: none !important; } }

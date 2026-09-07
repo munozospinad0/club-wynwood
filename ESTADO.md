@@ -117,6 +117,56 @@ dibujo no encaja con las fotos… del edificio también lo tiene que hacer».
   el formulario en el panel mientras el recorrido sigue (Daniel: «un botón fácil
   para llenar el form y conseguir más información»). Mide `form_start`.
 
+### El plano del sitio, por fin, y una cámara de verdad (cuarta versión del dibujo)
+
+Daniel encontró en LoopNet el **flyer de Newmark** (`Proyecto wynwood/loopnet/flyer-loopnet.pdf`,
+8 páginas) con el **plano del sitio** en la página 10, más el brochure viejo de Metro 1
+(`brochure-marketing.pdf`, «Casa Wynwood», 2015: edificio 12 125 SF en un lote de
+32 500 SF, tres parcelas 2129/2125/2105). Lo que dice el plano, y que las dos geometrías
+anteriores tenían mal: **lote de esquina** (NW 1st Ct al oeste, NW 21st Ct al sur), el
+**edificio al norte** (~119 × 102 ft de huella; 16 000 SF con altillo, cuatro salas privadas
+arriba, licencia de bar hasta las 3 AM, zonificación T5-O NRD-1), el **paseo bajando de la
+puerta del edificio al sur** (~15 × 105 ft), la **palapa al suroeste** (~54 × 54) junto al
+seto de NW 1st Ct, el **área de arena con picnic y sombrillas** entre palapa y edificio, las
+**ocho pérgolas al este del paseo**, **estacionamiento propio al este y al sur**. Todo en
+`lib/recinto.geo.ts`, con la escala (2,4 px/ft) que hace cuadrar la huella del edificio
+con el brochure. LoopNet devuelve 403 a cualquier navegador automatizado (Playwright y
+Scrapling): las fotos hay que bajarlas a mano; las principales vienen en el flyer
+(`loopnet/fotos-flyer/`, hasta 2 212 px).
+
+**La proyección ya no es isométrica.** `lib/perspectiva.ts` implementa una cámara en
+perspectiva con la misma interfaz que `lib/iso.ts`; la cámara está donde estuvo el dron de
+la foto de portada (al sur, elevada, mirando a la puerta), con la palapa a la izquierda y las
+pérgolas a la derecha. Consecuencias: pintado por profundidad (`g.profundidad`), objetos a
+la escala de su punto (`g.escala`), cara lateral visible según el lado de la cámara, cotas
+con el ángulo de su línea. El guion se tradujo a las coordenadas nuevas (53 puntos) y se
+regrabaron los capítulos 1 («unos dieciocho mil pies cuadrados», ya no «doscientos
+cuarenta pies de largo») y 4 («desde la calle, por el estacionamiento»).
+
+**Objetos que se reconocen**: mesa redonda con tablero blanco, borde y centro, diez sillas
+con asiento y respaldo; pérgolas con postes finos y listones; mesas de picnic con sombrilla;
+coches; camión con cabina y ruedas mirando a la cámara. En mesas, gente, barra y noche el
+techo de la palapa se vuelve transparente.
+
+**Pendiente derivado:** `LaminaPlanta.tsx`, `LaminaEdificio.tsx` y `Cifras.tsx` siguen con
+la geometría vieja (240 × 92) y hay que rehacerlos con este plano; y `lib/venue.ts`
+(`GEOMETRIA`) también.
+
+### Medir hasta dónde se ve el recorrido
+
+Daniel: «que podamos ver y medir cuánta gente ve el video hasta dónde, así podemos
+mejorar». El recorrido se mide **con los nombres con que GA4 mide un vídeo**
+(`video_start`, `video_progress` al 10/25/50/75 %, `video_complete`, con `video_percent`,
+`video_current_time`, `video_duration`, `video_title` = «Recorrido técnico narrado · ES»),
+a propósito: entran en el informe de interacción con vídeo y en las exploraciones con las
+dimensiones «Video title» y «Video percent» sin crear nada. Se añade `tour_exit`, propio,
+con el porcentaje exacto al cerrar antes del final: ese es el dato de dónde se pierde la
+gente. El embudo por capítulo ya lo da `view_plate` con `plate_name: "recorrido"` y
+`chapter`. En `?recorrido=grabar` no se dispara ninguno (lo «ve» un navegador sin cabeza).
+Contrato actualizado en `~/crm-wynwood/docs/04-MEDICION.md`. **Nada de esto llega a
+ningún sitio hasta que existan los identificadores de GTM o GA4 en Vercel**: los eventos
+se acumulan en `dataLayer` y ahí se quedan.
+
 ### Las fotos, nítidas
 
 Daniel: «que las fotos no se vean borrosas». Las aéreas vienen de Flickr

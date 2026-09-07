@@ -53,6 +53,18 @@
   display: block;
   z-index: 1;
 }
+/* Las lineas de guia de los rotulos van en un SVG aparte encima del dibujo. */
+.lam-guias { z-index: 2; pointer-events: none; }
+.lam.pendiente .lam-guias, .lam.dibujar .lam-guias { opacity: 0; transition: opacity .5s ease; }
+.lam.listo .lam-guias { opacity: 1; }
+.lam.quieto .lam-guias { opacity: 1; }
+
+/* El camion, en perspectiva: al fondo del recorrido es mas pequeño (--s). */
+.lam[data-modo="camion"] .camion { transform-box: view-box; }
+@keyframes lam-camion {
+  from { transform: translate(var(--cx), var(--cy)) scale(var(--s, 1)); }
+  to   { transform: translate(0, 0) scale(1); }
+}
 /* El cajetín y los rótulos van SIEMPRE por encima del dibujo. */
 .lam-cajetin, .lam-etq { z-index: 2; }
 
@@ -1522,8 +1534,8 @@
 /* Con mesas, gente o barra bajo la palapa, el techo se vuelve transparente: es
    la seccion de un plano de arquitectura, y sin ella las mesas parecerian
    puestas encima del techo. */
-.lam[data-modo="mesas"] .palapa-cara, .lam[data-modo="gente"] .palapa-cara, .lam[data-modo="barra"] .palapa-cara { fill-opacity: .22 !important; transition: fill-opacity .6s ease; }
-.lam[data-modo="mesas"] .palapa line.ap, .lam[data-modo="gente"] .palapa line.ap, .lam[data-modo="barra"] .palapa line.ap { opacity: .12 !important; }
+.lam[data-modo="mesas"] .palapa-cara, .lam[data-modo="gente"] .palapa-cara, .lam[data-modo="barra"] .palapa-cara, .lam[data-modo="noche"] .palapa-cara { fill-opacity: .22 !important; transition: fill-opacity .6s ease; }
+.lam[data-modo="mesas"] .palapa line.ap, .lam[data-modo="gente"] .palapa line.ap, .lam[data-modo="barra"] .palapa line.ap, .lam[data-modo="noche"] .palapa line.ap { opacity: .12 !important; }
 .lam .palapa-cara { transition: fill-opacity .6s ease; }
 
 /* La cifra puede ser larga («sin cocina · sin cerramiento · sin clima»): que

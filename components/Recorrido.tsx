@@ -511,6 +511,77 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
     return () => clearTimeout(tm);
   }, [grabando, activo, ultimo, sonando]);
 
+  // ── hasta dónde llega la gente ───────────────────────────────────────────
+
+  /**
+   * MEDIR HASTA DÓNDE SE VE. Daniel: «que podamos ver y medir cuánta gente ve
+   * el vídeo hasta dónde, así podemos mejorar». Se manda con los nombres y los
+   * parámetros con que GA4 mide un vídeo (`video_start`, `video_progress` al
+   * 10/25/50/75, `video_complete`; `video_percent`, `video_current_time`,
+   * `video_duration`, `video_title`), así entra en sus informes de vídeo sin
+   * configurar nada. Al cerrar antes del final va `tour_exit` con el porcentaje
+   * exacto: ese es el dato de dónde se pierde la gente. El embudo por capítulo
+   * ya sale de `view_plate` con `chapter`. Grabando el MP4 no se mide nada: lo
+   * «ve» un navegador sin cabeza y contaminaría el informe.
+   */
+  const duracionesReales: number[] | undefined = manifiesto ? manifiesto.duraciones?.[lang] : undefined;
+  const porCapitulo = useMemo<number[]>(
+    () => (duracionesReales && duracionesReales.length === CAPITULOS.length
+      ? duracionesReales
+      : CAPITULOS.map((c) => Math.max(8, c.texto[lang].length / 14))),
+    [duracionesReales, lang]
+  );
+  const totalRecorrido = porCapitulo.reduce((s, d) => s + d, 0);
+  const transcurrido = porCapitulo.slice(0, indice).reduce((s, d) => s + d, 0) + Math.min(segundo, porCapitulo[indice] ?? 0);
+  const porcentaje = Math.max(0, Math.min(100, Math.round((transcurrido / totalRecorrido) * 100)));
+
+  const progreso = useRef({ porcentaje: 0, transcurrido: 0, capitulo: cap.id, completo: false });
+  useEffect(() => {
+    progreso.current.porcentaje = porcentaje;
+    progreso.current.transcurrido = transcurrido;
+    progreso.current.capitulo = cap.id;
+  }, [porcentaje, transcurrido, cap.id]);
+  const umbrales = useRef<Set<number>>(new Set());
+
+  const datosVideo = useCallback((extra: Record<string, unknown> = {}) => ({
+    video_title: `Recorrido técnico narrado · ${lang.toUpperCase()}`,
+    video_provider: "clubwynwood",
+    video_url: typeof location !== "undefined" ? location.pathname : "",
+    video_duration: Math.round(totalRecorrido),
+    lang,
+    chapter: progreso.current.capitulo,
+    ...extra,
+  }), [lang, totalRecorrido]);
+
+  // Arranca: se limpian los umbrales y se avisa.
+  useEffect(() => {
+    if (!activo || grabando) return;
+    umbrales.current.clear();
+    progreso.current.completo = false;
+    ev("video_start", datosVideo());
+    // Solo al pasar a activo: `datosVideo` cambia con el idioma y no es un arranque.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activo, grabando]);
+
+  // Cruza un umbral: 10, 25, 50, 75 %.
+  useEffect(() => {
+    if (!activo || grabando || !sonando) return;
+    for (const u of [10, 25, 50, 75]) {
+      if (porcentaje >= u && !umbrales.current.has(u)) {
+        umbrales.current.add(u);
+        ev("video_progress", datosVideo({ video_percent: u, video_current_time: Math.round(transcurrido) }));
+      }
+    }
+  }, [activo, grabando, sonando, porcentaje, transcurrido, datosVideo]);
+
+  // Termina: el último capítulo acabó y `siguiente` apagó el sonido con el reloj en cero.
+  useEffect(() => {
+    if (!activo || grabando || !ultimo || sonando || segundo !== 0) return;
+    if (!oidos.has(CAPITULOS.length - 1) || progreso.current.completo) return;
+    progreso.current.completo = true;
+    ev("video_complete", datosVideo({ video_percent: 100, video_current_time: Math.round(totalRecorrido) }));
+  }, [activo, grabando, ultimo, sonando, segundo, oidos, datosVideo, totalRecorrido]);
+
   // ── el aforo interactivo, antes de empezar ───────────────────────────────
 
   /**
@@ -624,12 +695,19 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
     setVistaAforo(false);
     setVerFormulario(false);
     if (!activo) return;
+    // Se va antes del final: el porcentaje exacto es el dato de dónde se pierde la gente.
+    if (!grabando && !progreso.current.completo) {
+      ev("tour_exit", datosVideo({
+        video_percent: progreso.current.porcentaje,
+        video_current_time: Math.round(progreso.current.transcurrido),
+      }));
+    }
     audio.current?.pause();
     setSonando(false);
     setActivo(false);
     // De vuelta a la página: la sección queda a la vista, no donde estuviera el scroll.
     requestAnimationFrame(() => raiz.current?.closest("#terreno")?.scrollIntoView({ block: "start" }));
-  }, [activo]);
+  }, [activo, grabando, datosVideo]);
 
   useEffect(() => {
     if (!activo || grabando) return;

@@ -1,102 +1,129 @@
 /**
- * GEOMETRÍA DEL RECINTO, en pies, leída de las fotografías aéreas.
+ * GEOMETRÍA DEL RECINTO, en pies, leída del PLANO DEL SITIO del flyer de Newmark
+ * (LoopNet, «Site Plan & Photos», página 10) y de las dos aéreas de la misma
+ * página. Es la tercera geometría del proyecto y la primera con un plano de
+ * verdad detrás; las dos anteriores salieron de los pies cuadrados declarados y
+ * dibujaban otro sitio.
  *
- * Daniel, 6-sep-2026: «el dibujo no encaja con las fotos que se tienen». Tenía
- * razón. La primera geometría ponía la palapa en una esquina alejada del paseo y
- * las cabañas como cajas en el borde opuesto. En las dos aéreas (la del hero y la
- * de las palmeras, tomadas desde la calle mirando al edificio) se ve otra cosa:
+ * LO QUE DICE EL PLANO (norte arriba; `x` hacia el este, `y` hacia el sur):
  *
- *   · El PASEO va por el centro del predio, de la calle a la puerta del edificio.
- *   · La PALAPA está pegada al paseo, a la izquierda, y es grande: un techo de
- *     paja a cuatro aguas con cumbrera larga, sobre postes, con césped alrededor.
- *   · A la derecha del paseo, la hilera de CABAÑAS son PÉRGOLAS: cuatro postes y
- *     un techo plano de listones blancos, abiertas, con un sofá dentro.
- *   · Dos hileras de PALMERAS reales flanquean el paseo.
- *   · SETOS perimetrales en los dos lados largos y, fuera de ellos,
- *     ESTACIONAMIENTO con coches a ambos lados.
- *   · El EDIFICIO cierra el fondo: el paseo termina en sus puertas.
+ *   · El lote es de esquina: NW 1st Ct al OESTE y NW 21st Ct al SUR. ±0,78 acres.
+ *   · El EDIFICIO ocupa el norte: ~119 × 102 ft de huella (12 125 SF en un
+ *     nivel, 16 000 SF con el altillo). Su fachada sur, con la puerta, da al
+ *     recinto exterior. Dentro opera un tercero: NO es lo que se alquila.
+ *   · El PASEO pavimentado baja de la puerta del edificio hacia el sur, ~15 ft
+ *     de ancho y ~105 ft de largo, hasta el estacionamiento sur.
+ *   · La PALAPA (~54 × 54 ft, ~4 000 ft² con aleros) está al suroeste, al oeste
+ *     del paseo, pegada al seto de NW 1st Ct.
+ *   · Entre la palapa y el edificio, un ÁREA DE ARENA con mesas de picnic y
+ *     sombrillas (la hilera de cuadros del plano; en la foto cenital de LoopNet
+ *     se ven las mesas).
+ *   · Al ESTE del paseo, en hilera, las ocho CABAÑAS-PÉRGOLA (el rectángulo
+ *     rayado del plano; en las fotos, postes y listones blancos con sofá).
+ *   · ESTACIONAMIENTO al este de las pérgolas y en una franja al sur, sobre
+ *     NW 21st Ct. En la aérea se ven coches a los dos lados.
+ *   · PALMERAS reales flanqueando el paseo y alrededor de la palapa; SETOS
+ *     perimetrales.
  *
- * Sigue siendo un esquema sin escala fina: no hay site plan del propietario (el
- * boundary survey está en el correo de Rene Morales del 15-ago, sin bajar). Las
- * cifras de superficie son las declaradas; las proporciones, las de las fotos.
- * Todo lo que se dibuja sale de aquí: si el survey corrige una medida, se cambia
- * en este archivo y nada más.
+ * Escala del plano: 2,4 px/ft (con ella la huella del edificio da 12 100 SF,
+ * que es la cifra del brochure). Las medidas siguen siendo «sin escala fina»
+ * hasta abrir el boundary survey; el error ya no es de disposición, solo de
+ * detalle.
  */
 
 export type Pt = [number, number];
 
-export const U = 2.3; // unidades SVG por pie
+/** Extensión dibujada del lote, en pies. */
+export const LOTE = { dx: 150, dy: 265 };
 
-/** El predio útil (sin el estacionamiento). */
-export const LOTE = { dx: 240, dy: 96 };
+/** El edificio, al norte. La puerta al final del paseo, en su cara sur. */
+export const EDIF = { x: 4, y: 0, dx: 120, dy: 104, h1: 14, h2: 24, corte: 70 };
+export const PUERTA = { x: 68, dx: 14, h: 10 };
 
-/** Setos perimetrales, en los dos lados largos y en la calle. */
-export const SETO = { ancho: 3, alto: 4 };
+/** El paseo: de la puerta hacia el sur, centrado en la puerta. */
+export const PASEO = { x: 66, dx: 15, y0: EDIF.dy, y1: 236 };
 
-/** El paseo pavimentado, centrado, de la calle al edificio. */
-export const PASEO = { y: 42, dy: 13 };
-
-/** La palapa: pegada al paseo por el norte. ~4 000 ft² declarados → 100 × 40. */
-export const PALAPA = { x: 62, y: 1 + SETO.ancho, dx: 100, dy: 37 };
-export const PALAPA_ALERO = 11, PALAPA_CUMBRE = 24, PALAPA_CUMBRERA = 62;
-/** Postes: tres hileras en el sentido corto, seis en el largo. */
+/** La palapa, al suroeste, junto al seto de NW 1st Ct. */
+export const PALAPA = { x: 8, y: 146, dx: 54, dy: 54 };
+export const PALAPA_ALERO = 11, PALAPA_CUMBRE = 26, PALAPA_CUMBRERA = 14;
+/** Postes: tres hileras por tres, bajo los aleros y en el centro. */
 export const PALAPA_POSTES: Pt[] = (() => {
   const out: Pt[] = [];
-  for (let i = 0; i < 6; i++) for (let j = 0; j < 3; j++) out.push([PALAPA.x + 3 + i * 18.8, PALAPA.y + 2 + j * 18]);
+  for (let i = 0; i < 3; i++) for (let j = 0; j < 3; j++) out.push([PALAPA.x + 3 + i * 24, PALAPA.y + 3 + j * 24]);
   return out;
 })();
 
-/** Las ocho cabañas-pérgola, al sur del paseo, entre palmeras. */
-export const CABANAS = { x: 34, y: PASEO.y + PASEO.dy + 6, dx: 12, dy: 12, n: 8, paso: 24, h: 9 };
+/** El área de arena con mesas de picnic, entre el edificio y la palapa. */
+export const ARENA = { x: 6, y: 110, dx: 58, dy: 32 };
+export const PICNIC: Pt[] = Array.from({ length: 6 }, (_, i): Pt => [12 + i * 9.5, 124]);
 
-/** Palmeras: dos hileras en los bordes del paseo. */
-export const PALMERAS_N: Pt[] = Array.from({ length: 10 }, (_, i) => [22 + i * 22.5, PASEO.y - 2.5]);
-export const PALMERAS_S: Pt[] = Array.from({ length: 10 }, (_, i) => [12 + i * 23, PASEO.y + PASEO.dy + 2.5]);
+/** Las ocho cabañas-pérgola, al este del paseo, en hilera de norte a sur. */
+export const CABANAS = { x: 88, y0: 118, dx: 11, dy: 11, n: 8, paso: 14, h: 9 };
 
-/** Estacionamiento fuera de los setos, a ambos lados, con sus plazas. */
-export const PARKING = { dy: 18, plazas: 13, ancho: 9, largo: 17 };
+/** Césped: la franja oeste alrededor de la palapa y la franja este bajo las pérgolas. */
+export const CESPED_O = { x: 4, y: 108, dx: PASEO.x - 4, dy: 130 };
+export const CESPED_E = { x: PASEO.x + PASEO.dx, y: 108, dx: 106 - PASEO.x - PASEO.dx + 3, dy: 130 };
 
-/** El edificio al fondo del paseo: dos volúmenes, la puerta donde acaba el paseo. */
-export const EDIF = { x: LOTE.dx + 6, dx: 96, dy: LOTE.dy + 2 * PARKING.dy, corte: 58, h1: 13, h2: 22 };
-export const PUERTA = { y: PASEO.y + 2.5, dy: PASEO.dy - 5, h: 9 };
+/** Palmeras reales: dos hileras junto al paseo y las de la palapa. */
+export const PALMERAS_O: Pt[] = Array.from({ length: 7 }, (_, i) => [PASEO.x - 3, 118 + i * 17]);
+export const PALMERAS_E: Pt[] = Array.from({ length: 7 }, (_, i) => [PASEO.x + PASEO.dx + 3, 126 + i * 17]);
+export const PALMERAS_PALAPA: Pt[] = [[PALAPA.x - 2, PALAPA.y + 6], [PALAPA.x - 2, PALAPA.y + 30], [PALAPA.x + 20, PALAPA.y + PALAPA.dy + 4], [PALAPA.x + 44, PALAPA.y + PALAPA.dy + 4], [PALAPA.x + 28, PALAPA.y - 4]];
 
-/** Ancho total dibujado (predio + edificio), para encuadrar. */
-export const TOTAL_X = EDIF.x + EDIF.dx;
+/** Setos: a lo largo de NW 1st Ct (oeste) y cerrando el sur del césped. */
+export const SETO = { ancho: 3, alto: 4 };
 
-/** Mesas de diez: 20 bajo la palapa (5 × 4) y 10 en la franja de césped, junto al paseo. */
+/** Estacionamiento: la franja este (junto a las pérgolas) y la franja sur (sobre NW 21st Ct). */
+export const PARKING_E = { x: 108, y: 112, dx: 42, dy: 124, plazas: 7 };
+export const PARKING_S = { x: 4, y: 240, dx: 146, dy: 22, plazas: 15 };
+
+/** Calles: NW 1st Ct al oeste, NW 21st Ct al sur. */
+export const CALLE_O = { x: -30, dx: 30 };
+export const CALLE_S = { y: LOTE.dy, dy: 30 };
+
+/** Mesas de diez: 16 bajo la palapa (4 × 4) y 14 en el césped oeste y junto al paseo. */
 export const MESAS: Pt[] = (() => {
   const out: Pt[] = [];
-  for (let c = 0; c < 5; c++) for (let f = 0; f < 4; f++) out.push([PALAPA.x + 10 + c * 20, PALAPA.y + 5 + f * 10]);
-  for (let c = 0; c < 10; c++) out.push([12 + c * 22.5, PASEO.y - 12]);
+  for (let c = 0; c < 4; c++) for (let f = 0; f < 4; f++) out.push([PALAPA.x + 7 + c * 13.3, PALAPA.y + 7 + f * 13.3]);
+  for (let f = 0; f < 7; f++) out.push([PASEO.x - 12, 120 + f * 16]);
+  for (let f = 0; f < 7; f++) out.push([PASEO.x + PASEO.dx + 14, 128 + f * 15]);
   return out;
 })();
 
-/** Mesas de picnic fijas: cuatro, entre las cabañas y el seto sur. */
-export const PICNIC: Pt[] = [60, 108, 156, 204].map((x): Pt => [x, CABANAS.y + CABANAS.dy + 10]);
+/** El escenario del montaje tipo: al fondo del césped oeste, contra el área de arena, mirando al sur. */
+export const ESCENARIO = { x: 20, y: 112, dx: 30, dy: 16, h: 3, truss: 15 };
 
-/** El escenario del montaje tipo: al fondo del césped norte, mirando a la calle. */
-export const ESCENARIO = { x: 200, y: PASEO.y - 34, dx: 16, dy: 28, h: 3, truss: 15 };
+/** La barra del cliente, bajo la palapa, del lado del paseo. */
+export const BARRA = { x: PALAPA.x + PALAPA.dx - 6, y: PALAPA.y + 10, dx: 4, dy: 30, h: 3.5 };
 
-/** La barra del cliente, bajo la palapa, en el lado del paseo. */
-export const BARRA = { x: PALAPA.x + 20, y: PALAPA.y + PALAPA.dy - 8, dx: 30, dy: 4, h: 3.5 };
+/** El camión de 40 ft: entra desde el sur por el estacionamiento y sube el paseo. */
+export const CAMION = { x: PASEO.x + 2, y: 150, dx: 8.5, dy: 40, h: 12, recorrido: 100 };
 
-/** El camión de 40 ft: entra por la calle y recorre el paseo. */
-export const CAMION = { x: 150, y: PASEO.y + 2, dx: 40, dy: 8.5, h: 12, recorrido: 210 };
-
-/** Público de pie: 600 a 8 ft² cada uno, en el césped norte y bajo la palapa. */
+/** Público de pie: 600 a 8 ft² cada uno, en el césped oeste y bajo la palapa. */
 export const MULTITUD: Pt[] = (() => {
   let s = 7 >>> 0;
   const azar = () => { s = (Math.imul(s, 1664525) + 1013904223) >>> 0; return s / 4294967296; };
   const out: Pt[] = [];
-  // bajo la palapa: 100 × 40 ft → 25 × 12 = 300
-  for (let f = 0; f < 12; f++) for (let c = 0; c < 25; c++) out.push([PALAPA.x + 2.5 + c * 3.85 + (azar() - 0.5) * 1.6, PALAPA.y + 2 + f * 3.1 + (azar() - 0.5) * 1.4]);
-  // franja norte del paseo, a lo largo: 60 × 5 = 300
-  for (let f = 0; f < 5; f++) for (let c = 0; c < 60; c++) out.push([8 + c * 3.85 + (azar() - 0.5) * 1.6, PASEO.y - 17 + f * 3.1 + (azar() - 0.5) * 1.4]);
+  // bajo la palapa: 54 × 54 → 17 × 17 ≈ 289
+  for (let f = 0; f < 17; f++) for (let c = 0; c < 17; c++) out.push([PALAPA.x + 1.5 + c * 3.05 + (azar() - 0.5) * 1.4, PALAPA.y + 1.5 + f * 3.05 + (azar() - 0.5) * 1.4]);
+  // césped oeste entre el área de arena y la palapa, y junto al paseo: ≈ 311
+  for (let f = 0; f < 12; f++) for (let c = 0; c < 26; c++) out.push([6 + c * 2.3 + (azar() - 0.5) * 1.2, 112 + f * 2.8 + (azar() - 0.5) * 1.2]);
   return out;
 })();
 
 /** Gente suelta, para dar escala en la vista general. */
-export const GENTE_SUELTA: Pt[] = [[96, 34], [140, 20], [180, 48], [70, 62], [210, 30], [128, 50]];
+export const GENTE_SUELTA: Pt[] = [[PASEO.x + 6, 160], [PASEO.x + 9, 205], [30, 135], [PASEO.x - 8, 225], [PASEO.x + PASEO.dx + 8, 150]];
 
-/** Centro del recinto: a donde vuelve la cámara. */
-export const CENTRO: Pt = [120, 48];
+/** Centro del recinto exterior: a donde vuelve la cámara. */
+export const CENTRO: Pt = [66, 170];
+
+/**
+ * LA CÁMARA: donde estuvo el dron de la aérea de portada. Al sur, sobre el
+ * estacionamiento, unos 60 ft de altura, mirando al norte hacia la puerta del
+ * edificio, un poco desplazada al este para que la palapa quede a la izquierda
+ * y las pérgolas a la derecha, como en la foto.
+ */
+export const CAMARA = {
+  ojo: [88, 445, 128] as [number, number, number],
+  objetivo: [66, 150, 0] as [number, number, number],
+  focal: 900,
+};

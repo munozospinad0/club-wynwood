@@ -36,7 +36,21 @@ export type EventoSitio =
   | "generate_lead"     // todo envío
   | "lead_qualified"    // solo si califica — LA conversión primaria
   | "lead_unqualified"  // si no califica — sirve para EXCLUIR, no para optimizar
-  | "contact_click";    // clic en teléfono, correo o mapa
+  | "contact_click"     // clic en teléfono, correo o mapa
+  /**
+   * EL RECORRIDO NARRADO, medido como GA4 mide un vídeo. Los tres nombres y sus
+   * parámetros (`video_title`, `video_percent`, `video_current_time`,
+   * `video_duration`, `video_provider`, `video_url`) son los de la medición
+   * mejorada de GA4: aparecen en sus informes de vídeo sin crear dimensiones.
+   * `video_progress` sale al 10, 25, 50 y 75 %; `tour_exit` es propio y lleva el
+   * porcentaje exacto al cerrar antes del final: dónde se pierde la gente. El
+   * embudo por capítulo ya lo da `view_plate` con `plate_name: "recorrido"` y
+   * `chapter`.
+   */
+  | "video_start"
+  | "video_progress"
+  | "video_complete"
+  | "tour_exit";
 
 declare global {
   interface Window {

@@ -280,6 +280,17 @@
   color: var(--papel);
   border-color: var(--tinta);
 }
+/* El punto de vista: mismos botones que los modos, con su etiqueta delante. */
+.lam-vistas { padding-top: 2px; }
+.lam-vistas-ojo {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--texto);
+  opacity: .7;
+  padding-right: 4px;
+}
 .lam-explica {
   margin: 0 0 18px;
   font-size: 14.5px;

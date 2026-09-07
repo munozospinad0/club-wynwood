@@ -283,6 +283,21 @@ cómo animarlo y unirlo con la voz».
   Regla: **una foto nunca más larga que la distancia al hito siguiente menos 1 s**, y un
   cambio de modo necesita al menos 3 s de voz por delante.
 
+### Sexta tanda del 7-sep: el recinto desde cinco puntos de vista
+
+Daniel: «que se pudiera ver desde diferentes perspectivas… tienes que crear todo el modelo en
+todos los lados». Selector «Punto de vista» bajo el dibujo (sur · oeste · norte · este · aérea),
+`VISTAS` en `lib/recinto.geo.ts`. Lo que hubo que generalizar: `Caja` (las dos caras
+verticales que ve la cámara, la lejana primero), la palapa (caras ordenadas por profundidad,
+fleco y goteras solo en los aleros que miran a la cámara), el edificio (mural, puerta y corte
+interior solo en la cara sur; entra en el orden de profundidad con todo lo demás), los
+coches (extremo y costado por la cámara), los haces (en el mundo, no en pantalla), los
+nombres de las calles (giran con su calle) y los rótulos (automáticos fuera del sur). El
+encuadre de cada vista se ajusta a la proporción del sur; este y oeste se recortan al ancho.
+El vídeo sigue siendo la vista sur. **Pendiente si Daniel lo quiere:** hitos con `vista` para
+que el recorrido cambie de cámara por capítulo (la prop `vistaDirigida` ya existe), y un tour
+virtual.
+
 ### Quinta tanda del 7-sep: la geometría de verdad (la cenital manda)
 
 Daniel puso la cenital al lado del dibujo: «viendo las fotos no hay nada al lado así, no es

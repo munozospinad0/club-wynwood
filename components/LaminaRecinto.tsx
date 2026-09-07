@@ -9,7 +9,7 @@ import {
   ARENA, ARENA_CABECERA, PICNIC, CABANAS, CESPED_O, PALMERAS_O, PALMERAS_E, PALMERAS_PALAPA, SETO,
   PARKING_E, PARKING_S, CALLE_O, CALLE_S, MESAS, MESA_LARGA, ESCENARIO, BARRA, CAMION, MULTITUD, GENTE_SUELTA,
   MULTITUD_PALAPA, MULTITUD_PASEO, PLAZA, JARDINERAS,
-  CENTRO, CAMARA, PALMERA_ALTO, type Pt,
+  CENTRO, VISTAS, ORDEN_VISTAS, PALMERA_ALTO, type Pt, type Vista,
 } from "@/lib/recinto.geo";
 
 /**
@@ -54,27 +54,48 @@ export interface Aforo { invitados: number; formato: "sentados" | "pie" }
 
 const TINTA = "#211c15", GRIS = "#8a8071", OCRE = "#c4772b", PAPEL = "#fbf8f1", LUZ = "#f3e2c4", LUZ_SOMBRA = "#8f7d5e";
 
-const G: GeoPerspectiva = crearPerspectiva(CAMARA);
+/** Una cámara por punto de vista; la del sur es la de las fotos y del vídeo. */
+const GEOS: Record<Vista, GeoPerspectiva> = Object.fromEntries(
+  (Object.keys(VISTAS) as Vista[]).map((v) => [v, crearPerspectiva(VISTAS[v])]),
+) as Record<Vista, GeoPerspectiva>;
+const G: GeoPerspectiva = GEOS.sur;
 
+interface Encuadre { x: number; y: number; w: number; h: number }
 // El encuadre: las esquinas del lote con las calles, al suelo y a la altura del edificio.
-const VB = (() => {
+function encuadre(g: GeoPerspectiva): Encuadre {
   const xs: number[] = [], ys: number[] = [];
   // Se encuadra el lote con un poco de calle: la calle entera dejaba medio
   // dibujo vacío abajo y el recinto pequeño arriba.
   for (const [x, y, z] of [
     [CALLE_O.x + 14, 0, 0], [LOTE.dx + 4, 0, 0], [CALLE_O.x + 14, LOTE.dy + 14, 0], [LOTE.dx + 4, LOTE.dy + 14, 0],
-    [EDIF.x, EDIF.y, EDIF.h2], [EDIF.x + EDIF.dx, EDIF.y, EDIF.h2], [PALAPA.x, PALAPA.y, PALAPA_CUMBRE],
+    [EDIF.x, EDIF.y, EDIF.h2], [EDIF.x + EDIF.dx, EDIF.y, EDIF.h2], [PALAPA.x, PALAPA.y, PALAPA_CUMBRE], [PALAPA.x, PALAPA.y + PALAPA.dy, PALAPA_CUMBRE],
   ] as Array<[number, number, number]>) {
-    const [sx, sy] = G.p(x, y, z);
+    const [sx, sy] = g.p(x, y, z);
     xs.push(sx); ys.push(sy);
   }
   const x0 = Math.min(...xs) - 14, x1 = Math.max(...xs) + 14, y0 = Math.min(...ys) - 30, y1 = Math.max(...ys) + 24;
   return { x: x0, y: y0, w: x1 - x0, h: y1 - y0 };
-})();
+}
+const VB = encuadre(G);
 export const PROPORCION = VB.w / VB.h;
+/** Los demás puntos de vista se encuadran a la MISMA proporción que el sur: la caja del dibujo no cambia de tamaño al cambiar de vista. */
+function aProporcion(e: Encuadre, ratio: number): Encuadre {
+  if (e.w / e.h > ratio) { const h = e.w / ratio; return { x: e.x, y: e.y - (h - e.h) / 2, w: e.w, h }; }
+  const w = e.h * ratio; return { x: e.x - (w - e.w) / 2, y: e.y, w, h: e.h };
+}
+/** Desde el este y el oeste el recinto es una panorámica: se recorta al ancho del papel centrando el recinto, en vez de dejar bandas vacías arriba y abajo. */
+function recortar(e: Encuadre, ratio: number, centro: Pt): Encuadre {
+  if (e.w / e.h <= ratio) return aProporcion(e, ratio);
+  const w = e.h * ratio;
+  const x = Math.min(e.x + e.w - w, Math.max(e.x, centro[0] - w / 2));
+  return { x, y: e.y, w, h: e.h };
+}
+const VBS: Record<Vista, Encuadre> = Object.fromEntries(
+  (Object.keys(GEOS) as Vista[]).map((v) => [v, v === "este" || v === "oeste" ? recortar(encuadre(GEOS[v]), PROPORCION, GEOS[v].p(62, 172, 0)) : aProporcion(encuadre(GEOS[v]), PROPORCION)]),
+) as Record<Vista, Encuadre>;
 export { CENTRO };
 
-const frac = (q: Pt): Pt => [(q[0] - VB.x) / VB.w, (q[1] - VB.y) / VB.h];
+const frac = (q: Pt, vb: Encuadre = VB): Pt => [(q[0] - vb.x) / vb.w, (q[1] - vb.y) / vb.h];
 const poly = (...q: Pt[]) => q.map((c, i) => `${i ? "L" : "M"}${c[0].toFixed(1)},${c[1].toFixed(1)}`).join(" ") + " Z";
 const lerp = (a: Pt, b: Pt, t: number): Pt => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t];
 const cssVars = (o: Record<string, string | number>) => o as CSSProperties;
@@ -106,12 +127,18 @@ function Caja({ g, x, y, dx, dy, z0 = 0, z1, tapa, izq, der, borde = TINTA, w = 
   const cl = animado ? "rl tz" : "";
   const pl = animado ? { pathLength: 1 } : {};
   const sd = dash ? { strokeDasharray: dash } : {};
+  // Las dos caras verticales que ve la cámara: la este o la oeste, y la sur o la
+  // norte, según de qué lado quede el ojo. Así el mismo prisma sirve desde los
+  // cinco puntos de vista. La más lejana se pinta primero.
   const este = x + dx / 2 < g.camara.ojo[0];
-  const lx = este ? x + dx : x;
+  const sur = y + dy / 2 < g.camara.ojo[1];
+  const lx = este ? x + dx : x, ly = sur ? y + dy : y;
+  const lateral = <path key="l" className={cl} d={poly(p(lx, y, z0), p(lx, y + dy, z0), p(lx, y + dy, z1), p(lx, y, z1))} fill={der} stroke={borde} strokeWidth={w} {...pl} {...sd} />;
+  const frontal = <path key="f" className={cl} d={poly(p(x, ly, z0), p(x + dx, ly, z0), p(x + dx, ly, z1), p(x, ly, z1))} fill={izq} stroke={borde} strokeWidth={w} {...pl} {...sd} />;
+  const lateralLejos = g.profundidad(lx, y + dy / 2, (z0 + z1) / 2) > g.profundidad(x + dx / 2, ly, (z0 + z1) / 2);
   return (
     <g className={clase}>
-      <path className={cl} d={poly(p(lx, y, z0), p(lx, y + dy, z0), p(lx, y + dy, z1), p(lx, y, z1))} fill={der} stroke={borde} strokeWidth={w} {...pl} {...sd} />
-      <path className={cl} d={poly(p(x, y + dy, z0), p(x + dx, y + dy, z0), p(x + dx, y + dy, z1), p(x, y + dy, z1))} fill={izq} stroke={borde} strokeWidth={w} {...pl} {...sd} />
+      {lateralLejos ? [lateral, frontal] : [frontal, lateral]}
       <path className={cl} d={g.techo(x, y, dx, dy, z1)} fill={tapa} stroke={borde} strokeWidth={w} {...pl} {...sd} />
     </g>
   );
@@ -246,14 +273,24 @@ function Palapa({ g, mesasN }: { g: GeoPerspectiva; mesasN: number }) {
   const A = p(x, y, PALAPA_ALERO), B = p(x + dx, y, PALAPA_ALERO), C = p(x + dx, y + dy, PALAPA_ALERO), D = p(x, y + dy, PALAPA_ALERO);
   // La cumbrera va paralela al paseo (norte-sur), como en la cenital: R1 al norte, R2 al sur.
   const R1 = p(cx, cy - PALAPA_CUMBRERA / 2, PALAPA_CUMBRE), R2 = p(cx, cy + PALAPA_CUMBRERA / 2, PALAPA_CUMBRE);
-  // Orden de atrás hacia delante para la cámara del sur: norte (triángulo), oeste, este, sur (triángulo).
-  // Paja, no lámina: tonos de paja en escala de tinta, con la cara sur (la que mira a la cámara y al sol del suroeste) más clara.
-  const caras: Array<{ pts: [Pt, Pt, Pt, Pt]; tono: string; n: number }> = [
-    { pts: [A, B, R1, R1], tono: "#8b7857", n: 8 },
-    { pts: [D, A, R1, R2], tono: "#ad956b", n: 7 },
-    { pts: [B, C, R2, R1], tono: "#9a845c", n: 7 },
-    { pts: [C, D, R2, R2], tono: "#bfa878", n: 9 },
+  // Las cuatro caras, con su centro en el mundo para ordenarlas de atrás hacia delante desde CUALQUIER cámara:
+  // norte (triángulo), oeste, este, sur (triángulo). Paja, no lámina: tonos de paja en escala de tinta, con la
+  // cara sur (la del sol del suroeste) más clara.
+  type Cara = { pts: [Pt, Pt, Pt, Pt]; tono: string; n: number; centro: Pt };
+  const carasBase: Cara[] = [
+    { pts: [A, B, R1, R1], tono: "#8b7857", n: 8, centro: [cx, y + dy * 0.2] },
+    { pts: [D, A, R1, R2], tono: "#ad956b", n: 7, centro: [x + dx * 0.2, cy] },
+    { pts: [B, C, R2, R1], tono: "#9a845c", n: 7, centro: [x + dx * 0.8, cy] },
+    { pts: [C, D, R2, R2], tono: "#bfa878", n: 9, centro: [cx, y + dy * 0.8] },
   ];
+  const caras = carasBase.sort((m, n) => g.profundidad(n.centro[0], n.centro[1], 20) - g.profundidad(m.centro[0], m.centro[1], 20));
+  // Los aleros que miran a la cámara (más cerca que el centro de la palapa): ahí van el fleco y las goteras.
+  type Alero = { q: Pt; r: Pt; lado: "n" | "s" | "e" | "o" };
+  const alerosBase: Alero[] = [
+    { q: [x, y + dy], r: [x + dx, y + dy], lado: "s" }, { q: [x + dx, y + dy], r: [x + dx, y], lado: "e" },
+    { q: [x, y], r: [x, y + dy], lado: "o" }, { q: [x + dx, y], r: [x, y], lado: "n" },
+  ];
+  const aleros = alerosBase.filter(({ q, r }) => g.profundidad((q[0] + r[0]) / 2, (q[1] + r[1]) / 2, PALAPA_ALERO) < g.profundidad(cx, cy, PALAPA_ALERO) + 0.5);
   const postes = PALAPA_POSTES.slice().sort((m, n) => g.profundidad(...m) - g.profundidad(...n));
   const mesas = MESAS.slice(0, Math.min(16, mesasN));
   // Vigas a la altura del alero: tres hileras y tres filas que atan los postes.
@@ -310,18 +347,18 @@ function Palapa({ g, mesasN }: { g: GeoPerspectiva; mesasN: number }) {
         <path className="tz palapa-cubierta" pathLength={1} d={poly(A, B, C, D)} fill="none" stroke={TINTA} strokeWidth="1.5" strokeLinejoin="round" />
         <path className="rl" d={cumbrera} fill="#4a3f2a" stroke={TINTA} strokeWidth="0.6" />
         <line className="tz palapa-cubierta" pathLength={1} x1={R1[0]} y1={R1[1]} x2={R2[0]} y2={R2[1]} stroke={TINTA} strokeWidth="1.4" />
-        {/* el fleco de paja de los tres aleros visibles (sur, este y oeste), en pies: 1,6–2,4 ft que se acortan solos con la perspectiva */}
-        {([[[x, y + dy], [x + dx, y + dy]], [[x + dx, y + dy], [x + dx, y]], [[x, y], [x, y + dy]]] as Array<[Pt, Pt]>).map(([q, r], i) => {
+        {/* el fleco de paja de los aleros que miran a la cámara, en pies: 1,6–2,4 ft que se acortan solos con la perspectiva */}
+        {aleros.map(({ q, r, lado }) => {
           const n = 40;
           const arriba = Array.from({ length: n + 1 }, (_, k) => { const w = lerp(q, r, k / n); return p(w[0], w[1], PALAPA_ALERO); });
           const abajo = Array.from({ length: n + 1 }, (_, k) => { const w = lerp(q, r, k / n); return p(w[0], w[1], PALAPA_ALERO - (k % 2 ? 2.4 : 1.6)); }).reverse();
-          return <path key={`fl${i}`} className="rl" d={poly(...arriba, ...abajo)} fill="#a08a5f" stroke="#4a3f2a" strokeWidth="0.35" strokeLinejoin="round" />;
+          return <path key={`fl${lado}`} className="rl" d={poly(...arriba, ...abajo)} fill="#a08a5f" stroke="#4a3f2a" strokeWidth="0.35" strokeLinejoin="round" />;
         })}
-        {/* con lluvia, el agua escurre del alero sur y del este */}
-        {([[D, C], [C, B]] as Array<[Pt, Pt]>).map(([q, r], i) =>
+        {/* con lluvia, el agua escurre de los aleros que se ven */}
+        {aleros.map(({ q, r, lado }, i) =>
           Array.from({ length: 12 }, (_, k) => (k + 0.5) / 12).map((t, k) => {
-            const m = lerp(q, r, t);
-            return <line key={`g${i}-${k}`} className="gotera" style={cssVars({ "--t": `${(-(k * 0.11 + i * 0.4)).toFixed(2)}s` })} x1={m[0]} y1={m[1] + 6} x2={m[0]} y2={m[1] + 11} stroke="#4a5a6a" strokeWidth="0.8" strokeLinecap="round" />;
+            const w = lerp(q, r, t), m = p(w[0], w[1], PALAPA_ALERO);
+            return <line key={`g${lado}-${k}`} className="gotera" style={cssVars({ "--t": `${(-(k * 0.11 + i * 0.4)).toFixed(2)}s` })} x1={m[0]} y1={m[1] + 6} x2={m[0]} y2={m[1] + 11} stroke="#4a5a6a" strokeWidth="0.8" strokeLinecap="round" />;
           })
         )}
       </g>
@@ -527,7 +564,7 @@ function Coche({ g, x, y, eje, tono, suv = false }: { g: GeoPerspectiva; x: numb
    * norte a sur (eje «y») se ve de canto, casi una raya; en los del sur (eje
    * «x») se ve de frente. Y en vez de aro blanco, un cubo gris discreto.
    */
-  const ladoVisibleV = eje === "x" ? W - 0.7 : (M(L / 2, W / 2)[0] < g.camara.ojo[0] ? W - 0.7 : 0.7);
+  const ladoVisibleV = eje === "x" ? (g.camara.ojo[1] > M(L / 2, W / 2)[1] ? W - 0.7 : 0.7) : (M(L / 2, W / 2)[0] < g.camara.ojo[0] ? W - 0.7 : 0.7);
   const ruedas = [[0.2 * L, 0.7], [0.2 * L, W - 0.7], [0.8 * L, 0.7], [0.8 * L, W - 0.7]].map(([u, v]) => {
     const [wx, wy] = M(u, v);
     const r = g.escala(wx, wy) * 1.0;
@@ -545,12 +582,15 @@ function Coche({ g, x, y, eje, tono, suv = false }: { g: GeoPerspectiva; x: numb
     const d = `M${(cx0 - w.rx).toFixed(1)},${cy0.toFixed(1)} A${w.rx.toFixed(2)},${w.ry.toFixed(2)} 0 0 0 ${(cx0 + w.rx).toFixed(1)},${cy0.toFixed(1)} Z`;
     return <path key={`a${k}`} d={d} fill="#2a2620" />;
   };
-  // El extremo que mira a la cámara: el trasero en los del sur (pilotos), el morro o la cola en los del este según de qué lado queden.
-  const extremo = eje === "y" ? L : (M(L / 2, 0)[0] > g.camara.ojo[0] ? 0 : L);
+  // El extremo que mira a la cámara, desde cualquier punto de vista: en los que van norte-sur, el que quede del
+  // lado del ojo (aparcan con el morro al norte: desde el sur se ven los pilotos, desde el norte los faros);
+  // en los que van este-oeste, según de qué lado quede el ojo.
+  const [ojoX, ojoY] = g.camara.ojo;
+  const extremo = eje === "y" ? (ojoY > M(L / 2, 0)[1] ? L : 0) : (M(L / 2, 0)[0] > ojoX ? 0 : L);
   const luz = extremo === 0 ? LUZ : "#a8463b";
   const luces = [[0.7, 1.7], [W - 1.7, W - 0.7]].map(([v0, v1]) => poly(P(extremo, v0, 2.05), P(extremo, v1, 2.05), P(extremo, v1, 2.6), P(extremo, v0, 2.6)));
   const parachoques = [P(extremo, 0.2, 1.7), P(extremo, W - 0.2, 1.7)];
-  const ladoVisible = eje === "x" ? W : (M(L / 2, W / 2)[0] < g.camara.ojo[0] ? W : 0);
+  const ladoVisible = eje === "x" ? (ojoY > M(L / 2, W / 2)[1] ? W : 0) : (M(L / 2, W / 2)[0] < ojoX ? W : 0);
   const puerta = [P(0.57 * L, ladoVisible, z0 + 0.3), P(0.57 * L, ladoVisible, z1 - 0.2)];
   const [cx, cy] = M(L / 2, W / 2);
   return (
@@ -650,9 +690,14 @@ function Noche({ g }: { g: GeoPerspectiva }) {
   const cxE = E.x + E.dx / 2;
   const m1a = p(E.x, E.y, E.h), m1b = p(E.x, E.y, E.truss);
   const m2a = p(E.x + E.dx, E.y, E.h), m2b = p(E.x + E.dx, E.y, E.truss);
-  const focos = [0.1, 0.26, 0.42, 0.58, 0.74, 0.9].map((t) => lerp(m1b, m2b, t));
-  // los haces salen hacia el norte (arriba en pantalla) y se estrechan con la distancia
-  const haz = (f: Pt, s: number) => `M${f[0].toFixed(1)},${f[1].toFixed(1)} L${(f[0] - 16 * s).toFixed(1)},${(f[1] - 46).toFixed(1)} L${(f[0] - 4 * s).toFixed(1)},${(f[1] - 49).toFixed(1)} Z`;
+  const focosT = [0.1, 0.26, 0.42, 0.58, 0.74, 0.9];
+  const focos = focosT.map((t) => lerp(m1b, m2b, t));
+  // los haces salen hacia el norte, sobre el público, y se estrechan con la distancia: en el mundo, no en pantalla, para que valgan desde cualquier cámara
+  const haz = (t: number, s: number) => {
+    const fx = E.x + E.dx * t;
+    const f = p(fx, E.y, E.truss), a = p(fx - 16 * s, E.y - 44, 2), b = p(fx - 4 * s, E.y - 48, 2);
+    return `M${f[0].toFixed(1)},${f[1].toFixed(1)} L${a[0].toFixed(1)},${a[1].toFixed(1)} L${b[0].toFixed(1)},${b[1].toFixed(1)} Z`;
+  };
   const pantalla = poly(p(cxE - 11, E.y + E.dy - 1.4, E.h + 0.8), p(cxE + 11, E.y + E.dy - 1.4, E.h + 0.8), p(cxE + 11, E.y + E.dy - 1.4, E.h + 9.2), p(cxE - 11, E.y + E.dy - 1.4, E.h + 9.2));
   const pozos: Array<[number, number, number]> = [[cxE - 11, E.y - 12, 7], [cxE, E.y - 15, 8], [cxE + 11, E.y - 12, 7]];
   const frente: Array<[number, number, "arriba" | "abajo"]> = [
@@ -772,7 +817,7 @@ function Noche({ g }: { g: GeoPerspectiva }) {
       <g className="capa capa-luces">
         {focos.map((f, i) => (
           <g key={i} className="noche-foco" style={cssVars({ "--i": i })}>
-            <path className="noche-haz" style={cssVars({ transformOrigin: `${f[0].toFixed(1)}px ${f[1].toFixed(1)}px`, "--dir": i < 3 ? 1 : -1 })} d={haz(f, i < 3 ? -0.7 : 0.7)} fill={OCRE} opacity="0.14" />
+            <path className="noche-haz" style={cssVars({ transformOrigin: `${f[0].toFixed(1)}px ${f[1].toFixed(1)}px`, "--dir": i < 3 ? 1 : -1 })} d={haz(focosT[i], i < 3 ? -0.7 : 0.7)} fill={OCRE} opacity="0.14" />
             <circle cx={f[0].toFixed(1)} cy={f[1].toFixed(1)} r="4.5" fill={OCRE} opacity="0.22" />
             <circle cx={f[0].toFixed(1)} cy={f[1].toFixed(1)} r="1.4" fill={OCRE} />
           </g>
@@ -811,8 +856,9 @@ function Noche({ g }: { g: GeoPerspectiva }) {
         </g>
       </g>
       <g className="capa capa-inmueble-luz">
-        <path d={puertaNoche} fill={LUZ} opacity="0.28" />
-        <Elipse g={g} x={PUERTA.x + PUERTA.dx / 2} y={EDIF.dy - 3} r={7} fill={OCRE} opacity="0.12" />
+        {/* la puerta encendida solo se ve si la cámara mira a la fachada sur */}
+        {g.camara.ojo[1] > EDIF.dy && <path d={puertaNoche} fill={LUZ} opacity="0.28" />}
+        {g.camara.ojo[1] > EDIF.dy && <Elipse g={g} x={PUERTA.x + PUERTA.dx / 2} y={EDIF.dy - 3} r={7} fill={OCRE} opacity="0.12" />}
         {lucesInmueble.map((q, i) => (
           <g key={`li${i}`} className="noche-bombilla" style={cssVars({ "--i": i + 40 })}>
             <circle cx={q[0].toFixed(1)} cy={q[1].toFixed(1)} r="2.4" fill={OCRE} opacity="0.18" />
@@ -899,16 +945,25 @@ function Edificio({ g }: { g: GeoPerspectiva }) {
   const puerta = (x0: number, x1: number) => poly(p(x0, Y1, 0), p(x1, Y1, 0), p(x1, Y1, PUERTA.h), p(x0, Y1, PUERTA.h));
   const mitad = PUERTA.x + PUERTA.dx / 2;
   const tirador = (x: number) => [p(x, Y1, 4.6), p(x, Y1, 5.7)] as [Pt, Pt];
+  // Qué caras ve la cámara. La sur trae el mural, la puerta y el corte interior; las demás son lisas.
+  const [ojoX, ojoY] = g.camara.ojo;
+  const veSur = ojoY > Y1, veNorte = ojoY < 0, veOeste = ojoX < X0, veEste = ojoX > X1, veCorte = ojoX > XC;
+  const caraNorte = (x0: number, x1: number, h: number) => poly(p(x0, 0, 0), p(x1, 0, 0), p(x1, 0, h), p(x0, 0, h));
+  const caraX = (x: number, h: number) => poly(p(x, 0, 0), p(x, Y1, 0), p(x, Y1, h), p(x, 0, h));
   return (
     <g>
-      <path className="rl tz edif-borde" pathLength={1} d={poly(p(XC, 0, 0), p(XC, Y1, 0), p(XC, Y1, H2), p(XC, 0, H2))} fill="#e4ded1" stroke={GRIS} strokeWidth="0.8" />
-      <Interior g={g} />
-      <path className="rl tz edif-sur edif-borde" pathLength={1} d={cara(X0, XC, H2)} fill="#ece7db" stroke={GRIS} strokeWidth="0.8" />
-      <path className="rl tz edif-sur edif-borde" pathLength={1} d={cara(XC, X1, H1)} fill="#ece7db" stroke={GRIS} strokeWidth="0.8" />
-      {mural.map((m, i) => <path key={i} className="rl edif-sur" d={m.d} fill={m.fill} opacity={m.op} />)}
-      {altas.map((d, i) => <path key={`a${i}`} className="ap edif-sur" d={d} fill="#d5cfc3" stroke={GRIS} strokeWidth="0.5" />)}
-      {carpinterias.map(([q0, q1], i) => <line key={`c${i}`} className="ap edif-sur" x1={q0[0]} y1={q0[1]} x2={q1[0]} y2={q1[1]} stroke={PAPEL} strokeWidth="0.45" opacity="0.9" />)}
-      {apliques.map((q, i) => <circle key={`ap${i}`} className="ap edif-sur" cx={q[0].toFixed(1)} cy={q[1].toFixed(1)} r="0.9" fill={LUZ} stroke={GRIS} strokeWidth="0.35" />)}
+      {veCorte && <path className="rl tz edif-borde" pathLength={1} d={caraX(XC, H2)} fill="#e4ded1" stroke={GRIS} strokeWidth="0.8" />}
+      {veOeste && <path className="rl tz edif-borde" pathLength={1} d={caraX(X0, H2)} fill="#e4ded1" stroke={GRIS} strokeWidth="0.8" />}
+      {veEste && <path className="rl tz edif-borde" pathLength={1} d={caraX(X1, H1)} fill="#e4ded1" stroke={GRIS} strokeWidth="0.8" />}
+      {veNorte && <path className="rl tz edif-borde" pathLength={1} d={caraNorte(X0, XC, H2)} fill="#ece7db" stroke={GRIS} strokeWidth="0.8" />}
+      {veNorte && <path className="rl tz edif-borde" pathLength={1} d={caraNorte(XC, X1, H1)} fill="#ece7db" stroke={GRIS} strokeWidth="0.8" />}
+      {veSur && <Interior g={g} />}
+      {veSur && <path className="rl tz edif-sur edif-borde" pathLength={1} d={cara(X0, XC, H2)} fill="#ece7db" stroke={GRIS} strokeWidth="0.8" />}
+      {veSur && <path className="rl tz edif-sur edif-borde" pathLength={1} d={cara(XC, X1, H1)} fill="#ece7db" stroke={GRIS} strokeWidth="0.8" />}
+      {veSur && mural.map((m, i) => <path key={i} className="rl edif-sur" d={m.d} fill={m.fill} opacity={m.op} />)}
+      {veSur && altas.map((d, i) => <path key={`a${i}`} className="ap edif-sur" d={d} fill="#d5cfc3" stroke={GRIS} strokeWidth="0.5" />)}
+      {veSur && carpinterias.map(([q0, q1], i) => <line key={`c${i}`} className="ap edif-sur" x1={q0[0]} y1={q0[1]} x2={q1[0]} y2={q1[1]} stroke={PAPEL} strokeWidth="0.45" opacity="0.9" />)}
+      {veSur && apliques.map((q, i) => <circle key={`ap${i}`} className="ap edif-sur" cx={q[0].toFixed(1)} cy={q[1].toFixed(1)} r="0.9" fill={LUZ} stroke={GRIS} strokeWidth="0.35" />)}
       <path className="rl tz edif-techo edif-borde" pathLength={1} d={g.techo(X0, 0, EDIF.corte, Y1, H2)} fill="#f5f1e8" stroke={GRIS} strokeWidth="0.8" />
       <path className="rl tz edif-techo edif-borde" pathLength={1} d={g.techo(XC, 0, X1 - XC, Y1, H1)} fill="#f5f1e8" stroke={GRIS} strokeWidth="0.8" />
       <path className="ap edif-techo" d={g.techo(X0 + 1.5, 1.5, EDIF.corte - 3, Y1 - 3, H2)} fill="none" stroke="#cfc7b8" strokeWidth="0.45" />
@@ -917,11 +972,15 @@ function Edificio({ g }: { g: GeoPerspectiva }) {
       <Caja g={g} x={XC + 20} y={40} dx={6} dy={5} z0={H1} z1={H1 + 2.6} tapa="#e6e0d4" izq="#d9d2c4" der="#cfc8ba" borde={GRIS} w={0.45} animado={false} />
       <Caja g={g} x={XC + 34} y={62} dx={6} dy={5} z0={H1} z1={H1 + 2.6} tapa="#e6e0d4" izq="#d9d2c4" der="#cfc8ba" borde={GRIS} w={0.45} animado={false} />
       {/* puerta doble de vidrio oscuro con marco blanco, sin marquesina: la visera la convertía en caseta */}
-      <path className="ap edif-sur" d={marco} fill={PAPEL} stroke={TINTA} strokeWidth="0.5" />
-      <path className="ap puerta edif-sur" d={puerta(PUERTA.x, mitad)} fill="#8f8a80" stroke={PAPEL} strokeWidth="0.8" />
-      <path className="ap puerta edif-sur" d={puerta(mitad, PUERTA.x + PUERTA.dx)} fill="#8f8a80" stroke={PAPEL} strokeWidth="0.8" />
-      {[[PUERTA.x, mitad], [mitad, PUERTA.x + PUERTA.dx]].map(([x0, x1], i) => { const [q0, q1] = reflejo(x0, x1); return <line key={`r${i}`} className="ap edif-sur" x1={q0[0]} y1={q0[1]} x2={q1[0]} y2={q1[1]} stroke={PAPEL} strokeWidth="0.5" opacity="0.5" />; })}
-      {[mitad - 1.2, mitad + 1.2].map((tx, i) => { const [q0, q1] = tirador(tx); return <line key={i} className="ap edif-sur" x1={q0[0]} y1={q0[1]} x2={q1[0]} y2={q1[1]} stroke={TINTA} strokeWidth="0.6" />; })}
+      {veSur && (
+        <>
+          <path className="ap edif-sur" d={marco} fill={PAPEL} stroke={TINTA} strokeWidth="0.5" />
+          <path className="ap puerta edif-sur" d={puerta(PUERTA.x, mitad)} fill="#8f8a80" stroke={PAPEL} strokeWidth="0.8" />
+          <path className="ap puerta edif-sur" d={puerta(mitad, PUERTA.x + PUERTA.dx)} fill="#8f8a80" stroke={PAPEL} strokeWidth="0.8" />
+          {[[PUERTA.x, mitad], [mitad, PUERTA.x + PUERTA.dx]].map(([x0, x1], i) => { const [q0, q1] = reflejo(x0, x1); return <line key={`r${i}`} className="ap edif-sur" x1={q0[0]} y1={q0[1]} x2={q1[0]} y2={q1[1]} stroke={PAPEL} strokeWidth="0.5" opacity="0.5" />; })}
+          {[mitad - 1.2, mitad + 1.2].map((tx, i) => { const [q0, q1] = tirador(tx); return <line key={i} className="ap edif-sur" x1={q0[0]} y1={q0[1]} x2={q1[0]} y2={q1[1]} stroke={TINTA} strokeWidth="0.6" />; })}
+        </>
+      )}
     </g>
   );
 }
@@ -1008,6 +1067,8 @@ const T = {
     intro: "El recinto exterior visto desde el sur, como en la foto aérea, a partir del plano del sitio y las fotografías. Selecciona una zona para ver su ficha, o activa una capa de montaje: plan de lluvia, aforo sentado, load-in o montaje nocturno.",
     aria: "Perspectiva del recinto desde el sur: el edificio de dos niveles al fondo con su puerta, el paseo pavimentado bajando hacia la cámara, la palapa de paja a la izquierda en la esquina suroeste sobre césped, con una franja de césped y un apron pavimentado entre ella y el edificio, el área de arena con mesas de picnic a la derecha de la puerta, ocho cabañas-pérgola a la derecha del paseo, palmeras, setos, estacionamiento al este y dos filas de estacionamiento al sur.",
     modos: { todo: "Vista general", lluvia: "Plan de lluvia", mesas: "Aforo sentado · 300", camion: "Load-in · camión 40 ft", noche: "Montaje nocturno" } as Partial<Record<Modo, string>>,
+    vistaOjo: "Punto de vista",
+    vistas: { sur: "Desde el sur", oeste: "Desde el oeste", norte: "Desde el norte", este: "Desde el este", aerea: "Aérea" } as Record<Vista, string>,
     explica: {
       todo: "Lo techado va en tinta y lo abierto en claro. El paseo baja de la puerta del edificio hacia el estacionamiento sur y es por donde entra todo. Fuera de los setos, la calle.",
       lluvia: "La palapa cubre ~4 000 ft² con techo de paja, abierta por los cuatro costados: para el sol y el agua que cae recta. Lo demás queda al aire, y para un evento de invierno conviene carpa lateral.",
@@ -1051,6 +1112,7 @@ const T = {
       },
     } as Record<Zona, { nombre: string; dato: string; lee: string; sirve: string; ojo: string }>,
     cajetin: ["Club Wynwood", "El recinto · zona 01", "Vista desde el sur · sin escala"],
+    vistaCajetin: { sur: "Vista desde el sur · sin escala", norte: "Vista desde el norte · sin escala", este: "Vista desde el este · sin escala", oeste: "Vista desde el oeste · sin escala", aerea: "Vista aérea · sin escala" } as Record<Vista, string>,
     escala: "50 ft",
     calleO: "NW 1ST CT",
     calleS: "NW 21ST CT",
@@ -1063,6 +1125,8 @@ const T = {
     intro: "The outdoor site seen from the south, as in the aerial photograph, from the site plan and the photographs. Select a zone to see its data, or turn on a layout layer: rain plan, seated capacity, load-in or night setup.",
     aria: "Perspective of the site from the south: the two-level building at the far end with its door, the paved walk coming down towards the camera, the thatched structure on the left in the south-west corner on turf, with a strip of turf and a paved apron between it and the building, the sand area with picnic tables to the right of the door, eight pergola cabanas on the right of the walk, palms, hedges, parking to the east and two rows of parking to the south.",
     modos: { todo: "Overview", lluvia: "Rain plan", mesas: "Seated capacity · 300", camion: "Load-in · 40 ft truck", noche: "Night setup" } as Partial<Record<Modo, string>>,
+    vistaOjo: "Point of view",
+    vistas: { sur: "From the south", oeste: "From the west", norte: "From the north", este: "From the east", aerea: "Aerial" } as Record<Vista, string>,
     explica: {
       todo: "Roofed volumes are drawn in ink, open ground in light tone. The walk runs from the building door down to the south parking, and it is how everything gets in. Beyond the hedges, the street.",
       lluvia: "The structure covers ~4,000 sq ft under thatch, open on all four sides: it stops sun and vertical rain. The rest stays open-air, and a winter event should budget for side tenting.",
@@ -1106,6 +1170,7 @@ const T = {
       },
     } as Record<Zona, { nombre: string; dato: string; lee: string; sirve: string; ojo: string }>,
     cajetin: ["Club Wynwood", "The site · zone 01", "View from the south · not to scale"],
+    vistaCajetin: { sur: "View from the south · not to scale", norte: "View from the north · not to scale", este: "View from the east · not to scale", oeste: "View from the west · not to scale", aerea: "Aerial view · not to scale" } as Record<Vista, string>,
     escala: "50 ft",
     calleO: "NW 1ST CT",
     calleS: "NW 21ST CT",
@@ -1119,12 +1184,13 @@ const MODOS_MANUALES: Modo[] = ["todo", "lluvia", "mesas", "camion", "noche"];
 
 // ── el dibujo, memorizado ──────────────────────────────────────────────────
 
-const Dibujo = memo(function Dibujo({ lang, zona, aforo, alEntrar, alSalir, alTocar }: {
-  lang: Idioma; zona: Zona | null; aforo?: Aforo;
+const Dibujo = memo(function Dibujo({ lang, zona, aforo, vista, alEntrar, alSalir, alTocar }: {
+  lang: Idioma; zona: Zona | null; aforo?: Aforo; vista: Vista;
   alEntrar: (z: Zona) => void; alSalir: (z: Zona) => void; alTocar: (z: Zona) => void;
 }) {
   const t = T[lang];
-  const g = G;
+  const g = GEOS[vista];
+  const vb = VBS[vista];
   const { p, techo } = g;
 
   const mesasN = aforo ? Math.min(MESAS.length, Math.ceil(Math.max(0, aforo.invitados) / 10)) : MESAS.length;
@@ -1141,7 +1207,7 @@ const Dibujo = memo(function Dibujo({ lang, zona, aforo, alEntrar, alSalir, alTo
   const escalaCamion = g.escala(CAMION.x, CAMION.y + CAMION.recorrido) / g.escala(CAMION.x, CAMION.y);
 
   const azar = lcg(20260902);
-  const GOTAS = Array.from({ length: 360 }, () => ({ x: VB.x + azar() * VB.w, y: VB.y + azar() * VB.h, t: -(azar() * 1.1).toFixed(2) }));
+  const GOTAS = Array.from({ length: 360 }, () => ({ x: vb.x + azar() * vb.w, y: vb.y + azar() * vb.h, t: -(azar() * 1.1).toFixed(2) }));
   // ondas de impacto en el paseo y el césped (nunca bajo la palapa) y charcos en el paseo
   const ONDAS: Array<[number, number]> = [
     ...Array.from({ length: 8 }, (_, i): [number, number] => [PASEO.x + 3 + (i * 5) % 11, PASEO.y0 + 24 + i * 12]),
@@ -1200,6 +1266,12 @@ const Dibujo = memo(function Dibujo({ lang, zona, aforo, alEntrar, alSalir, alTo
 
   // Los objetos sueltos, ordenados por profundidad: lo lejano se pinta primero.
   const objetos: Array<{ prof: number; el: React.ReactNode }> = [
+    // el edificio entra en el orden de profundidad como todo lo demás: desde el sur es lo más lejano, desde el norte lo más cercano
+    { prof: g.profundidad(EDIF.x + EDIF.dx / 2, EDIF.y + EDIF.dy / 2, 6), el: (
+      <g key="edificio" className={zClase("edificio")} {...zProps("edificio")} style={cssVars({ "--d": ".3s" })}>
+        <Edificio g={g} />
+      </g>
+    ) },
     ...PALMERAS_O.map(([x, y], i) => ({ prof: g.profundidad(x, y), el: <Palma key={`po${i}`} g={g} x={x} y={y} i={i} alto={PALMERA_ALTO} /> })),
     ...PALMERAS_E.map(([x, y], i) => ({ prof: g.profundidad(x, y), el: <Palma key={`pe${i}`} g={g} x={x} y={y} i={i + 7} alto={PALMERA_ALTO} /> })),
     ...PALMERAS_PALAPA.map(([x, y], i) => ({ prof: g.profundidad(x, y), el: <Palma key={`pp${i}`} g={g} x={x} y={y} i={i + 14} alto={PALMERA_ALTO + 3} /> })),
@@ -1239,12 +1311,16 @@ const Dibujo = memo(function Dibujo({ lang, zona, aforo, alEntrar, alSalir, alTo
   ].sort((a, b) => a.prof === b.prof ? 0 : a.prof < b.prof ? 1 : -1);
 
   const puntoCalleO = p(CALLE_O.x + 14, 150, 0), puntoCalleS = p(60, LOTE.dy + 16, 0);
+  // Los nombres de las calles van a lo largo de su calle EN PANTALLA, desde cualquier cámara.
+  const angulo = (a: Pt, b: Pt) => { let d = (Math.atan2(b[1] - a[1], b[0] - a[0]) * 180) / Math.PI; if (d > 90) d -= 180; if (d < -90) d += 180; return d; };
+  const angCalleO = angulo(p(CALLE_O.x + 14, 170, 0), p(CALLE_O.x + 14, 130, 0));
+  const angCalleS = angulo(p(30, LOTE.dy + 16, 0), p(100, LOTE.dy + 16, 0));
   const oN = p(140, 20, 0), nN = p(140, 5, 0);
   const radN = Math.atan2(nN[1] - oN[1], nN[0] - oN[0]);
   const angN = (radN * 180) / Math.PI + 90;
 
   return (
-    <svg viewBox={`${VB.x.toFixed(0)} ${VB.y.toFixed(0)} ${VB.w.toFixed(0)} ${VB.h.toFixed(0)}`} role="img" aria-label={t.aria}>
+    <svg viewBox={`${vb.x.toFixed(0)} ${vb.y.toFixed(0)} ${vb.w.toFixed(0)} ${vb.h.toFixed(0)}`} role="img" aria-label={t.aria}>
       <defs>
         <pattern id="lam-cesped" width="4" height="4" patternUnits="userSpaceOnUse">
           <circle cx="1" cy="1" r="0.38" fill="#9faa86" />
@@ -1298,8 +1374,8 @@ const Dibujo = memo(function Dibujo({ lang, zona, aforo, alEntrar, alSalir, alTo
         <path className="rl tz paseo-pav" pathLength={1} d={techo(PASEO.x, PASEO.y0, PASEO.dx, PASEO.y1 - PASEO.y0 + 6, 0.04)} fill={PAPEL} stroke={GRIS} strokeWidth="0.7" />
         {losas}
         {juntas}
-        <text className="ap" transform={`translate(${puntoCalleO[0].toFixed(1)},${puntoCalleO[1].toFixed(1)}) rotate(-72)`} fill={GRIS} fontFamily="ui-monospace,monospace" fontSize="7" letterSpacing="1.6" textAnchor="middle">{t.calleO}</text>
-        <text className="ap" transform={`translate(${puntoCalleS[0].toFixed(1)},${puntoCalleS[1].toFixed(1)})`} fill={GRIS} fontFamily="ui-monospace,monospace" fontSize="7.5" letterSpacing="1.8" textAnchor="middle">{t.calleS}</text>
+        <text className="ap" transform={`translate(${puntoCalleO[0].toFixed(1)},${puntoCalleO[1].toFixed(1)}) rotate(${angCalleO.toFixed(1)})`} fill={GRIS} fontFamily="ui-monospace,monospace" fontSize="7" letterSpacing="1.6" textAnchor="middle">{t.calleO}</text>
+        <text className="ap" transform={`translate(${puntoCalleS[0].toFixed(1)},${puntoCalleS[1].toFixed(1)}) rotate(${angCalleS.toFixed(1)})`} fill={GRIS} fontFamily="ui-monospace,monospace" fontSize="7.5" letterSpacing="1.8" textAnchor="middle">{t.calleS}</text>
         <text className="ap" transform={`translate(${p(PARKING_E.x + PARKING_E.dx - 7, PARKING_E.y + 5, 0)[0].toFixed(1)},${p(PARKING_E.x + PARKING_E.dx - 7, PARKING_E.y + 5, 0)[1].toFixed(1)})`} fill={GRIS} fontFamily="ui-monospace,monospace" fontSize="7" textAnchor="middle">{t.parking}</text>
         <text className="ap" transform={`translate(${p(PARKING_S.x + PARKING_S.dx - 14, PARKING_S.y + PARKING_S.fila + PARKING_S.calle / 2 + 2, 0)[0].toFixed(1)},${p(PARKING_S.x + PARKING_S.dx - 14, PARKING_S.y + PARKING_S.fila + PARKING_S.calle / 2 + 2, 0)[1].toFixed(1)})`} fill={GRIS} fontFamily="ui-monospace,monospace" fontSize="7" textAnchor="middle">{t.parking}</text>
       </g>
@@ -1320,11 +1396,6 @@ const Dibujo = memo(function Dibujo({ lang, zona, aforo, alEntrar, alSalir, alTo
       </g>
       <g className="capa capa-pasillos" pointerEvents="none">
         {pasillos.map(([a, b], i) => <line key={i} className="pasillo" style={cssVars({ "--i": i })} x1={a[0]} y1={a[1]} x2={b[0]} y2={b[1]} stroke={OCRE} strokeWidth="1" strokeDasharray="4 3" />)}
-      </g>
-
-      {/* ── el edificio, al fondo: lo primero que se pinta de lo que tiene volumen ── */}
-      <g className={zClase("edificio")} {...zProps("edificio")} style={cssVars({ "--d": ".3s" })}>
-        <Edificio g={g} />
       </g>
 
       {/* ── setos: el de NW 1st Ct (oeste) y los del sur del césped ── */}
@@ -1408,7 +1479,7 @@ const Dibujo = memo(function Dibujo({ lang, zona, aforo, alEntrar, alSalir, alTo
         <Cota g={g} a={[LOTE.dx + 4, EDIF.dy]} b={[LOTE.dx + 4, LOTE.dy]} texto="≈ 154 FT · 47 M" lado={-1} />
         <Cota g={g} a={[PALAPA.x, PALAPA.y + PALAPA.dy + 5]} b={[PALAPA.x + PALAPA.dx, PALAPA.y + PALAPA.dy + 5]} texto="≈ 54 FT" clase="cota-palapa" />
 
-        <g className="ap" transform={`translate(${(VB.x + VB.w - 30).toFixed(1)},${(VB.y + 40).toFixed(1)})`}>
+        <g className="ap" transform={`translate(${(vb.x + vb.w - 30).toFixed(1)},${(vb.y + 40).toFixed(1)})`}>
           <g transform={`rotate(${angN.toFixed(1)})`}>
             <path d="M0,14 L0,-11 M-3.2,-4 L0,-12 L3.2,-4" fill="none" stroke={TINTA} strokeWidth="1" />
           </g>
@@ -1419,7 +1490,7 @@ const Dibujo = memo(function Dibujo({ lang, zona, aforo, alEntrar, alSalir, alTo
           // La barra de escala se mide en el primer plano, donde la cámara es más generosa.
           const s = g.escala(PASEO.x, PASEO.y1) * 50;
           return (
-            <g className="ap escala" transform={`translate(${(VB.x + 16).toFixed(1)},${(VB.y + VB.h - 22).toFixed(1)})`}>
+            <g className="ap escala" transform={`translate(${(vb.x + 16).toFixed(1)},${(vb.y + vb.h - 22).toFixed(1)})`}>
               {[0, 1, 2].map((i) => (
                 <rect key={i} x={(i * s) / 3} y="0" width={s / 3} height="4" fill={i % 2 ? PAPEL : TINTA} stroke={TINTA} strokeWidth="0.45" />
               ))}
@@ -1431,13 +1502,13 @@ const Dibujo = memo(function Dibujo({ lang, zona, aforo, alEntrar, alSalir, alTo
       </g>
 
       {/* ── anochece y se enciende el montaje ─────────────────────── */}
-      <rect className="anochecer" x={VB.x.toFixed(0)} y={VB.y.toFixed(0)} width={VB.w.toFixed(0)} height={VB.h.toFixed(0)} fill={TINTA} pointerEvents="none" />
+      <rect className="anochecer" x={vb.x.toFixed(0)} y={vb.y.toFixed(0)} width={vb.w.toFixed(0)} height={vb.h.toFixed(0)} fill={TINTA} pointerEvents="none" />
       <Noche g={g} />
 
       {/* ── la lluvia (solo en su modo) ──────────────────────────── */}
       <g className="lluvia" pointerEvents="none">
         {/* cielo cubierto: un velo gris-azul sobre el papel */}
-        <rect className="nublado" x={VB.x.toFixed(0)} y={VB.y.toFixed(0)} width={VB.w.toFixed(0)} height={VB.h.toFixed(0)} fill="#5f6b78" />
+        <rect className="nublado" x={vb.x.toFixed(0)} y={vb.y.toFixed(0)} width={vb.w.toFixed(0)} height={vb.h.toFixed(0)} fill="#5f6b78" />
         {CHARCOS.map(([cx, cy], i) => <Elipse key={`ch${i}`} g={g} x={cx} y={cy} r={2.2} z={0.03} className="charco-agua" fill="#aab4bd" opacity="0.35" />)}
         {ONDAS.map(([ox, oy], i) => <Elipse key={`on${i}`} g={g} x={ox} y={oy} r={1.4} z={0.04} className="onda" style={cssVars({ "--t": `${(-((i * 0.37) % 1.4)).toFixed(2)}s` })} fill="none" stroke="#4a5a6a" strokeWidth="0.45" />)}
         {GOTAS.map((q, i) => (
@@ -1452,10 +1523,12 @@ const Dibujo = memo(function Dibujo({ lang, zona, aforo, alEntrar, alSalir, alTo
 
 export default function LaminaRecinto({
   lang, modoDirigido, zonaDirigida, puntoDirigido, zoomDirigido, capasDirigidas, rotuloPunto, cifraPunto, fotoDirigida,
-  aforo, cine = false, semillaDibujo = 0, onManual, panel,
+  aforo, cine = false, semillaDibujo = 0, onManual, panel, vistaDirigida,
 }: {
   lang: Idioma;
   modoDirigido?: Modo;
+  /** Punto de vista impuesto desde fuera (el recorrido); si no viene, manda el selector de la sección. */
+  vistaDirigida?: Vista;
   zonaDirigida?: Zona | null;
   puntoDirigido?: [number, number] | null;
   zoomDirigido?: number;
@@ -1471,6 +1544,8 @@ export default function LaminaRecinto({
 }) {
   const t = T[lang];
   const [modoLocal, setModo] = useState<Modo>("todo");
+  const [vistaLocal, setVista] = useState<Vista>("sur");
+  const vista: Vista = vistaDirigida ?? vistaLocal;
   const [zonaLocal, setZona] = useState<Zona | null>(null);
   const [zonaLeida, setZonaLeida] = useState<Zona>("jardin");
   const [fase, setFase] = useState<Fase>("pendiente");
@@ -1535,6 +1610,11 @@ export default function LaminaRecinto({
     setModo(m);
     if (m !== "todo") ev("toggle_layer", { layer: m });
   }
+  function elegirVista(v: Vista) {
+    onManual?.();
+    setVista(v);
+    if (v !== "sur") ev("toggle_layer", { layer: "vista", view: v });
+  }
   const alEntrar = useCallback((z: Zona) => { setZona(z); setZonaLeida(z); }, []);
   const alSalir = useCallback((z: Zona) => setZona((a) => (a === z ? null : a)), []);
   const alTocar = useCallback((z: Zona) => {
@@ -1544,22 +1624,47 @@ export default function LaminaRecinto({
     ev("select_zone", { zone: z });
   }, [onManual]);
 
-  const { p } = G;
+  const g = GEOS[vista];
+  const vb = VBS[vista];
+  const { p } = g;
   const cxP = PALAPA.x + PALAPA.dx / 2, cyP = PALAPA.y + PALAPA.dy / 2;
   const rotulo = (z: Zona, ancla: Pt, dx: number, dy: number, lado: "" | "der" = "", vert: "" | "inf" = "") =>
     ({ zona: z, ancla, fin: [ancla[0] + dx, ancla[1] + dy] as Pt, lado, vert });
-  const ROTULOS = [
+  /**
+   * En los demás puntos de vista los rótulos se colocan solos: la caja hacia
+   * fuera del centro del papel, arriba del ancla; si dos anclas caen cerca en
+   * pantalla, el segundo sube otro escalón; y ninguno por encima del papel.
+   * El orden no se toca: el número del rótulo es su posición en la lista.
+   */
+  const rotulosAuto = (anclas: Array<[Zona, Pt]>) => {
+    const base = anclas.map(([z, ancla]) => { const [fx] = frac(ancla, vb); const der = fx > 0.5; return { z, ancla, dx: der ? -34 : 34, dy: -46, lado: (der ? "der" : "") as "" | "der" }; });
+    for (let i = 1; i < base.length; i++) {
+      for (let j = 0; j < i; j++) {
+        const a = base[j], b = base[i];
+        if (Math.abs(a.ancla[0] - b.ancla[0]) < 150 && Math.abs((a.ancla[1] + a.dy) - (b.ancla[1] + b.dy)) < 42) b.dy -= 44;
+      }
+    }
+    for (const r of base) r.dy = Math.max(r.dy, vb.y + 34 - r.ancla[1]);
+    return base.map((r) => rotulo(r.z, r.ancla, r.dx, r.dy, r.lado));
+  };
+  const ROTULOS = vista === "sur" ? [
     rotulo("jardin", p(PASEO.x + 3, 198, 0), -14, 60, "der", "inf"),
     rotulo("tiki", p(cxP, cyP, PALAPA_CUMBRE), -26, -50, "der"),
     rotulo("cabanas", p(CABANAS.x + CABANAS.dx / 2, CABANAS.y0 + 3 * CABANAS.paso + 5, CABANAS.h), 96, -74),
     rotulo("acceso", p(PASEO.x + PASEO.dx / 2 + 6, LOTE.dy + 14, 0), 30, -4),
     rotulo("edificio", p(EDIF.x + EDIF.dx - 22, EDIF.y + 60, EDIF.h1), 26, -18),
-  ];
+  ] : rotulosAuto([
+    ["jardin", p(PASEO.x + 3, 190, 0)],
+    ["tiki", p(cxP, cyP, PALAPA_CUMBRE)],
+    ["cabanas", p(CABANAS.x + CABANAS.dx / 2, CABANAS.y0 + 3 * CABANAS.paso + 5, CABANAS.h)],
+    ["acceso", p(PASEO.x + PASEO.dx / 2, LOTE.dy + 12, 0)],
+    ["edificio", p(EDIF.x + EDIF.dx / 2, EDIF.y + 50, EDIF.h1)],
+  ]);
 
   const altaEnVertical = cine && vertical;
   const ratioCaja = altaEnVertical ? Math.min(PROPORCION, 1.0) : PROPORCION;
   const fracCaja = (q: Pt): Pt => {
-    const [fx, fy] = frac(q);
+    const [fx, fy] = frac(q, vb);
     if (ratioCaja >= PROPORCION - 1e-6) return [fx, fy];
     const alturaCaja = 1 / ratioCaja, alturaDibujo = 1 / PROPORCION;
     const margen = (alturaCaja - alturaDibujo) / 2;
@@ -1600,7 +1705,7 @@ export default function LaminaRecinto({
           <div className="lam-escenario">
             <figure className="lam-fig" style={{ aspectRatio: String(ratioCaja) }}>
               <div className="lam-lienzo" style={camara}>
-                <Dibujo lang={lang} zona={zona} aforo={aforo} alEntrar={alEntrar} alSalir={alSalir} alTocar={alTocar} />
+                <Dibujo lang={lang} zona={zona} aforo={aforo} vista={vista} alEntrar={alEntrar} alSalir={alSalir} alTocar={alTocar} />
 
                 {dirigiendo && puntoDirigido && (
                   <div className={`lam-guia-punto${fracCaja(p(puntoDirigido[0], puntoDirigido[1], 0))[0] > 0.66 ? " izq" : ""}`} style={pctCaja(p(puntoDirigido[0], puntoDirigido[1], 0))} aria-hidden="true">
@@ -1617,7 +1722,7 @@ export default function LaminaRecinto({
 
                 <div className="lam-cajetin" aria-hidden>
                   <b>{t.cajetin[0]}</b>
-                  {t.cajetin[1]}<br />{t.cajetin[2]}
+                  {t.cajetin[1]}<br />{t.vistaCajetin[vista]}
                 </div>
 
                 {ROTULOS.map((r, i) => {
@@ -1640,7 +1745,7 @@ export default function LaminaRecinto({
                   );
                 })}
                 {/* las líneas de guía de los rótulos, en HTML para que sigan a la cámara */}
-                <svg className="lam-guias" viewBox={`${VB.x.toFixed(0)} ${VB.y.toFixed(0)} ${VB.w.toFixed(0)} ${VB.h.toFixed(0)}`} aria-hidden="true">
+                <svg className="lam-guias" viewBox={`${vb.x.toFixed(0)} ${vb.y.toFixed(0)} ${vb.w.toFixed(0)} ${vb.h.toFixed(0)}`} aria-hidden="true">
                   {ROTULOS.map((r) => (
                     <g key={r.zona} className={`guia guia-${r.zona}${zona === r.zona ? " activa" : ""}`}>
                       <line x1={r.ancla[0]} y1={r.ancla[1]} x2={r.fin[0]} y2={r.fin[1]} stroke={TINTA} strokeWidth="0.7" />
@@ -1670,6 +1775,17 @@ export default function LaminaRecinto({
                 </button>
               ))}
             </div>
+            {/* El punto de vista: el mismo modelo, completo por todos sus lados, desde cinco cámaras (Daniel, 7-sep). */}
+            {!cine && (
+              <div className="lam-modos lam-vistas" role="group" aria-label={t.vistaOjo}>
+                <span className="lam-vistas-ojo">{t.vistaOjo}</span>
+                {ORDEN_VISTAS.map((v) => (
+                  <button key={v} type="button" className="lam-modo" aria-pressed={vista === v} onClick={() => elegirVista(v)}>
+                    {t.vistas[v]}
+                  </button>
+                ))}
+              </div>
+            )}
             <p className="lam-explica" aria-live="polite">{t.explica[modo]}</p>
           </div>
 

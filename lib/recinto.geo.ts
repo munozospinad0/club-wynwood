@@ -192,3 +192,21 @@ export const CAMARA = {
   objetivo: [64, 150, 0] as [number, number, number],
   focal: 900,
 };
+
+/**
+ * LOS PUNTOS DE VISTA (Daniel, 7-sep: «que se pudiera ver desde diferentes
+ * perspectivas… tienes que crear todo el modelo en todos los lados»). Cinco
+ * cámaras sobre la misma geometría: la del sur (la de las fotos y del vídeo),
+ * desde el norte por encima del edificio, desde el este sobre el
+ * estacionamiento, desde el oeste sobre NW 1st Ct, y una aérea casi vertical.
+ * Todos los objetos deciden qué caras enseñan mirando `g.camara.ojo`.
+ */
+export type Vista = "sur" | "norte" | "este" | "oeste" | "aerea";
+export const VISTAS: Record<Vista, { ojo: [number, number, number]; objetivo: [number, number, number]; focal: number }> = {
+  sur: CAMARA,
+  norte: { ojo: [112, -250, 320], objetivo: [64, 178, 0], focal: 900 },
+  este: { ojo: [330, 176, 165], objetivo: [56, 162, 0], focal: 900 },
+  oeste: { ojo: [-190, 176, 150], objetivo: [72, 162, 0], focal: 900 },
+  aerea: { ojo: [72, 330, 520], objetivo: [66, 140, 0], focal: 900 },
+};
+export const ORDEN_VISTAS: Vista[] = ["sur", "oeste", "norte", "este", "aerea"];

@@ -663,7 +663,8 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
     // La sección que contiene el cine puede no haberse revelado (botón de la
     // portada en un teléfono, o ?recorrido=auto): se revela a mano, porque un
     // ancestro con transform anula el position: fixed del cine.
-    raiz.current?.closest(".rv")?.classList.add("dentro");
+    const rv = raiz.current?.closest<HTMLElement>(".rv");
+    if (rv) { rv.classList.add("dentro"); rv.style.transition = "none"; rv.style.transform = "none"; rv.style.opacity = "1"; }
     setVistaAforo(false);
     setActivo(true);
     setSonando(true);

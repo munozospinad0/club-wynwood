@@ -37,8 +37,8 @@ export const PAGINAS: Pagina[] = [
     ojo: { es: "Espacio 01 · al aire libre", en: "Space 01 · open-air" },
     h1: { es: "El Jardín", en: "The Garden" },
     respuesta: {
-      es: "El Jardín son ~18.000 ft² de exterior continuo en Wynwood, Miami: la superficie mayor del recinto y la que admite montaje libre. Un paseo pavimentado la recorre de extremo a extremo, con franjas de césped artificial a ambos lados, dos hileras de palmeras reales y ocho cabañas amuebladas.",
-      en: "The Garden is ~18,000 sq ft of continuous outdoor space in Wynwood, Miami: the larger surface of the site and the one that takes an open build. A paved walk runs end to end, with artificial turf strips on both sides, two rows of real palms and eight furnished cabanas.",
+      es: "El Jardín son ~18.000 ft² de exterior continuo en Wynwood, Miami: la superficie mayor del recinto y la que admite montaje libre. Un paseo pavimentado baja de la puerta del edificio al estacionamiento, con césped artificial a los lados, dos hileras de palmeras reales, un área de arena con mesas de picnic y ocho cabañas amuebladas.",
+      en: "The Garden is ~18,000 sq ft of continuous outdoor space in Wynwood, Miami: the larger surface of the site and the one that takes an open build. A paved walk runs from the building door down to the parking lot, with artificial turf on both sides, two rows of real palms, a sand area with picnic tables and eight furnished cabanas.",
     },
     title: {
       es: "El Jardín — ~18.000 ft² al aire libre en Wynwood | Club Wynwood",
@@ -94,8 +94,8 @@ export const PAGINAS: Pagina[] = [
     ojo: { es: "Espacio 02 · techado", en: "Space 02 · covered" },
     h1: { es: "El Tiki Hut", en: "The Tiki Hut" },
     respuesta: {
-      es: "El Tiki Hut son ~4.000 ft² de palapa: techo de paja a cuatro aguas sobre dos hileras de postes de madera, abierta por los cuatro costados. Es la zona de sombra permanente del recinto y el plan anti-lluvia de la fecha, sin mover el evento de sede. Para el agua que cae recta basta sola; con viento conviene cerrar los costados.",
-      en: "The Tiki Hut is ~4,000 sq ft of covered structure: a four-hipped thatched roof on two rows of timber posts, open on all four sides. It is the site's permanent shade zone and the rain plan for your date, without changing venue. For vertical rain it is enough on its own; with wind you will want the sides closed.",
+      es: "El Tiki Hut son ~4.000 ft² de palapa: techo de paja a cuatro aguas sobre nueve postes de madera, abierta por los cuatro costados. Es la zona de sombra permanente del recinto y el plan anti-lluvia de la fecha, sin mover el evento de sede. Para el agua que cae recta basta sola; con viento conviene cerrar los costados.",
+      en: "The Tiki Hut is ~4,000 sq ft of covered structure: a four-hipped thatched roof on nine timber posts, open on all four sides. It is the site's permanent shade zone and the rain plan for your date, without changing venue. For vertical rain it is enough on its own; with wind you will want the sides closed.",
     },
     title: {
       es: "El Tiki Hut — ~4.000 ft² techados en Wynwood | Club Wynwood",
@@ -907,8 +907,8 @@ export const FAQ: Array<{ q: Record<Idioma, string>; a: Record<Idioma, string> }
     // para saber si seguir o no.
     q: { es: "¿Cuánto cuesta? ¿Publican tarifas?", en: "How much does it cost? Do you publish rates?" },
     a: {
-      es: "No hay tarifa publicada, y sí depende de cuatro cosas: qué espacio usas (solo el Jardín, solo el Tiki Hut o el recinto completo), cuántas horas, qué día —un sábado de diciembre no vale lo que un martes de agosto— y si necesitas montaje la víspera. Mándanos la fecha y el número de invitados y te llega el presupuesto con la disponibilidad en 24 horas hábiles, sin visita previa ni compromiso.",
-      en: "There is no published rate, and the price depends on four things: which space you use (Garden only, Tiki Hut only or the whole site), how many hours, which day —a Saturday in December is not a Tuesday in August— and whether you need to build the day before. Send us the date and the guest count and you get the quote together with availability within 24 business hours, with no site visit and no commitment.",
+      es: "No hay tarifa publicada: depende del espacio que uses, las horas, el día y si necesitas montar la víspera. Mándanos la fecha y el número de invitados y te llega el presupuesto con la disponibilidad en 24 horas hábiles, sin compromiso.",
+      en: "There is no published rate: it depends on the space you use, the hours, the day and whether you need to build the day before. Send us the date and the guest count and you get the quote with availability within 24 business hours, with no commitment.",
     },
   },
   {
@@ -935,8 +935,8 @@ export const FAQ: Array<{ q: Record<Idioma, string>; a: Record<Idioma, string> }
   {
     q: { es: "¿Puedo traer mi propio catering y mi propia barra?", en: "Can I bring my own catering and bar?" },
     a: {
-      es: "Sí. No hay proveedor impuesto ni comisión por traer el tuyo, que es la diferencia principal con un hotel o un salón: allí la cocina es suya y ahí se va buena parte del presupuesto. Aquí no hay cocina propia, así que el catering monta en el sitio y la barra la pone tu equipo.",
-      en: "Yes. There is no imposed supplier and no fee for bringing your own, which is the main difference with a hotel or a ballroom: there the kitchen is theirs, and that is where much of the budget goes. Here there is no kitchen of our own, so catering sets up on site and your team runs the bar.",
+      es: "Sí. No hay proveedor impuesto ni comisión por traer el tuyo. Al aire libre no hay cocina: el catering monta en el sitio, o usa la cocina del edificio si lo alquilas también. La barra la pone tu equipo.",
+      en: "Yes. There is no imposed supplier and no fee for bringing your own. Outdoors there is no kitchen: catering sets up on site, or uses the building's kitchen if you rent it as well. Your team runs the bar.",
     },
   },
   {
@@ -949,8 +949,8 @@ export const FAQ: Array<{ q: Record<Idioma, string>; a: Record<Idioma, string> }
   {
     q: { es: "¿Hasta qué hora se puede, y con cuánto volumen?", en: "How late can we run, and how loud?" },
     a: {
-      es: "Todavía no lo publicamos, y preferimos decirlo así en vez de dar un número que no hemos comprobado. El horario límite y el tope de decibelios dependen de la ordenanza de la zona y de la licencia vigente del sitio: se confirman por escrito en la visita técnica, junto con la potencia, el parking y los baños. Si tu evento depende de terminar tarde, dilo en la solicitud y lo resolvemos antes de que vengas.",
-      en: "We do not publish this yet, and we would rather say so than give a number we have not verified. The curfew and the dB limit depend on the local ordinance and the site's current licence: both are confirmed in writing at the technical visit, along with power, parking and restrooms. If your event depends on running late, say so in the enquiry and we resolve it before you come.",
+      es: "El horario límite y el tope de decibelios dependen de la ordenanza de la zona y de la licencia del sitio: se confirman por escrito en la visita técnica. Si tu evento depende de terminar tarde, dilo en la solicitud y lo resolvemos antes de que vengas.",
+      en: "The curfew and the dB limit depend on the local ordinance and the site's licence: both are confirmed in writing at the technical visit. If your event depends on running late, say so in the enquiry and we resolve it before you come.",
     },
   },
   {

@@ -73,9 +73,16 @@ export const FOTOS = {
   aerea: { src: "/assets/aerea-predio.jpg", pos: "22% 78%", tamano: "postal", alt: { es: "El predio desde el aire: la palapa, el paseo y el jardín", en: "The site from the air: the structure, the walk and the garden" } },
   palmeras: { src: "/assets/palmeras-aerea.jpg", pos: "45% 50%", tamano: "postal", alt: { es: "Las dos hileras de palmeras sobre el césped y la palapa", en: "The two rows of palms over the turf and the structure" } },
   palapa: { src: "/assets/venue-palapa.webp", pos: "50% 45%", tamano: "postal", alt: { es: "Bajo la palapa: paja sobre madera, abierta por los costados", en: "Under the structure: thatch on timber, open on the sides" } },
-  montaje: { src: "/assets/palapa-montaje.jpg", pos: "50% 50%", tamano: "lleno", alt: { es: "Un montaje de sonido e iluminación bajo la palapa", en: "A sound and lighting setup under the structure" } },
+  montaje: { src: "/assets/palapa-montaje.jpg", pos: "50% 50%", tamano: "postal", alt: { es: "Un montaje de sonido e iluminación bajo la palapa", en: "A sound and lighting setup under the structure" } },
   paseo: { src: "/assets/paseo-palmeras.jpg", pos: "50% 50%", tamano: "postal", alt: { es: "El paseo pavimentado entre las dos hileras de palmeras", en: "The paved walk between the two rows of palms" } },
-  noche: { src: "/assets/recinto-noche.jpg", pos: "50% 50%", tamano: "lleno", alt: { es: "El recinto al anochecer durante un evento, visto desde arriba", en: "The site at dusk during an event, seen from above" } },
+  noche: { src: "/assets/recinto-noche.jpg", pos: "50% 50%", tamano: "postal", alt: { es: "El recinto al anochecer durante un evento, visto desde arriba", en: "The site at dusk during an event, seen from above" } },
+  // Del flyer de Newmark (LoopNet), 7-sep-2026: las más nítidas que hay del predio. Ninguna con la marca del operador en cuadro.
+  cenital: { src: "/assets/flyer-cenital.jpg", pos: "50% 50%", tamano: "postal", alt: { es: "El predio desde arriba: la palapa, el área de arena, las pérgolas y el paseo", en: "The site from above: the structure, the sand area, the pergolas and the walk" } },
+  aereaPalapa: { src: "/assets/flyer-aerea-palapa.jpg", pos: "50% 50%", tamano: "postal", alt: { es: "La palapa y las palmeras desde el aire", en: "The thatched structure and the palms from the air" } },
+  lounge: { src: "/assets/flyer-palapa-lounge.jpg", pos: "50% 50%", tamano: "postal", alt: { es: "Bajo la palapa: un montaje lounge con barra", en: "Under the structure: a lounge setup with a bar" } },
+  cabanas: { src: "/assets/flyer-cabanas.jpg", pos: "50% 50%", tamano: "postal", alt: { es: "Las cabañas: pérgolas con cortinas y sofás entre las palmeras", en: "The cabanas: pergolas with curtains and sofas among the palms" } },
+  puerta: { src: "/assets/flyer-paseo-puerta.jpg", pos: "50% 50%", tamano: "postal", alt: { es: "El paseo pavimentado hasta la puerta del edificio", en: "The paved walk up to the building door" } },
+  coctel: { src: "/assets/flyer-palapa-coctel.jpg", pos: "50% 50%", tamano: "postal", alt: { es: "Bajo la palapa: mesas de cóctel y guirnaldas entre los cabios", en: "Under the structure: cocktail tables and string lights among the rafters" } },
 } as const;
 export type FotoRecorrido = keyof typeof FOTOS;
 

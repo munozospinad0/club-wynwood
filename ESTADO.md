@@ -167,6 +167,77 @@ y una mesa con sillas ocupa 10.
 1280 × 400: en el vídeo se leía el rótulo del operador en el mural, encima de la puerta.
 Regla de siempre: mirar los fotogramas exportados, no solo el sitio.
 
+### Quinta pasada (7-sep-2026): objeto por objeto, el edificio por dentro, la palapa donde está
+
+Daniel: «mejoró muchísimo, pero le falta: fíjate más en los detalles, detalla por dentro,
+modela objeto por objeto, veo errores visuales (ventanas corridas, líneas encimadas), el
+montaje nocturno dinámico, proporcional y simétrico, que la página vaya sin lag, demasiado
+texto regado, el edificio no cuadra en fotos contra el tiki, y dentro del edificio sí hay
+cocina y demás».
+
+**La geometría cambió otra vez, y esta es la buena contra las fotos.** La palapa va
+**pegada al edificio** (en las dos aéreas la paja llega casi a la fachada; entre las dos
+solo hay palmeras y jardineras) y el jardín abierto queda **al sur de la palapa**. El área
+de arena con picnic y sombrillas va **al este de la puerta**, delante de la hilera de
+pérgolas, que empieza más al sur. En `lib/recinto.geo.ts`; el guion (5.1.0) tiene los 25
+puntos traducidos con `.qa/guion-puntos2.mjs`.
+
+**Objeto por objeto** (`LaminaRecinto.tsx`): palmeras con tronco inclinado, anillos y dos
+capas de frondas; personas con cabeza, tronco, brazos y piernas, y tres que caminan por el
+paseo (piernas y brazos alternan por CSS, se hacen pequeñas con la perspectiva); palapa con
+postes cónicos, vigas a la altura del alero, cabios que solo se ven por debajo (dibujarlos
+siempre convertía el techo en una red), cumbrera y fleco de paja en dos largos; pérgolas
+con tarima, cortina corrida, sofá en L con cojines, mesita y lámpara; picnic con sombrilla
+de ocho gajos; coches con ruedas y parabrisas; camión con cabina, parabrisas, faros,
+parrilla, costillas y llantas que giran (`stroke-dashoffset`); setos con la copa a bultos.
+
+**El edificio**, por fuera: dos volúmenes, ventanas **solo donde caben** (las de antes
+flotaban sobre el volumen bajo de 14 ft: «ventanas corridas»), mural en tres tonos
+apagados, puerta doble de vidrio con tiradores y marquesina, parapeto y equipos en
+cubierta. **Por dentro** (capa `edificio`; la fachada sur y la cubierta bajan a 10 % y 26 %
+de opacidad con `!important`, porque el lavado del dibujo fija la opacidad en 1): salón a
+doble altura donde termina el paseo, altillo a 12 ft con baranda y **cuatro salas
+privadas**, escalera, baños al oeste y la **cocina** en el volumen bajo (mostrador corrido,
+campana, isla, cámaras). Capas `interior-cocina`, `interior-salas`, `interior-altillo`
+resaltan en ocre. Nada del operador (`lib/edificio.ts`). **Decisión de Daniel (7-sep):**
+el edificio se ofrece como zona 02 con su cocina y sus baños; el guion, la planta, las
+zonas y la FAQ dicen ahora «al aire libre no hay cocina: el catering monta en el sitio, o
+usa la del edificio si lo alquilas también». La skill decía «sin cocina» a secas: se
+actualizó.
+
+**Montaje nocturno simétrico**: pantalla al fondo de la tarima (respira), cabina del DJ con
+su técnico, monitores, torre de sonido (sub + cabina) a cada lado, truss con seis cabezas
+móviles cuyos haces barren (los tres de la izquierda hacia un lado, los tres de la derecha
+hacia el otro; `transform-origin` en el foco y `rotate(calc(13deg * var(--dir)))`), pozos
+de luz en el césped, público de frente con brazos en alto que se mueve, barra con
+trasbarra, botellas, taburetes y tres pendientes, bolardos a lo largo del paseo, uplights
+en los postes y guirnaldas también bajo la palapa. El contorno de la palapa se insinúa en
+luz: sin él, la barra flotaba en la oscuridad.
+
+**Fotos**: seis del flyer de Newmark entran al recorrido (`flyer-*.jpg`; cenital, aérea de
+la palapa, lounge bajo la palapa, cabañas, paseo hasta la puerta, cóctel bajo la palapa),
+todas como postal para que **ninguna salga recortada** («algunas fotos quedan cortadas»);
+y las dos fotos del sitio con el rótulo del operador (`venue-exterior.webp`,
+`aerea-predio.jpg`, que además es la imagen de Open Graph) pasaron por `delogo` de ffmpeg.
+Los tres videos que Daniel dejó en Descargas están en `Proyecto wynwood/video-fuente/`
+pero **no entran**: el de la fiesta son primeros planos de invitados (caras, sin
+consentimiento para publicarlas) y los dos reels de 576 px llevan marca de agua, el rótulo
+del operador y su interior.
+
+**La voz**: cada capítulo se locuta con el anterior y el siguiente como contexto
+(`previous_text`/`next_text`) y pasa por una cadena de cabina (paso alto 75 Hz, de-esser,
+compresión 2,4:1, presencia 3,2 kHz, `loudnorm` en dos pasadas lineal a -16 LUFS; todos
+los capítulos quedan entre -16,2 y -16,7). Los mp3 crudos quedan en `.qa/voz-raw/`;
+`.qa/pulir.mjs` reprocesa sin regrabar. Trampa: el JSON de `loudnorm` va en stderr seguido
+de más líneas; hay que tomar el último bloque entre llaves, no `\}\s*$`.
+
+**Sin lag y sin desorden**: `.lam-lectura[hidden]{display:none}` (el `display:grid` pisaba
+al atributo `hidden` y se veían las cinco lecturas a la vez: ese era «el desorden por
+fuera»); animaciones de reposo pausadas hasta que el dibujo entra en pantalla y apagadas en
+móvil; `contain: layout paint` en la figura; la cámara respira en el cine (`lam-deriva`).
+Notas largas acortadas (lámina, planta), FAQ recortada, la planta con los mismos objetos que
+el dibujo (palmeras, mesas con sillas, pérgolas con sofá, coches).
+
 ### Medir hasta dónde se ve el recorrido
 
 Daniel: «que podamos ver y medir cuánta gente ve el video hasta dónde, así podemos

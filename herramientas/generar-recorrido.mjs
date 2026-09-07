@@ -20,7 +20,7 @@
  */
 
 import { existsSync } from "node:fs";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { execFile } from "node:child_process";
@@ -117,12 +117,46 @@ const AJUSTES = esV3
       speed: Number(process.env.SPEED ?? 1.0),
     }
   : {
-      stability: Number(process.env.STABILITY ?? 0.45),
-      similarity_boost: Number(process.env.SIMILARITY ?? 0.75),
-      style: Number(process.env.STYLE ?? 0.2),
+      stability: Number(process.env.STABILITY ?? 0.5),
+      similarity_boost: Number(process.env.SIMILARITY ?? 0.8),
+      style: Number(process.env.STYLE ?? 0.15),
       use_speaker_boost: process.env.SPEAKER_BOOST === "1",
       speed: Number(process.env.SPEED ?? 1.0),
     };
+
+/**
+ * PULIDO DE LA VOZ EN OFF (quinta pasada, 7-sep-2026). Daniel: «la calidad de
+ * la voz y demás». Dos cosas:
+ *
+ *   1. Cada capítulo se locuta con el texto del anterior y del siguiente como
+ *      contexto (`previous_text` / `next_text`): la entonación no arranca de
+ *      cero en cada archivo y los ocho suenan como una sola lectura.
+ *   2. Postproducción con ffmpeg, como en una cabina: paso alto a 75 Hz,
+ *      de-esser suave, compresión 2,4:1, presencia en 3,2 kHz y sonoridad a
+ *      -16 LUFS en dos pasadas (medida y luego lineal, que NO altera el
+ *      tiempo: el alineamiento palabra a palabra sigue valiendo). El mp3 crudo
+ *      queda en .qa/voz-raw/ por si hay que comparar.
+ */
+const CADENA = "highpass=f=75,deesser=i=0.3,acompressor=threshold=-20dB:ratio=2.4:attack=8:release=120:makeup=1.5,equalizer=f=3200:t=q:w=1.1:g=1.6";
+async function pulir(rutaMp3, lang, nn) {
+  const crudo = join(RAIZ, ".qa", "voz-raw", lang);
+  await mkdir(crudo, { recursive: true });
+  await writeFile(join(crudo, `${nn}.mp3`), await readFile(rutaMp3));
+  const tmp = rutaMp3 + ".tmp.mp3";
+  let medida = null;
+  try {
+    const r = await ejecutar("ffmpeg", ["-nostdin", "-hide_banner", "-nostats", "-i", rutaMp3, "-af", `${CADENA},loudnorm=I=-16:TP=-1.5:LRA=11:print_format=json`, "-f", "null", "-"]);
+    // El JSON de loudnorm va en stderr, seguido de las líneas de cierre de ffmpeg: se toma el último bloque entre llaves.
+    const bloques = String(r.stderr || "").match(/\{[^{}]*\}/g);
+    medida = bloques && bloques.length ? JSON.parse(bloques[bloques.length - 1]) : null;
+  } catch { medida = null; }
+  const ln = medida
+    ? `loudnorm=I=-16:TP=-1.5:LRA=11:measured_I=${medida.input_i}:measured_TP=${medida.input_tp}:measured_LRA=${medida.input_lra}:measured_thresh=${medida.input_thresh}:offset=${medida.target_offset}:linear=true`
+    : "loudnorm=I=-16:TP=-1.5:LRA=11";
+  await ejecutar("ffmpeg", ["-nostdin", "-hide_banner", "-nostats", "-v", "error", "-y", "-i", rutaMp3, "-af", `${CADENA},${ln}`, "-ar", "44100", "-c:a", "libmp3lame", "-b:a", "192k", tmp]);
+  await rename(tmp, rutaMp3);
+  return medida ? `${Number(medida.input_i).toFixed(1)}→-16 LUFS` : "sonoridad en una pasada";
+}
 
 const norm = (s) => String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9ñ]+/g, " ").trim();
 
@@ -148,9 +182,11 @@ async function yaDicho(rutaWords, texto) {
   } catch { return false; }
 }
 
-async function locutar(voiceId, text, lang) {
+async function locutar(voiceId, text, lang, anterior, siguiente) {
   const url = `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}/with-timestamps?output_format=${OUTPUT_FORMAT}`;
   const cuerpo = { text, model_id: MODEL_ID, voice_settings: AJUSTES };
+  if (anterior) cuerpo.previous_text = anterior;
+  if (siguiente) cuerpo.next_text = siguiente;
   // v3 acepta el idioma explícito; evita que un nombre propio en inglés
   // («Northwest First Court») le haga cambiar de acento a media frase.
   if (esV3) cuerpo.language_code = lang;
@@ -198,14 +234,16 @@ for (const lang of idiomas) {
     let intento = 0, ok = false;
     while (!ok && intento < 3) {
       try {
-        const { audio, palabras } = await locutar(VOICE[lang], texto, lang);
+        const anterior = guion.capitulos[i - 1]?.texto[lang], siguiente = guion.capitulos[i + 1]?.texto[lang];
+        const { audio, palabras } = await locutar(VOICE[lang], texto, lang, anterior, siguiente);
         await writeFile(rutaMp3, audio);
         await writeFile(rutaWords, JSON.stringify(palabras));
+        const pulido = await pulir(rutaMp3, lang, nn);
         const dicho = norm(palabras.map((w) => w.w).join(" "));
         const igual = dicho === norm(texto);
         const fin = palabras.length ? palabras[palabras.length - 1].end : 0;
         const ppm = fin ? Math.round((palabras.length / fin) * 60) : 0;
-        console.log(`${(audio.length / 1024).toFixed(0)} KB · ${palabras.length} palabras · ${fin.toFixed(1)} s · ${ppm} ppm${igual ? "" : " · OJO: el alineamiento no coincide con el guion"}`);
+        console.log(`${(audio.length / 1024).toFixed(0)} KB · ${palabras.length} palabras · ${fin.toFixed(1)} s · ${ppm} ppm · ${pulido}${igual ? "" : " · OJO: el alineamiento no coincide con el guion"}`);
         ok = true; hechos++;
       } catch (e) {
         intento++;

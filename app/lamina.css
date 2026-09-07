@@ -1544,7 +1544,7 @@
 .lam-guia-punto.izq .lam-guia-rotulo { left: auto; right: 18px; text-align: right; align-items: flex-end; }
 .lam-guia-cifra { font-size: 15px; line-height: 1.1; }
 .lam.cine .lam-guia-cifra { font-size: 18px; }
-.lam[data-capas~="edificio"] .z-edificio path { stroke: var(--lam-ocre) !important; }
+.lam[data-capas~="edificio"] .z-edificio .edif-borde { stroke: var(--lam-ocre) !important; }
 .lam[data-capas~="cabanas"] .cabana { animation: lam-peso .55s cubic-bezier(.2, .8, .3, 1.1) both; animation-delay: calc(var(--i, 0) * 110ms); transform-box: fill-box; transform-origin: 50% 100%; }
 .lam[data-capas~="cabanas"] .cabana .tz, .lam[data-capas~="cabanas"] .cabana .rl { animation: none; stroke-dashoffset: 0; fill-opacity: 1; }
 .lam[data-capas~="coches"] .coche { animation: lam-peso .5s ease both; transform-box: fill-box; transform-origin: 50% 100%; }
@@ -1607,4 +1607,123 @@
 .cine-volver:hover { color: var(--papel); border-color: var(--papel); }
 @media (max-width: 860px), (max-aspect-ratio: 1/1) {
   .cine-mandos .cine-cta { margin-left: 0; flex: 1 1 100%; justify-content: center; }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   QUINTA PASADA (7-sep-2026): objeto por objeto, el edificio por dentro, sin lag
+
+   Daniel: «dedícate a modelar objeto por objeto», «veo errores visuales, como
+   ventanas corridas, encima de otras líneas», «detalla dentro del edificio»,
+   «el montaje nocturno: dinámico, proporcional y simétrico», «que la página
+   vaya sin lag», «veo desorden por fuera».
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Las lecturas de zona: solo la elegida. `display: grid` pisaba al atributo
+   hidden y se veían las cinco a la vez: ese era el «desorden por fuera». */
+.lam-lectura[hidden] { display: none; }
+
+/* Cabios de la palapa: por fuera no se ven (la paja los tapa); por debajo, cuando
+   el techo es transparente, sí. Dibujarlos siempre hacía del techo una red. */
+.lam .palapa line.cabio { opacity: 0 !important; transition: opacity .6s ease; }
+.lam[data-modo="mesas"] .palapa line.cabio, .lam[data-modo="gente"] .palapa line.cabio,
+.lam[data-modo="barra"] .palapa line.cabio, .lam[data-modo="noche"] .palapa line.cabio { opacity: .55 !important; }
+/* De noche, el contorno de la palapa se insinúa en luz: sin él, la barra y las
+   guirnaldas flotaban en la oscuridad. */
+.lam[data-modo="noche"] .palapa-cubierta { stroke: var(--lam-luz) !important; opacity: .45; }
+/* En el corte del edificio, también se apagan los contornos de ventanas y mural. */
+.lam[data-capas~="edificio"] .edif-sur { stroke-opacity: .25; }
+/* La cota de la palapa no pisa las mesas ni la gente. */
+.lam[data-modo="mesas"] .cota-palapa, .lam[data-modo="gente"] .cota-palapa,
+.lam[data-modo="barra"] .cota-palapa, .lam[data-modo="noche"] .cota-palapa { display: none; }
+
+/* Gente que anda por el paseo: sube hacia la puerta, se hace pequeña con la
+   perspectiva y vuelve a empezar. Piernas y brazos alternan. */
+.lam .peaton {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: lam-peaton var(--dur, 20s) linear infinite;
+  animation-delay: var(--pd, 0s);
+}
+@keyframes lam-peaton {
+  0%   { transform: translate(0, 0) scale(1); opacity: 0; }
+  6%   { opacity: .8; }
+  94%  { opacity: .8; }
+  100% { transform: translate(var(--px), var(--py)) scale(var(--s, 1)); opacity: 0; }
+}
+.lam .figura.camina .pierna-a, .lam .figura.camina .pierna-b,
+.lam .figura.camina .brazo-a, .lam .figura.camina .brazo-b { transform-box: fill-box; transform-origin: 50% 0; }
+.lam .figura.camina .pierna-a { animation: lam-paso .6s ease-in-out infinite alternate; }
+.lam .figura.camina .pierna-b { animation: lam-paso .6s ease-in-out infinite alternate-reverse; }
+.lam .figura.camina .brazo-a { animation: lam-brazo .6s ease-in-out infinite alternate-reverse; }
+.lam .figura.camina .brazo-b { animation: lam-brazo .6s ease-in-out infinite alternate; }
+@keyframes lam-paso { from { transform: rotate(-14deg); } to { transform: rotate(14deg); } }
+@keyframes lam-brazo { from { transform: rotate(-9deg); } to { transform: rotate(9deg); } }
+.lam[data-modo="camion"] .peatones, .lam[data-modo="noche"] .peatones,
+.lam[data-modo="gente"] .peatones, .lam[data-modo="mesas"] .peatones { display: none; }
+
+/* La cuadrilla del load-in aparece cuando el camión ya llegó al fondo. */
+.lam .cuadrilla { display: none; }
+.lam[data-modo="camion"] .cuadrilla { display: block; }
+.lam[data-modo="camion"] .cuadrilla > * { transform-box: fill-box; transform-origin: 50% 100%; animation: lam-peso .5s ease both; animation-delay: 2.7s; }
+/* Las llantas giran mientras el camión avanza. */
+.lam[data-modo="camion"] .rueda ellipse:nth-child(2) { animation: lam-rueda .45s linear infinite; }
+@keyframes lam-rueda { to { stroke-dashoffset: -4.8; } }
+
+/* Montaje nocturno: los haces barren (los tres de la izquierda hacia un lado y
+   los tres de la derecha hacia el otro), la pantalla respira, el público de
+   delante se mueve. */
+.lam[data-modo="noche"] .noche-haz {
+  transform-box: view-box;
+  animation: lam-haz 5.5s ease-in-out infinite alternate;
+  animation-delay: calc(var(--i, 0) * -.9s);
+}
+@keyframes lam-haz {
+  from { transform: rotate(calc(-13deg * var(--dir, 1))); }
+  to   { transform: rotate(calc(13deg * var(--dir, 1))); }
+}
+.lam[data-modo="noche"] .noche-pantalla { animation: lam-pantalla 3.6s ease-in-out infinite alternate; }
+@keyframes lam-pantalla { from { opacity: .22; } to { opacity: .45; } }
+.lam[data-modo="noche"] .noche-figura {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: lam-bailar .64s ease-in-out infinite alternate;
+  animation-delay: calc(var(--i, 0) * -.13s);
+}
+@keyframes lam-bailar { from { transform: translateY(0); } to { transform: translateY(-1.3px); } }
+
+/* El edificio por dentro: la fachada sur y la cubierta se vuelven
+   transparentes y el interior entra pieza a pieza. Con !important porque la
+   animación de lavado (forwards) fijaría la opacidad del relleno en 1. */
+.lam .edif-interior { display: none; }
+.lam .edif-sur, .lam .edif-techo { transition: fill-opacity .8s ease; }
+.lam[data-capas~="edificio"] .edif-interior { display: block; }
+.lam[data-capas~="edificio"] .edif-sur { fill-opacity: .1 !important; }
+.lam[data-capas~="edificio"] .edif-techo { fill-opacity: .26 !important; }
+.lam[data-capas~="edificio"] .int-pieza {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: lam-peso .5s cubic-bezier(.2, .8, .3, 1.1) both;
+  animation-delay: calc(var(--i, 0) * 90ms + .3s);
+}
+.lam[data-capas~="interior-cocina"] .int-cocina path { stroke: var(--lam-ocre) !important; stroke-width: 1.1 !important; }
+.lam[data-capas~="interior-salas"] .int-salas path { stroke: var(--lam-ocre) !important; stroke-width: 1.1 !important; }
+.lam[data-capas~="interior-altillo"] .int-altillo path,
+.lam[data-capas~="interior-altillo"] .int-altillo line { stroke: var(--lam-ocre) !important; }
+
+/* La cámara respira en el cine: un empuje lento y continuo, nada queda quieto. */
+.lam.cine .lam-fig { animation: lam-deriva 22s ease-in-out infinite alternate; }
+@keyframes lam-deriva { from { transform: scale(1); } to { transform: scale(1.022); } }
+
+/* Sin lag: las animaciones de reposo solo corren cuando el dibujo ya está en
+   pantalla, y no en el móvil. */
+.lam.pendiente .palma, .lam.pendiente .peaton { animation-play-state: paused; }
+@media (max-width: 720px) {
+  .lam .palma, .lam .peaton, .lam .figura.camina .pierna, .lam .figura.camina .brazo { animation: none !important; }
+}
+.lam-fig { contain: layout paint; }
+
+@media (prefers-reduced-motion: reduce) {
+  .lam .peaton, .lam .figura .pierna, .lam .figura .brazo, .lam .rueda ellipse, .lam .noche-haz, .lam .noche-pantalla,
+  .lam .noche-figura, .lam .int-pieza, .lam .cuadrilla > *, .lam.cine .lam-fig { animation: none !important; }
 }

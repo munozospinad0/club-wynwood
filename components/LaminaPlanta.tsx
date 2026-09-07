@@ -94,13 +94,14 @@ export default function LaminaPlanta({ lang }: { lang: Idioma }) {
     </g>
   );
 
-  /** Una palmera en planta: el tronco es un punto, la copa un asterisco. */
+  /** Una palmera en planta, como en el dibujo en perspectiva: copa de ocho frondas en verde oliva y el tronco como punto. */
   const Palma = ({ x, y }: { x: number; y: number }) => (
-    <g stroke={TINTA} strokeWidth="0.6" opacity="0.55">
-      {[0, 45, 90, 135].map((a) => (
-        <line key={a} x1={x - 4.5} y1={y} x2={x + 4.5} y2={y} transform={`rotate(${a} ${x} ${y})`} />
+    <g>
+      <circle cx={x} cy={y} r="6.5" fill="#6a7752" opacity="0.14" />
+      {[0, 45, 90, 135, 180, 225, 270, 315].map((a) => (
+        <path key={a} d={`M${x},${y} q3.4,-1.5 6.8,0 q-3.4,1.5 -6.8,0 Z`} transform={`rotate(${a} ${x} ${y})`} fill={a % 90 ? "#6a7752" : "#4f5a3e"} opacity="0.85" />
       ))}
-      <circle cx={x} cy={y} r="1" fill={TINTA} stroke="none" />
+      <circle cx={x} cy={y} r="0.9" fill="#4a4337" />
     </g>
   );
 
@@ -127,8 +128,8 @@ export default function LaminaPlanta({ lang }: { lang: Idioma }) {
           <figure style={{ margin: 0 }}>
             <svg viewBox={`0 0 ${VB.w.toFixed(0)} ${VB.h.toFixed(0)}`} role="img"
                  aria-label={es
-                   ? "Planta del recinto, norte arriba. Lote de esquina entre NW 1st Court al oeste y NW 21st Court al sur, de unos 150 por 265 pies. El edificio del operador ocupa el norte; de su puerta baja hacia el sur un paseo pavimentado de unos 105 pies con palmeras a los dos lados. Al suroeste, la palapa techada de 54 por 54 pies; entre la palapa y el edificio, un área de arena con mesas de picnic. Al este del paseo, ocho cabañas en hilera y, más allá, el estacionamiento. Otra franja de estacionamiento cierra el sur, sobre NW 21st Court, por donde entra la producción."
-                   : "Site plan, north up. Corner lot between NW 1st Court to the west and NW 21st Court to the south, about 150 by 265 feet. The operator's building takes the north; from its door a paved walk of about 105 feet runs south with palms on both sides. To the south-west, the 54 by 54 foot thatched structure; between it and the building, a sand area with picnic tables. East of the walk, eight cabanas in a row and, beyond them, parking. Another parking strip closes the south on NW 21st Court, where production comes in."}
+                   ? "Planta del recinto, norte arriba. Lote de esquina entre NW 1st Court al oeste y NW 21st Court al sur, de unos 150 por 265 pies. El edificio del operador ocupa el norte; de su puerta baja hacia el sur un paseo pavimentado de unos 105 pies con palmeras a los dos lados. Al oeste del paseo y pegada al edificio, la palapa techada de 54 por 54 pies, con el jardín abierto al sur. Al este del paseo, junto a la puerta, un área de arena con mesas de picnic; después, ocho cabañas en hilera y, más allá, el estacionamiento. Otra franja de estacionamiento cierra el sur, sobre NW 21st Court, por donde entra la producción."
+                   : "Site plan, north up. Corner lot between NW 1st Court to the west and NW 21st Court to the south, about 150 by 265 feet. The operator's building takes the north; from its door a paved walk of about 105 feet runs south with palms on both sides. West of the walk and right next to the building, the 54 by 54 foot thatched structure, with the open garden south of it. East of the walk, by the door, a sand area with picnic tables; then eight cabanas in a row and, beyond them, parking. Another parking strip closes the south on NW 21st Court, where production comes in."}
                  style={{ width: "100%", height: "auto", maxHeight: "80vh", display: "block" }}>
 
               <defs>
@@ -166,6 +167,23 @@ export default function LaminaPlanta({ lang }: { lang: Idioma }) {
               {plazasS.map((x, i) => (
                 <line key={`ps${i}`} x1={fx(x)} y1={fy(PARKING_S.y + 4)} x2={fx(x)} y2={fy(PARKING_S.y + PARKING_S.dy)} stroke="#c4bcae" strokeWidth="0.6" />
               ))}
+              {/* coches en las mismas plazas que el dibujo en perspectiva */}
+              {plazasE.slice(0, -1).map((y, i) => (i % 3 !== 1 ? (
+                <g key={`ce${i}`}>
+                  <rect x={fx(PARKING_E.x + 6)} y={fy(y + 1.5)} width={16 * U} height={((PARKING_E.dy - 12) / PARKING_E.plazas - 3) * U} rx="2" fill="#d9d3c6" stroke={TINTA} strokeWidth="0.45" />
+                  <rect x={fx(PARKING_E.x + 10)} y={fy(y + 3)} width={7.5 * U} height={((PARKING_E.dy - 12) / PARKING_E.plazas - 6) * U} rx="1" fill="#b9b3a7" opacity="0.6" />
+                </g>
+              ) : null))}
+              {plazasS.slice(0, -1).map((x, i) => {
+                const ancho = (PARKING_S.dx - 8) / PARKING_S.plazas;
+                if ((i * 5) % 4 === 2 || (x + ancho > PASEO.x - 12 && x < PASEO.x + PASEO.dx + 6)) return null;
+                return (
+                  <g key={`cs${i}`}>
+                    <rect x={fx(x + 1.2)} y={fy(PARKING_S.y + 3)} width={(ancho - 2.4) * U} height={16 * U} rx="2" fill="#d9d3c6" stroke={TINTA} strokeWidth="0.45" />
+                    <rect x={fx(x + 2.6)} y={fy(PARKING_S.y + 6)} width={(ancho - 5.2) * U} height={7.5 * U} rx="1" fill="#b9b3a7" opacity="0.6" />
+                  </g>
+                );
+              })}
 
               {/* ---------- el paseo: la espina, y también el acceso de carga ---------- */}
               <rect x={fx(PASEO.x)} y={fy(PASEO.y0)} width={PASEO.dx * U} height={(PASEO.y1 - PASEO.y0) * U}
@@ -200,17 +218,21 @@ export default function LaminaPlanta({ lang }: { lang: Idioma }) {
               ))}
 
               {/* ---------- las cabañas ---------- */}
-              {Array.from({ length: CABANAS.n }, (_, i) => (
-                <g key={`cab${i}`}>
-                  <rect x={fx(CABANAS.x)} y={fy(CABANAS.y0 + i * CABANAS.paso)} width={CABANAS.dx * U} height={CABANAS.dy * U}
-                        fill="#c9c0ad" stroke={TINTA} strokeWidth="0.8" />
-                  {[0.33, 0.66].map((f) => (
-                    <line key={f} x1={fx(CABANAS.x)} y1={fy(CABANAS.y0 + i * CABANAS.paso + CABANAS.dy * f)}
-                          x2={fx(CABANAS.x + CABANAS.dx)} y2={fy(CABANAS.y0 + i * CABANAS.paso + CABANAS.dy * f)}
-                          stroke={PAPEL} strokeWidth="0.6" opacity="0.8" />
-                  ))}
-                </g>
-              ))}
+              {Array.from({ length: CABANAS.n }, (_, i) => {
+                const cy0 = CABANAS.y0 + i * CABANAS.paso;
+                return (
+                  <g key={`cab${i}`}>
+                    <rect x={fx(CABANAS.x)} y={fy(cy0)} width={CABANAS.dx * U} height={CABANAS.dy * U} fill="#e6dfd0" stroke={TINTA} strokeWidth="0.8" />
+                    {[0.2, 0.4, 0.6, 0.8].map((f) => (
+                      <line key={f} x1={fx(CABANAS.x + CABANAS.dx * f)} y1={fy(cy0)} x2={fx(CABANAS.x + CABANAS.dx * f)} y2={fy(cy0 + CABANAS.dy)} stroke={PAPEL} strokeWidth="0.7" opacity="0.9" />
+                    ))}
+                    {/* el sofá en L y la mesita, como en el dibujo */}
+                    <rect x={fx(CABANAS.x + 1.5)} y={fy(cy0 + CABANAS.dy - 4)} width={(CABANAS.dx - 3) * U} height={2.4 * U} fill="#c9c0ad" stroke={GRIS} strokeWidth="0.4" />
+                    <rect x={fx(CABANAS.x + 1.5)} y={fy(cy0 + 2)} width={2.4 * U} height={(CABANAS.dy - 6) * U} fill="#c9c0ad" stroke={GRIS} strokeWidth="0.4" />
+                    <circle cx={fx(CABANAS.x + 6.5)} cy={fy(cy0 + 5)} r={1.3 * U} fill="#e9e3d6" stroke={GRIS} strokeWidth="0.4" />
+                  </g>
+                );
+              })}
 
               {/* ---------- palmeras ---------- */}
               {[...PALMERAS_O, ...PALMERAS_E, ...PALMERAS_PALAPA].map(([x, y], i) => <Palma key={`pal${i}`} x={fx(x)} y={fy(y)} />)}
@@ -222,8 +244,12 @@ export default function LaminaPlanta({ lang }: { lang: Idioma }) {
                    son la respuesta. */}
               {MESAS.map(([x, y], i) => (
                 <g key={`m${i}`}>
-                  <circle cx={fx(x)} cy={fy(y)} r={5 * U} fill={OCRE} opacity="0.09" />
-                  <circle cx={fx(x)} cy={fy(y)} r={2.5 * U} fill="none" stroke={OCRE} strokeWidth="0.9" opacity="0.8" />
+                  {Array.from({ length: 10 }, (_, k) => {
+                    const an = (k / 10) * Math.PI * 2;
+                    return <circle key={k} cx={(fx(x) + Math.cos(an) * 4.6 * U).toFixed(1)} cy={(fy(y) + Math.sin(an) * 4.6 * U).toFixed(1)} r={0.85 * U} fill={OCRE} opacity="0.75" />;
+                  })}
+                  <circle cx={fx(x)} cy={fy(y)} r={2.6 * U} fill={PAPEL} stroke={OCRE} strokeWidth="0.9" />
+                  <circle cx={fx(x)} cy={fy(y)} r={0.6 * U} fill={OCRE} opacity="0.7" />
                 </g>
               ))}
 
@@ -323,14 +349,14 @@ export default function LaminaPlanta({ lang }: { lang: Idioma }) {
               {
                 p: es ? "¿Y el edificio?" : "What about the building?",
                 r: es
-                  ? "No es parte del alquiler. Lo ocupa otro negocio y se alquila aparte; lo que aquí se ofrece es el recinto exterior: el jardín, la palapa, las cabañas y el estacionamiento propio."
-                  : "Not part of the rental. Another business occupies it and it is leased separately; what is offered here is the outdoor site: the garden, the thatched structure, the cabanas and the on-site parking.",
+                  ? "Se alquila aparte, como zona 02: abajo, un salón a doble altura con cocina y baños; arriba, un altillo con cuatro salas privadas. Lo que aquí se ofrece es el recinto exterior: el jardín, la palapa, las cabañas y el estacionamiento propio."
+                  : "Rented separately, as zone 02: downstairs, a double-height hall with a kitchen and restrooms; upstairs, a mezzanine with four private rooms. What is offered here is the outdoor site: the garden, the thatched structure, the cabanas and the on-site parking.",
               },
               {
-                p: es ? "¿Qué NO hay?" : "What is NOT here?",
+                p: es ? "¿Qué NO hay al aire libre?" : "What is NOT outdoors?",
                 r: es
-                  ? "Cocina propia: el catering monta en el sitio. Tampoco hay cerramiento perimetral fijo ni climatización — es un recinto al aire libre, y en Miami eso decide la fecha más que ninguna otra cosa."
-                  : "No kitchen of our own: catering sets up on site. No fixed perimeter enclosure and no climate control either — this is an open-air site, and in Miami that drives the date more than anything else.",
+                  ? "Cocina: el catering monta en el sitio, o usa la del edificio si lo alquilas también. Tampoco hay cerramiento perimetral fijo ni climatización: es un recinto al aire libre, y en Miami eso decide la fecha más que ninguna otra cosa."
+                  : "A kitchen: catering sets up on site, or uses the building's kitchen if you rent it as well. No fixed perimeter enclosure and no climate control either: this is an open-air site, and in Miami that drives the date more than anything else.",
               },
             ].map(({ p, r }) => (
               <div key={p} style={{ padding: "18px 20px 20px 0", borderBottom: "1px solid var(--regla)" }}>
@@ -343,8 +369,8 @@ export default function LaminaPlanta({ lang }: { lang: Idioma }) {
 
         <p className="ojo" style={{ paddingTop: 18, lineHeight: 1.75, maxWidth: "78ch" }}>
           {es
-            ? "Planta según el plano del sitio del flyer comercial del predio, no un levantamiento: la disposición es la real; las medidas son aproximadas y se confirman en la visita técnica. El camión y las mesas de diez están dibujados a la misma escala que el recinto: sirven para calcular a ojo, no son parte del montaje."
-            : "Plan drawn from the property's commercial site plan, not a survey: the layout is the real one; dimensions are approximate and confirmed at the technical visit. The truck and the ten-seat tables are drawn to the same scale as the site: they are there to judge size by eye, not part of any layout."}
+            ? "Según el plano del sitio del propietario; medidas aproximadas, se confirman en la visita técnica."
+            : "From the owner's site plan; approximate dimensions, confirmed at the technical visit."}
         </p>
       </div>
     </section>

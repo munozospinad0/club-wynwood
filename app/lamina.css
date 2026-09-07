@@ -110,7 +110,8 @@
 .lam.listo .lam-cajetin { opacity: 1; }
 
 @keyframes lam-trazo { to { stroke-dashoffset: 0; } }
-@keyframes lam-lavado { to { fill-opacity: 1; } }
+/* El lavado llega a 1 salvo donde el elemento pide otra cosa (las cortinas, translúcidas). */
+@keyframes lam-lavado { to { fill-opacity: var(--lavado, 1); } }
 @keyframes lam-aparece { to { opacity: 1; } }
 
 /* ---------- zonas: al tocar una, las demás se apagan ---------- */
@@ -175,7 +176,7 @@
 .lam[data-modo="gente"] .gente { display: block; }
 .lam[data-modo="gente"] .persona {
   transform-box: fill-box;
-  transform-origin: center;
+  transform-origin: 50% 100%;
   animation: lam-persona 0.35s ease-out both;
   animation-delay: calc(var(--i, 0) * 4ms);
 }
@@ -1505,7 +1506,9 @@
 .lam[data-capas~="pasillos"] .capa-pasillos { display: block; }
 .lam[data-capas~="lados"] .capa-lados { display: block; }
 .lam[data-capas~="porton"] .capa-porton { display: block; }
-.lam[data-capas~="picnic"] .capa-picnic { display: block; }
+.lam[data-capas~="picnic"] .picnic-fijo path, .lam[data-capas~="picnic"] .picnic-fijo line { stroke: var(--lam-ocre) !important; stroke-width: .8 !important; }
+.lam .picnic-fijo .picnic-entra { animation: none; }
+.lam[data-capas~="picnic"] .picnic-fijo .picnic-entra { transform-box: fill-box; transform-origin: 50% 100%; animation: lam-peso .5s ease both; animation-delay: calc(var(--i, 0) * 120ms); }
 .lam[data-modo="noche"] .noche .capa { display: none; }
 .lam[data-modo="noche"][data-capas~="publico"] .capa-publico,
 .lam[data-modo="noche"][data-capas~="barra-luz"] .capa-barra-luz,
@@ -1547,6 +1550,10 @@
 .lam[data-capas~="edificio"] .z-edificio .edif-borde { stroke: var(--lam-ocre) !important; }
 .lam[data-capas~="cabanas"] .cabana { animation: lam-peso .55s cubic-bezier(.2, .8, .3, 1.1) both; animation-delay: calc(var(--i, 0) * 110ms); transform-box: fill-box; transform-origin: 50% 100%; }
 .lam[data-capas~="cabanas"] .cabana .tz, .lam[data-capas~="cabanas"] .cabana .rl { animation: none; stroke-dashoffset: 0; fill-opacity: 1; }
+/* …salvo el plano del techo, que tiene que seguir dejando ver el sofá justo en el capítulo de las cabañas. */
+.lam[data-capas~="cabanas"] .cabana .techo-cab { fill-opacity: .12 !important; }
+.lam[data-capas~="cabanas"] .cabana .cortina path { fill-opacity: .45 !important; }
+.lam .cabana .cortina path { --lavado: .45; }
 .lam[data-capas~="coches"] .coche { animation: lam-peso .5s ease both; transform-box: fill-box; transform-origin: 50% 100%; }
 
 /* En modo noche, los focos y las bombillas se encienden uno a uno (ya definido
@@ -1564,8 +1571,7 @@
   0%, 100% { transform: rotate(-1.4deg); }
   50%      { transform: rotate(1.4deg); }
 }
-/* El camion rueda: las ruedas no giran (son elipses), pero el conjunto cabecea un poco. */
-.lam[data-modo="camion"] .camion > g { animation: lam-cabeceo .5s ease-in-out infinite alternate; }
+/* El camion cabecea mientras rueda (seis veces, las que dura el recorrido; ver cuarta tanda). */
 @keyframes lam-cabeceo { from { transform: translateY(0); } to { transform: translateY(-.6px); } }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1666,8 +1672,7 @@
 .lam .cuadrilla { display: none; }
 .lam[data-modo="camion"] .cuadrilla { display: block; }
 .lam[data-modo="camion"] .cuadrilla > * { transform-box: fill-box; transform-origin: 50% 100%; animation: lam-peso .5s ease both; animation-delay: 2.7s; }
-/* Las llantas giran mientras el camión avanza. */
-.lam[data-modo="camion"] .rueda ellipse:nth-child(2) { animation: lam-rueda .45s linear infinite; }
+/* Las llantas giran mientras el camión avanza (seis vueltas: las que dura el recorrido; ver cuarta tanda). */
 @keyframes lam-rueda { to { stroke-dashoffset: -4.8; } }
 
 /* Montaje nocturno: los haces barren (los tres de la izquierda hacia un lado y
@@ -1730,16 +1735,15 @@
 
 /* ── reposo con vida, segunda tanda: cortinas, sombrillas, público ─────────── */
 
-.lam .cortina { transform-box: fill-box; transform-origin: 50% 0; animation: lam-cortina 5.2s ease-in-out infinite alternate; animation-delay: calc(var(--i, 0) * -.7s); }
-@keyframes lam-cortina { from { transform: skewX(-1.2deg); } to { transform: skewX(1.2deg); } }
+/* (la regla de la cortina vive en la cuarta tanda, más abajo: aquí quedaba pisada por `.lam.dibujar .rl`) */
 .lam[data-modo="gente"] .persona:nth-child(5n) { animation: lam-peso .4s ease-out both, lam-bailar .9s ease-in-out infinite alternate; animation-delay: calc(var(--i, 0) * 3.5ms), calc(var(--i, 0) * -37ms); }
 /* Con lluvia, el agua escurre del alero. */
 .lam .gotera { opacity: 0; }
 .lam[data-modo="lluvia"] .gotera, .lam[data-modo="carpa"] .gotera { animation: lam-gotera .9s linear infinite; animation-delay: var(--t, 0s); }
 @keyframes lam-gotera {
   from { transform: translateY(0); opacity: 0; }
-  20%  { opacity: .55; }
-  to   { transform: translateY(14px); opacity: 0; }
+  20%  { opacity: .6; }
+  to   { transform: translateY(12px); opacity: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
   .lam .cortina, .lam .gotera, .lam[data-modo="gente"] .persona:nth-child(5n) { animation: none !important; }
@@ -1751,8 +1755,7 @@
 .lam .palapa-textura { transition: fill-opacity .6s ease; }
 .lam .sombrilla { transform-box: fill-box; transform-origin: 50% 100%; animation: lam-sombrilla 7s ease-in-out infinite alternate; }
 @keyframes lam-sombrilla { from { transform: rotate(-.9deg); } to { transform: rotate(.9deg); } }
-.lam .rampa { opacity: 0; }
-.lam[data-modo="camion"] .rampa { animation: lam-aparece .4s ease both; animation-delay: 2.6s; }
+/* (la rampa: regla nueva en la cuarta tanda, más abajo) */
 .lam[data-modo="noche"] .noche-persona { transform-box: fill-box; transform-origin: 50% 100%; }
 .lam[data-modo="noche"][data-capas~="publico"] .noche-persona,
 .lam[data-modo="noche"]:not([data-capas]) .noche-persona,
@@ -1777,6 +1780,72 @@
 @keyframes lam-cta { from { transform: scale(1); box-shadow: 0 0 0 0 rgba(196, 119, 43, .0); } to { transform: scale(1.06); box-shadow: 0 0 0 6px rgba(196, 119, 43, .25); } }
 @media (prefers-reduced-motion: reduce) {
   .lam[data-capas~="palmeras"] .palma, .lam[data-capas~="exterior"] .lote, .lam[data-capas~="parking"] .parking, .lam[data-capas~="puerta"] .puerta, .lam[data-capas~="cta"] .cine-cta { animation: none !important; }
+}
+
+/* ── cuarta tanda (crítica con agentes): lo que estaba muerto o mal ────────── */
+
+/* Las cortinas nunca se movían: la regla de reposo `.lam.dibujar .rl` pisaba la animación del path. Ahora el grupo se mueve. */
+.lam .cortina { transform-box: fill-box; transform-origin: 50% 0; animation: lam-cortina 5.2s ease-in-out infinite alternate; animation-delay: calc(var(--i, 0) * -.7s); }
+@keyframes lam-cortina { from { transform: skewX(-2.4deg); } to { transform: skewX(2.4deg); } }
+.lam .lampara { transform-box: view-box; animation: lam-pendulo 2.9s ease-in-out infinite alternate; animation-delay: calc(var(--i, 0) * -.55s); }
+@keyframes lam-pendulo { from { transform: rotate(-5deg); } to { transform: rotate(5deg); } }
+/* Las personas paradas cambian el peso de pie y un brazo gesticula. */
+.lam .parado { transform-box: fill-box; transform-origin: 50% 100%; animation: lam-parado 4.2s ease-in-out infinite alternate; animation-delay: calc(var(--i, 0) * -1.3s); }
+@keyframes lam-parado { from { transform: rotate(-1.5deg); } to { transform: rotate(1.5deg); } }
+.lam .parado .brazo-a { transform-box: fill-box; transform-origin: 50% 0; animation: lam-gesto 3.1s ease-in-out infinite alternate; animation-delay: calc(var(--i, 0) * -.9s); }
+@keyframes lam-gesto { from { transform: rotate(-9deg); } to { transform: rotate(4deg); } }
+/* El camión llega y PARA: llantas y cabeceo terminan con el recorrido; la rampa baja como los paños de la carpa; las puertas se abren. */
+.lam[data-modo="camion"] .rueda ellipse:nth-child(2) { animation: lam-rueda .45s linear 6; }
+.lam[data-modo="camion"] .camion > g { animation: lam-cabeceo .5s ease-in-out 6 alternate both; }
+.lam .rampa { opacity: 0; }
+.lam[data-modo="camion"] .rampa { transform-box: view-box; animation: lam-pano .6s cubic-bezier(.3, .7, .2, 1) both; animation-delay: 2.7s; }
+.lam .puerta-camion { opacity: 0; }
+.lam[data-modo="camion"] .puerta-camion { animation: lam-aparece .4s ease both; animation-delay: 2.5s; }
+.lam[data-modo="camion"] .road-case { transform-box: fill-box; transform-origin: 50% 100%; animation: lam-peso .5s ease both; animation-delay: calc(2.9s + var(--i, 0) * 180ms); }
+.lam[data-modo="camion"] .cono { transform-box: fill-box; transform-origin: 50% 100%; animation: lam-peso .4s ease both; animation-delay: .2s; }
+/* Noche: guirnaldas que se mecen con las palmeras, pozos que se avivan cuando pasa el haz, DJ y bartender vivos, luces del inmueble. */
+.lam[data-modo="noche"] .hilos { animation: lam-guirnalda 5.6s ease-in-out infinite alternate; }
+@keyframes lam-guirnalda { from { transform: translate(-.35px, 0); } to { transform: translate(.35px, .7px); } }
+.lam[data-modo="noche"] .noche-pozo { animation: lam-pozo 5.5s ease-in-out infinite alternate; animation-delay: calc(var(--i, 0) * -.9s); }
+@keyframes lam-pozo { from { opacity: .04; } to { opacity: .14; } }
+.lam[data-modo="noche"] .noche-dj { transform-box: fill-box; transform-origin: 50% 100%; animation: lam-bailar .64s ease-in-out infinite alternate; }
+.lam[data-modo="noche"] .noche-bartender { transform-box: fill-box; transform-origin: 50% 100%; animation: lam-respira 2.4s ease-in-out infinite alternate; }
+.lam[data-modo="noche"]:not([data-capas]) .capa-inmueble-luz, .lam[data-modo="noche"][data-capas=""] .capa-inmueble-luz,
+.lam[data-modo="noche"][data-capas~="guirnaldas"] .capa-inmueble-luz { display: block; }
+.lam[data-modo="noche"] .capa-inmueble-luz > path, .lam[data-modo="noche"] .capa-inmueble-luz > ellipse { animation: lam-aparece-noche .9s ease forwards; animation-delay: 2.6s; opacity: 0; }
+/* Lluvia: cielo cubierto, ondas de impacto, charcos, y nadie a la intemperie. */
+.lam .nublado, .lam .charco-agua, .lam .onda { opacity: 0; }
+.lam[data-modo="lluvia"] .nublado, .lam[data-modo="carpa"] .nublado { animation: lam-nublado 1.2s ease forwards; }
+@keyframes lam-nublado { to { opacity: .12; } }
+.lam[data-modo="lluvia"] .charco-agua, .lam[data-modo="carpa"] .charco-agua { animation: lam-aparece .8s ease forwards; animation-delay: .6s; }
+.lam[data-modo="lluvia"] .onda, .lam[data-modo="carpa"] .onda { transform-box: fill-box; transform-origin: center; animation: lam-onda 1.4s ease-out infinite; animation-delay: var(--t, 0s); }
+@keyframes lam-onda { 0% { transform: scale(.15); opacity: .55; } 100% { transform: scale(1); opacity: 0; } }
+.lam[data-modo="lluvia"] .peatones, .lam[data-modo="lluvia"] .gente-suelta, .lam[data-modo="carpa"] .peatones, .lam[data-modo="carpa"] .gente-suelta { display: none; }
+.lam .a-cubierto { display: none; }
+.lam[data-modo="lluvia"] .a-cubierto, .lam[data-modo="carpa"] .a-cubierto { display: block; }
+/* El suelo mojado se oscurece, no se aclara. */
+.lam[data-modo="lluvia"] .cesped, .lam[data-modo="carpa"] .cesped { opacity: .72; }
+@media (max-width: 720px) { .lam .lluvia line:nth-of-type(2n) { display: none; } }
+/* Lo que trae el proveedor va a trazos que caminan: la carpa y la barra. */
+@keyframes lam-marcha { to { stroke-dashoffset: -5.2; } }
+.lam[data-modo="carpa"] .carpa-pano { animation: lam-pano .9s cubic-bezier(.3, .7, .2, 1) both, lam-marcha 1.8s linear infinite; }
+.lam[data-modo="barra"] .barra path { animation: lam-marcha 1.8s linear infinite; }
+/* El corte del edificio: la cubierta baja más para que las salas queden debajo de su contorno; rótulos interiores. */
+.lam[data-capas~="edificio"] .edif-techo { fill-opacity: .18 !important; stroke-opacity: .9; }
+.lam .int-rotulo { opacity: 0; }
+.lam[data-capas~="edificio"] .int-rotulo { animation: lam-aparece .5s ease both; animation-delay: 1.3s; }
+/* Móvil: números más pequeños y centrados sobre su guía; sin cotas ni escala, que a 3 px son ruido. */
+@media (max-width: 720px) {
+  .lam-etq-n { min-width: 18px; height: 18px; font-size: 9px; }
+  .lam-etq { transform: translate(-50%, -50%) !important; }
+  .lam-guias line { stroke-width: 1.4; }
+  .lam .cota, .lam .escala { display: none; }
+  .lam .cortina, .lam .lampara, .lam .parado, .lam .parado .brazo-a { animation: none !important; }
+}
+.lam.pendiente .cortina, .lam.pendiente .lampara, .lam.pendiente .parado { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .lam .cortina, .lam .lampara, .lam .parado, .lam .parado .brazo-a, .lam .hilos, .lam .noche-pozo, .lam .noche-dj, .lam .noche-bartender,
+  .lam .onda, .lam .nublado, .lam .charco-agua, .lam .road-case, .lam .cono, .lam .puerta-camion, .lam .carpa-pano, .lam .barra path, .lam .int-rotulo { animation: none !important; opacity: 1; }
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════

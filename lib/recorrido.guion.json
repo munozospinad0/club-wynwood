@@ -1,5 +1,5 @@
 {
-  "version": "5.3.0",
+  "version": "5.4.0",
   "capitulos": [
     {
       "id": "recinto",
@@ -191,8 +191,8 @@
         "en": "Capacity: 600 standing · 300 seated"
       },
       "texto": {
-        "es": "¿Cabe tu evento? Hasta seiscientas personas de pie: así se ven, a escala, dentro del jardín. O unas trescientas sentadas: aquí van treinta mesas de diez, dibujadas a la misma escala, y sobra pasillo entre mesa y mesa. Por encima de eso no entra, y preferimos decírtelo antes de la visita.",
-        "en": "Does your event fit? Up to six hundred people standing: this is what they look like, to scale, inside the garden. Or about three hundred seated: here are thirty tables of ten, drawn at the same scale, with room to walk between them. Above that it does not fit, and we would rather tell you before the visit."
+        "es": "¿Cabe tu evento? Hasta seiscientas personas de pie: así se ven, a escala, dentro del jardín. O unas trescientas sentadas: aquí van veinticuatro mesas redondas de diez y una mesa imperial de sesenta a lo largo del paseo, dibujadas a la misma escala, y sobra pasillo entre mesa y mesa. Por encima de eso no entra, y preferimos decírtelo antes de la visita.",
+        "en": "Does your event fit? Up to six hundred people standing: this is what they look like, to scale, inside the garden. Or about three hundred seated: here are twenty-four round tables of ten and one sixty-seat banquet table along the walk, drawn at the same scale, with room to walk between them. Above that it does not fit, and we would rather tell you before the visit."
       },
       "hitos": {
         "es": [
@@ -210,7 +210,7 @@
               139
             ],
             "zoom": 2.2,
-            "cifra": "300 sentados · 30 mesas"
+            "cifra": "300 sentados · 24 redondas + imperial"
           },
           {
             "frase": "sobra pasillo entre mesa",
@@ -248,7 +248,7 @@
               139
             ],
             "zoom": 2.2,
-            "cifra": "300 seated · 30 tables"
+            "cifra": "300 seated · 24 rounds + banquet"
           },
           {
             "frase": "with room to walk between",

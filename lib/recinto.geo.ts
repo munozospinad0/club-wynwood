@@ -37,7 +37,8 @@ export type Pt = [number, number];
 export const LOTE = { dx: 150, dy: 265 };
 
 /** El edificio, al norte. La puerta al final del paseo, en su cara sur. */
-export const EDIF = { x: 4, y: 0, dx: 120, dy: 104, h1: 14, h2: 24, corte: 70 };
+/** El corte entre el volumen alto y el bajo va a 58 ft: así la puerta (68–82) queda entera en el volumen bajo y no partida por la arista. */
+export const EDIF = { x: 4, y: 0, dx: 120, dy: 104, h1: 14, h2: 24, corte: 58 };
 export const PUERTA = { x: 68, dx: 14, h: 10 };
 
 /** El paseo: de la puerta hacia el sur, centrado en la puerta. */
@@ -50,7 +51,8 @@ export const PASEO = { x: 66, dx: 15, y0: EDIF.dy, y1: 236 };
  * palmeras y jardineras. El césped abierto queda al SUR de la palapa.
  */
 export const PALAPA = { x: 8, y: 112, dx: 54, dy: 54 };
-export const PALAPA_ALERO = 11, PALAPA_CUMBRE = 26, PALAPA_CUMBRERA = 14;
+/** Cumbrera a 34 ft: la pirámide de paja de las fotos es alta (≈42° de pendiente), no un techo bajo. */
+export const PALAPA_ALERO = 11, PALAPA_CUMBRE = 34, PALAPA_CUMBRERA = 14;
 /** Postes: tres hileras por tres, bajo los aleros y en el centro. */
 export const PALAPA_POSTES: Pt[] = (() => {
   const out: Pt[] = [];
@@ -63,15 +65,23 @@ export const PALAPA_POSTES: Pt[] = (() => {
  * a la puerta, delante de la hilera de pérgolas (en las aéreas, las sombrillas
  * quedan a la derecha de la puerta; en la cenital del flyer, contra un seto).
  */
-export const ARENA = { x: 84, y: 106, dx: 44, dy: 22 };
-export const PICNIC: Pt[] = Array.from({ length: 5 }, (_, i): Pt => [91 + i * 8, 117]);
+/**
+ * Toda la franja al este del paseo es ARENA blanca (en las fotos a pie, las
+ * palmeras y las pérgolas están plantadas en arena; el césped solo va al
+ * oeste, del lado de la palapa). Las mesas de picnic con sombrilla ocupan la
+ * cabecera, junto a la puerta.
+ */
+export const ARENA = { x: PASEO.x + PASEO.dx, y: 106, dx: 108 - 3 - (PASEO.x + PASEO.dx), dy: 238 - 106 };
+/** La cabecera de arena, junto a la puerta, se abre hacia el estacionamiento (el seto alto arranca en la primera pérgola). */
+export const ARENA_CABECERA = { x: PASEO.x + PASEO.dx, y: 106, dx: 40, dy: 22 };
+export const PICNIC: Pt[] = Array.from({ length: 5 }, (_, i): Pt => [88 + i * 6.5, 116]);
 
-/** Las ocho cabañas-pérgola, al este del paseo, en hilera de norte a sur, después del área de arena. */
-export const CABANAS = { x: 88, y0: 132, dx: 11, dy: 11, n: 8, paso: 13, h: 9 };
+/** Las ocho cabañas-pérgola, al este del paseo, en hilera de norte a sur, con 4 ft de aire entre unidades. */
+export const CABANAS = { x: 88, y0: 130, dx: 11, dy: 9.5, n: 8, paso: 13.5, h: 9 };
 
-/** Césped: la franja oeste (la palapa y, al sur de ella, el jardín abierto) y la franja este bajo las pérgolas. */
+/** Césped: solo la franja oeste (la palapa y, al sur de ella, el jardín abierto). CESPED_E queda vacío: al este es arena. */
 export const CESPED_O = { x: 4, y: 108, dx: PASEO.x - 4, dy: 130 };
-export const CESPED_E = { x: PASEO.x + PASEO.dx, y: ARENA.y + ARENA.dy, dx: 106 - PASEO.x - PASEO.dx + 3, dy: 238 - ARENA.y - ARENA.dy };
+export const CESPED_E = { x: PASEO.x + PASEO.dx, y: 106, dx: 0, dy: 0 };
 
 /**
  * Palmeras reales: dos hileras junto al paseo y las de la palapa. Son palmas
@@ -79,7 +89,7 @@ export const CESPED_E = { x: PASEO.x + PASEO.dx, y: ARENA.y + ARENA.dy, dx: 106 
  * copas pasan POR ENCIMA del techo y no se montan con él (Daniel, 7-sep: «veo
  * superposición»). La hilera oeste va a 1,5 ft del borde del paseo.
  */
-export const PALMERA_ALTO = 30;
+export const PALMERA_ALTO = 36;
 export const PALMERAS_O: Pt[] = Array.from({ length: 7 }, (_, i) => [PASEO.x - 1.5, 118 + i * 17]);
 export const PALMERAS_E: Pt[] = Array.from({ length: 7 }, (_, i) => [PASEO.x + PASEO.dx + 1.5, 126 + i * 17]);
 export const PALMERAS_PALAPA: Pt[] = [[PALAPA.x - 2, PALAPA.y + 6], [PALAPA.x - 2, PALAPA.y + 30], [PALAPA.x + 20, PALAPA.y + PALAPA.dy + 4], [PALAPA.x + 44, PALAPA.y + PALAPA.dy + 4], [PALAPA.x + 28, PALAPA.y - 4]];
@@ -109,25 +119,31 @@ export const MESAS: Pt[] = (() => {
   const out: Pt[] = [];
   for (let c = 0; c < 4; c++) for (let f = 0; f < 4; f++) out.push([PALAPA.x + 7 + c * 13.3, PALAPA.y + 7 + f * 13.3]);
   for (let c = 0; c < 4; c++) for (let f = 0; f < 2; f++) out.push([PALAPA.x + 7 + c * 13.3, PALAPA.y + PALAPA.dy + 6 + f * 13]);
-  for (let f = 0; f < 6; f++) out.push([PASEO.x + PASEO.dx / 2, PASEO.y0 + 12 + f * 14]);
   return out;
 })();
+/**
+ * Sobre el paseo, en vez de seis redondas metidas entre los troncos, una mesa
+ * imperial de sesenta: 4 × 78 ft, treinta sillas por lado a 2,6 ft. Es la
+ * «cena larga a lo largo del paseo» de la ficha del jardín. 240 + 60 = 300.
+ */
+export const MESA_LARGA = { x: PASEO.x + PASEO.dx / 2 - 2, y: PASEO.y0 + 10, dx: 4, dy: 78, sillas: 30, paso: 2.6 };
 
 /** El escenario del montaje tipo: en el césped oeste, justo al sur de la palapa, mirando al sur (de frente a la cámara). */
-export const ESCENARIO = { x: 20, y: PALAPA.y + PALAPA.dy + 2, dx: 30, dy: 16, h: 3, truss: 15 };
+export const ESCENARIO = { x: 20, y: PALAPA.y + PALAPA.dy + 8, dx: 30, dy: 16, h: 3, truss: 15 };
 
 /** La barra del cliente, bajo la palapa, del lado del paseo. */
 export const BARRA = { x: PALAPA.x + PALAPA.dx - 6, y: PALAPA.y + 10, dx: 4, dy: 30, h: 3.5 };
 
 /** El camión de 40 ft: entra desde el sur por el estacionamiento y sube el paseo. */
-export const CAMION = { x: PASEO.x + 2, y: 150, dx: 8.5, dy: 40, h: 12, recorrido: 100 };
+/** Llega a 4 ft de la puerta (la rampa acaba en y≈106) desde el estacionamiento sur (arranca en y=246). */
+export const CAMION = { x: PASEO.x + 2, y: 116, dx: 8.5, dy: 40, h: 12, recorrido: 130 };
 
 /** Público de pie: 600 a 8 ft² cada uno, en el césped oeste y bajo la palapa. */
 export const MULTITUD: Pt[] = (() => {
   let s = 7 >>> 0;
   const azar = () => { s = (Math.imul(s, 1664525) + 1013904223) >>> 0; return s / 4294967296; };
   const out: Pt[] = [];
-  // bajo la palapa: 54 × 54 → 17 × 17 ≈ 289
+  // bajo la palapa: 54 × 54 → 17 × 17 ≈ 289 (de noche no se usan: ahí va el lounge)
   for (let f = 0; f < 17; f++) for (let c = 0; c < 17; c++) out.push([PALAPA.x + 1.5 + c * 3.05 + (azar() - 0.5) * 1.4, PALAPA.y + 1.5 + f * 3.05 + (azar() - 0.5) * 1.4]);
   // césped oeste al sur de la palapa (dejando sitio al escenario del montaje tipo): ≈ 311
   for (let f = 0; f < 12; f++) for (let c = 0; c < 26; c++) out.push([6 + c * 2.3 + (azar() - 0.5) * 1.2, PALAPA.y + PALAPA.dy + 24 + f * 2.8 + (azar() - 0.5) * 1.2]);
@@ -135,7 +151,8 @@ export const MULTITUD: Pt[] = (() => {
 })();
 
 /** Gente suelta, para dar escala en la vista general. */
-export const GENTE_SUELTA: Pt[] = [[PASEO.x + 6, 160], [PASEO.x + 9, 205], [30, 205], [PASEO.x - 8, 225], [PASEO.x + PASEO.dx + 8, 150]];
+/** Ninguna sobre el paseo: por ahí caminan los peatones y les pasaban por encima. */
+export const GENTE_SUELTA: Pt[] = [[PASEO.x + PASEO.dx + 4.5, 162], [PASEO.x - 5, 205], [40, 214], [PASEO.x - 8, 228], [PASEO.x + PASEO.dx + 5, 200]];
 
 /** Centro del recinto exterior: a donde vuelve la cámara. */
 export const CENTRO: Pt = [66, 170];

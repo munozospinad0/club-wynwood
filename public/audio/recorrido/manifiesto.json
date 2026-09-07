@@ -1,5 +1,5 @@
 {
-  "version": "5.0.0",
+  "version": "5.4.0",
   "modelo": "eleven_multilingual_v2",
   "voces": {
     "es": "IaUx9NjPDJeDAwpNQMW2",
@@ -19,7 +19,7 @@
   "duraciones": {
     "es": [
       20.25,
-      17.18,
+      19.27,
       20.99,
       20.71,
       35.02,
@@ -29,7 +29,7 @@
     ],
     "en": [
       22.29,
-      19.74,
+      24.01,
       24.06,
       22.66,
       40.91,

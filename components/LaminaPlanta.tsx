@@ -2,7 +2,7 @@ import type { Idioma } from "@/lib/i18n";
 import {
   LOTE, EDIF, PUERTA, PASEO, PALAPA, PALAPA_POSTES, ARENA, PICNIC, CABANAS,
   CESPED_O, CESPED_E, PALMERAS_O, PALMERAS_E, PALMERAS_PALAPA, PARKING_E, PARKING_S,
-  CALLE_O, CALLE_S, MESAS, CAMION,
+  CALLE_O, CALLE_S, MESAS, MESA_LARGA, CAMION,
 } from "@/lib/recinto.geo";
 
 /**
@@ -30,8 +30,9 @@ import {
  *
  * 1. EL SVG DIBUJA, EL HTML EXPLICA. Las respuestas van al lado, en HTML:
  *    escalan, se copian, se traducen y las cita un buscador de IA.
- * 2. EL AFORO SE DIBUJA, NO SE ENUNCIA. Las treinta mesas de diez van a escala
- *    real sobre el plano, en ocre porque no son el sitio: son la respuesta.
+ * 2. EL AFORO SE DIBUJA, NO SE ENUNCIA. Las veinticuatro mesas de diez y la mesa
+ *    imperial de sesenta van a escala real sobre el plano, en ocre porque no
+ *    son el sitio: son la respuesta.
  *    El camión de 40 ft, igual, sobre el paseo.
  * 3. Lo techado, en tinta: tener techo es EL dato.
  *
@@ -242,7 +243,8 @@ export default function LaminaPlanta({ lang }: { lang: Idioma }) {
               {[...PALMERAS_O, ...PALMERAS_E, ...PALMERAS_PALAPA].map(([x, y], i) => <Palma key={`pal${i}`} x={fx(x)} y={fy(y)} />)}
 
               {/* ══════════ EL AFORO, DIBUJADO ══════════
-                   Treinta mesas de diez = los ~300 sentados verificados, a la
+                   Veinticuatro mesas de diez más la imperial de sesenta = los
+                   ~300 sentados verificados, a la
                    misma escala que el recinto y en los mismos puntos que el
                    dibujo en perspectiva. Van en ocre porque no son el sitio:
                    son la respuesta. */}
@@ -256,6 +258,11 @@ export default function LaminaPlanta({ lang }: { lang: Idioma }) {
                   <circle cx={fx(x)} cy={fy(y)} r={0.6 * U} fill={OCRE} opacity="0.7" />
                 </g>
               ))}
+              {/* la mesa imperial de sesenta sobre el paseo, como en el dibujo */}
+              <rect x={fx(MESA_LARGA.x)} y={fy(MESA_LARGA.y)} width={MESA_LARGA.dx * U} height={MESA_LARGA.dy * U} fill={PAPEL} stroke={OCRE} strokeWidth="0.9" />
+              {Array.from({ length: MESA_LARGA.sillas }, (_, k) => MESA_LARGA.y + 2 + k * MESA_LARGA.paso).flatMap((yy) => [MESA_LARGA.x - 1.7, MESA_LARGA.x + MESA_LARGA.dx + 1.7].map((xx) => (
+                <circle key={`${xx}-${yy}`} cx={fx(xx)} cy={fy(yy)} r={0.75 * U} fill={OCRE} opacity="0.75" />
+              )))}
 
               {/* camión de 40 ft, a escala, entrando desde NW 21st Ct al estacionamiento sur:
                   la mitad ya dentro del lote, la otra mitad todavía en la calle */}
@@ -318,8 +325,8 @@ export default function LaminaPlanta({ lang }: { lang: Idioma }) {
                 no dentro del SVG: se lee en el móvil y no pisa ninguna mesa. */}
             <figcaption className="ojo" style={{ paddingTop: 12, lineHeight: 1.7, maxWidth: "62ch" }}>
               <span style={{ color: OCRE }}>
-                {es ? "○ 30 mesas de 10 = los ~300 sentados, a la misma escala que el recinto · camión de 40 ft entrando por NW 21st Ct."
-                    : "○ 30 tables of 10 = the ~300 seated, at the same scale as the site · 40 ft truck coming in from NW 21st Ct."}
+                {es ? "○ 24 mesas de 10 y una imperial de 60 sobre el paseo = los ~300 sentados, a la misma escala que el recinto · camión de 40 ft entrando por NW 21st Ct."
+                    : "○ 24 tables of 10 and one 60-seat banquet table on the walk = the ~300 seated, at the same scale as the site · 40 ft truck coming in from NW 21st Ct."}
               </span>
               <br />
               {es ? "El jardín: ~18 000 ft² al aire libre · la palapa: ~4 000 ft² techados." : "The garden: ~18,000 sq ft open air · the structure: ~4,000 sq ft roofed."}

@@ -283,6 +283,34 @@ cómo animarlo y unirlo con la voz».
   Regla: **una foto nunca más larga que la distancia al hito siguiente menos 1 s**, y un
   cambio de modo necesita al menos 3 s de voz por delante.
 
+### Cuarta tanda del 7-sep: crítica con agentes, objeto por objeto contra las fotos
+
+Daniel: «¿algo más para pulir? dedícate otra tanda», «re-mira el video varias veces hasta que
+quede sin errores visuales y lo más profesional que se pueda», «modelos súper detallados».
+Se corrió un flujo de agentes (`pulido-lamina-wynwood`): cinco críticos con lentes distintas
+(fidelidad, perspectiva, legibilidad, escenas, animación) leyeron las capturas y las fotos
+reales, y un escéptico por hallazgo lo verificó contra la captura y el código (varios
+confirmaron que el arreglo ya estaba en el árbol de trabajo y afinaron valores). Lo que
+cambió está en el mensaje del commit «Cuarta tanda del 7-sep». Lo que enseñó:
+
+- **Las fotos mandan sobre el estilo.** La palapa era «lo techado en tinta» y se leía como
+  lámina; ahora es paja dorada (tonos de paja en escala de tinta, cara sur más clara),
+  hebras irregulares y fleco en zigzag. Las palmeras eran cocoteros; las del predio son
+  palmas reales de tronco gris liso. Al este del paseo es arena, no césped. La fachada es
+  mural de piso a techo, sin ventanas bajas ni marquesina.
+- **Trampas de CSS que deshacían el dibujo**: `.lam.dibujar .rl` pisaba la animación de la
+  cortina (ahora el grupo se mueve, no el path); `lam-lavado … forwards` dejaba la cortina
+  opaca (ahora `fill-opacity: var(--lavado, 1)`); `[data-capas~="cabanas"] .cabana .tz`
+  volvía opaco el techo justo en su capítulo (`.techo-cab` excepción); `lam-aparece-persona`
+  pisaba la opacidad por profundidad del público (va en los hijos).
+- **Geometría que se rompe al mover una constante**: al llevar `EDIF.corte` a 58 la cuarta
+  sala del altillo atravesaba la pared; las bandas del mural bajaban del suelo sin tope; la
+  cabecera de arena no cubría las cinco mesas y el seto alto las partía.
+- **Un objeto nuevo obliga a revisar el guion**: la mesa imperial cambió «treinta mesas de
+  diez» por «veinticuatro redondas y una imperial de sesenta» (capítulo 2 regrabado).
+- Herramientas: `.qa/captura9b.cjs` (encuadres corregidos para palapa y cabañas, salida en
+  `pasada7`), `.qa/build-qa11.sh`, `.qa/hojas-contacto.mjs`.
+
 ### Medir hasta dónde se ve el recorrido
 
 Daniel: «que podamos ver y medir cuánta gente ve el video hasta dónde, así podemos

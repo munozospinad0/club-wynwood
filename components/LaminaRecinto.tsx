@@ -6,8 +6,8 @@ import type { Idioma } from "@/lib/i18n";
 import { ev } from "@/lib/medicion";
 import {
   LOTE, EDIF, PUERTA, PASEO, PALAPA, PALAPA_ALERO, PALAPA_CUMBRE, PALAPA_CUMBRERA, PALAPA_POSTES,
-  ARENA, PICNIC, CABANAS, CESPED_O, CESPED_E, PALMERAS_O, PALMERAS_E, PALMERAS_PALAPA, SETO,
-  PARKING_E, PARKING_S, CALLE_O, CALLE_S, MESAS, ESCENARIO, BARRA, CAMION, MULTITUD, GENTE_SUELTA,
+  ARENA, ARENA_CABECERA, PICNIC, CABANAS, CESPED_O, PALMERAS_O, PALMERAS_E, PALMERAS_PALAPA, SETO,
+  PARKING_E, PARKING_S, CALLE_O, CALLE_S, MESAS, MESA_LARGA, ESCENARIO, BARRA, CAMION, MULTITUD, GENTE_SUELTA,
   CENTRO, CAMARA, PALMERA_ALTO, type Pt,
 } from "@/lib/recinto.geo";
 
@@ -51,7 +51,7 @@ type Fase = "pendiente" | "dibujar" | "listo" | "quieto";
 export interface FotoDirigida { src: string; pos: string; alt: string; tamano?: "lleno" | "postal" }
 export interface Aforo { invitados: number; formato: "sentados" | "pie" }
 
-const TINTA = "#211c15", GRIS = "#8a8071", OCRE = "#c4772b", PAPEL = "#fbf8f1", LUZ = "#f3e2c4";
+const TINTA = "#211c15", GRIS = "#8a8071", OCRE = "#c4772b", PAPEL = "#fbf8f1", LUZ = "#f3e2c4", LUZ_SOMBRA = "#8f7d5e";
 
 const G: GeoPerspectiva = crearPerspectiva(CAMARA);
 
@@ -116,17 +116,24 @@ function Caja({ g, x, y, dx, dy, z0 = 0, z1, tapa, izq, der, borde = TINTA, w = 
   );
 }
 
-/** Seto recortado: el volumen y, encima, la copa a bultos, que es lo que lo hace seto y no muro. */
-function Seto({ g, x, y, dx, dy }: { g: GeoPerspectiva; x: number; y: number; dx: number; dy: number }) {
-  const largo = Math.max(dx, dy), n = Math.max(2, Math.round(largo / 2.4));
+/**
+ * Seto recortado a escuadra, denso y oscuro como en las fotos: el volumen, un
+ * grano fino de hoja encima y una línea de luz en la arista lejana. `alto`
+ * por si es el muro verde del fondo de las cabañas (8,5 ft).
+ */
+function Seto({ g, x, y, dx, dy, alto = SETO.alto }: { g: GeoPerspectiva; x: number; y: number; dx: number; dy: number; alto?: number }) {
+  const { p } = g;
+  const largo = Math.max(dx, dy), n = Math.max(2, Math.round(largo / 1.6));
   const copas = Array.from({ length: n }, (_, i): Pt => {
     const t = (i + 0.5) / n;
     return dx >= dy ? [x + dx * t, y + dy / 2] : [x + dx / 2, y + dy * t];
   });
+  const luz = dx >= dy ? [p(x, y, alto), p(x + dx, y, alto)] : [p(x, y, alto), p(x, y + dy, alto)];
   return (
     <g className="seto">
-      <Caja g={g} x={x} y={y} dx={dx} dy={dy} z1={SETO.alto} tapa="#c9c9a9" izq="#bcbc9c" der="#b0b092" borde={GRIS} w={0.6} />
-      {copas.map(([cx, cy], i) => <Elipse key={i} g={g} x={cx + ((i * 7) % 3 - 1) * 0.35} y={cy + ((i * 5) % 3 - 1) * 0.35} r={1.25 + ((i * 3) % 3) * 0.15} z={SETO.alto} className="rl" fill={i % 2 ? "#cdcdad" : "#c3c3a3"} stroke="#b3b394" strokeWidth="0.25" />)}
+      <Caja g={g} x={x} y={y} dx={dx} dy={dy} z1={alto} tapa="#8f9a72" izq="#7f8a64" der="#727d58" borde="#5f6a48" w={0.5} />
+      {copas.map(([cx, cy], i) => <Elipse key={i} g={g} x={cx + ((i * 7) % 3 - 1) * 0.3} y={cy + ((i * 5) % 3 - 1) * 0.3} r={0.7 + ((i * 3) % 3) * 0.08} z={alto} className="rl" fill={i % 2 ? "#97a27a" : "#8a9570"} opacity="0.9" />)}
+      <line x1={luz[0][0]} y1={luz[0][1]} x2={luz[1][0]} y2={luz[1][1]} stroke="#b3bd94" strokeWidth="0.4" opacity="0.8" />
     </g>
   );
 }
@@ -149,9 +156,12 @@ function Palma({ g, x, y, alto = 22, i }: { g: GeoPerspectiva; x: number; y: num
   const w0 = 0.4 + s * 0.085, w1 = w0 * 0.72;
   const cx = incl, cy = -h;
   const tronco = `M${(-w0).toFixed(2)},0 C${(incl * 0.25 - w0).toFixed(2)},${(-h * 0.4).toFixed(1)} ${(incl * 0.8 - w1).toFixed(2)},${(-h * 0.75).toFixed(1)} ${(cx - w1).toFixed(2)},${cy.toFixed(1)} L${(cx + w1).toFixed(2)},${cy.toFixed(1)} C${(incl * 0.8 + w1).toFixed(2)},${(-h * 0.75).toFixed(1)} ${(incl * 0.25 + w0).toFixed(2)},${(-h * 0.4).toFixed(1)} ${w0.toFixed(2)},0 Z`;
+  // Palma real (Roystonea), como las del predio: tronco liso gris claro, capitel verde bajo la copa, frondas largas que arquean. Sin cocos.
+  const capitel = `M${(cx - w1 * 1.5).toFixed(2)},${cy.toFixed(1)} L${(cx + w1 * 1.5).toFixed(2)},${cy.toFixed(1)} L${(cx + w1 * 1.1).toFixed(2)},${(cy + h * 0.09).toFixed(1)} L${(cx - w1 * 1.1).toFixed(2)},${(cy + h * 0.09).toFixed(1)} Z`;
   const hoja = (t: number, L: number) => {
-    const tx = cx + Math.sin(t) * L, ty = cy + L * 0.3 + Math.abs(Math.cos(t)) * L * 0.2;
-    const qx = cx + Math.sin(t) * L * 0.55, qy = cy - L * 0.28 - Math.abs(Math.cos(t)) * L * 0.2;
+    L *= 1.25;
+    const tx = cx + Math.sin(t) * L, ty = cy + L * 0.42 + Math.abs(Math.cos(t)) * L * 0.2;
+    const qx = cx + Math.sin(t) * L * 0.55, qy = cy - L * 0.24 - Math.abs(Math.cos(t)) * L * 0.2;
     const dx = tx - cx, dy = ty - cy, len = Math.hypot(dx, dy) || 1;
     const nx = (-dy / len) * L * 0.13, ny = (dx / len) * L * 0.13;
     return {
@@ -164,21 +174,17 @@ function Palma({ g, x, y, alto = 22, i }: { g: GeoPerspectiva; x: number; y: num
   const anillos = [0.15, 0.3, 0.45, 0.6, 0.75, 0.88];
   return (
     <g transform={`translate(${a.toFixed(1)},${b.toFixed(1)})`}>
-      <Elipse g={g} x={x} y={y} r={3.4} className="rl" fill={TINTA} opacity="0.09" transform={`translate(${(-a).toFixed(1)},${(-b).toFixed(1)})`} />
+      <Elipse g={g} x={x + 1.6} y={y - 1.2} r={3.4} className="rl" fill={TINTA} opacity="0.09" transform={`translate(${(-a).toFixed(1)},${(-b).toFixed(1)})`} />
       <g className="palma" style={cssVars({ "--v": `${(5.6 + (i % 5) * 0.7).toFixed(1)}s`, "--vd": `${(-(i % 7) * 0.9).toFixed(1)}s` })}>
-        <path className="rl" d={tronco} fill="#8f8674" stroke="#6b6253" strokeWidth="0.4" />
-        {anillos.map((t) => {
+        <path className="rl" d={tronco} fill="#b5b0a4" stroke="#8a8071" strokeWidth="0.4" />
+        {anillos.filter((_, k) => k % 2 === 0).map((t) => {
           const yy = -h * t, xx = incl * (t < 0.4 ? t * 0.6 : t * 0.95), w = w0 + (w1 - w0) * t;
-          return <line key={t} className="ap" x1={(xx - w * 0.9).toFixed(2)} y1={yy.toFixed(1)} x2={(xx + w * 0.9).toFixed(2)} y2={(yy - 0.3).toFixed(1)} stroke="#6b6253" strokeWidth="0.35" opacity="0.6" />;
+          return <line key={t} className="ap" x1={(xx - w * 0.9).toFixed(2)} y1={yy.toFixed(1)} x2={(xx + w * 0.9).toFixed(2)} y2={(yy - 0.3).toFixed(1)} stroke="#8a8071" strokeWidth="0.3" opacity="0.3" />;
         })}
+        <path className="rl" d={capitel} fill="#6a7752" stroke="#4f5a3e" strokeWidth="0.3" />
         {atras.map((f, k) => <path key={`a${k}`} className="rl" d={f.hoja} fill="#4f5a3e" stroke="#40492f" strokeWidth="0.25" />)}
         {delante.map((f, k) => <path key={`d${k}`} className="rl" d={f.hoja} fill="#6a7752" stroke="#4f5a3e" strokeWidth="0.25" />)}
         {delante.map((f, k) => <path key={`n${k}`} className="ap" d={f.nervio} fill="none" stroke="#98a37a" strokeWidth={(0.25 + s * 0.02).toFixed(2)} opacity="0.8" />)}
-        <circle cx={cx.toFixed(1)} cy={(cy + s * 0.05).toFixed(1)} r={(s * 0.09).toFixed(2)} fill="#5a5244" />
-        {/* el racimo de cocos bajo la copa */}
-        {[[-0.11, 0.16], [0.02, 0.2], [0.13, 0.15]].map(([ox, oy], k) => (
-          <circle key={`co${k}`} cx={(cx + s * ox).toFixed(1)} cy={(cy + s * oy).toFixed(1)} r={(s * 0.05).toFixed(2)} fill="#8a7a55" stroke="#5a5244" strokeWidth="0.2" />
-        ))}
       </g>
     </g>
   );
@@ -239,11 +245,12 @@ function Palapa({ g, mesasN }: { g: GeoPerspectiva; mesasN: number }) {
   const A = p(x, y, PALAPA_ALERO), B = p(x + dx, y, PALAPA_ALERO), C = p(x + dx, y + dy, PALAPA_ALERO), D = p(x, y + dy, PALAPA_ALERO);
   const R1 = p(cx - PALAPA_CUMBRERA / 2, cy, PALAPA_CUMBRE), R2 = p(cx + PALAPA_CUMBRERA / 2, cy, PALAPA_CUMBRE);
   // Orden de atrás hacia delante para la cámara del sur: norte, oeste, este, sur.
+  // Paja, no lámina: tonos de paja en escala de tinta, con la cara sur (la que mira a la cámara y al sol del suroeste) más clara.
   const caras: Array<{ pts: [Pt, Pt, Pt, Pt]; tono: string; n: number }> = [
-    { pts: [A, B, R2, R1], tono: "#8f8574", n: 8 },
-    { pts: [D, A, R1, R1], tono: "#7d7362", n: 7 },
-    { pts: [B, C, R2, R2], tono: "#6b6253", n: 7 },
-    { pts: [C, D, R1, R2], tono: "#5a5244", n: 9 },
+    { pts: [A, B, R2, R1], tono: "#8b7857", n: 8 },
+    { pts: [D, A, R1, R1], tono: "#ad956b", n: 7 },
+    { pts: [B, C, R2, R2], tono: "#9a845c", n: 7 },
+    { pts: [C, D, R1, R2], tono: "#bfa878", n: 9 },
   ];
   const postes = PALAPA_POSTES.slice().sort((m, n) => g.profundidad(...m) - g.profundidad(...n));
   const mesas = MESAS.slice(0, Math.min(16, mesasN));
@@ -260,6 +267,8 @@ function Palapa({ g, mesasN }: { g: GeoPerspectiva; mesasN: number }) {
   const cumbrera = poly(p(cx - PALAPA_CUMBRERA / 2 - 0.6, cy, PALAPA_CUMBRE), p(cx + PALAPA_CUMBRERA / 2 + 0.6, cy, PALAPA_CUMBRE), p(cx + PALAPA_CUMBRERA / 2 + 0.6, cy, PALAPA_CUMBRE + 0.9), p(cx - PALAPA_CUMBRERA / 2 - 0.6, cy, PALAPA_CUMBRE + 0.9));
   return (
     <g className="palapa-todo">
+      {/* la sombra que el techo echa sobre el césped, hacia el noreste como en la aérea de la tarde */}
+      <path className="rl sombra" d={g.techo(x + 5, y - 3, dx + 2, dy + 1, 0.02)} fill={TINTA} opacity="0.09" />
       <path className="rl" d={g.techo(x, y, dx, dy, 0.03)} fill="#dfe0c6" />
       <g className="mesas">
         {mesas.map(([mx, my], i) => <Mesa key={i} g={g} x={mx} y={my} i={i} />)}
@@ -267,35 +276,50 @@ function Palapa({ g, mesasN }: { g: GeoPerspectiva; mesasN: number }) {
       <g className="barra" pointerEvents="none">
         <Caja g={g} x={BARRA.x} y={BARRA.y} dx={BARRA.dx} dy={BARRA.dy} z1={BARRA.h} tapa="#fbf8f1" izq="#f3eee4" der="#ece6d9" borde={OCRE} w={1.1} animado={false} dash="3 2.2" />
       </g>
+      {/* con lluvia, cuatro personas asomadas al alero sur, entre los postes: la respuesta en persona de «bajo techo está seco» */}
+      <g className="a-cubierto" pointerEvents="none">
+        {([[x + 9, y + dy - 3], [x + 19, y + dy - 3.5], [x + 34, y + dy - 3], [x + 45, y + dy - 3.5]] as Pt[]).map(([qx, qy], i) => (
+          <g key={`ac${i}`} className="parado" style={cssVars({ "--i": i + 5 })}><Persona g={g} x={qx} y={qy} clase="" tono={i % 2 ? "#55504a" : "#3e3a34"} /></g>
+        ))}
+      </g>
       <g className="palapa">
         {postes.map(([px, py]) => <Poste key={`${px}-${py}`} g={g} x={px} y={py} h={PALAPA_ALERO} r={0.75} />)}
         {vigas.map(([u, v], i) => <line key={`v${i}`} className="ap" x1={u[0]} y1={u[1]} x2={v[0]} y2={v[1]} stroke="#4a4337" strokeWidth="0.9" opacity="0.85" />)}
+        {cabios}
         {caras.map((c, i) => (
           <g key={i}>
             <path className="rl tz palapa-cara" pathLength={1} d={poly(...c.pts)} fill={c.tono} stroke={TINTA} strokeWidth="1" strokeLinejoin="round" />
             <path className="rl palapa-textura" d={poly(...c.pts)} fill="url(#lam-paja)" />
-            {Array.from({ length: c.n * 2 }, (_, k) => (k + 1) / (c.n * 2 + 1)).map((t, k) => {
+            {/* hebras que bajan de la cumbrera al alero, con grosor y arranque irregulares (hojas solapadas, no tablas) */}
+            {Array.from({ length: 38 }, (_, k) => {
+              const j = ((k * 7919) % 97) / 97;
+              const t = (k + 0.25 + j * 0.5) / 38;
+              const u = lerp(c.pts[0], c.pts[1], t), v = lerp(c.pts[3], c.pts[2], t);
+              const v0 = lerp(v, u, j * 0.35);
+              return <line key={`h${k}`} className="ap" x1={u[0]} y1={u[1]} x2={v0[0]} y2={v0[1]} stroke="#5a4a30" strokeWidth={(0.22 + j * 0.2).toFixed(2)} opacity={(0.18 + j * 0.16).toFixed(2)} />;
+            })}
+            {/* cinco hiladas: la sombra que cada tongada deja sobre la de abajo, nunca blanco sobre la paja */}
+            {[0.18, 0.36, 0.54, 0.72, 0.88].map((t) => {
               const u = lerp(c.pts[0], c.pts[3], t), v = lerp(c.pts[1], c.pts[2], t);
-              return <line key={t} className="ap" x1={u[0]} y1={u[1]} x2={v[0]} y2={v[1]} stroke={PAPEL} strokeWidth={k % 2 ? "0.35" : "0.6"} opacity={k % 2 ? "0.22" : "0.36"} />;
+              return <line key={`c${t}`} className="ap" x1={u[0]} y1={u[1]} x2={v[0]} y2={v[1]} stroke="#3a3020" strokeWidth="0.8" opacity="0.16" />;
             })}
           </g>
         ))}
-        {cabios}
         <path className="tz palapa-cubierta" pathLength={1} d={poly(A, B, C, D)} fill="none" stroke={TINTA} strokeWidth="1.5" strokeLinejoin="round" />
-        <path className="rl" d={cumbrera} fill="#3f3a32" stroke={TINTA} strokeWidth="0.6" />
+        <path className="rl" d={cumbrera} fill="#4a3f2a" stroke={TINTA} strokeWidth="0.6" />
         <line className="tz palapa-cubierta" pathLength={1} x1={R1[0]} y1={R1[1]} x2={R2[0]} y2={R2[1]} stroke={TINTA} strokeWidth="1.4" />
-        {/* la paja que cuelga del alero sur y del este, en dos largos */}
-        {([[D, C], [C, B]] as Array<[Pt, Pt]>).map(([q, r], i) =>
-          Array.from({ length: 36 }, (_, k) => k / 35).map((t, k) => {
-            const m = lerp(q, r, t);
-            return <line key={`${i}-${t}`} className="ap" x1={m[0]} y1={m[1]} x2={m[0] + (k2(t) ? 0.5 : -0.5)} y2={m[1] + (k % 3 === 0 ? 3.2 : 2.3)} stroke="#5a5244" strokeWidth="0.6" opacity="0.7" />;
-          })
-        )}
+        {/* el fleco de paja de los tres aleros visibles (sur, este y oeste), en pies: 1,6–2,4 ft que se acortan solos con la perspectiva */}
+        {([[[x, y + dy], [x + dx, y + dy]], [[x + dx, y + dy], [x + dx, y]], [[x, y], [x, y + dy]]] as Array<[Pt, Pt]>).map(([q, r], i) => {
+          const n = 40;
+          const arriba = Array.from({ length: n + 1 }, (_, k) => { const w = lerp(q, r, k / n); return p(w[0], w[1], PALAPA_ALERO); });
+          const abajo = Array.from({ length: n + 1 }, (_, k) => { const w = lerp(q, r, k / n); return p(w[0], w[1], PALAPA_ALERO - (k % 2 ? 2.4 : 1.6)); }).reverse();
+          return <path key={`fl${i}`} className="rl" d={poly(...arriba, ...abajo)} fill="#a08a5f" stroke="#4a3f2a" strokeWidth="0.35" strokeLinejoin="round" />;
+        })}
         {/* con lluvia, el agua escurre del alero sur y del este */}
         {([[D, C], [C, B]] as Array<[Pt, Pt]>).map(([q, r], i) =>
-          Array.from({ length: 9 }, (_, k) => (k + 0.5) / 9).map((t, k) => {
+          Array.from({ length: 12 }, (_, k) => (k + 0.5) / 12).map((t, k) => {
             const m = lerp(q, r, t);
-            return <line key={`g${i}-${k}`} className="gotera" style={cssVars({ "--t": `${(-(k * 0.13 + i * 0.4)).toFixed(2)}s` })} x1={m[0]} y1={m[1] + 3} x2={m[0]} y2={m[1] + 7} stroke="#4a5a6a" strokeWidth="0.7" strokeLinecap="round" />;
+            return <line key={`g${i}-${k}`} className="gotera" style={cssVars({ "--t": `${(-(k * 0.11 + i * 0.4)).toFixed(2)}s` })} x1={m[0]} y1={m[1] + 6} x2={m[0]} y2={m[1] + 11} stroke="#4a5a6a" strokeWidth="0.8" strokeLinecap="round" />;
           })
         )}
       </g>
@@ -322,34 +346,48 @@ function Cabana({ g, y, i }: { g: GeoPerspectiva; y: number; i: number }) {
   const { p } = g;
   const { x, dx, dy, h } = CABANAS;
   const esquinas: Pt[] = [[x, y], [x + dx, y], [x + dx, y + dy], [x, y + dy]];
+  // Listones cruzados (este-oeste, perpendiculares al paseo), en un gris que se vea sobre el papel.
   const listones = [];
-  for (let t = 0.8; t < dx; t += 1.3) {
-    const a = p(x + t, y, h), b = p(x + t, y + dy, h);
-    listones.push(<line key={t} className="ap" x1={a[0]} y1={a[1]} x2={b[0]} y2={b[1]} stroke="#f7f3ea" strokeWidth="0.75" />);
+  for (let t = 0.9; t < dy; t += 1.4) {
+    const a = p(x, y + t, h), b = p(x + dx, y + t, h);
+    listones.push(<line key={t} className="ap" x1={a[0]} y1={a[1]} x2={b[0]} y2={b[1]} stroke="#b5ad9c" strokeWidth="0.6" />);
   }
-  const cortina = poly(p(x + 0.5, y + 0.3, h - 0.3), p(x + dx - 0.5, y + 0.3, h - 0.3), p(x + dx - 0.2, y + 0.3, 0.2), p(x + 0.2, y + 0.3, 0.2));
-  const lampara = p(x + dx / 2, y + dy / 2, h - 2.2), lampara0 = p(x + dx / 2, y + dy / 2, h);
+  // La cortina cuelga del tabique sur de cada cabaña, recogida en diagonal hacia el poste.
+  const cortina = poly(p(x + 0.3, y + dy, h - 0.3), p(x + dx * 0.7, y + dy, h - 0.3), p(x + dx * 0.5, y + dy, 0.3), p(x + 0.3, y + dy, 0.3));
+  const lampara = p(x + dx - 2, y + 2, h - 1.6), lampara0 = p(x + dx - 2, y + 2, h);
+  const fascia = poly(p(x, y + dy, h - 0.6), p(x + dx, y + dy, h - 0.6), p(x + dx, y + dy, h), p(x, y + dy, h));
   return (
     <g className="cabana" style={cssVars({ "--i": i })}>
-      <path className="rl" d={g.techo(x - 0.6, y - 0.6, dx + 1.2, dy + 1.2, 0.03)} fill="#e6dfd0" />
-      <path className="rl" d={g.techo(x + 0.5, y + 0.5, dx - 1, dy - 1, 0.25)} fill="#d8cfbd" stroke="#b9b09d" strokeWidth="0.35" />
-      <path className="rl cortina" style={cssVars({ "--i": i })} d={cortina} fill="#f6f2e9" fillOpacity="0.9" stroke="#c9c1b0" strokeWidth="0.35" />
-      {[0.25, 0.5, 0.75].map((t) => {
-        const q0 = p(x + 0.5 + (dx - 1) * t, y + 0.3, h - 0.3), q1 = p(x + 0.5 + (dx - 1) * t, y + 0.3, 0.2);
-        return <line key={t} className="ap" x1={q0[0]} y1={q0[1]} x2={q1[0]} y2={q1[1]} stroke="#d8d0c0" strokeWidth="0.35" />;
-      })}
-      <Caja g={g} x={x + 1.5} y={y + 2} dx={2.4} dy={dy - 6} z1={1.7} tapa="#ddd6c6" izq="#d3ccbb" der="#c9c1af" borde={GRIS} w={0.45} />
-      <Elipse g={g} x={x + 6.5} y={y + 5} r={1.3} z={1.4} fill="#e9e3d6" stroke={GRIS} strokeWidth="0.4" />
-      <Caja g={g} x={x + 1.5} y={y + dy - 4} dx={dx - 3} dy={2.4} z1={1.7} tapa="#ddd6c6" izq="#d3ccbb" der="#c9c1af" borde={GRIS} w={0.45} />
-      {[2.6, 5.2, 7.8].map((t) => <Elipse key={t} g={g} x={x + 1.5 + t} y={y + dy - 2.8} r={0.9} z={2} fill="#f4efe6" stroke={GRIS} strokeWidth="0.3" />)}
+      <path className="rl sombra" d={g.techo(x + 3.5, y - 2.2, dx + 0.5, dy + 0.5, 0.02)} fill={TINTA} opacity="0.07" />
+      {/* tarima de madera */}
+      <path className="rl" d={g.techo(x - 0.4, y - 0.4, dx + 0.8, dy + 0.8, 0.25)} fill="#cdb996" stroke="#9c8a66" strokeWidth="0.4" />
+      {[0.25, 0.5, 0.75].map((t) => { const q0 = p(x - 0.4, y - 0.4 + (dy + 0.8) * t, 0.26), q1 = p(x + dx + 0.4, y - 0.4 + (dy + 0.8) * t, 0.26); return <line key={t} className="ap" x1={q0[0]} y1={q0[1]} x2={q1[0]} y2={q1[1]} stroke="#bfa982" strokeWidth="0.3" />; })}
+      {/* sofá en L, más oscuro que la tarima, con cojines y mesita */}
+      <Caja g={g} x={x + 1.2} y={y + 1.5} dx={2.2} dy={dy - 4.5} z1={1.7} tapa="#cfc4ac" izq="#b9ad97" der="#a99d87" borde="#7a7062" w={0.45} />
+      <Elipse g={g} x={x + 6.2} y={y + 4} r={1.2} z={1.4} fill="#e9e3d6" stroke="#7a7062" strokeWidth="0.4" />
+      <Caja g={g} x={x + 1.2} y={y + dy - 3.6} dx={dx - 2.4} dy={2.2} z1={1.7} tapa="#cfc4ac" izq="#b9ad97" der="#a99d87" borde="#7a7062" w={0.45} />
+      {[2.2, 4.6, 7].map((t) => <Elipse key={t} g={g} x={x + 1.2 + t} y={y + dy - 2.5} r={0.85} z={2} fill="#f4efe6" stroke="#7a7062" strokeWidth="0.3" />)}
+      {/* cuatro postes blancos con contorno, como en la foto */}
       {esquinas.map(([ex, ey], k) => {
-        const a = p(ex, ey, 0), b = p(ex, ey, h);
-        return <line key={k} className="tz" pathLength={1} x1={a[0]} y1={a[1]} x2={b[0]} y2={b[1]} stroke="#7a7062" strokeWidth={Math.max(0.7, g.escala(ex, ey) * 0.8).toFixed(2)} strokeLinecap="round" />;
+        const a = p(ex, ey, 0), b = p(ex, ey, h), w = Math.max(1, g.escala(ex, ey) * 1.05);
+        return (
+          <g key={k}>
+            <line className="tz" pathLength={1} x1={a[0]} y1={a[1]} x2={b[0]} y2={b[1]} stroke="#7a7062" strokeWidth={(w + 0.7).toFixed(2)} strokeLinecap="round" />
+            <line className="tz" pathLength={1} x1={a[0]} y1={a[1]} x2={b[0]} y2={b[1]} stroke="#f7f3ea" strokeWidth={w.toFixed(2)} strokeLinecap="round" />
+          </g>
+        );
       })}
-      <path className="tz" pathLength={1} d={g.techo(x, y, dx, dy, h)} fill="#f7f3ea" fillOpacity="0.55" stroke="#7a7062" strokeWidth="0.9" />
+      <g className="cortina" style={cssVars({ "--i": i })}>
+        <path className="rl" d={cortina} fill="#f6f2e9" fillOpacity="0.45" stroke="#c9c1b0" strokeWidth="0.35" />
+      </g>
+      {/* techo: marco con canto (fascia), plano casi transparente y listones */}
+      <path className="rl" d={fascia} fill="#f7f3ea" stroke="#7a7062" strokeWidth="0.5" />
+      <path className="tz techo-cab" pathLength={1} d={g.techo(x, y, dx, dy, h)} fill="#f7f3ea" fillOpacity="0.12" stroke="#7a7062" strokeWidth="1" />
       {listones}
-      <line x1={lampara0[0]} y1={lampara0[1]} x2={lampara[0]} y2={lampara[1]} stroke="#7a7062" strokeWidth="0.35" />
-      <circle cx={lampara[0].toFixed(1)} cy={lampara[1].toFixed(1)} r={(g.escala(x, y) * 0.7).toFixed(2)} fill="#f4efe6" stroke="#7a7062" strokeWidth="0.35" />
+      <g className="lampara" style={cssVars({ transformOrigin: `${lampara0[0].toFixed(1)}px ${lampara0[1].toFixed(1)}px`, "--i": i })}>
+        <line x1={lampara0[0]} y1={lampara0[1]} x2={lampara[0]} y2={lampara[1]} stroke="#7a7062" strokeWidth="0.3" />
+        <circle cx={lampara[0].toFixed(1)} cy={lampara[1].toFixed(1)} r={(g.escala(x, y) * 0.28).toFixed(2)} fill="#d8d0c0" stroke="#7a7062" strokeWidth="0.3" />
+      </g>
     </g>
   );
 }
@@ -370,18 +408,54 @@ function Mesa({ g, x, y, i }: { g: GeoPerspectiva; x: number; y: number; i: numb
   });
   return (
     <g className="mesa" style={cssVars({ "--i": i })}>
-      <Elipse g={g} x={x} y={y} r={5.8} fill={OCRE} opacity="0.07" />
+      <Elipse g={g} x={x} y={y} r={5.8} fill={OCRE} opacity="0.05" />
+      <Elipse g={g} x={x + 0.6} y={y - 0.4} r={2.9} fill={TINTA} opacity="0.08" />
+      {/* sillas huecas: lo que se lee es el tablero blanco con su aro de sillas, como en el montaje real */}
       {sillas.map((c) => (
         <g key={c.k} className="silla" style={cssVars({ "--k": c.k })}>
-          <line x1={c.pie[0]} y1={c.pie[1]} x2={c.seat[0]} y2={c.seat[1]} stroke={OCRE} strokeWidth={(s * 0.4).toFixed(2)} />
-          <circle cx={c.seat[0]} cy={c.seat[1]} r={(s * 1.05).toFixed(2)} fill={OCRE} stroke="#fbf8f1" strokeWidth={(s * 0.25).toFixed(2)} />
-          <line x1={c.seat[0]} y1={c.seat[1]} x2={c.back[0]} y2={c.back[1]} stroke={OCRE} strokeWidth={(s * 0.8).toFixed(2)} strokeLinecap="round" />
+          <circle cx={c.seat[0]} cy={c.seat[1]} r={(s * 1.0).toFixed(2)} fill={PAPEL} stroke={OCRE} strokeWidth={(s * 0.35).toFixed(2)} />
+          <line x1={c.seat[0]} y1={c.seat[1]} x2={c.back[0]} y2={c.back[1]} stroke={OCRE} strokeWidth={(s * 0.45).toFixed(2)} strokeLinecap="round" />
         </g>
       ))}
       {/* la pata y el tablero: el tablero a 2,5 ft de altura, blanco, con borde */}
       <line x1={a} y1={b} x2={g.p(x, y, 2.5)[0]} y2={g.p(x, y, 2.5)[1]} stroke={OCRE} strokeWidth={(s * 0.5).toFixed(2)} />
-      <Elipse g={g} x={x} y={y} r={2.6} z={2.5} fill="#fbf8f1" stroke={OCRE} strokeWidth={(s * 0.45).toFixed(2)} />
+      <Elipse g={g} x={x} y={y} r={2.6} z={2.5} fill="#fbf8f1" stroke={OCRE} strokeWidth={(s * 0.5).toFixed(2)} />
       <Elipse g={g} x={x} y={y} r={0.7} z={2.7} fill={OCRE} opacity="0.7" />
+    </g>
+  );
+}
+
+/**
+ * LA MESA IMPERIAL sobre el paseo: 4 × 78 ft, treinta sillas por lado. Es la
+ * «cena larga a lo largo del paseo» de la ficha; sustituye a las seis redondas
+ * que se metían entre los troncos de las palmeras. `sillas` la recorta en el
+ * simulador de aforo.
+ */
+function MesaLarga({ g, sillas }: { g: GeoPerspectiva; sillas: number }) {
+  const { p } = g;
+  const { x, y, dx, paso } = MESA_LARGA;
+  const porLado = Math.ceil(sillas / 2);
+  const largo = Math.min(MESA_LARGA.dy, porLado * paso + 3);
+  const asientos: Array<{ q: Pt; k: number }> = [];
+  for (let k = 0; k < porLado; k++) {
+    const yy = y + 2 + k * paso;
+    asientos.push({ q: [x - 1.7, yy], k }, { q: [x + dx + 1.7, yy], k });
+  }
+  return (
+    <g className="mesa mesa-larga" style={cssVars({ "--i": 24 })}>
+      <path d={g.techo(x - 3, y - 1, dx + 6, largo + 2, 0)} fill={OCRE} opacity="0.05" />
+      {asientos.slice(0, sillas).map(({ q, k }, i) => {
+        const s = g.escala(q[0], q[1]);
+        const r0 = p(q[0], q[1], 1.5), r1 = p(q[0] + (q[0] < x ? -0.7 : 0.7), q[1], 3);
+        return (
+          <g key={i} className="silla" style={cssVars({ "--k": k % 10 })}>
+            <Elipse g={g} x={q[0]} y={q[1]} r={0.8} z={1.5} fill={PAPEL} stroke={OCRE} strokeWidth={(s * 0.35).toFixed(2)} />
+            <line x1={r0[0]} y1={r0[1]} x2={r1[0]} y2={r1[1]} stroke={OCRE} strokeWidth={(s * 0.45).toFixed(2)} strokeLinecap="round" />
+          </g>
+        );
+      })}
+      <Caja g={g} x={x} y={y} dx={dx} dy={largo} z1={2.5} tapa={PAPEL} izq="#f3eee4" der="#ece6d9" borde={OCRE} w={0.6} animado={false} />
+      {Array.from({ length: Math.floor(largo / 6) }, (_, k) => { const q0 = p(x, y + 3 + k * 6, 2.5), q1 = p(x + dx, y + 3 + k * 6, 2.5); return <line key={k} x1={q0[0]} y1={q0[1]} x2={q1[0]} y2={q1[1]} stroke={OCRE} strokeWidth="0.25" opacity="0.5" />; })}
     </g>
   );
 }
@@ -390,19 +464,19 @@ function Mesa({ g, x, y, i }: { g: GeoPerspectiva; x: number; y: number; i: numb
 function Picnic({ g, x, y }: { g: GeoPerspectiva; x: number; y: number }) {
   const { p } = g;
   const [a, b] = p(x, y, 0);
-  const cima = p(x, y, 8.6);
-  const borde = Array.from({ length: 8 }, (_, k) => { const an = (k / 8) * Math.PI * 2; return p(x + Math.cos(an) * 4.3, y + Math.sin(an) * 4.3, 7.3); });
+  const cima = p(x, y, 9.5);
+  const borde = Array.from({ length: 8 }, (_, k) => { const an = (k / 8) * Math.PI * 2; return p(x + Math.cos(an) * 5.2, y + Math.sin(an) * 5.2, 7.6); });
   return (
     <g className="picnic">
-      <Elipse g={g} x={x + 1} y={y + 1.5} r={4} fill={TINTA} opacity="0.07" />
-      <Caja g={g} x={x - 3} y={y - 1.2} dx={6} dy={2.4} z1={2.5} tapa="#e9e2d2" izq="#dcd5c4" der="#cfc8b6" borde={GRIS} w={0.55} animado={false} />
-      <Caja g={g} x={x - 3} y={y - 3.4} dx={6} dy={1} z1={1.5} tapa="#e9e2d2" izq="#dcd5c4" der="#cfc8b6" borde={GRIS} w={0.45} animado={false} />
-      <Caja g={g} x={x - 3} y={y + 2.4} dx={6} dy={1} z1={1.5} tapa="#e9e2d2" izq="#dcd5c4" der="#cfc8b6" borde={GRIS} w={0.45} animado={false} />
-      <line x1={a} y1={b} x2={cima[0]} y2={cima[1]} stroke="#6b6151" strokeWidth="0.7" />
+      <Elipse g={g} x={x + 1.2} y={y + 1.5} r={4.6} fill={TINTA} opacity="0.08" />
+      <Caja g={g} x={x - 3} y={y - 1.2} dx={6} dy={2.4} z1={2.5} tapa="#d9c9a6" izq="#c7b48f" der="#b9a67f" borde="#9c8a66" w={0.55} animado={false} />
+      <Caja g={g} x={x - 3} y={y - 3.4} dx={6} dy={1} z1={1.5} tapa="#d9c9a6" izq="#c7b48f" der="#b9a67f" borde="#9c8a66" w={0.45} animado={false} />
+      <Caja g={g} x={x - 3} y={y + 2.4} dx={6} dy={1} z1={1.5} tapa="#d9c9a6" izq="#c7b48f" der="#b9a67f" borde="#9c8a66" w={0.45} animado={false} />
+      <line x1={a} y1={b} x2={cima[0]} y2={cima[1]} stroke="#4a4337" strokeWidth="0.9" />
       <g className="sombrilla">
         {borde.map((q, k) => {
           const r = borde[(k + 1) % 8];
-          return <path key={k} d={poly(cima, q, r)} fill={k % 2 ? "#f4efe6" : "#e6ded0"} stroke="#8a8071" strokeWidth="0.35" strokeLinejoin="round" />;
+          return <path key={k} d={poly(cima, q, r)} fill={k % 2 ? "#ddd2ba" : "#a89b82"} stroke="#5a5244" strokeWidth="0.45" strokeLinejoin="round" />;
         })}
         <circle cx={cima[0].toFixed(1)} cy={(cima[1] - 0.6).toFixed(1)} r="0.5" fill="#6b6151" />
       </g>
@@ -445,7 +519,7 @@ function Coche({ g, x, y, eje, tono, suv = false }: { g: GeoPerspectiva; x: numb
   const profCentro = prof(L / 2, W / 2);
   const ruedas = [[0.2 * L, 0.55], [0.2 * L, W - 0.55], [0.8 * L, 0.55], [0.8 * L, W - 0.55]].map(([u, v]) => {
     const [wx, wy] = M(u, v);
-    return { q: p(wx, wy, 1.15), prof: prof(u, v), r: g.escala(wx, wy) * 1.1 };
+    return { q: p(wx, wy, 1.1), prof: prof(u, v), r: g.escala(wx, wy) * 0.95 };
   });
   const rueda = (w: { q: Pt; r: number }, k: number) => (
     <g key={k}>
@@ -502,12 +576,19 @@ function Camion({ g }: { g: GeoPerspectiva }) {
       ))}
       <Caja g={g} x={x} y={y} dx={dx} dy={dy - 9} z0={1.8} z1={h} tapa="#fbf8f1" izq="#f3eee4" der="#ece6d9" borde={OCRE} w={1.2} animado={false} />
       {costillas}
-      <Caja g={g} x={x} y={cabY} dx={dx} dy={9} z0={1.8} z1={9.5} tapa="#fbf8f1" izq="#f3eee4" der="#ece6d9" borde={OCRE} w={1.2} animado={false} />
+      {/* puertas traseras abiertas hacia la puerta del edificio: dos hojas giradas unos 100° */}
+      <path className="puerta-camion" d={poly(p(x, y, 1.8), p(x - 3.6, y - 2.2, 1.8), p(x - 3.6, y - 2.2, h - 0.3), p(x, y, h - 0.3))} fill={PAPEL} stroke={OCRE} strokeWidth="1" strokeLinejoin="round" />
+      <path className="puerta-camion" d={poly(p(x + dx, y, 1.8), p(x + dx + 3.6, y - 2.2, 1.8), p(x + dx + 3.6, y - 2.2, h - 0.3), p(x + dx, y, h - 0.3))} fill={PAPEL} stroke={OCRE} strokeWidth="1" strokeLinejoin="round" />
+      <Caja g={g} x={x} y={cabY} dx={dx} dy={9} z0={1.8} z1={9.5} tapa="#e6dfd0" izq="#efe8db" der="#e0d8ca" borde={OCRE} w={1.2} animado={false} />
+      <path d={poly(p(x + dx, cabY + 1, 5.5), p(x + dx, cabY + 8, 5.5), p(x + dx, cabY + 8, 8.6), p(x + dx, cabY + 1, 8.6))} fill="#cfc8ba" stroke={OCRE} strokeWidth="0.4" />
       <path d={parabrisas} fill="#cfc8ba" stroke={OCRE} strokeWidth="0.5" />
       <line x1={parrilla[0][0]} y1={parrilla[0][1]} x2={parrilla[1][0]} y2={parrilla[1][1]} stroke={OCRE} strokeWidth="0.6" />
       {[x + 1.4, x + dx - 1.4].map((fx, k) => { const q = p(fx, cabY + 9, 3.2); return <circle key={k} cx={q[0].toFixed(1)} cy={q[1].toFixed(1)} r="1.1" fill={OCRE} />; })}
       {/* la rampa trasera, que baja al paseo cuando el camión ya llegó (CSS) */}
-      <path className="rampa" d={poly(p(x + 1, y, 1.8), p(x + dx - 1, y, 1.8), p(x + dx - 1, y - 6, 0.05), p(x + 1, y - 6, 0.05))} fill="#d9d2c4" stroke={OCRE} strokeWidth="0.6" />
+      <g className="rampa" style={cssVars({ transformOrigin: `${p(x + dx / 2, y, 1.8)[0].toFixed(1)}px ${p(x + dx / 2, y, 1.8)[1].toFixed(1)}px` })}>
+        <path d={poly(p(x + 0.5, y, 1.8), p(x + dx - 0.5, y, 1.8), p(x + dx - 0.5, y - 10, 0.05), p(x + 0.5, y - 10, 0.05))} fill="#d9d2c4" stroke={OCRE} strokeWidth="0.8" />
+        {[2, 4, 6, 8].map((t) => { const q0 = p(x + 0.5, y - t, 1.8 - (1.75 * t) / 10), q1 = p(x + dx - 0.5, y - t, 1.8 - (1.75 * t) / 10); return <line key={t} x1={q0[0]} y1={q0[1]} x2={q1[0]} y2={q1[1]} stroke={OCRE} strokeWidth="0.4" opacity="0.7" />; })}
+      </g>
     </g>
   );
 }
@@ -558,23 +639,50 @@ function Noche({ g }: { g: GeoPerspectiva }) {
   const pendientes = [0.2, 0.5, 0.8].map((t) => p(BARRA.x + BARRA.dx / 2, BARRA.y + BARRA.dy * t, 8));
   const bolardos: Pt[] = [];
   for (let yy = PASEO.y0 + 10; yy < PASEO.y1; yy += 18) { bolardos.push([PASEO.x - 1.4, yy]); bolardos.push([PASEO.x + PASEO.dx + 1.4, yy]); }
-  const hilosPalapa: Array<[Pt, Pt]> = [0, 1, 2].map((k) => [p(PALAPA.x + 3, PALAPA.y + 3 + k * 24, 9.6), p(PALAPA.x + 51, PALAPA.y + 3 + k * 24, 9.6)]);
-  const bombillasPalapa: Pt[] = hilosPalapa.flatMap(([a, b]) => Array.from({ length: 7 }, (_, k) => lerp(a, b, (k + 0.5) / 7)));
+  const hilosPalapa: Array<[Pt, Pt]> = [0, 1, 2, 3, 4].map((k) => [p(PALAPA.x + 3, PALAPA.y + 3 + k * 12, 9.6), p(PALAPA.x + 51, PALAPA.y + 3 + k * 12, 9.6)]);
+  const bombillasPalapa: Pt[] = hilosPalapa.flatMap(([a, b]) => Array.from({ length: 11 }, (_, k) => lerp(a, b, (k + 0.5) / 11)));
   const perimetro = PALAPA_POSTES.filter(([px, py]) => px === PALAPA.x + 3 || px === PALAPA.x + 51 || py === PALAPA.y + 3 || py === PALAPA.y + 51);
+  // De noche la palapa es el volumen más cálido del predio: paja iluminada por dentro, postes en luz, suelo encendido y un lounge de mesas altas debajo.
+  const pcx = PALAPA.x + PALAPA.dx / 2, pcy = PALAPA.y + PALAPA.dy / 2;
+  const PA = p(PALAPA.x, PALAPA.y, PALAPA_ALERO), PB = p(PALAPA.x + PALAPA.dx, PALAPA.y, PALAPA_ALERO), PC = p(PALAPA.x + PALAPA.dx, PALAPA.y + PALAPA.dy, PALAPA_ALERO), PD = p(PALAPA.x, PALAPA.y + PALAPA.dy, PALAPA_ALERO);
+  const PR1 = p(pcx - PALAPA_CUMBRERA / 2, pcy, PALAPA_CUMBRE), PR2 = p(pcx + PALAPA_CUMBRERA / 2, pcy, PALAPA_CUMBRE);
+  const techoNoche: Pt[][] = [[PA, PB, PR2, PR1], [PD, PA, PR1, PR1], [PB, PC, PR2, PR2], [PC, PD, PR1, PR2]];
+  const lounge: Pt[] = [[PALAPA.x + 14, PALAPA.y + 20], [PALAPA.x + 26, PALAPA.y + 16], [PALAPA.x + 38, PALAPA.y + 22], [PALAPA.x + 16, PALAPA.y + 36], [PALAPA.x + 30, PALAPA.y + 40], [PALAPA.x + 42, PALAPA.y + 34]];
+  // Luces del inmueble que también se encienden de noche: la puerta de vidrio, sus dos apliques y la lámpara de cada cabaña.
+  const puertaNoche = poly(p(PUERTA.x, EDIF.dy, 0), p(PUERTA.x + PUERTA.dx, EDIF.dy, 0), p(PUERTA.x + PUERTA.dx, EDIF.dy, PUERTA.h), p(PUERTA.x, EDIF.dy, PUERTA.h));
+  const lucesInmueble: Pt[] = [
+    p(PUERTA.x - 3, EDIF.dy, 7.5), p(PUERTA.x + PUERTA.dx + 3, EDIF.dy, 7.5),
+    ...Array.from({ length: CABANAS.n }, (_, i) => p(CABANAS.x + CABANAS.dx - 2, CABANAS.y0 + i * CABANAS.paso + 2, CABANAS.h - 1.6)),
+  ];
 
   return (
     <g className="noche" pointerEvents="none">
       <g className="capa capa-barra-luz">
-        <ellipse cx={cP[0].toFixed(1)} cy={cP[1].toFixed(1)} rx="70" ry="26" fill={OCRE} opacity="0.12" />
-        <ellipse cx={cP[0].toFixed(1)} cy={cP[1].toFixed(1)} rx="38" ry="13" fill={OCRE} opacity="0.12" />
+        {/* el resplandor de la barra, tumbado en el suelo y en perspectiva (antes era una elipse de pantalla que flotaba) */}
+        <Elipse g={g} x={BARRA.x - 1} y={BARRA.y + BARRA.dy / 2} r={16} z={0.05} fill={OCRE} opacity="0.1" />
+        <Elipse g={g} x={BARRA.x - 1} y={BARRA.y + BARRA.dy / 2} r={8} z={0.05} fill={OCRE} opacity="0.12" />
       </g>
       <g className="capa capa-luces">
-        {pozos.map(([px, py, r], i) => <Elipse key={i} g={g} x={px} y={py} r={r} fill={OCRE} opacity="0.07" />)}
+        {pozos.map(([px, py, r], i) => <Elipse key={i} g={g} x={px} y={py} r={r} className="noche-pozo" style={cssVars({ "--i": i })} fill={OCRE} opacity="0.07" />)}
       </g>
       <g className="capa capa-publico">
-        {MULTITUD.filter((_, i) => i % 2 === 0).map(([x, y], i) => (
-          <Elipse key={i} g={g} x={x} y={y} r={0.55} z={0.4} className="noche-persona" style={cssVars({ "--i": i })} fill={LUZ} opacity="0.75" />
-        ))}
+        {/* público del césped, de frente a la pantalla (bajo la palapa va el lounge): siluetas verticales en tono
+            medio con la cabeza en luz, raleadas con ruido para romper las columnas de la retícula, y más luz junto
+            a la tarima y en el centro. La opacidad va en los hijos: el grupo lo gobierna lam-aparece-persona. */}
+        {MULTITUD.slice(289).map(([x, y], k) => {
+          if (y < E.y + E.dy + 4) return null;
+          const fila = Math.floor(k / 26), col = k % 26;
+          const r = Math.sin(k * 12.9898 + 4.1) * 43758.5453;
+          if (r - Math.floor(r) > 0.6) return null;
+          const luz = (0.4 + 0.6 * (1 - fila / 11)) * (1 - (0.3 * Math.abs(col - 12.5)) / 12.5);
+          const [a, b] = p(x, y, 0), [, bt] = p(x, y, 5.5), h = b - bt;
+          return (
+            <g key={k} className="noche-persona" style={cssVars({ "--i": k })}>
+              <line x1={a.toFixed(1)} y1={b.toFixed(1)} x2={a.toFixed(1)} y2={(bt + h * 0.15).toFixed(1)} stroke={LUZ_SOMBRA} strokeWidth={(h * 0.16).toFixed(2)} strokeLinecap="round" opacity={luz.toFixed(2)} />
+              <circle cx={a.toFixed(1)} cy={bt.toFixed(1)} r={(h * 0.11).toFixed(2)} fill={LUZ} opacity={Math.min(1, luz + 0.25).toFixed(2)} />
+            </g>
+          );
+        })}
         {frente.map(([fx, fy, br], i) => (
           <g key={`f${i}`} className="noche-figura" style={cssVars({ "--i": i })}>
             <Persona g={g} x={fx} y={fy} tono={LUZ} brazos={br} clase="" opacidad={0.85} />
@@ -582,17 +690,24 @@ function Noche({ g }: { g: GeoPerspectiva }) {
         ))}
       </g>
       <g className="capa capa-barra-luz">
-        <Caja g={g} x={BARRA.x - 5} y={BARRA.y} dx={1.6} dy={BARRA.dy} z1={5.5} tapa="#3a3327" izq="#2e2920" der="#26211a" borde={LUZ} w={0.6} animado={false} />
+        {/* trasbarra baja con dos estantes y botellas; mostrador iluminado; taburetes con pie; gente en la barra; lámparas con su cable */}
+        <Caja g={g} x={BARRA.x - 5} y={BARRA.y} dx={2.4} dy={BARRA.dy} z1={4} tapa="#7a6a48" izq="#2e2920" der="#26211a" borde={LUZ} w={0.6} animado={false} />
+        {[2, 3.2].map((z) => { const q0 = p(BARRA.x - 2.6, BARRA.y, z), q1 = p(BARRA.x - 2.6, BARRA.y + BARRA.dy, z); return <line key={z} x1={q0[0]} y1={q0[1]} x2={q1[0]} y2={q1[1]} stroke={LUZ} strokeWidth="0.4" opacity="0.6" />; })}
         {botellas.map((q, i) => <rect key={i} x={(q[0] - 0.45).toFixed(1)} y={(q[1] - 1.6).toFixed(1)} width="0.9" height="1.6" fill={LUZ} opacity="0.85" />)}
-        <Caja g={g} x={BARRA.x} y={BARRA.y} dx={BARRA.dx} dy={BARRA.dy} z1={BARRA.h} tapa="#3a3327" izq="#2e2920" der="#26211a" borde={LUZ} w={0.9} animado={false} />
-        <Persona g={g} x={BARRA.x - 2.2} y={BARRA.y + BARRA.dy * 0.45} tono={LUZ} clase="" opacidad={0.85} />
-        {taburetes.map(([tx, ty], i) => <Elipse key={i} g={g} x={tx} y={ty} r={0.9} z={2.4} fill="none" stroke={LUZ} strokeWidth="0.7" />)}
-        {pendientes.map((q, i) => (
-          <g key={`p${i}`}>
-            <circle cx={q[0].toFixed(1)} cy={q[1].toFixed(1)} r="3.2" fill={OCRE} opacity="0.2" />
-            <circle cx={q[0].toFixed(1)} cy={q[1].toFixed(1)} r="0.9" fill={LUZ} />
-          </g>
-        ))}
+        <Caja g={g} x={BARRA.x} y={BARRA.y} dx={BARRA.dx} dy={BARRA.dy} z1={BARRA.h} tapa="#9a8459" izq="#2e2920" der="#26211a" borde={LUZ} w={0.9} animado={false} />
+        <g className="noche-bartender"><Persona g={g} x={BARRA.x - 2.2} y={BARRA.y + BARRA.dy * 0.45} tono={LUZ} clase="" opacidad={0.85} /></g>
+        {taburetes.map(([tx, ty], i) => { const q0 = p(tx, ty, 0), q1 = p(tx, ty, 2.4); return (<g key={i}><line x1={q0[0]} y1={q0[1]} x2={q1[0]} y2={q1[1]} stroke={LUZ} strokeWidth="0.5" /><Elipse g={g} x={tx} y={ty} r={0.85} z={2.4} fill="#3a3327" stroke={LUZ} strokeWidth="0.6" /></g>); })}
+        {[6, 16, 26].map((dy, i) => <Persona key={`pb${i}`} g={g} x={BARRA.x + BARRA.dx + 4.5} y={BARRA.y + dy} tono={LUZ} clase="" opacidad={0.8} />)}
+        {pendientes.map((q, i) => {
+          const q0 = p(BARRA.x + BARRA.dx / 2, BARRA.y + BARRA.dy * [0.2, 0.5, 0.8][i], PALAPA_ALERO - 0.6);
+          return (
+            <g key={`p${i}`} className="noche-bombilla" style={cssVars({ "--i": i })}>
+              <line x1={q0[0]} y1={q0[1]} x2={q[0].toFixed(1)} y2={q[1].toFixed(1)} stroke={LUZ} strokeWidth="0.35" opacity="0.5" />
+              <circle cx={q[0].toFixed(1)} cy={q[1].toFixed(1)} r="3.2" fill={OCRE} opacity="0.2" />
+              <circle cx={q[0].toFixed(1)} cy={q[1].toFixed(1)} r="0.9" fill={LUZ} />
+            </g>
+          );
+        })}
       </g>
       <g className="capa capa-tarima">
         <Caja g={g} x={E.x} y={E.y} dx={E.dx} dy={E.dy} z1={E.h} tapa="#3a3327" izq="#2e2920" der="#26211a" borde={LUZ} w={1} animado={false} />
@@ -602,7 +717,7 @@ function Noche({ g }: { g: GeoPerspectiva }) {
         </g>
         <g>
           <Caja g={g} x={cxE - 5} y={E.y + 6} dx={10} dy={3} z0={E.h} z1={E.h + 3.5} tapa="#3a3327" izq="#2e2920" der="#26211a" borde={LUZ} w={0.7} animado={false} />
-          <Persona g={g} x={cxE} y={E.y + 5.2} z={E.h} tono={LUZ} clase="" opacidad={0.9} />
+          <g className="noche-dj"><Persona g={g} x={cxE} y={E.y + 5.2} z={E.h} tono={LUZ} clase="" opacidad={0.9} brazos="arriba" /></g>
         </g>
         <g>
           {[cxE - 9, cxE + 7].map((mx, i) => <Caja key={i} g={g} x={mx} y={E.y + E.dy - 3} dx={3} dy={2} z0={E.h} z1={E.h + 1.4} tapa="#3a3327" izq="#2e2920" der="#26211a" borde={LUZ} w={0.5} animado={false} />)}
@@ -635,17 +750,42 @@ function Noche({ g }: { g: GeoPerspectiva }) {
         ))}
       </g>
       <g className="capa capa-guirnaldas">
+        <path d={g.techo(PALAPA.x + 2, PALAPA.y + 2, PALAPA.dx - 4, PALAPA.dy - 4, 0.05)} fill={OCRE} opacity="0.14" />
+        {techoNoche.map((c, i) => <path key={`tn${i}`} d={poly(...c)} fill={OCRE} fillOpacity="0.18" stroke={LUZ} strokeWidth="0.7" opacity="0.65" />)}
+        {perimetro.map(([px, py], i) => { const q0 = p(px, py, 0), q1 = p(px, py, PALAPA_ALERO); return <line key={`pl${i}`} x1={q0[0]} y1={q0[1]} x2={q1[0]} y2={q1[1]} stroke={LUZ} strokeWidth="0.5" opacity="0.5" />; })}
         {perimetro.map(([px, py], i) => <Elipse key={`u${i}`} g={g} x={px} y={py} r={2.4} fill={OCRE} opacity="0.14" />)}
+        {/* mesas altas con mantel claro (el cono de spandex de la foto) y alguien en cada una; un sofá lounge */}
+        {lounge.map(([lx, ly], i) => (
+          <g key={`lo${i}`}>
+            <path d={poly(p(lx - 0.7, ly, 0), p(lx + 0.7, ly, 0), p(lx + 1.2, ly, 3.5), p(lx - 1.2, ly, 3.5))} fill={LUZ} fillOpacity="0.7" />
+            <Elipse g={g} x={lx} y={ly} r={1.2} z={3.5} fill={LUZ} opacity="0.9" />
+            <Persona g={g} x={lx + 2.2} y={ly + 0.6} tono={LUZ} clase="" opacidad={0.7} />
+          </g>
+        ))}
+        <Caja g={g} x={PALAPA.x + 22} y={PALAPA.y + 28} dx={7} dy={2.4} z1={1.6} tapa="#5a4d38" izq="#2e2920" der="#26211a" borde={LUZ} w={0.5} animado={false} />
         {bolardos.map(([bx, by], i) => (
           <g key={`b${i}`}>
             <Elipse g={g} x={bx} y={by} r={2.2} fill={LUZ} opacity="0.12" />
             <Elipse g={g} x={bx} y={by} r={0.35} z={1.2} fill={LUZ} />
           </g>
         ))}
-        {hilos}
-        {hilosPalapa.map(([a, b], i) => <line key={`hp${i}`} className="noche-hilo" x1={a[0]} y1={a[1]} x2={b[0]} y2={b[1]} stroke={LUZ} strokeWidth="0.4" opacity="0.5" />)}
-        {[...bombillas.map(({ q }) => q), ...bombillasPalapa].map((q, i) => (
-          <g key={i} className="noche-bombilla" style={cssVars({ "--i": i })}>
+        {/* las guirnaldas van agrupadas para mecerse con las palmeras de las que cuelgan */}
+        <g className="hilos">
+          {hilos}
+          {hilosPalapa.map(([a, b], i) => <line key={`hp${i}`} className="noche-hilo" x1={a[0]} y1={a[1]} x2={b[0]} y2={b[1]} stroke={LUZ} strokeWidth="0.4" opacity="0.5" />)}
+          {[...bombillas.map(({ q }) => q), ...bombillasPalapa].map((q, i) => (
+            <g key={i} className="noche-bombilla" style={cssVars({ "--i": i })}>
+              <circle cx={q[0].toFixed(1)} cy={q[1].toFixed(1)} r="2.4" fill={OCRE} opacity="0.18" />
+              <circle cx={q[0].toFixed(1)} cy={q[1].toFixed(1)} r="0.75" fill={LUZ} />
+            </g>
+          ))}
+        </g>
+      </g>
+      <g className="capa capa-inmueble-luz">
+        <path d={puertaNoche} fill={LUZ} opacity="0.28" />
+        <Elipse g={g} x={PUERTA.x + PUERTA.dx / 2} y={EDIF.dy - 3} r={7} fill={OCRE} opacity="0.12" />
+        {lucesInmueble.map((q, i) => (
+          <g key={`li${i}`} className="noche-bombilla" style={cssVars({ "--i": i + 40 })}>
             <circle cx={q[0].toFixed(1)} cy={q[1].toFixed(1)} r="2.4" fill={OCRE} opacity="0.18" />
             <circle cx={q[0].toFixed(1)} cy={q[1].toFixed(1)} r="0.75" fill={LUZ} />
           </g>
@@ -655,16 +795,17 @@ function Noche({ g }: { g: GeoPerspectiva }) {
   );
 }
 
-function Cota({ g, a, b, texto, lado = 1, clase = "" }: { g: GeoPerspectiva; a: [number, number, number?]; b: [number, number, number?]; texto: string; lado?: 1 | -1; clase?: string }) {
+function Cota({ g, a, b, texto, lado = 1, clase = "", t = 0.5 }: { g: GeoPerspectiva; a: [number, number, number?]; b: [number, number, number?]; texto: string; lado?: 1 | -1; clase?: string; t?: number }) {
   const A = g.p(a[0], a[1], a[2] ?? 0), B = g.p(b[0], b[1], b[2] ?? 0);
   const an = Math.atan2(B[1] - A[1], B[0] - A[0]), f = 4.4;
   const punta = (q: Pt, s: number) =>
     `M${(q[0] + Math.cos(an + 0.4) * f * s).toFixed(1)},${(q[1] + Math.sin(an + 0.4) * f * s).toFixed(1)} L${q[0].toFixed(1)},${q[1].toFixed(1)} L${(q[0] + Math.cos(an - 0.4) * f * s).toFixed(1)},${(q[1] + Math.sin(an - 0.4) * f * s).toFixed(1)}`;
-  const m: Pt = [(A[0] + B[0]) / 2, (A[1] + B[1]) / 2];
+  // `t` mueve el texto a lo largo de la cota, para que no lo cruce una flecha
+  const m: Pt = lerp(A, B, t);
   let giro = (an * 180) / Math.PI;
   if (giro > 90) giro -= 180; if (giro < -90) giro += 180;
   return (
-    <g className={`ap ${clase}`} opacity="0.85">
+    <g className={`ap cota ${clase}`} opacity="0.85">
       <line x1={A[0]} y1={A[1]} x2={B[0]} y2={B[1]} stroke={GRIS} strokeWidth="0.6" />
       <path d={punta(A, 1)} fill="none" stroke={GRIS} strokeWidth="0.6" />
       <path d={punta(B, -1)} fill="none" stroke={GRIS} strokeWidth="0.6" />
@@ -697,32 +838,37 @@ function Edificio({ g }: { g: GeoPerspectiva }) {
   const H1 = EDIF.h1, H2 = EDIF.h2;
   const cara = (x0: number, x1: number, h: number) => poly(p(x0, Y1, 0), p(x1, Y1, 0), p(x1, Y1, h), p(x0, Y1, h));
   const ventana = (x: number, w: number, z0: number, z1: number) => poly(p(x, Y1, z0), p(x + w, Y1, z0), p(x + w, Y1, z1), p(x, Y1, z1));
-  const altas = [X0 + 6, X0 + 22, X0 + 38, X0 + 54].map((x) => ventana(x, 9, 15, 20));
-  const bajas = [XC + 14, XC + 28, XC + 42].map((x) => ventana(x, 7, 6, 11));
+  // Ventanas solo en el nivel alto del volumen del oeste: la fachada sur del bajo es mural de piso a techo, sin huecos.
+  const altas = [X0 + 5, X0 + 19, X0 + 33, X0 + 47].map((x) => ventana(x, 8, 15, 20));
   // El mural, en bandas onduladas de tonos apagados (como las olas de la fachada real, sin su rótulo).
-  const banda = (z0: number, z1: number, amp: number, fase: number, u0: number, u1: number) => {
+  // Las ondas no bajan del suelo ni pasan del parapeto: sin el tope, la banda de abajo se derramaba sobre el paseo.
+  const banda = (z0: number, z1: number, amp: number, fase: number, u0: number, u1: number, tope: number) => {
     const arriba: Pt[] = [], abajo: Pt[] = [];
     for (let u = u0; u <= u1 + 0.01; u += 3) {
-      arriba.push(p(u, Y1, z1 + amp * Math.sin(u / 8 + fase)));
-      abajo.push(p(u, Y1, z0 + amp * Math.sin(u / 10 + fase + 1.2)));
+      arriba.push(p(u, Y1, Math.min(tope - 0.4, z1 + amp * Math.sin(u / 8 + fase))));
+      abajo.push(p(u, Y1, Math.max(0.25, z0 + amp * Math.sin(u / 10 + fase + 1.2))));
     }
     return poly(...arriba, ...abajo.reverse());
   };
+  // El mural, de piso a techo en los dos volúmenes, con cuerpo (ocre, oliva, salmón y gris de la paleta) y ondas amplias.
   const mural = [
-    { d: banda(0.4, 5, 1.1, 0, X0 + 2, XC - 2), fill: "#d9c9b3" },
-    { d: banda(4.2, 9, 1.3, 1.6, X0 + 2, XC - 2), fill: "#cfd6c9" },
-    { d: banda(8.2, 13, 1.0, 3.1, X0 + 2, XC - 2), fill: "#e3d4c2" },
-    { d: banda(1, 6, 1.2, 2.4, XC + 2, X1 - 2), fill: "#d8c6c0" },
+    { d: banda(0.4, 4.5, 1.6, 0, X0 + 1, XC - 1, H2), fill: "#c4772b", op: 0.3 },
+    { d: banda(3.8, 8.5, 2.2, 1.6, X0 + 1, XC - 1, H2), fill: "#6a7752", op: 0.3 },
+    { d: banda(7.6, 12.5, 1.8, 3.1, X0 + 1, XC - 1, H2), fill: "#d8a48a", op: 0.45 },
+    { d: banda(0.5, 5, 2, 2.4, XC + 1, X1 - 1, H1), fill: "#d8a48a", op: 0.45 },
+    { d: banda(4.5, 9.5, 2.4, 0.7, XC + 1, X1 - 1, H1), fill: "#c4772b", op: 0.3 },
+    { d: banda(9, H1 - 1.2, 1.4, 4.2, XC + 1, X1 - 1, H1), fill: "#8a8071", op: 0.35 },
   ];
   const carpinteria = (x: number, w: number, z0: number, z1: number) => [
     [p(x + w / 2, Y1, z0), p(x + w / 2, Y1, z1)],
     [p(x, Y1, (z0 + z1) / 2), p(x + w, Y1, (z0 + z1) / 2)],
   ] as Array<[Pt, Pt]>;
-  const carpinterias = [...[X0 + 6, X0 + 22, X0 + 38, X0 + 54].flatMap((x) => carpinteria(x, 9, 15, 20)), ...[XC + 14, XC + 28, XC + 42].flatMap((x) => carpinteria(x, 7, 6, 11))];
+  const carpinterias = [X0 + 5, X0 + 19, X0 + 33, X0 + 47].flatMap((x) => carpinteria(x, 8, 15, 20));
   const apliques = [p(PUERTA.x - 3, Y1, 7.5), p(PUERTA.x + PUERTA.dx + 3, Y1, 7.5)];
+  const marco = poly(p(PUERTA.x - 0.7, Y1, 0), p(PUERTA.x + PUERTA.dx + 0.7, Y1, 0), p(PUERTA.x + PUERTA.dx + 0.7, Y1, PUERTA.h + 0.7), p(PUERTA.x - 0.7, Y1, PUERTA.h + 0.7));
+  const reflejo = (x0: number, x1: number) => [p(x0 + 1, Y1, 1.2), p(x1 - 1, Y1, PUERTA.h - 1.2)] as [Pt, Pt];
   const puerta = (x0: number, x1: number) => poly(p(x0, Y1, 0), p(x1, Y1, 0), p(x1, Y1, PUERTA.h), p(x0, Y1, PUERTA.h));
   const mitad = PUERTA.x + PUERTA.dx / 2;
-  const marquesina = poly(p(PUERTA.x - 1.5, Y1, PUERTA.h + 0.6), p(PUERTA.x + PUERTA.dx + 1.5, Y1, PUERTA.h + 0.6), p(PUERTA.x + PUERTA.dx + 1.5, Y1 + 3, PUERTA.h + 0.2), p(PUERTA.x - 1.5, Y1 + 3, PUERTA.h + 0.2));
   const tirador = (x: number) => [p(x, Y1, 4.6), p(x, Y1, 5.7)] as [Pt, Pt];
   return (
     <g>
@@ -730,9 +876,8 @@ function Edificio({ g }: { g: GeoPerspectiva }) {
       <Interior g={g} />
       <path className="rl tz edif-sur edif-borde" pathLength={1} d={cara(X0, XC, H2)} fill="#ece7db" stroke={GRIS} strokeWidth="0.8" />
       <path className="rl tz edif-sur edif-borde" pathLength={1} d={cara(XC, X1, H1)} fill="#ece7db" stroke={GRIS} strokeWidth="0.8" />
-      {mural.map((m, i) => <path key={i} className="rl edif-sur" d={m.d} fill={m.fill} opacity="0.7" />)}
+      {mural.map((m, i) => <path key={i} className="rl edif-sur" d={m.d} fill={m.fill} opacity={m.op} />)}
       {altas.map((d, i) => <path key={`a${i}`} className="ap edif-sur" d={d} fill="#d5cfc3" stroke={GRIS} strokeWidth="0.5" />)}
-      {bajas.map((d, i) => <path key={`b${i}`} className="ap edif-sur" d={d} fill="#d5cfc3" stroke={GRIS} strokeWidth="0.5" />)}
       {carpinterias.map(([q0, q1], i) => <line key={`c${i}`} className="ap edif-sur" x1={q0[0]} y1={q0[1]} x2={q1[0]} y2={q1[1]} stroke={PAPEL} strokeWidth="0.45" opacity="0.9" />)}
       {apliques.map((q, i) => <circle key={`ap${i}`} className="ap edif-sur" cx={q[0].toFixed(1)} cy={q[1].toFixed(1)} r="0.9" fill={LUZ} stroke={GRIS} strokeWidth="0.35" />)}
       <path className="rl tz edif-techo edif-borde" pathLength={1} d={g.techo(X0, 0, EDIF.corte, Y1, H2)} fill="#f5f1e8" stroke={GRIS} strokeWidth="0.8" />
@@ -742,10 +887,12 @@ function Edificio({ g }: { g: GeoPerspectiva }) {
       <Caja g={g} x={X0 + 26} y={28} dx={7} dy={5} z0={H2} z1={H2 + 3} tapa="#e6e0d4" izq="#d9d2c4" der="#cfc8ba" borde={GRIS} w={0.45} animado={false} />
       <Caja g={g} x={XC + 20} y={40} dx={6} dy={5} z0={H1} z1={H1 + 2.6} tapa="#e6e0d4" izq="#d9d2c4" der="#cfc8ba" borde={GRIS} w={0.45} animado={false} />
       <Caja g={g} x={XC + 34} y={62} dx={6} dy={5} z0={H1} z1={H1 + 2.6} tapa="#e6e0d4" izq="#d9d2c4" der="#cfc8ba" borde={GRIS} w={0.45} animado={false} />
-      <path className="ap puerta" d={puerta(PUERTA.x, mitad)} fill="#b9b3a7" stroke={TINTA} strokeWidth="0.7" />
-      <path className="ap puerta" d={puerta(mitad, PUERTA.x + PUERTA.dx)} fill="#b9b3a7" stroke={TINTA} strokeWidth="0.7" />
-      {[mitad - 1.2, mitad + 1.2].map((tx, i) => { const [q0, q1] = tirador(tx); return <line key={i} className="ap" x1={q0[0]} y1={q0[1]} x2={q1[0]} y2={q1[1]} stroke={PAPEL} strokeWidth="0.6" />; })}
-      <path className="ap" d={marquesina} fill="#d9d2c4" stroke={TINTA} strokeWidth="0.6" />
+      {/* puerta doble de vidrio oscuro con marco blanco, sin marquesina: la visera la convertía en caseta */}
+      <path className="ap edif-sur" d={marco} fill={PAPEL} stroke={TINTA} strokeWidth="0.5" />
+      <path className="ap puerta edif-sur" d={puerta(PUERTA.x, mitad)} fill="#8f8a80" stroke={PAPEL} strokeWidth="0.8" />
+      <path className="ap puerta edif-sur" d={puerta(mitad, PUERTA.x + PUERTA.dx)} fill="#8f8a80" stroke={PAPEL} strokeWidth="0.8" />
+      {[[PUERTA.x, mitad], [mitad, PUERTA.x + PUERTA.dx]].map(([x0, x1], i) => { const [q0, q1] = reflejo(x0, x1); return <line key={`r${i}`} className="ap edif-sur" x1={q0[0]} y1={q0[1]} x2={q1[0]} y2={q1[1]} stroke={PAPEL} strokeWidth="0.5" opacity="0.5" />; })}
+      {[mitad - 1.2, mitad + 1.2].map((tx, i) => { const [q0, q1] = tirador(tx); return <line key={i} className="ap edif-sur" x1={q0[0]} y1={q0[1]} x2={q1[0]} y2={q1[1]} stroke={TINTA} strokeWidth="0.6" />; })}
     </g>
   );
 }
@@ -756,7 +903,8 @@ function Interior({ g }: { g: GeoPerspectiva }) {
   const XK0 = EDIF.x + EDIF.corte, XK1 = EDIF.x + EDIF.dx;
   const ALT = 12, YM = 58;
   const columnas: Pt[] = [[X0 + 23, YM], [X0 + 47, YM], [X0 + 23, 84], [X0 + 47, 84]];
-  const salas = [X0 + 3, X0 + 20, X0 + 37, X0 + 54].map((sx) => ({ x: sx, y: 3, dx: 14, dy: 20 }));
+  // Cuatro salas dentro del volumen alto (que ahora acaba en X1 = 62): la última termina en 61.
+  const salas = [X0 + 3, X0 + 17, X0 + 31, X0 + 45].map((sx) => ({ x: sx, y: 3, dx: 12, dy: 20 }));
   const escalones = Array.from({ length: 8 }, (_, i) => ({ y: 78 - i * 2.5, z0: i * 1.5, z1: (i + 1) * 1.5 }));
   const baranda = Array.from({ length: 13 }, (_, i) => X0 + 4 + i * 5).filter((bx) => bx < X1 - 8);
   const rail0 = p(X0 + 0.5, YM, ALT + 3.4), rail1 = p(X1 - 8, YM, ALT + 3.4);
@@ -777,8 +925,8 @@ function Interior({ g }: { g: GeoPerspectiva }) {
         {escalones.map((e, i) => <Caja key={i} g={g} x={X1 - 8} y={e.y} dx={5} dy={2.5} z0={e.z0} z1={e.z1} tapa="#e6dfd0" izq="#d9d2c4" der="#cfc8ba" borde={GRIS} w={0.35} animado={false} />)}
       </g>
       <g className="int-pieza int-altillo" style={cssVars({ "--i": 6 })}>
-        <path d={poly(p(X0 + 0.5, YM, ALT - 1.2), p(X1 - 0.5, YM, ALT - 1.2), p(X1 - 0.5, YM, ALT), p(X0 + 0.5, YM, ALT))} fill="#cfc8ba" stroke={GRIS} strokeWidth="0.5" />
-        <path d={g.techo(X0 + 0.5, 0.5, EDIF.corte - 1, YM - 0.5, ALT)} fill="#ebe5d8" stroke={GRIS} strokeWidth="0.5" />
+        <path d={poly(p(X0 + 0.5, YM, ALT - 1.2), p(X1 - 0.5, YM, ALT - 1.2), p(X1 - 0.5, YM, ALT), p(X0 + 0.5, YM, ALT))} fill="#c5bdae" stroke={GRIS} strokeWidth="0.6" />
+        <path d={g.techo(X0 + 0.5, 0.5, EDIF.corte - 1, YM - 0.5, ALT)} fill="#dcd4c2" stroke={GRIS} strokeWidth="0.7" />
         {baranda.map((bx) => { const q0 = p(bx, YM, ALT), q1 = p(bx, YM, ALT + 3.4); return <line key={bx} x1={q0[0]} y1={q0[1]} x2={q1[0]} y2={q1[1]} stroke="#7d725f" strokeWidth="0.4" />; })}
         <line x1={rail0[0]} y1={rail0[1]} x2={rail1[0]} y2={rail1[1]} stroke={TINTA} strokeWidth="0.7" />
       </g>
@@ -795,11 +943,24 @@ function Interior({ g }: { g: GeoPerspectiva }) {
           <Caja g={g} x={XK0 + 4} y={2} dx={XK1 - XK0 - 8} dy={3} z1={3} tapa="#e4ded1" izq="#dcd5c7" der="#d3ccbd" borde={GRIS} w={0.5} animado={false} />
           <Caja g={g} x={XK0 + 16} y={1.5} dx={20} dy={3.5} z0={8} z1={11} tapa="#cfc8ba" izq="#c5bdae" der="#bab2a3" borde={GRIS} w={0.5} animado={false} />
           <Caja g={g} x={XK0 + 4} y={2} dx={4} dy={3} z0={3} z1={7.5} tapa="#dcd5c7" izq="#d3ccbd" der="#cac2b2" borde={GRIS} w={0.5} animado={false} />
+          {/* fogón de cuatro fuegos bajo la campana y fregadero: cocina que se reconoce sin leer */}
+          <Caja g={g} x={XK0 + 18} y={2} dx={6} dy={3} z1={3.1} tapa="#c5bdae" izq="#bab2a3" der="#aea69a" borde={GRIS} w={0.45} animado={false} />
+          {[[XK0 + 19.5, 2.8], [XK0 + 22.5, 2.8], [XK0 + 19.5, 4.2], [XK0 + 22.5, 4.2]].map(([fx, fy], k) => <Elipse key={k} g={g} x={fx} y={fy} r={0.5} z={3.15} fill={TINTA} opacity="0.6" />)}
+          <Elipse g={g} x={XK0 + 38} y={3.5} r={1.1} z={3.05} fill="#c9c2b3" stroke={GRIS} strokeWidth="0.35" />
         </g>
         <g className="int-pieza" style={cssVars({ "--i": 12 })}>
           <Caja g={g} x={XK0 + 16} y={26} dx={18} dy={4} z1={3} tapa="#e4ded1" izq="#dcd5c7" der="#d3ccbd" borde={GRIS} w={0.5} animado={false} />
         </g>
       </g>
+      {/* el paseo sigue dentro, hasta el salón; y cada pieza con su nombre, para que el corte se lea sin leer */}
+      <path d={g.techo(PUERTA.x, Y1 - 34, PUERTA.dx, 34, 0.12)} fill={PAPEL} stroke="#cfc7b6" strokeWidth="0.4" />
+      {[1, 2, 3].map((k) => { const q0 = p(PUERTA.x, Y1 - 34 + k * 8, 0.13), q1 = p(PUERTA.x + PUERTA.dx, Y1 - 34 + k * 8, 0.13); return <line key={k} x1={q0[0]} y1={q0[1]} x2={q1[0]} y2={q1[1]} stroke="#cfc7b6" strokeWidth="0.35" />; })}
+      {[
+        { t: "SALÓN · DOBLE ALTURA", q: p(X0 + 30, 88, 0.2) },
+        { t: "COCINA", q: p(XK0 + 30, 18, 0.2) },
+        { t: "BAÑOS", q: p(X0 + 7, 70, 9.3) },
+        { t: "ALTILLO · 4 SALAS", q: p(X0 + 30, 44, 12.3) },
+      ].map((r) => <text key={r.t} className="int-rotulo" x={r.q[0].toFixed(1)} y={r.q[1].toFixed(1)} fill={GRIS} fontFamily="ui-monospace,monospace" fontSize="5.6" letterSpacing="1.2" textAnchor="middle">{r.t}</text>)}
       <g className="int-pieza" style={cssVars({ "--i": 13 })}>
         <Persona g={g} x={X0 + 36} y={90} clase="" opacidad={0.65} />
         <Persona g={g} x={X0 + 14} y={30} z={ALT} clase="" opacidad={0.65} />
@@ -822,7 +983,7 @@ const T = {
       todo: "Lo techado va en tinta y lo abierto en claro. El paseo baja de la puerta del edificio hacia el estacionamiento sur y es por donde entra todo. Fuera de los setos, la calle.",
       lluvia: "La palapa cubre ~4 000 ft² con techo de paja, abierta por los cuatro costados: para el sol y el agua que cae recta. Lo demás queda al aire, y para un evento de invierno conviene carpa lateral.",
       carpa: "Con viento la lluvia entra de lado. Para un evento de invierno se cierran los costados con carpa lateral, que trae tu proveedor: aquí va dibujada a trazos.",
-      mesas: "Treinta mesas de diez con sus sillas, a escala: dieciséis bajo la palapa, ocho en el césped y seis en fila sobre el paseo. Son los ~300 sentados verificados, con pasillo de servicio entre mesas.",
+      mesas: "Veinticuatro mesas redondas de diez (dieciséis bajo la palapa, ocho en el césped) y una mesa imperial de sesenta a lo largo del paseo, a escala. Son los ~300 sentados verificados, con pasillo de servicio entre mesas.",
       gente: "Seiscientas personas de pie, a ocho pies cuadrados cada una, bajo la palapa y en el césped oeste. Es el aforo verificado, dibujado.",
       camion: "Desde la calle, por el estacionamiento sur, al paseo pavimentado, continuo y a nivel: un camión de 40 ft llega hasta la puerta del edificio sin pisar césped.",
       noche: "Un montaje posible, de noche: escenario con pantalla y truss al fondo del césped, torre de sonido a cada lado, tu barra bajo la palapa, público de pie y guirnaldas entre las palmeras. Todo lo encendido lo trae tu equipo; la luz colgada se aprueba en la visita.",
@@ -877,7 +1038,7 @@ const T = {
       todo: "Roofed volumes are drawn in ink, open ground in light tone. The walk runs from the building door down to the south parking, and it is how everything gets in. Beyond the hedges, the street.",
       lluvia: "The structure covers ~4,000 sq ft under thatch, open on all four sides: it stops sun and vertical rain. The rest stays open-air, and a winter event should budget for side tenting.",
       carpa: "With wind, rain comes in sideways. A winter event closes the sides with side tenting, which your supplier brings: here it is drawn dashed.",
-      mesas: "Thirty tables of ten with their chairs, to scale: sixteen under the structure, eight on the turf and six in a row on the walk. These are the verified ~300 seated, with service aisles between tables.",
+      mesas: "Twenty-four round tables of ten (sixteen under the structure, eight on the turf) and one sixty-seat banquet table along the walk, to scale. These are the verified ~300 seated, with service aisles between tables.",
       gente: "Six hundred people standing, at eight square feet each, under the structure and on the west turf. That is the verified capacity, drawn.",
       camion: "From the street, through the south parking, onto the paved walk, continuous and level: a 40 ft truck reaches the building door without crossing turf.",
       noche: "One possible setup, at night: a stage with screen and truss at the far end of the turf, a sound tower on each side, your bar under the structure, a standing crowd and string lights between the palms. Everything lit is brought by your team; hung lighting is approved at the visit.",
@@ -938,6 +1099,8 @@ const Dibujo = memo(function Dibujo({ lang, zona, aforo, alEntrar, alSalir, alTo
   const { p, techo } = g;
 
   const mesasN = aforo ? Math.min(MESAS.length, Math.ceil(Math.max(0, aforo.invitados) / 10)) : MESAS.length;
+  // Las 24 redondas sientan a 240; lo que pase de ahí va a la mesa imperial del paseo (hasta 60).
+  const sillasLargas = aforo ? Math.max(0, Math.min(MESA_LARGA.sillas * 2, Math.round(aforo.invitados) - MESAS.length * 10)) : MESA_LARGA.sillas * 2;
   const genteN = aforo ? Math.min(MULTITUD.length, Math.max(0, aforo.invitados)) : MULTITUD.length;
 
   const zClase = (z: Zona) => `z z-${z}${zona === z ? " activa" : ""}`;
@@ -949,18 +1112,22 @@ const Dibujo = memo(function Dibujo({ lang, zona, aforo, alEntrar, alSalir, alTo
   const escalaCamion = g.escala(CAMION.x, CAMION.y + CAMION.recorrido) / g.escala(CAMION.x, CAMION.y);
 
   const azar = lcg(20260902);
-  const GOTAS = Array.from({ length: 130 }, () => ({ x: VB.x + azar() * VB.w, y: VB.y + azar() * VB.h, t: -(azar() * 1.1).toFixed(2) }));
+  const GOTAS = Array.from({ length: 360 }, () => ({ x: VB.x + azar() * VB.w, y: VB.y + azar() * VB.h, t: -(azar() * 1.1).toFixed(2) }));
+  // ondas de impacto en el paseo y el césped (nunca bajo la palapa) y charcos en el paseo
+  const ONDAS: Array<[number, number]> = [
+    ...Array.from({ length: 10 }, (_, i): [number, number] => [PASEO.x + 3 + (i * 5) % 11, PASEO.y0 + 30 + i * 17]),
+    ...Array.from({ length: 6 }, (_, i): [number, number] => [12 + i * 9, PALAPA.y + PALAPA.dy + 10 + (i * 13) % 60]),
+  ];
+  const CHARCOS: Array<[number, number]> = [[PASEO.x + 4, 150], [PASEO.x + 11, 175], [PASEO.x + 5, 200], [PASEO.x + 10, 222], [20, 250], [90, 250], [128, 250]];
 
   // El paseo, losa a losa: cada 8 ft una losa con su junta, en dos tonos alternos, como en la foto.
   const juntas = [];
   const losas = [];
   for (let y = PASEO.y0, k = 0; y < PASEO.y1 + 6; y += 8, k++) {
     const h = Math.min(8, PASEO.y1 + 6 - y);
-    losas.push(<path key={`l${y}`} className="rl" d={techo(PASEO.x, y, PASEO.dx, h, 0.045)} fill={k % 2 ? "#f5f1e7" : "#fbf8f1"} />);
-    if (y > PASEO.y0) {
-      const a = p(PASEO.x, y, 0.05), b = p(PASEO.x + PASEO.dx, y, 0.05);
-      juntas.push(<line key={y} className="ap" x1={a[0]} y1={a[1]} x2={b[0]} y2={b[1]} stroke="#cfc7b6" strokeWidth="0.55" />);
-    }
+    losas.push(<path key={`l${y}`} className="rl" d={techo(PASEO.x, y, PASEO.dx, h, 0.045)} fill={k % 2 ? "#ece7db" : "#f7f3ea"} stroke="#d8d0c0" strokeWidth="0.3" />);
+    // la junta entre losas es una franja de césped de medio pie: es lo que identifica este paseo en todas las fotos
+    if (y > PASEO.y0) juntas.push(<path key={y} className="rl" d={techo(PASEO.x, y - 0.3, PASEO.dx, 0.6, 0.05)} fill="#9faa86" />);
   }
 
   // Estacionamiento: plazas y coches, este y sur.
@@ -1002,7 +1169,8 @@ const Dibujo = memo(function Dibujo({ lang, zona, aforo, alEntrar, alSalir, alTo
       return { prof: g.profundidad(CABANAS.x + CABANAS.dx / 2, y + CABANAS.dy / 2), el: <g key={`cab${i}`} className={zClase("cabanas")} {...zProps("cabanas")}><Cabana g={g} y={y} i={i} /></g> };
     }),
     { prof: g.profundidad(cP[0], cP[1]), el: <g key="palapa" className={zClase("tiki")} {...zProps("tiki")}><Palapa g={g} mesasN={mesasN} /></g> },
-    ...PICNIC.map(([x, y], i) => ({ prof: g.profundidad(x, y), el: <g key={`pic${i}`} className="capa capa-picnic"><g className="picnic-entra" style={cssVars({ "--i": i })}><Picnic g={g} x={x} y={y} /></g></g> })),
+    // las mesas de picnic son fijas: se ven siempre; la capa «picnic» del guion solo las resalta y las hace entrar con peso
+    ...PICNIC.map(([x, y], i) => ({ prof: g.profundidad(x, y), el: <g key={`pic${i}`} className="picnic-fijo"><g className="picnic-entra" style={cssVars({ "--i": i })}><Picnic g={g} x={x} y={y} /></g></g> })),
     // una jardinera con planta junto a cada pérgola, como en las fotos
     ...Array.from({ length: CABANAS.n }, (_, i) => {
       const jx = CABANAS.x + CABANAS.dx + 1.6, jy = CABANAS.y0 + i * CABANAS.paso + 1.5;
@@ -1014,7 +1182,8 @@ const Dibujo = memo(function Dibujo({ lang, zona, aforo, alEntrar, alSalir, alTo
       ) };
     }),
     ...MESAS.slice(16, mesasN).map(([x, y], i) => ({ prof: g.profundidad(x, y), el: <g key={`mesa${i}`} className="mesas"><Mesa g={g} x={x} y={y} i={i + 16} /></g> })),
-    ...GENTE_SUELTA.map(([x, y], i) => ({ prof: g.profundidad(x, y), el: <Persona key={`gs${i}`} g={g} x={x} y={y} /> })),
+    ...(sillasLargas > 0 ? [{ prof: g.profundidad(MESA_LARGA.x + 2, MESA_LARGA.y + 30), el: <g key="mesa-larga" className="mesas"><MesaLarga g={g} sillas={sillasLargas} /></g> }] : []),
+    ...GENTE_SUELTA.map(([x, y], i) => ({ prof: g.profundidad(x, y), el: <g key={`gs${i}`} className="parado gente-suelta" style={cssVars({ "--i": i })}><Persona g={g} x={x} y={y} clase="" tono={i % 2 ? "#55504a" : "#3e3a34"} /></g> })),
     { prof: g.profundidad(CAMION.x, CAMION.y + 20), el: (
       <g key="camion" className="camion" pointerEvents="none" style={cssVars({ "--cx": `${desplazamiento.cx.toFixed(1)}px`, "--cy": `${desplazamiento.cy.toFixed(1)}px`, "--s": escalaCamion.toFixed(3) })}>
         <Camion g={g} />
@@ -1041,7 +1210,7 @@ const Dibujo = memo(function Dibujo({ lang, zona, aforo, alEntrar, alSalir, alTo
         {/* la paja: trazos cortos e inclinados, como hojas de palma superpuestas */}
         <pattern id="lam-paja" width="2.6" height="2.6" patternUnits="userSpaceOnUse" patternTransform="rotate(24)">
           <line x1="0.6" y1="0" x2="0.6" y2="1.5" stroke="#2f2a24" strokeWidth="0.32" opacity="0.4" />
-          <line x1="1.9" y1="1.1" x2="1.9" y2="2.6" stroke="#f3e2c4" strokeWidth="0.22" opacity="0.28" />
+          <line x1="1.9" y1="1.1" x2="1.9" y2="2.6" stroke="#2f2a24" strokeWidth="0.22" opacity="0.25" />
         </pattern>
       </defs>
 
@@ -1061,24 +1230,34 @@ const Dibujo = memo(function Dibujo({ lang, zona, aforo, alEntrar, alSalir, alTo
         <g className={zClase("jardin")} {...zProps("jardin")}>
           <path className="rl" d={techo(ARENA.x, ARENA.y, ARENA.dx, ARENA.dy, 0.02)} fill="#efe6d2" />
           <path className="rl" d={techo(ARENA.x, ARENA.y, ARENA.dx, ARENA.dy, 0.02)} fill="url(#lam-arena)" opacity="0.7" />
+          <path className="rl" d={techo(ARENA_CABECERA.x, ARENA_CABECERA.y, ARENA_CABECERA.dx, ARENA_CABECERA.dy, 0.02)} fill="#efe6d2" />
+          <path className="rl" d={techo(ARENA_CABECERA.x, ARENA_CABECERA.y, ARENA_CABECERA.dx, ARENA_CABECERA.dy, 0.02)} fill="url(#lam-arena)" opacity="0.7" />
           <path className="rl cesped" d={techo(CESPED_O.x, CESPED_O.y, CESPED_O.dx, CESPED_O.dy, 0.02)} fill="#dfe0c6" />
           <path className="rl cesped" d={techo(CESPED_O.x, CESPED_O.y, CESPED_O.dx, CESPED_O.dy, 0.02)} fill="url(#lam-cesped)" opacity="0.6" />
-          <path className="rl cesped" d={techo(CESPED_E.x, CESPED_E.y, CESPED_E.dx, CESPED_E.dy, 0.02)} fill="#e3e0cc" />
-          <path className="rl cesped" d={techo(CESPED_E.x, CESPED_E.y, CESPED_E.dx, CESPED_E.dy, 0.02)} fill="url(#lam-cesped)" opacity="0.45" />
+          {/* al este del paseo no hay césped: es arena (ARENA cubre toda la franja) */}
         </g>
         <path className="rl tz paseo-pav" pathLength={1} d={techo(PASEO.x, PASEO.y0, PASEO.dx, PASEO.y1 - PASEO.y0 + 6, 0.04)} fill={PAPEL} stroke={GRIS} strokeWidth="0.7" />
         {losas}
         {juntas}
         <text className="ap" transform={`translate(${puntoCalleO[0].toFixed(1)},${puntoCalleO[1].toFixed(1)}) rotate(-72)`} fill={GRIS} fontFamily="ui-monospace,monospace" fontSize="7" letterSpacing="1.6" textAnchor="middle">{t.calleO}</text>
         <text className="ap" transform={`translate(${puntoCalleS[0].toFixed(1)},${puntoCalleS[1].toFixed(1)})`} fill={GRIS} fontFamily="ui-monospace,monospace" fontSize="7.5" letterSpacing="1.8" textAnchor="middle">{t.calleS}</text>
-        <text className="ap" transform={`translate(${p(PARKING_E.x + PARKING_E.dx / 2, PARKING_E.y - 6, 0)[0].toFixed(1)},${p(PARKING_E.x + PARKING_E.dx / 2, PARKING_E.y - 6, 0)[1].toFixed(1)})`} fill={GRIS} fontFamily="ui-monospace,monospace" fontSize="7" textAnchor="middle">{t.parking}</text>
+        <text className="ap" transform={`translate(${p(PARKING_E.x + PARKING_E.dx - 7, PARKING_E.y + 5, 0)[0].toFixed(1)},${p(PARKING_E.x + PARKING_E.dx - 7, PARKING_E.y + 5, 0)[1].toFixed(1)})`} fill={GRIS} fontFamily="ui-monospace,monospace" fontSize="7" textAnchor="middle">{t.parking}</text>
+        <text className="ap" transform={`translate(${p(PARKING_S.x + 2.5 * pS, PARKING_S.y + 12, 0)[0].toFixed(1)},${p(PARKING_S.x + 2.5 * pS, PARKING_S.y + 12, 0)[1].toFixed(1)})`} fill={GRIS} fontFamily="ui-monospace,monospace" fontSize="7" textAnchor="middle">{t.parking}</text>
       </g>
 
       {/* ── la gente de pie (solo en su modo), sobre el suelo ─────── */}
       <g className="gente" pointerEvents="none">
-        {MULTITUD.slice(0, genteN).map(([x, y], i) => (
-          <Elipse key={i} g={g} x={x} y={y} r={0.55} z={0.4} className="persona" style={cssVars({ "--i": i })} fill={TINTA} opacity="0.7" />
-        ))}
+        {/* cada persona es una silueta vertical (cuerpo + cabeza), no un disco en el suelo: desde la cámara alta un disco se leía como confeti */}
+        {MULTITUD.slice(0, genteN).map(([x, y], i) => {
+          const [a, b] = p(x, y, 0), [, bt] = p(x, y, 5.5), h = b - bt;
+          return (
+            <g key={i} className="persona" style={cssVars({ "--i": i })}>
+              {/* la transparencia va en el trazo: la animación de entrada fija la opacidad del grupo en 1 */}
+              <line x1={a.toFixed(1)} y1={b.toFixed(1)} x2={a.toFixed(1)} y2={(bt + h * 0.15).toFixed(1)} stroke="#3e3a34" strokeOpacity="0.55" strokeWidth={(h * 0.16).toFixed(2)} strokeLinecap="round" />
+              <circle cx={a.toFixed(1)} cy={bt.toFixed(1)} r={(h * 0.11).toFixed(2)} fill="#3e3a34" fillOpacity="0.55" />
+            </g>
+          );
+        })}
       </g>
       <g className="capa capa-pasillos" pointerEvents="none">
         {pasillos.map(([a, b], i) => <line key={i} className="pasillo" style={cssVars({ "--i": i })} x1={a[0]} y1={a[1]} x2={b[0]} y2={b[1]} stroke={OCRE} strokeWidth="1" strokeDasharray="4 3" />)}
@@ -1094,7 +1273,8 @@ const Dibujo = memo(function Dibujo({ lang, zona, aforo, alEntrar, alSalir, alTo
         <Seto g={g} x={0} y={ARENA.y - 2} dx={SETO.ancho} dy={PARKING_S.y - ARENA.y + 2} />
         <Seto g={g} x={0} y={PARKING_S.y - SETO.ancho} dx={PASEO.x - 6} dy={SETO.ancho} />
         <Seto g={g} x={PASEO.x + PASEO.dx + 6} y={PARKING_S.y - SETO.ancho} dx={PARKING_E.x - PASEO.x - PASEO.dx - 6} dy={SETO.ancho} />
-        <Seto g={g} x={PARKING_E.x - SETO.ancho} y={PARKING_E.y} dx={SETO.ancho} dy={PARKING_E.dy - 10} />
+        {/* el muro verde alto del fondo de las cabañas, entre la arena y el estacionamiento este */}
+        <Seto g={g} x={PARKING_E.x - SETO.ancho} y={PARKING_E.y} dx={SETO.ancho} dy={236 - PARKING_E.y} alto={8.5} />
       </g>
 
       {/* ── la gente que anda por el paseo (reposo con vida): va ANTES de los
@@ -1117,11 +1297,21 @@ const Dibujo = memo(function Dibujo({ lang, zona, aforo, alEntrar, alSalir, alTo
       <g style={cssVars({ "--d": ".8s" })}>
         {objetos.map((o) => o.el)}
       </g>
+      {/* la cuadrilla del load-in SOBRE el paseo: cuatro personas, cuatro road cases con ruedas camino de la puerta y tres conos en la boca */}
       <g className="cuadrilla" pointerEvents="none">
-        <Persona g={g} x={PASEO.x - 3} y={CAMION.y + 2} clase="" />
-        <Persona g={g} x={PASEO.x + PASEO.dx + 3} y={CAMION.y + 5} clase="" />
-        <Caja g={g} x={PASEO.x + PASEO.dx - 4.5} y={CAMION.y - 5} dx={2.4} dy={3.2} z1={2.2} tapa="#e6e0d4" izq="#d9d2c4" der="#cfc8ba" borde={OCRE} w={0.6} animado={false} />
-        <Caja g={g} x={PASEO.x + 2} y={CAMION.y - 6} dx={2.4} dy={2.4} z1={1.6} tapa="#e6e0d4" izq="#d9d2c4" der="#cfc8ba" borde={OCRE} w={0.6} animado={false} />
+        {([[PASEO.x + 4, CAMION.y - 9], [PASEO.x + 10, CAMION.y - 5], [PASEO.x + 12, CAMION.y - 16], [PASEO.x + 6, CAMION.y - 24]] as Pt[]).map(([qx, qy], i) => (
+          <g key={`cq${i}`} className="parado" style={cssVars({ "--i": i })}><Persona g={g} x={qx} y={qy} clase="" tono={i % 2 ? "#55504a" : "#3e3a34"} /></g>
+        ))}
+        {([[PASEO.x + 3, CAMION.y - 12], [PASEO.x + 9, CAMION.y - 18], [PASEO.x + 4, CAMION.y - 26], [PASEO.x + 10, CAMION.y - 30]] as Pt[]).map(([qx, qy], i) => (
+          <g key={`rc${i}`} className="road-case" style={cssVars({ "--i": i })}>
+            <Caja g={g} x={qx} y={qy} dx={2.5} dy={4} z0={0.4} z1={3.8} tapa="#e6e0d4" izq="#d9d2c4" der="#cfc8ba" borde={OCRE} w={0.6} animado={false} />
+            {[[qx + 0.4, qy + 0.5], [qx + 2.1, qy + 0.5], [qx + 0.4, qy + 3.5], [qx + 2.1, qy + 3.5]].map(([rx, ry], k) => <Elipse key={k} g={g} x={rx} y={ry} r={0.35} z={0.3} fill={TINTA} />)}
+          </g>
+        ))}
+        {[PASEO.x - 1, PASEO.x + PASEO.dx / 2, PASEO.x + PASEO.dx + 1].map((cx, i) => {
+          const q0 = p(cx - 0.6, PASEO.y1 - 2, 0), q1 = p(cx + 0.6, PASEO.y1 - 2, 0), q2 = p(cx, PASEO.y1 - 2, 2.2);
+          return <path key={`cono${i}`} className="cono" d={poly(q0, q1, q2)} fill={OCRE} stroke="#8a5220" strokeWidth="0.3" />;
+        })}
       </g>
 
       {/* costados abiertos y portón: capas del guion */}
@@ -1155,7 +1345,7 @@ const Dibujo = memo(function Dibujo({ lang, zona, aforo, alEntrar, alSalir, alTo
 
       {/* ── cotas, norte, escala ─────────────────────────────────── */}
       <g pointerEvents="none" style={cssVars({ "--d": "1.9s" })}>
-        <Cota g={g} a={[0, PARKING_S.y + PARKING_S.dy + 3]} b={[LOTE.dx, PARKING_S.y + PARKING_S.dy + 3]} texto="≈ 150 FT · 46 M" />
+        <Cota g={g} a={[0, PARKING_S.y + PARKING_S.dy + 3]} b={[LOTE.dx, PARKING_S.y + PARKING_S.dy + 3]} texto="≈ 150 FT · 46 M" t={0.28} />
         <Cota g={g} a={[LOTE.dx + 4, EDIF.dy]} b={[LOTE.dx + 4, PARKING_S.y]} texto="≈ 135 FT · 41 M" lado={-1} />
         <Cota g={g} a={[PALAPA.x, PALAPA.y + PALAPA.dy + 5]} b={[PALAPA.x + PALAPA.dx, PALAPA.y + PALAPA.dy + 5]} texto="≈ 54 FT" clase="cota-palapa" />
 
@@ -1170,7 +1360,7 @@ const Dibujo = memo(function Dibujo({ lang, zona, aforo, alEntrar, alSalir, alTo
           // La barra de escala se mide en el primer plano, donde la cámara es más generosa.
           const s = g.escala(PASEO.x, PASEO.y1) * 50;
           return (
-            <g className="ap" transform={`translate(${(VB.x + 16).toFixed(1)},${(VB.y + VB.h - 22).toFixed(1)})`}>
+            <g className="ap escala" transform={`translate(${(VB.x + 16).toFixed(1)},${(VB.y + VB.h - 22).toFixed(1)})`}>
               {[0, 1, 2].map((i) => (
                 <rect key={i} x={(i * s) / 3} y="0" width={s / 3} height="4" fill={i % 2 ? PAPEL : TINTA} stroke={TINTA} strokeWidth="0.45" />
               ))}
@@ -1187,8 +1377,12 @@ const Dibujo = memo(function Dibujo({ lang, zona, aforo, alEntrar, alSalir, alTo
 
       {/* ── la lluvia (solo en su modo) ──────────────────────────── */}
       <g className="lluvia" pointerEvents="none">
+        {/* cielo cubierto: un velo gris-azul sobre el papel */}
+        <rect className="nublado" x={VB.x.toFixed(0)} y={VB.y.toFixed(0)} width={VB.w.toFixed(0)} height={VB.h.toFixed(0)} fill="#5f6b78" />
+        {CHARCOS.map(([cx, cy], i) => <Elipse key={`ch${i}`} g={g} x={cx} y={cy} r={2.2} z={0.03} className="charco-agua" fill="#aab4bd" opacity="0.35" />)}
+        {ONDAS.map(([ox, oy], i) => <Elipse key={`on${i}`} g={g} x={ox} y={oy} r={1.4} z={0.04} className="onda" style={cssVars({ "--t": `${(-((i * 0.37) % 1.4)).toFixed(2)}s` })} fill="none" stroke="#4a5a6a" strokeWidth="0.45" />)}
         {GOTAS.map((q, i) => (
-          <line key={i} className="gota" style={cssVars({ "--t": `${q.t}s` })} x1={q.x.toFixed(1)} y1={q.y.toFixed(1)} x2={(q.x - 3.5).toFixed(1)} y2={(q.y + 10).toFixed(1)} stroke={TINTA} strokeWidth="0.9" strokeLinecap="round" />
+          <line key={i} className="gota" style={cssVars({ "--t": `${q.t}s` })} x1={q.x.toFixed(1)} y1={q.y.toFixed(1)} x2={(q.x - (i % 3 ? 2 : 3)).toFixed(1)} y2={(q.y + (i % 3 ? 7 : 11)).toFixed(1)} stroke="#5b6a78" strokeWidth={i % 3 ? "0.5" : "0.8"} strokeLinecap="round" />
         ))}
       </g>
     </svg>
@@ -1296,10 +1490,10 @@ export default function LaminaRecinto({
   const rotulo = (z: Zona, ancla: Pt, dx: number, dy: number, lado: "" | "der" = "", vert: "" | "inf" = "") =>
     ({ zona: z, ancla, fin: [ancla[0] + dx, ancla[1] + dy] as Pt, lado, vert });
   const ROTULOS = [
-    rotulo("jardin", p(30, 206, 0), -28, 40, "der", "inf"),
+    rotulo("jardin", p(22, 190, 0), -28, 40, "der", "inf"),
     rotulo("tiki", p(cxP, cyP, PALAPA_CUMBRE), -26, -50, "der"),
-    rotulo("cabanas", p(CABANAS.x + CABANAS.dx / 2, CABANAS.y0 + 3 * CABANAS.paso + 5, CABANAS.h), 34, -46),
-    rotulo("acceso", p(PASEO.x + PASEO.dx / 2, PASEO.y1 + 10, 0), 44, 22),
+    rotulo("cabanas", p(CABANAS.x + CABANAS.dx / 2, CABANAS.y0 + 3 * CABANAS.paso + 5, CABANAS.h), 96, -74),
+    rotulo("acceso", p(PASEO.x + PASEO.dx / 2 + 6, LOTE.dy + 14, 0), 30, -4),
     rotulo("edificio", p(EDIF.x + EDIF.dx - 22, EDIF.y + 60, EDIF.h1), 26, -18),
   ];
 

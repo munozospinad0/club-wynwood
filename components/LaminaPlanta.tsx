@@ -302,7 +302,7 @@ export default function LaminaPlanta({ lang }: { lang: Idioma }) {
                     txt="TIKI HUT" sub={es ? "TECHADO · ~4 000 ft²" : "ROOFED · ~4,000 sq ft"} claro />
               <Zona x={fx(ARENA.x + ARENA.dx / 2)} y={fy(ARENA.y + 8)}
                     txt={es ? "ARENA · PICNIC" : "SAND · PICNIC"} />
-              <Zona x={fx(6)} y={fy(CESPED_O.y + 10)} ancla="start" txt={es ? "EL JARDÍN" : "THE GARDEN"} />
+              <Zona x={fx(6)} y={fy(PLAZA.y + PLAZA.dy - 5)} ancla="start" txt={es ? "EL JARDÍN" : "THE GARDEN"} />
               <text x={fx(CABANAS.x + CABANAS.dx + 3)} y={fy(CABANAS.y0 + 3.5 * CABANAS.paso)} fill={GRIS}
                     fontFamily={MONO} fontSize="7.2" letterSpacing="1.2">{es ? "8 CABAÑAS" : "8 CABANAS"}</text>
               <text transform={`translate(${fx(PARKING_E.x + PARKING_E.dx / 2 - 6)},${fy(PARKING_E.y + PARKING_E.dy / 2)}) rotate(-90)`}

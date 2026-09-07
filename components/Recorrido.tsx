@@ -295,6 +295,9 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
 
   /** Para el avance sin voz: un reloj que hace de reproductor. */
   const reloj = useRef<ReturnType<typeof setInterval> | null>(null);
+  // El último segundo pintado, para que el reloj de pared arranque desde ahí al reanudar. Se sincroniza ANTES del efecto del reloj.
+  const segundoRef = useRef(0);
+  useEffect(() => { segundoRef.current = segundo; }, [segundo]);
 
   const cap = CAPITULOS[indice];
   const texto = cap.texto[lang];
@@ -447,10 +450,18 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
     // voz, y arrancar el reloj entonces adelantaría el capítulo un instante.
     if (!activo || !sonando || hayAudio !== false) return;
 
-    const paso = 0.1;
+    /**
+     * El reloj se lee del TIEMPO DE PARED, no se acumula a pasos de 0,1 s. Con
+     * el dibujo cargado (600 personas animadas, haces, 360 gotas) el navegador
+     * se salta ticks del setInterval, y sumando pasos el capítulo duraba 5–13 s
+     * más que su voz: en el MP4 la voz se callaba y el dibujo seguía en
+     * silencio hasta el siguiente capítulo (grabación del 7-sep, 13:30).
+     */
+    const inicio = performance.now(), base = segundoRef.current;
     reloj.current = setInterval(() => {
-      setSegundo((s) => (s + paso >= duracionEstimada ? duracionEstimada : s + paso));
-    }, paso * 1000);
+      const s = base + (performance.now() - inicio) / 1000;
+      setSegundo(s >= duracionEstimada ? duracionEstimada : s);
+    }, 100);
 
     return () => { if (reloj.current) clearInterval(reloj.current); };
   }, [activo, sonando, hayAudio, duracionEstimada]);
@@ -469,6 +480,7 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
   const cola = useRef<number | null>(null);
   const siguiente = useCallback(() => {
     if (cola.current) { clearTimeout(cola.current); cola.current = null; }
+    segundoRef.current = 0;
     setSegundo(0);
     setIndice((i) => {
       setOidos((o) => new Set(o).add(i));
@@ -648,10 +660,15 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
   const [portada, setPortada] = useState(false);
 
   const arrancar = useCallback((desde: number) => {
+    // La sección que contiene el cine puede no haberse revelado (botón de la
+    // portada en un teléfono, o ?recorrido=auto): se revela a mano, porque un
+    // ancestro con transform anula el position: fixed del cine.
+    raiz.current?.closest(".rv")?.classList.add("dentro");
     setVistaAforo(false);
     setActivo(true);
     setSonando(true);
     setIndice(desde);
+    segundoRef.current = 0;
     setSegundo(0);
     setSemilla((s) => s + 1);
     ev("view_plate", { plate_name: "recorrido", chapter: CAPITULOS[desde].id, mode: grabando ? "grabar" : "cine" });

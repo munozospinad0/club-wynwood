@@ -307,6 +307,14 @@ césped. Lote ≈131 × 258 ft. Todo en `lib/recinto.geo.ts` (cuarta geometría)
   `aspect-ratio` deja la fila de la rejilla con el alto intrínseco (hueco negro de 60 px).
 - **Ritmo**: `COLA_CAPITULO` (1,7 s al acabar cada capítulo, también en el MP4) y las fotos
   ganan un segundo sin pisar el hito siguiente (clamp en `Recorrido.tsx`, no a mano).
+- **El reloj de la grabación va en tiempo de pared.** Sumaba pasos de 0,1 s en un
+  `setInterval` y, con el dibujo cargado, el navegador se saltaba ticks: en la grabación de
+  las 13:30 los capítulos duraban 5–13 s más que su voz (la voz se callaba y el dibujo seguía
+  en silencio). Ahora `segundo = base + (performance.now() − inicio)`. Y **nunca
+  `.rv:has(.lam.cine)`**: el `:has` se reevalúa con cada palabra del subtítulo y frenó el
+  reloj todavía más; el revelado lo hace `arrancar()` con `classList.add('dentro')`.
+  Comprobación rápida de una grabación: en el log del grabador, cada marca de capítulo debe
+  distar de la anterior (duración del audio + 1,7 s) ± 0,5 s.
 
 ### Cuarta tanda del 7-sep: crítica con agentes, objeto por objeto contra las fotos
 

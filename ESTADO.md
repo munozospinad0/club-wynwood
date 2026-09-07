@@ -274,7 +274,14 @@ cómo animarlo y unirlo con la voz».
 - **Revisión fotograma a fotograma**: `.qa/hojas-contacto.mjs <log> es|en` saca un
   fotograma 1,3 s después de cada hito (con los arranques de capítulo del log del grabador
   y el alineamiento de palabras) y arma una hoja de contacto por capítulo en `.qa/hojas/`.
-  Es la manera de comprobar que lo que se ve es lo que la voz dice.
+  Es la manera de comprobar que lo que se ve es lo que la voz dice. **Lo que enseñaron
+  las hojas (7-sep):** cuatro fotos tapaban el hito siguiente (la del paseo en el 1, la de
+  la puerta en el 4, las de cabañas y lounge en el 5) → se acortaron a 2,2–2,6 s; y el
+  montaje nocturno del capítulo 7 no llegaba a verse porque entre «y el montaje» y
+  «Cuéntanos» hay 1 s y anochecer tarda 2,2 → ahora la noche entra en «el paquete se arma»
+  y las tres cifras van sobre el montaje encendido (guion 5.3.0, `.qa/guion-ajustes.mjs`).
+  Regla: **una foto nunca más larga que la distancia al hito siguiente menos 1 s**, y un
+  cambio de modo necesita al menos 3 s de voz por delante.
 
 ### Medir hasta dónde se ve el recorrido
 

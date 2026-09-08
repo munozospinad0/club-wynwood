@@ -60,8 +60,33 @@ export async function generateMetadata(
       // por WhatsApp o lo abre desde un anuncio.
     },
     twitter: { card: "summary_large_image" },
+    /**
+     * VERIFICACIÓN DE DOMINIO DE META, por variable de entorno.
+     *
+     * Meta pide demostrar que el dominio es nuestro antes de dejar editar los
+     * enlaces de los anuncios que apuntan aquí. De los tres métodos que ofrece
+     * (registro TXT en el DNS, archivo HTML o etiqueta meta), la etiqueta es la
+     * única que no obliga a volver a tocar el DNS de GoDaddy ni a subir un
+     * archivo que alguien pueda borrar en una limpieza.
+     *
+     * Queda cableado de antemano para que, cuando exista el Business Manager,
+     * baste con pegar el código en Vercel como `NEXT_PUBLIC_META_DOMAIN_VERIFICATION`
+     * y volver a desplegar. Sin variable no se pinta nada, así que no ensucia el
+     * HTML mientras tanto.
+     *
+     * ⚠️ La verificación de Meta se recomprueba: si algún día se borra la
+     * variable, el dominio se cae igual que si se borrara el archivo de Search
+     * Console. No se quita «porque ya verificó».
+     */
+    verification: META_DOMINIO
+      ? { other: { "facebook-domain-verification": META_DOMINIO } }
+      : undefined,
   };
 }
+
+/** El código que da Meta en Configuración del negocio → Dominios. Solo el valor
+ *  del `content`, sin la etiqueta entera. */
+const META_DOMINIO = (process.env.NEXT_PUBLIC_META_DOMAIN_VERIFICATION ?? "").trim();
 
 /**
  * LAS TIPOGRAFÍAS DE LA MARCA. Faltaban, y era el fallo más caro del sitio.

@@ -1143,6 +1143,11 @@
         "es": [
           {
             "frase": "El exterior está disponible",
+            "punto": [
+              68,
+              168
+            ],
+            "zoom": 1.05,
             "cifra": "exterior · 1 oct · edificio · 1 nov"
           },
           {
@@ -1169,6 +1174,11 @@
         "en": [
           {
             "frase": "The outdoors is available",
+            "punto": [
+              68,
+              168
+            ],
+            "zoom": 1.05,
             "cifra": "outdoors · Oct 1 · building · Nov 1"
           },
           {

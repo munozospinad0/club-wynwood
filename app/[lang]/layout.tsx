@@ -74,9 +74,16 @@ export async function generateMetadata(
      * y volver a desplegar. Sin variable no se pinta nada, así que no ensucia el
      * HTML mientras tanto.
      *
-     * ⚠️ La verificación de Meta se recomprueba: si algún día se borra la
-     * variable, el dominio se cae igual que si se borrara el archivo de Search
-     * Console. No se quita «porque ya verificó».
+     * Se pega el valor del `content`, no la etiqueta entera: Next la construye.
+     * Y el dominio se declara en Meta **sin prefijos** (`clubwynwood.com`, ni
+     * `www.` ni `https://`).
+     *
+     * ⚠️ No se quita después de verificar. Meta se contradice sobre esto: el
+     * centro de ayuda dice que una vez verificado se pueden borrar etiqueta,
+     * TXT y archivo «sin afectar el estado», y su documentación para
+     * desarrolladores dice «deja la etiqueta en la página de inicio, ya que
+     * puede comprobarse periódicamente». Dejarla no cuesta nada; quitarla
+     * arriesga perder el dominio por una duda que no vale la pena resolver.
      */
     verification: META_DOMINIO
       ? { other: { "facebook-domain-verification": META_DOMINIO } }

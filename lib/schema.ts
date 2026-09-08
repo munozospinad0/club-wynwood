@@ -1,4 +1,5 @@
 import { VENUE, ESPACIOS, FICHA, NO_INCLUIDO } from "./venue";
+import { GALERIA } from "./galeria";
 import { BASE, url, type Idioma } from "./i18n";
 
 /**
@@ -20,6 +21,22 @@ import { BASE, url, type Idioma } from "./i18n";
 
 const ID_NEGOCIO = `${BASE}/#negocio`;
 const ID_VENUE = `${BASE}/#venue`;
+
+/**
+ * LAS FOTOS, EN EL SCHEMA. Para un venue son el campo que más pesa: Google las
+ * usa en el panel de conocimiento y en el paquete local, y los motores
+ * generativos las citan al describir el sitio. Una sola imagen es lo mínimo;
+ * varias, de distintas partes del recinto, es lo que se recomienda.
+ *
+ * Salen de `lib/galeria.ts`, la misma lista que ve el visitante, así que
+ * ninguna lleva la marca del operador en cuadro.
+ */
+const FOTOS = GALERIA.slice(0, 8).map((f) => `${BASE}${f.src}`);
+
+/** El enlace al mapa, sin inventar coordenadas: se busca por la dirección exacta. */
+const MAPA = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+  `${VENUE.direccion.calle}, ${VENUE.direccion.ciudad}, ${VENUE.direccion.region} ${VENUE.direccion.cp}`
+)}`;
 
 function direccion() {
   const d = VENUE.direccion;
@@ -47,8 +64,20 @@ export function localBusiness(lang: Idioma) {
     url: url("home", lang),
     telephone: VENUE.telefono,
     email: VENUE.email,
-    image: `${BASE}/assets/aerea-predio.jpg`,
+    image: FOTOS,
+    photo: FOTOS,
+    hasMap: MAPA,
     address: direccion(),
+    /**
+     * El barrio como entidad. «Wynwood Arts District» es una zona con identidad
+     * propia en el grafo de Google, y la mayor parte de las búsquedas de este
+     * negocio la nombran («event venue wynwood»). Declararla ata el sitio a ella.
+     */
+    containedInPlace: {
+      "@type": "Place",
+      name: "Wynwood Arts District",
+      address: { "@type": "PostalAddress", addressLocality: "Miami", addressRegion: "FL", addressCountry: "US" },
+    },
     areaServed: [
       { "@type": "City", name: "Miami" },
       { "@type": "AdministrativeArea", name: "Miami-Dade County" },
@@ -78,18 +107,44 @@ export function localBusiness(lang: Idioma) {
 
 export function eventVenue(lang: Idioma) {
   const verificados = FICHA.filter((f) => f.estado === "verificado");
+  const es = lang === "es";
   return {
     "@type": "EventVenue",
     "@id": ID_VENUE,
     name: VENUE.nombre,
     url: url("home", lang),
     address: direccion(),
+    image: FOTOS,
+    photo: FOTOS,
+    hasMap: MAPA,
     maximumAttendeeCapacity: 600,
     isAccessibleForFree: false,
+    /**
+     * `publicAccess: false` no es un detalle: este recinto NO es un local de
+     * público al que se entra, es un espacio que se alquila con cita. Decirlo
+     * evita que Google lo trate como un sitio con horario de puertas abiertas.
+     */
+    publicAccess: false,
+    /**
+     * El aforo sentado no cabe en `maximumAttendeeCapacity`, que es uno solo.
+     * Va como propiedad adicional para que la cifra exista de forma legible.
+     */
+    additionalProperty: [
+      {
+        "@type": "PropertyValue",
+        name: es ? "Aforo sentado" : "Seated capacity",
+        value: 300,
+      },
+      {
+        "@type": "PropertyValue",
+        name: es ? "Aforo de pie" : "Standing capacity",
+        value: 600,
+      },
+    ],
     amenityFeature: verificados.map((f) => ({
       "@type": "LocationFeatureSpecification",
-      name: lang === "es" ? f.es : f.en,
-      value: lang === "es" ? f.valorEs : f.valorEn,
+      name: es ? f.es : f.en,
+      value: es ? f.valorEs : f.valorEn,
     })),
   };
 }

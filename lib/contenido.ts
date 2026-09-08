@@ -699,20 +699,20 @@ export const PAGINAS: Pagina[] = [
     ojo: { es: "Temporada · diciembre", en: "Season · December" },
     h1: { es: "Art Basel y Miami Art Week", en: "Art Basel and Miami Art Week" },
     respuesta: {
-      es: "Durante Miami Art Week el barrio que más se busca para activaciones es Wynwood, y este recinto está dentro del Arts District, a cuatro minutos a pie de Wynwood Walls. Son ~22.000 ft² al aire libre con ~4.000 techados y aforo de ~600 de pie, sin estética propia que pelee con la instalación que traigas.",
-      en: "During Miami Art Week the neighbourhood most in demand for activations is Wynwood, and this site sits inside the Arts District, a four-minute walk from Wynwood Walls. It is ~22,000 sq ft outdoors with ~4,000 under roof and capacity for ~600 standing, with no aesthetic of its own to fight the installation you bring.",
+      es: "Miami Art Week 2026 va del 30 de noviembre al 6 de diciembre, y este recinto tiene fechas abiertas. Está dentro del Arts District, a tres cuadras de Mana Wynwood —donde se montan Red Dot y Spectrum— y a cuatro minutos a pie de Wynwood Walls. Son ~22.000 ft² al aire libre con ~4.000 techados, aforo de ~600 de pie, estacionamiento propio y licencia de licor propia.",
+      en: "Miami Art Week 2026 runs from November 30 to December 6, and this site has open dates. It sits inside the Arts District, three blocks from Mana Wynwood — home to Red Dot and Spectrum — and a four-minute walk from Wynwood Walls. It is ~22,000 sq ft outdoors with ~4,000 under roof, capacity for ~600 standing, its own parking and its own liquor license.",
     },
     title: {
-      es: "Espacio para Art Basel y Miami Art Week en Wynwood | Club Wynwood",
-      en: "Art Basel and Miami Art Week space in Wynwood | Club Wynwood",
+      es: "Venue para Miami Art Week 2026 en Wynwood · fechas abiertas | Club Wynwood",
+      en: "Miami Art Week 2026 venue in Wynwood · open dates | Club Wynwood",
     },
     description: {
-      es: "Recinto de ~22.000 ft² en el Wynwood Arts District para activaciones de Miami Art Week: a 4 minutos de Wynwood Walls, aforo ~600 de pie y ~4.000 ft² techados.",
-      en: "A ~22,000 sq ft site in the Wynwood Arts District for Miami Art Week activations: 4 minutes from Wynwood Walls, ~600 standing and ~4,000 sq ft under roof.",
+      es: "Recinto al aire libre de ~22.000 ft² en el Wynwood Arts District con fechas abiertas para Miami Art Week 2026 (30 nov – 6 dic): a tres cuadras de Mana Wynwood, aforo ~600 de pie, ~4.000 ft² techados, estacionamiento y licencia de licor propios.",
+      en: "A ~22,000 sq ft open-air site in the Wynwood Arts District with open dates for Miami Art Week 2026 (Nov 30 – Dec 6): three blocks from Mana Wynwood, ~600 standing, ~4,000 sq ft under roof, own parking and own liquor license.",
     },
     cifras: [
-      { etiqueta: { es: "Art Basel 2026", en: "Art Basel 2026" }, valor: "4–6 dic" },
-      { etiqueta: { es: "A Wynwood Walls", en: "To Wynwood Walls" }, valor: "4 min" },
+      { etiqueta: { es: "Miami Art Week 2026", en: "Miami Art Week 2026" }, valor: "30 nov – 6 dic" },
+      { etiqueta: { es: "A Mana Wynwood", en: "To Mana Wynwood" }, valor: "3 cuadras" },
       { etiqueta: { es: "De pie", en: "Standing" }, valor: "~600" },
     ],
     foto: {
@@ -752,10 +752,24 @@ export const PAGINAS: Pagina[] = [
         },
       },
       {
-        titulo: { es: "Del 4 al 6 de diciembre de 2026", en: "4 to 6 December 2026" },
+        titulo: { es: "Las ferias que traen al público están al lado", en: "The fairs that bring the crowd are next door" },
         cuerpo: {
-          es: "Art Basel Miami Beach 2026 es del 4 al 6 de diciembre, y la semana alrededor de esas fechas es la más disputada del año en este barrio. Se cierra con meses de margen: si tu activación es para esa semana, la conversación útil empieza en verano. Escríbenos con la fecha y el aforo y te decimos disponibilidad real.",
-          en: "Art Basel Miami Beach 2026 runs from 4 to 6 December, and the week around those dates is the most contested of the year in this neighbourhood. It closes months ahead: if your activation is for that week, the useful conversation starts in summer. Write to us with the date and headcount and we come back with real availability.",
+          es: "Red Dot y Spectrum se montan en Mana Wynwood, a tres cuadras, del 2 al 6 de diciembre; NADA ocupa Ice Palace, en el borde del barrio, del 1 al 5. Eso significa que el coleccionista y el galerista que salen de la feria ya están caminando por aquí. Las fiestas y activaciones que funcionaron en el barrio el año pasado fueron justo de este formato: lote abierto, DJ, barra y montaje propio.",
+          en: "Red Dot and Spectrum set up at Mana Wynwood, three blocks away, from December 2 to 6; NADA takes Ice Palace, on the edge of the neighbourhood, from the 1st to the 5th. Which means the collector and the gallerist walking out of the fair are already on this street. The parties and activations that worked here last year were exactly this format: an open lot, a DJ, a bar and your own build.",
+        },
+      },
+      {
+        titulo: { es: "Del 30 de noviembre al 6 de diciembre, con fechas abiertas", en: "November 30 to December 6, with open dates" },
+        cuerpo: {
+          es: "Miami Art Week 2026 va del 30 de noviembre al 6 de diciembre, con Art Basel Miami Beach del 4 al 6. Es la semana más disputada del año en el barrio y todavía quedan fechas. Hay un plazo que sí manda: la City of Miami cierra las solicitudes de permiso de evento especial para esa semana el 11 de octubre, así que si tu activación necesita permiso, la conversación útil es ahora. Escríbenos con la fecha y el aforo y te decimos disponibilidad real.",
+          en: "Miami Art Week 2026 runs from November 30 to December 6, with Art Basel Miami Beach on the 4th to the 6th. It is the most contested week of the year in this neighbourhood and there are still dates. One deadline does rule: the City of Miami closes special-event permit applications for that week on October 11, so if your activation needs a permit, the useful conversation is now. Write to us with the date and headcount and we come back with real availability.",
+        },
+      },
+      {
+        titulo: { es: "Barra propia, estacionamiento propio", en: "Your own bar, our own parking" },
+        cuerpo: {
+          es: "El recinto tiene licencia de licor propia, con su número de licencia, cosa que no todos los espacios de la zona pueden decir; la barra la monta y la opera tu equipo. Y hay estacionamiento en el propio predio, al este y al sur, que en esa semana y en este barrio deja de ser un detalle. La carga entra por su propia puerta, aparte de la de los invitados.",
+          en: "The site holds its own liquor license, with its own license number, which not every space in the area can say; your team sets up and runs the bar. And there is parking on site, to the east and south, which during that week and in this neighbourhood stops being a detail. Freight comes in through its own gate, separate from the guests'.",
         },
       },
     ],

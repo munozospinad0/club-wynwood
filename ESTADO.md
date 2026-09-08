@@ -283,6 +283,28 @@ cómo animarlo y unirlo con la voz».
   Regla: **una foto nunca más larga que la distancia al hito siguiente menos 1 s**, y un
   cambio de modo necesita al menos 3 s de voz por delante.
 
+### Séptima tanda del 7-sep (noche): las correcciones de las notas de Daniel
+
+Notas de Daniel, en su orden, y qué se hizo:
+
+- **«La mercancía no entra por la entrada principal»** → la carga entra por NW 1st Ct al apron
+  junto al edificio (`PORTON_CARGA`); el camión ahora tiene eje (`CAMION.eje`), la cuadrilla y
+  los conos están en el apron, y la palapa se aparta en modo camión. El capítulo 4 se
+  reescribió y **se cuenta desde la vista oeste**: los hitos admiten `vista` y el recorrido
+  pasa `vistaDirigida` a la lámina (primer uso real de las cinco cámaras en el vídeo).
+- **«Reducir el espacio al tiki»** → palapa en y=151: solo el seto entre el alero y las plazas.
+- **Inglés predominante** → `IDIOMA_POR_DEFECTO = "en"`.
+- **Disponibilidad 1 oct / 1 nov, evento u oficina, cocina adicional, licencia de licor propia,
+  públicos** → `DISPONIBILIDAD`, `USOS`, `PARA_QUIEN` en `lib/venue.ts` (fuente única), ficha
+  técnica (licor pasa a verificado; nuevas líneas de disponibilidad y entradas), FAQ nuevas, y
+  la sección `components/ParaQuien.tsx` bajo la galería con Miami Art Week (el permiso de la
+  City of Miami cierra el 11-oct). Capítulos 5 y 8 del recorrido regrabados.
+- **WhatsApp de Rene** → botón en `Contacto.tsx`, oculto hasta que `VENUE.whatsapp` tenga el número.
+- **Competidores, Unlocked, precios por día, Art Week, pauta, LAL/RMK, segmentación** → todo en
+  `~/crm-wynwood/docs/12-PAUTA-ARTWEEK.md`. Hallazgo que manda: **FunDimension vende este mismo
+  predio en Tagvenue como «Playa Wynwood» a $500/h** con catering y bar de la casa. Y no hay
+  cuenta publicitaria ni píxel de Club Wynwood todavía: sin eso no hay RMK ni LAL que revisar.
+
 ### Sexta tanda del 7-sep: el recinto desde cinco puntos de vista
 
 Daniel: «que se pudiera ver desde diferentes perspectivas… tienes que crear todo el modelo en

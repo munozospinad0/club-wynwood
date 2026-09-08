@@ -11,7 +11,8 @@
 
 export const IDIOMAS = ["es", "en"] as const;
 export type Idioma = (typeof IDIOMAS)[number];
-export const IDIOMA_POR_DEFECTO: Idioma = "es";
+/** Inglés por defecto desde el 7-sep-2026 (Daniel: «inglés predominante»; el público de la pauta es Estados Unidos). El español queda como segunda opción en el selector. */
+export const IDIOMA_POR_DEFECTO: Idioma = "en";
 
 /** Código BCP-47 para <html lang> y hreflang. */
 export const BCP47: Record<Idioma, string> = { es: "es-US", en: "en-US" };

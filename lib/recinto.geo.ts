@@ -51,7 +51,8 @@ export const PASEO = { x: 63, dx: 15, y0: EDIF.dy, y1: 212 };
  * dos calles, con el estacionamiento sur delante). La cumbrera va paralela al
  * paseo (norte-sur).
  */
-export const PALAPA = { x: 4, y: 148, dx: 54, dy: 60 };
+/** Pegada al estacionamiento sur: entre su alero y las plazas solo cabe el seto (Daniel, 7-sep: «sobra espacio entre la palapa y el estacionamiento»). */
+export const PALAPA = { x: 4, y: 151, dx: 54, dy: 60 };
 /** Cumbrera a 34 ft: la pirámide de paja de las fotos es alta (≈42° de pendiente), no un techo bajo. */
 export const PALAPA_ALERO = 11, PALAPA_CUMBRE = 34, PALAPA_CUMBRERA = 14;
 /** Postes: tres hileras por tres, bajo los aleros y en el centro. */
@@ -147,9 +148,18 @@ export const ESCENARIO = { x: 16, y: 216, dx: 30, dy: 14, h: 3, truss: 15 };
 /** La barra del cliente, bajo la palapa, del lado del paseo. */
 export const BARRA = { x: PALAPA.x + PALAPA.dx - 6, y: PALAPA.y + 12, dx: 4, dy: 30, h: 3.5 };
 
-/** El camión de 40 ft: entra desde el sur por la calle de maniobra del estacionamiento y sube el paseo. */
-/** Llega a 4 ft de la puerta (la rampa acaba en y≈106) desde el estacionamiento sur (arranca en y=246). */
-export const CAMION = { x: PASEO.x + 2, y: 116, dx: 8.5, dy: 40, h: 12, recorrido: 130 };
+/**
+ * El camión de 40 ft y LA ENTRADA DE CARGA. Daniel, 7-sep: «la mercancía no
+ * entra por la entrada principal». La principal (NW 21st Ct, estacionamiento y
+ * paseo) es para invitados; la carga entra por NW 1st Ct, al oeste, a la franja
+ * pavimentada que corre junto a la fachada (el apron), que en la cenital llega
+ * hasta la calle. El camión viene de la calle por el oeste (eje x), con la
+ * cabina al este, y para con la cola junto al portón: la rampa baja al apron a
+ * un paso de la palapa y de la puerta del edificio. `x`, `y` es su posición
+ * final; arranca `recorrido` ft al oeste, fuera del papel.
+ */
+export const PORTON_CARGA = { x: 0, y: PLAZA.y, dy: PLAZA.dy };
+export const CAMION = { x: 14, y: PLAZA.y + 4.5, dx: 40, dy: 8.5, h: 12, recorrido: 62, eje: "x" as "x" | "y" };
 
 /** Público de pie: 600 a 8 ft² cada uno. Bajo la palapa, en el césped entre la palapa y el apron, sobre el paseo y en la arena de la cabecera. */
 export const MULTITUD_PALAPA: Pt[] = (() => {

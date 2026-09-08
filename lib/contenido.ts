@@ -956,8 +956,29 @@ export const FAQ: Array<{ q: Record<Idioma, string>; a: Record<Idioma, string> }
   {
     q: { es: "¿Hay potencia, parking y baños?", en: "Is there power, parking and restrooms?" },
     a: {
-      es: "Sí, y su detalle exacto —amperaje y fase, plazas de parking, número de baños, ancho de portón para carga, licencia de licor, curfew y límite de dB— se levanta contigo en la visita técnica y se entrega por escrito. No lo publicamos porque no lo hemos medido nosotros.",
-      en: "Yes, and the exact detail —amperage and phase, parking spaces, number of restrooms, gate width for load-in, liquor licence, curfew and dB limit— is surveyed with you at the technical visit and delivered in writing. We do not publish it because we have not measured it ourselves.",
+      es: "Sí, y su detalle exacto —amperaje y fase, plazas de parking, número de baños, ancho del portón de carga, curfew y límite de dB— se levanta contigo en la visita técnica y se entrega por escrito. No lo publicamos porque no lo hemos medido nosotros.",
+      en: "Yes, and the exact detail —amperage and phase, parking spaces, number of restrooms, freight gate width, curfew and dB limit— is surveyed with you at the technical visit and delivered in writing. We do not publish it because we have not measured it ourselves.",
+    },
+  },
+  {
+    q: { es: "¿Tiene licencia de licor?", en: "Does it have a liquor license?" },
+    a: {
+      es: "Sí. El recinto tiene licencia de licor de Miami propia, con su propio número de licencia, cosa que no todos los venues de la zona pueden decir. La barra la monta y la opera tu equipo; el número de licencia y sus condiciones se entregan con la ficha técnica.",
+      en: "Yes. The site holds its own Miami liquor license, with its own license number, which not every venue in the area can say. Your team sets up and runs the bar; the license number and its conditions come with the spec sheet.",
+    },
+  },
+  {
+    q: { es: "¿Desde cuándo se puede reservar?", en: "From when can it be booked?" },
+    a: {
+      es: "El exterior —el Jardín y el Tiki Hut— está disponible desde el 1 de octubre de 2026. El edificio, desde el 1 de noviembre de 2026. Miami Art Week (30 de noviembre al 6 de diciembre) tiene fechas abiertas: escríbenos con la tuya.",
+      en: "The outdoors —the Garden and the Tiki Hut— is available from October 1, 2026. The building, from November 1, 2026. Miami Art Week (November 30 to December 6) has open dates: write to us with yours.",
+    },
+  },
+  {
+    q: { es: "¿El edificio se puede alquilar como oficina?", en: "Can the building be rented as an office?" },
+    a: {
+      es: "Sí. El edificio de dos niveles se alquila aparte, para eventos o como oficina, desde el 1 de noviembre de 2026. La cocina es un adicional: se suma al alquiler cuando el catering la necesita.",
+      en: "Yes. The two-level building is rented separately, for events or as an office, from November 1, 2026. The kitchen is an add-on: it is added to the rental when catering needs it.",
     },
   },
   {

@@ -7,7 +7,7 @@ import { ev } from "@/lib/medicion";
 import {
   LOTE, EDIF, PUERTA, PASEO, PALAPA, PALAPA_ALERO, PALAPA_CUMBRE, PALAPA_CUMBRERA, PALAPA_POSTES,
   ARENA, ARENA_CABECERA, PICNIC, CABANAS, CESPED_O, PALMERAS_O, PALMERAS_E, PALMERAS_PALAPA, SETO,
-  PARKING_E, PARKING_S, CALLE_O, CALLE_S, MESAS, MESA_LARGA, ESCENARIO, BARRA, CAMION, MULTITUD, GENTE_SUELTA,
+  PARKING_E, PARKING_S, CALLE_O, CALLE_S, MESAS, MESA_LARGA, ESCENARIO, BARRA, CAMION, PORTON_CARGA, MULTITUD, GENTE_SUELTA,
   MULTITUD_PALAPA, MULTITUD_PASEO, PLAZA, JARDINERAS,
   CENTRO, VISTAS, ORDEN_VISTAS, PALMERA_ALTO, type Pt, type Vista,
 } from "@/lib/recinto.geo";
@@ -613,39 +613,52 @@ function Coche({ g, x, y, eje, tono, suv = false }: { g: GeoPerspectiva; x: numb
  */
 function Camion({ g }: { g: GeoPerspectiva }) {
   const { p } = g;
-  const { x, y, dx, dy, h } = CAMION;
-  const cabY = y + dy - 9;
-  const ruedas: Pt[] = [[x, y + dy - 3], [x + dx, y + dy - 3], [x, y + 13], [x + dx, y + 13], [x, y + 7], [x + dx, y + 7]];
+  const { x, y, h, eje } = CAMION;
+  // Coordenadas locales del camión: `u` a lo largo (0 = cola con las puertas, L = morro), `v` a lo ancho.
+  // Con eje «x» viene de la calle del oeste con la cabina al este; con eje «y», del sur con la cabina al sur.
+  const L = eje === "x" ? CAMION.dx : CAMION.dy, W = eje === "x" ? CAMION.dy : CAMION.dx;
+  const M = (u: number, v: number): Pt => (eje === "x" ? [x + u, y + v] : [x + v, y + u]);
+  const P = (u: number, v: number, z: number) => { const [wx, wy] = M(u, v); return p(wx, wy, z); };
+  const caja = (u0: number, u1: number, z0: number, z1: number, tapa: string, izq: string, der: string) => {
+    const [wx, wy] = M(u0, 0);
+    return eje === "x"
+      ? <Caja g={g} x={wx} y={wy} dx={u1 - u0} dy={W} z0={z0} z1={z1} tapa={tapa} izq={izq} der={der} borde={OCRE} w={1.2} animado={false} />
+      : <Caja g={g} x={wx} y={wy} dx={W} dy={u1 - u0} z0={z0} z1={z1} tapa={tapa} izq={izq} der={der} borde={OCRE} w={1.2} animado={false} />;
+  };
+  const ruedas: Array<[number, number]> = [[L - 3, 0], [L - 3, W], [13, 0], [13, W], [7, 0], [7, W]];
+  // Las costillas de la caja van en el costado que mira a la cámara.
+  const ladoV = eje === "x" ? (g.camara.ojo[1] > M(L / 2, W / 2)[1] ? W : 0) : (M(L / 2, W / 2)[0] < g.camara.ojo[0] ? W : 0);
   const costillas = [];
-  for (let t = 3; t < dy - 11; t += 3.2) {
-    const a = p(x + dx, y + t, 1.8), b = p(x + dx, y + t, h - 0.3);
+  for (let t = 3; t < L - 11; t += 3.2) {
+    const a = P(t, ladoV, 1.8), b = P(t, ladoV, h - 0.3);
     costillas.push(<line key={t} x1={a[0]} y1={a[1]} x2={b[0]} y2={b[1]} stroke={OCRE} strokeWidth="0.45" opacity="0.6" />);
   }
-  const parabrisas = poly(p(x + 0.8, cabY + 9, 5.5), p(x + dx - 0.8, cabY + 9, 5.5), p(x + dx - 0.8, cabY + 9, 8.6), p(x + 0.8, cabY + 9, 8.6));
-  const parrilla = [p(x + 1, cabY + 9, 4.3), p(x + dx - 1, cabY + 9, 4.3)];
+  const parabrisas = poly(P(L, 0.8, 5.5), P(L, W - 0.8, 5.5), P(L, W - 0.8, 8.6), P(L, 0.8, 8.6));
+  const parrilla = [P(L, 1, 4.3), P(L, W - 1, 4.3)];
+  const [cx, cy] = M(L / 2, W / 2);
   return (
     <g>
-      <Elipse g={g} x={x + dx / 2} y={y + dy / 2} r={dx * 0.7} fill={TINTA} opacity="0.1" />
-      {ruedas.map(([rx, ry], k) => (
+      <Elipse g={g} x={cx} y={cy} r={L * 0.55} fill={TINTA} opacity="0.1" />
+      {ruedas.map(([u, v], k) => { const [rx, ry] = M(u, v); return (
         <g key={k} className="rueda">
           <Elipse g={g} x={rx} y={ry} r={1.4} z={1.4} fill={TINTA} />
           <Elipse g={g} x={rx} y={ry} r={0.6} z={1.4} fill="none" stroke={PAPEL} strokeWidth="0.5" strokeDasharray="1.2 1.2" />
         </g>
-      ))}
-      <Caja g={g} x={x} y={y} dx={dx} dy={dy - 9} z0={1.8} z1={h} tapa="#fbf8f1" izq="#f3eee4" der="#ece6d9" borde={OCRE} w={1.2} animado={false} />
+      ); })}
+      {caja(0, L - 9, 1.8, h, "#fbf8f1", "#f3eee4", "#ece6d9")}
       {costillas}
-      {/* puertas traseras abiertas hacia la puerta del edificio: dos hojas giradas unos 100° */}
-      <path className="puerta-camion" d={poly(p(x, y, 1.8), p(x - 3.6, y - 2.2, 1.8), p(x - 3.6, y - 2.2, h - 0.3), p(x, y, h - 0.3))} fill={PAPEL} stroke={OCRE} strokeWidth="1" strokeLinejoin="round" />
-      <path className="puerta-camion" d={poly(p(x + dx, y, 1.8), p(x + dx + 3.6, y - 2.2, 1.8), p(x + dx + 3.6, y - 2.2, h - 0.3), p(x + dx, y, h - 0.3))} fill={PAPEL} stroke={OCRE} strokeWidth="1" strokeLinejoin="round" />
-      <Caja g={g} x={x} y={cabY} dx={dx} dy={9} z0={1.8} z1={9.5} tapa="#e6dfd0" izq="#efe8db" der="#e0d8ca" borde={OCRE} w={1.2} animado={false} />
-      <path d={poly(p(x + dx, cabY + 1, 5.5), p(x + dx, cabY + 8, 5.5), p(x + dx, cabY + 8, 8.6), p(x + dx, cabY + 1, 8.6))} fill="#cfc8ba" stroke={OCRE} strokeWidth="0.4" />
+      {/* puertas traseras abiertas hacia el portón: dos hojas giradas unos 100° */}
+      <path className="puerta-camion" d={poly(P(0, 0, 1.8), P(-2.2, -3.6, 1.8), P(-2.2, -3.6, h - 0.3), P(0, 0, h - 0.3))} fill={PAPEL} stroke={OCRE} strokeWidth="1" strokeLinejoin="round" />
+      <path className="puerta-camion" d={poly(P(0, W, 1.8), P(-2.2, W + 3.6, 1.8), P(-2.2, W + 3.6, h - 0.3), P(0, W, h - 0.3))} fill={PAPEL} stroke={OCRE} strokeWidth="1" strokeLinejoin="round" />
+      {caja(L - 9, L, 1.8, 9.5, "#e6dfd0", "#efe8db", "#e0d8ca")}
+      <path d={poly(P(L - 8, ladoV, 5.5), P(L - 1, ladoV, 5.5), P(L - 1, ladoV, 8.6), P(L - 8, ladoV, 8.6))} fill="#cfc8ba" stroke={OCRE} strokeWidth="0.4" />
       <path d={parabrisas} fill="#cfc8ba" stroke={OCRE} strokeWidth="0.5" />
       <line x1={parrilla[0][0]} y1={parrilla[0][1]} x2={parrilla[1][0]} y2={parrilla[1][1]} stroke={OCRE} strokeWidth="0.6" />
-      {[x + 1.4, x + dx - 1.4].map((fx, k) => { const q = p(fx, cabY + 9, 3.2); return <circle key={k} cx={q[0].toFixed(1)} cy={q[1].toFixed(1)} r="1.1" fill={OCRE} />; })}
-      {/* la rampa trasera, que baja al paseo cuando el camión ya llegó (CSS) */}
-      <g className="rampa" style={cssVars({ transformOrigin: `${p(x + dx / 2, y, 1.8)[0].toFixed(1)}px ${p(x + dx / 2, y, 1.8)[1].toFixed(1)}px` })}>
-        <path d={poly(p(x + 0.5, y, 1.8), p(x + dx - 0.5, y, 1.8), p(x + dx - 0.5, y - 10, 0.05), p(x + 0.5, y - 10, 0.05))} fill="#d9d2c4" stroke={OCRE} strokeWidth="0.8" />
-        {[2, 4, 6, 8].map((t) => { const q0 = p(x + 0.5, y - t, 1.8 - (1.75 * t) / 10), q1 = p(x + dx - 0.5, y - t, 1.8 - (1.75 * t) / 10); return <line key={t} x1={q0[0]} y1={q0[1]} x2={q1[0]} y2={q1[1]} stroke={OCRE} strokeWidth="0.4" opacity="0.7" />; })}
+      {[1.4, W - 1.4].map((v, k) => { const q = P(L, v, 3.2); return <circle key={k} cx={q[0].toFixed(1)} cy={q[1].toFixed(1)} r="1.1" fill={OCRE} />; })}
+      {/* la rampa trasera, que baja al apron cuando el camión ya llegó (CSS) */}
+      <g className="rampa" style={cssVars({ transformOrigin: `${P(0, W / 2, 1.8)[0].toFixed(1)}px ${P(0, W / 2, 1.8)[1].toFixed(1)}px` })}>
+        <path d={poly(P(0, 0.5, 1.8), P(0, W - 0.5, 1.8), P(-10, W - 0.5, 0.05), P(-10, 0.5, 0.05))} fill="#d9d2c4" stroke={OCRE} strokeWidth="0.8" />
+        {[2, 4, 6, 8].map((t) => { const q0 = P(-t, 0.5, 1.8 - (1.75 * t) / 10), q1 = P(-t, W - 0.5, 1.8 - (1.75 * t) / 10); return <line key={t} x1={q0[0]} y1={q0[1]} x2={q1[0]} y2={q1[1]} stroke={OCRE} strokeWidth="0.4" opacity="0.7" />; })}
       </g>
     </g>
   );
@@ -1075,7 +1088,7 @@ const T = {
       carpa: "Con viento la lluvia entra de lado. Para un evento de invierno se cierran los costados con carpa lateral, que trae tu proveedor: aquí va dibujada a trazos.",
       mesas: "Veinticuatro mesas redondas de diez (dieciséis bajo la palapa, ocho en el césped) y una mesa imperial de sesenta a lo largo del paseo, a escala. Son los ~300 sentados verificados, con pasillo de servicio entre mesas.",
       gente: "Seiscientas personas de pie, a ocho pies cuadrados cada una, bajo la palapa, en el césped y sobre el paseo. Es el aforo verificado, dibujado.",
-      camion: "Desde la calle, por el estacionamiento sur, al paseo pavimentado, continuo y a nivel: un camión de 40 ft llega hasta la puerta del edificio sin pisar césped.",
+      camion: "La carga entra aparte de los invitados: por NW 1st Ct, al oeste, a la franja pavimentada junto al edificio, continua y a nivel. Un camión de 40 ft descarga a un paso de la palapa y de la puerta sin pisar césped. La entrada principal, por el estacionamiento sur y el paseo, queda para la gente.",
       noche: "Un montaje posible, de noche: escenario con pantalla y truss sobre el estacionamiento sur, mirando al paseo y a la palapa, torre de sonido a cada lado, tu barra bajo la palapa, público de pie y guirnaldas entre las palmeras. Todo lo encendido lo trae tu equipo; la luz colgada se aprueba en la visita.",
       barra: "Bajo la palapa, del lado del paseo, hay sitio para montar barra. La barra la trae tu equipo: aquí va dibujada a trazos, donde suele ir.",
     } as Record<Modo, string>,
@@ -1100,8 +1113,8 @@ const T = {
       },
       acceso: {
         nombre: "Acceso", dato: "esquina NW 1st Ct · NW 21st Ct",
-        lee: "Lote de esquina. La producción entra por el estacionamiento sur al paseo pavimentado, continuo y a nivel hasta la puerta del edificio.",
-        sirve: "Por aquí entra todo: camión, catering, estructura y escenario, sin pisar césped. Estacionamiento en el propio predio, al este y al sur.",
+        lee: "Lote de esquina con dos entradas: la principal, por NW 21st Ct, para invitados (estacionamiento y paseo); la de carga, por NW 1st Ct, a la franja pavimentada junto al edificio, continua y a nivel.",
+        sirve: "Por la entrada de carga entra todo: camión, catering, estructura y escenario, sin cruzarse con los invitados ni pisar césped. Estacionamiento en el propio predio, al este y al sur.",
         ojo: "El ancho exacto del portón y la potencia eléctrica disponible se levantan contigo en la visita y se entregan por escrito.",
       },
       edificio: {
@@ -1133,7 +1146,7 @@ const T = {
       carpa: "With wind, rain comes in sideways. A winter event closes the sides with side tenting, which your supplier brings: here it is drawn dashed.",
       mesas: "Twenty-four round tables of ten (sixteen under the structure, eight on the turf) and one sixty-seat banquet table along the walk, to scale. These are the verified ~300 seated, with service aisles between tables.",
       gente: "Six hundred people standing, at eight square feet each, under the structure, on the turf and along the walk. That is the verified capacity, drawn.",
-      camion: "From the street, through the south parking, onto the paved walk, continuous and level: a 40 ft truck reaches the building door without crossing turf.",
+      camion: "Freight comes in apart from the guests: from NW 1st Ct, on the west, onto the paved strip beside the building, continuous and level. A 40 ft truck unloads a step from the structure and the door without crossing turf. The main entrance, through the south parking and the walk, stays for people.",
       noche: "One possible setup, at night: a stage with screen and truss on the south parking, facing the walk and the structure, a sound tower on each side, your bar under the structure, a standing crowd and string lights between the palms. Everything lit is brought by your team; hung lighting is approved at the visit.",
       barra: "Under the structure, on the walk side, there is room to set up a bar. The bar comes with your team: here it is drawn dashed, where it usually goes.",
     } as Record<Modo, string>,
@@ -1158,8 +1171,8 @@ const T = {
       },
       acceso: {
         nombre: "Access", dato: "corner of NW 1st Ct · NW 21st Ct",
-        lee: "Corner lot. Production enters through the south parking onto the paved walk, continuous and level to the building door.",
-        sirve: "Everything comes in here: truck, catering, rigging and stage, without crossing turf. On-site parking to the east and south.",
+        lee: "Corner lot with two entrances: the main one, on NW 21st Ct, for guests (parking and the walk); the freight one, on NW 1st Ct, onto the paved strip beside the building, continuous and level.",
+        sirve: "Everything comes in through the freight entrance: truck, catering, rigging and stage, without crossing the guests or the turf. On-site parking to the east and south.",
         ojo: "Exact gate width and available power are surveyed with you at the visit and delivered in writing.",
       },
       edificio: {
@@ -1201,10 +1214,12 @@ const Dibujo = memo(function Dibujo({ lang, zona, aforo, vista, alEntrar, alSali
   const zClase = (z: Zona) => `z z-${z}${zona === z ? " activa" : ""}`;
   const zProps = (z: Zona) => ({ onMouseEnter: () => alEntrar(z), onMouseLeave: () => alSalir(z), onClick: () => alTocar(z) });
 
-  // El camión avanza hacia el norte (y decrece): el desplazamiento inicial lo pone al sur, en el estacionamiento.
-  const d0 = p(CAMION.x, CAMION.y, 0), d1 = p(CAMION.x, CAMION.y + CAMION.recorrido, 0);
+  // El camión llega desde la calle: con eje «x» viene del oeste (NW 1st Ct) al apron; con eje «y», del sur por el paseo.
+  const inicioCamion: Pt = CAMION.eje === "x" ? [CAMION.x - CAMION.recorrido, CAMION.y] : [CAMION.x, CAMION.y + CAMION.recorrido];
+  const d0 = p(CAMION.x, CAMION.y, 0), d1 = p(inicioCamion[0], inicioCamion[1], 0);
   const desplazamiento = { cx: d1[0] - d0[0], cy: d1[1] - d0[1] };
-  const escalaCamion = g.escala(CAMION.x, CAMION.y + CAMION.recorrido) / g.escala(CAMION.x, CAMION.y);
+  const escalaCamion = g.escala(inicioCamion[0], inicioCamion[1]) / g.escala(CAMION.x, CAMION.y);
+  const centroCamion: Pt = CAMION.eje === "x" ? [CAMION.x + CAMION.dx / 2, CAMION.y + CAMION.dy / 2] : [CAMION.x + CAMION.dx / 2, CAMION.y + CAMION.dy / 2];
 
   const azar = lcg(20260902);
   const GOTAS = Array.from({ length: 360 }, () => ({ x: vb.x + azar() * vb.w, y: vb.y + azar() * vb.h, t: -(azar() * 1.1).toFixed(2) }));
@@ -1302,7 +1317,7 @@ const Dibujo = memo(function Dibujo({ lang, zona, aforo, vista, alEntrar, alSali
         {[[-1.6, 0], [-0.4, 0.3], [0.8, -0.2], [1.9, 0.2]].map(([ox, oy], k) => <Elipse key={k} g={g} x={jx + ox} y={jy + oy} r={0.9} z={2.2 + (k % 2) * 0.3} fill={k % 2 ? "#6a7752" : "#4f5a3e"} />)}
       </g>
     ) })),
-    { prof: g.profundidad(CAMION.x, CAMION.y + 20), el: (
+    { prof: g.profundidad(centroCamion[0], centroCamion[1]), el: (
       <g key="camion" className="camion" pointerEvents="none" style={cssVars({ "--cx": `${desplazamiento.cx.toFixed(1)}px`, "--cy": `${desplazamiento.cy.toFixed(1)}px`, "--s": escalaCamion.toFixed(3) })}>
         <Camion g={g} />
       </g>
@@ -1400,7 +1415,8 @@ const Dibujo = memo(function Dibujo({ lang, zona, aforo, vista, alEntrar, alSali
 
       {/* ── setos: el de NW 1st Ct (oeste) y los del sur del césped ── */}
       <g style={cssVars({ "--d": ".5s" })}>
-        <Seto g={g} x={0} y={ARENA.y - 2} dx={SETO.ancho} dy={PARKING_S.y - ARENA.y + 2} />
+        {/* el seto de NW 1st Ct arranca después del apron: ahí está el portón de carga */}
+        <Seto g={g} x={0} y={PLAZA.y + PLAZA.dy} dx={SETO.ancho} dy={PARKING_S.y - (PLAZA.y + PLAZA.dy)} />
         <Seto g={g} x={0} y={PARKING_S.y - SETO.ancho} dx={PASEO.x - 6} dy={SETO.ancho} />
         <Seto g={g} x={PASEO.x + PASEO.dx + 6} y={PARKING_S.y - SETO.ancho} dx={PARKING_E.x - PASEO.x - PASEO.dx - 6} dy={SETO.ancho} />
         {/* el muro verde alto del fondo de las cabañas, entre la arena y el estacionamiento este */}
@@ -1427,24 +1443,24 @@ const Dibujo = memo(function Dibujo({ lang, zona, aforo, vista, alEntrar, alSali
       <g style={cssVars({ "--d": ".8s" })}>
         {objetos.map((o) => o.el)}
       </g>
-      {/* la cuadrilla del load-in SOBRE el paseo: cuatro personas, cuatro road cases con ruedas camino de la puerta y tres conos en la boca */}
+      {/* la cuadrilla del load-in SOBRE el apron, a la cola del camión: cuatro personas, cuatro road cases con ruedas y tres conos en el portón de carga */}
       <g className="cuadrilla" pointerEvents="none">
-        {([[PASEO.x + 4, CAMION.y - 9], [PASEO.x + 10, CAMION.y - 5], [PASEO.x + 12, CAMION.y - 16], [PASEO.x + 6, CAMION.y - 24]] as Pt[]).map(([qx, qy], i) => (
+        {([[CAMION.x - 5, CAMION.y - 2.5], [CAMION.x - 2.5, CAMION.y + CAMION.dy + 3], [CAMION.x + 7, CAMION.y - 3], [CAMION.x + 3, CAMION.y + CAMION.dy + 3.5]] as Pt[]).map(([qx, qy], i) => (
           <g key={`cq${i}`} className="parado" style={cssVars({ "--i": i })}><Persona g={g} x={qx} y={qy} clase="" tono={i % 2 ? "#55504a" : "#3e3a34"} /></g>
         ))}
-        {([[PASEO.x + 3, CAMION.y - 12], [PASEO.x + 9, CAMION.y - 18], [PASEO.x + 4, CAMION.y - 26], [PASEO.x + 10, CAMION.y - 30]] as Pt[]).map(([qx, qy], i) => (
+        {([[CAMION.x - 9, CAMION.y - 1], [CAMION.x - 12.5, CAMION.y + 3], [CAMION.x + 2, CAMION.y + CAMION.dy + 1.2], [CAMION.x + 9, CAMION.y + CAMION.dy + 1.5]] as Pt[]).map(([qx, qy], i) => (
           <g key={`rc${i}`} className="road-case" style={cssVars({ "--i": i })}>
-            <Caja g={g} x={qx} y={qy} dx={2.5} dy={4} z0={0.4} z1={3.8} tapa="#e6e0d4" izq="#d9d2c4" der="#cfc8ba" borde={OCRE} w={0.6} animado={false} />
-            {[[qx + 0.4, qy + 0.5], [qx + 2.1, qy + 0.5], [qx + 0.4, qy + 3.5], [qx + 2.1, qy + 3.5]].map(([rx, ry], k) => <Elipse key={k} g={g} x={rx} y={ry} r={0.35} z={0.3} fill={TINTA} />)}
+            <Caja g={g} x={qx} y={qy} dx={4} dy={2.5} z0={0.4} z1={3.8} tapa="#e6e0d4" izq="#d9d2c4" der="#cfc8ba" borde={OCRE} w={0.6} animado={false} />
+            {[[qx + 0.5, qy + 0.4], [qx + 3.5, qy + 0.4], [qx + 0.5, qy + 2.1], [qx + 3.5, qy + 2.1]].map(([rx, ry], k) => <Elipse key={k} g={g} x={rx} y={ry} r={0.35} z={0.3} fill={TINTA} />)}
           </g>
         ))}
-        {[PASEO.x - 1, PASEO.x + PASEO.dx / 2, PASEO.x + PASEO.dx + 1].map((cx, i) => {
-          const q0 = p(cx - 0.6, PASEO.y1 - 2, 0), q1 = p(cx + 0.6, PASEO.y1 - 2, 0), q2 = p(cx, PASEO.y1 - 2, 2.2);
+        {([[PORTON_CARGA.x + 1.5, PORTON_CARGA.y + 1.5], [PORTON_CARGA.x + 1.5, PORTON_CARGA.y + PORTON_CARGA.dy / 2], [PORTON_CARGA.x + 1.5, PORTON_CARGA.y + PORTON_CARGA.dy - 1.5]] as Pt[]).map(([cxc, cyc], i) => {
+          const q0 = p(cxc, cyc - 0.6, 0), q1 = p(cxc, cyc + 0.6, 0), q2 = p(cxc, cyc, 2.2);
           return <path key={`cono${i}`} className="cono" d={poly(q0, q1, q2)} fill={OCRE} stroke="#8a5220" strokeWidth="0.3" />;
         })}
       </g>
 
-      {/* costados abiertos y portón: capas del guion */}
+      {/* costados abiertos y portón de carga: capas del guion */}
       <g className="capa capa-lados" pointerEvents="none">
         {lados.map(([a, b], i) => (
           <g key={i} className="lado-flecha" style={cssVars({ "--i": i })}>
@@ -1454,7 +1470,19 @@ const Dibujo = memo(function Dibujo({ lang, zona, aforo, vista, alEntrar, alSali
         ))}
       </g>
       <g className="capa capa-porton" pointerEvents="none">
-        <path className="porton" d={techo(PASEO.x - 2, PASEO.y1 - 1, PASEO.dx + 4, 3, 0.1)} fill={OCRE} opacity="0.6" />
+        {/* el portón de carga sobre NW 1st Ct, en la boca del apron, y la flecha desde la calle */}
+        <path className="porton" d={techo(PORTON_CARGA.x - 1.5, PORTON_CARGA.y - 1, 3, PORTON_CARGA.dy + 2, 0.1)} fill={OCRE} opacity="0.6" />
+        {(() => {
+          const A = p(CALLE_O.x + 10, PORTON_CARGA.y + PORTON_CARGA.dy / 2, 0), B = p(PORTON_CARGA.x + 8, PORTON_CARGA.y + PORTON_CARGA.dy / 2, 0);
+          const an = Math.atan2(B[1] - A[1], B[0] - A[0]);
+          const punta = `M${(B[0] - Math.cos(an - 0.5) * 5).toFixed(1)},${(B[1] - Math.sin(an - 0.5) * 5).toFixed(1)} L${B[0].toFixed(1)},${B[1].toFixed(1)} L${(B[0] - Math.cos(an + 0.5) * 5).toFixed(1)},${(B[1] - Math.sin(an + 0.5) * 5).toFixed(1)}`;
+          return (
+            <g className="carga-flecha">
+              <path d={`M${A[0].toFixed(1)},${A[1].toFixed(1)} L${B[0].toFixed(1)},${B[1].toFixed(1)}`} fill="none" stroke={OCRE} strokeWidth="1.4" />
+              <path d={punta} fill="none" stroke={OCRE} strokeWidth="1.4" strokeLinejoin="round" />
+            </g>
+          );
+        })()}
       </g>
 
       {/* ── el acceso: la flecha desde la calle sur ───────────────── */}

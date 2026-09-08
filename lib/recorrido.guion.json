@@ -1,5 +1,5 @@
 {
-  "version": "5.5.0",
+  "version": "5.6.0",
   "capitulos": [
     {
       "id": "recinto",
@@ -406,10 +406,10 @@
       "modo": "todo",
       "zona": "acceso",
       "punto": [
-        70,
-        236
+        8,
+        115
       ],
-      "zoom": 1.8,
+      "zoom": 1.5,
       "capas": [
         "porton"
       ],
@@ -418,155 +418,164 @@
         "en": "Access and load-in"
       },
       "texto": {
-        "es": "¿Por dónde entra la producción? Desde la calle, por el estacionamiento, directo al paseo pavimentado, que cruza el recinto hasta la puerta del edificio y va continuo y a nivel. Un camión de cuarenta pies llega hasta el fondo sin pisar césped. El ancho exacto del portón, la potencia disponible y el resto de las medidas se levantan contigo en la visita y se entregan por escrito.",
-        "en": "How does production get in? From the street, through the parking lot, straight onto the paved walk, which crosses the site to the building door, continuous and level. A forty-foot truck reaches the far end without touching turf. The exact gate width, the available power and the rest of the measurements are surveyed with you at the visit and delivered in writing."
+        "es": "¿Por dónde entra la producción? La carga tiene su propia entrada, aparte de la principal: por NW 1st Ct, a la franja pavimentada junto al edificio, continua y a nivel. Un camión de cuarenta pies descarga a un paso de la palapa y de la puerta, sin pisar césped. La entrada principal, por el estacionamiento y el paseo, queda para tus invitados. El ancho exacto del portón, la potencia disponible y el resto de las medidas se levantan contigo en la visita y se entregan por escrito.",
+        "en": "How does production get in? Freight has its own entrance, apart from the main one: from NW 1st Ct, onto the paved strip beside the building, continuous and level. A forty-foot truck unloads a step from the structure and the door, without touching turf. The main entrance, through the parking lot and the walk, stays for your guests. The exact gate width, the available power and the rest of the measurements are surveyed with you at the visit and delivered in writing."
       },
       "hitos": {
         "es": [
           {
-            "frase": "por el estacionamiento",
-            "cifra": "estacionamiento propio · este y sur",
-            "agregar": [
-              "parking"
-            ]
-          },
-          {
-            "frase": "directo al paseo pavimentado",
-            "agregar": [
-              "paseo"
+            "frase": "La carga tiene su propia entrada",
+            "zona": "acceso",
+            "punto": [
+              6,
+              115
             ],
-            "foto": "puerta",
-            "segundos": 2.6,
-            "quitar": [
-              "parking"
+            "zoom": 2.1,
+            "cifra": "portón de carga · NW 1st Ct",
+            "agregar": [
+              "porton"
             ]
           },
           {
-            "frase": "hasta la puerta del edificio",
+            "frase": "a la franja pavimentada",
             "zona": null,
             "punto": [
-              70,
-              122
+              32,
+              116
             ],
-            "zoom": 1.4,
-            "cifra": "paseo · continuo y a nivel",
-            "agregar": [
-              "puerta"
-            ]
+            "zoom": 1.9,
+            "cifra": "franja pavimentada · continua y a nivel"
           },
           {
             "frase": "Un camión de cuarenta",
             "modo": "camion",
             "zona": null,
             "punto": [
-              70,
-              178
+              30,
+              116
             ],
-            "zoom": 1.4,
-            "cifra": "camión de 40 ft",
-            "quitar": [
-              "porton",
-              "puerta"
-            ]
+            "zoom": 1.7,
+            "cifra": "camión de 40 ft"
           },
           {
-            "frase": "llega hasta el fondo",
+            "frase": "descarga a un paso",
             "punto": [
-              70,
+              40,
               122
             ],
-            "zoom": 1.6
+            "zoom": 1.9,
+            "cifra": "rampa · palapa y puerta a un paso"
           },
           {
-            "frase": "El ancho exacto",
+            "frase": "La entrada principal",
+            "modo": "todo",
             "zona": "acceso",
             "punto": [
               70,
               236
             ],
-            "zoom": 1.9,
-            "cifra": "portón · potencia: en visita",
+            "zoom": 1.6,
+            "cifra": "entrada principal · invitados · NW 21st Ct",
+            "foto": "puerta",
+            "segundos": 3,
             "quitar": [
-              "paseo"
+              "porton"
             ],
+            "vista": "sur"
+          },
+          {
+            "frase": "El ancho exacto",
+            "zona": "acceso",
+            "punto": [
+              6,
+              115
+            ],
+            "zoom": 2.1,
+            "cifra": "portón · potencia: en visita",
             "agregar": [
               "porton"
-            ]
+            ],
+            "vista": "oeste"
           }
         ],
         "en": [
           {
-            "frase": "through the parking lot",
-            "cifra": "on-site parking · east and south",
-            "agregar": [
-              "parking"
-            ]
-          },
-          {
-            "frase": "straight onto the paved walk",
-            "agregar": [
-              "paseo"
+            "frase": "Freight has its own entrance",
+            "zona": "acceso",
+            "punto": [
+              6,
+              115
             ],
-            "foto": "puerta",
-            "segundos": 2.6,
-            "quitar": [
-              "parking"
+            "zoom": 2.1,
+            "cifra": "freight gate · NW 1st Ct",
+            "agregar": [
+              "porton"
             ]
           },
           {
-            "frase": "to the building door",
+            "frase": "onto the paved strip",
             "zona": null,
             "punto": [
-              70,
-              122
+              32,
+              116
             ],
-            "zoom": 1.4,
-            "cifra": "walk · continuous and level",
-            "agregar": [
-              "puerta"
-            ]
+            "zoom": 1.9,
+            "cifra": "paved strip · continuous and level"
           },
           {
             "frase": "A forty-foot truck",
             "modo": "camion",
             "zona": null,
             "punto": [
-              70,
-              178
+              30,
+              116
             ],
-            "zoom": 1.4,
-            "cifra": "40-foot truck",
-            "quitar": [
-              "porton",
-              "puerta"
-            ]
+            "zoom": 1.7,
+            "cifra": "40-foot truck"
           },
           {
-            "frase": "reaches the far end",
+            "frase": "unloads a step",
             "punto": [
-              70,
+              40,
               122
             ],
-            "zoom": 1.6
+            "zoom": 1.9,
+            "cifra": "ramp · structure and door a step away"
           },
           {
-            "frase": "The exact gate",
+            "frase": "The main entrance",
+            "modo": "todo",
             "zona": "acceso",
             "punto": [
               70,
               236
             ],
-            "zoom": 1.9,
-            "cifra": "gate · power: at the visit",
+            "zoom": 1.6,
+            "cifra": "main entrance · guests · NW 21st Ct",
+            "foto": "puerta",
+            "segundos": 3,
             "quitar": [
-              "paseo"
+              "porton"
             ],
+            "vista": "sur"
+          },
+          {
+            "frase": "The exact gate",
+            "zona": "acceso",
+            "punto": [
+              6,
+              115
+            ],
+            "zoom": 2.1,
+            "cifra": "gate · power: at the visit",
             "agregar": [
               "porton"
-            ]
+            ],
+            "vista": "oeste"
           }
         ]
-      }
+      },
+      "vista": "oeste"
     },
     {
       "id": "que-hay",
@@ -585,8 +594,8 @@
         "en": "Included infrastructure"
       },
       "texto": {
-        "es": "¿Qué hay, y qué no? Hay ocho cabañas amuebladas en hilera, mesas de picnic fijas y un área donde montar barra. El edificio del fondo, donde termina el paseo, tiene dos niveles: abajo, un salón a doble altura con cocina y baños; arriba, un altillo con cuatro salas privadas. Se alquila aparte, con su propia lámina, y resuelve camerinos, cocina de catering o plan B bajo techo. Al aire libre no hay cocina, ni cerramiento fijo, ni climatización: el catering monta en el sitio. Producción, sonido, iluminación y mobiliario los trae tu equipo, y esa libertad es justamente la propuesta.",
-        "en": "What is here, and what is not? Eight furnished cabanas in a row, fixed picnic tables and an area where a bar can be set up. The building at the far end, where the walk ends, has two levels: downstairs, a double-height hall with a kitchen and restrooms; upstairs, a mezzanine with four private rooms. It is rented separately, with its own plate, and covers green rooms, a catering kitchen or a plan B under a roof. Outdoors there is no kitchen, no fixed enclosure and no climate control: catering sets up on site. Production, sound, lighting and furniture come with your team, and that freedom is precisely the point."
+        "es": "¿Qué hay, y qué no? Hay ocho cabañas amuebladas en hilera, mesas de picnic fijas y un área donde montar barra, con licencia de licor propia. El edificio del fondo, donde termina el paseo, tiene dos niveles: abajo, un salón a doble altura con cocina y baños; arriba, un altillo con cuatro salas privadas. Se alquila aparte, como evento o como oficina, con su propia lámina, y resuelve camerinos, cocina de catering o plan B bajo techo. Al aire libre no hay cocina, ni cerramiento fijo, ni climatización: el catering monta en el sitio. Producción, sonido, iluminación y mobiliario los trae tu equipo, y esa libertad es justamente la propuesta.",
+        "en": "What is here, and what is not? Eight furnished cabanas in a row, fixed picnic tables and an area where a bar can be set up, with its own liquor license. The building at the far end, where the walk ends, has two levels: downstairs, a double-height hall with a kitchen and restrooms; upstairs, a mezzanine with four private rooms. It is rented separately, for events or as an office, with its own plate, and covers green rooms, a catering kitchen or a plan B under a roof. Outdoors there is no kitchen, no fixed enclosure and no climate control: catering sets up on site. Production, sound, lighting and furniture come with your team, and that freedom is precisely the point."
       },
       "hitos": {
         "es": [
@@ -620,6 +629,10 @@
             "cifra": "tu barra",
             "foto": "lounge",
             "segundos": 2.6
+          },
+          {
+            "frase": "con licencia de licor propia",
+            "cifra": "licencia de licor propia"
           },
           {
             "frase": "El edificio del fondo",
@@ -670,7 +683,7 @@
               60
             ],
             "zoom": 1.6,
-            "cifra": "zona 02 · lámina propia",
+            "cifra": "zona 02 · evento u oficina · desde el 1 nov",
             "quitar": [
               "interior-salas",
               "interior-altillo"
@@ -779,7 +792,7 @@
               60
             ],
             "zoom": 1.6,
-            "cifra": "zone 02 · its own plate",
+            "cifra": "zone 02 · events or office · from Nov 1",
             "quitar": [
               "interior-salas",
               "interior-altillo"
@@ -1123,11 +1136,15 @@
         "en": "Availability and site visit"
       },
       "texto": {
-        "es": "¿Y ahora? Si el sitio te sirve, pide disponibilidad con tu fecha y tu número de invitados. Contestamos en veinticuatro horas hábiles, y si quieres verlo, coordinamos la visita y levantamos contigo la ficha técnica. Gracias por el recorrido.",
-        "en": "What now? If the site works for you, request availability with your date and guest count. We reply within twenty-four business hours, and if you want to see it, we schedule the visit and survey the spec sheet with you. Thanks for taking the tour."
+        "es": "¿Y ahora? El exterior está disponible desde el primero de octubre y el edificio desde el primero de noviembre. Si el sitio te sirve, pide disponibilidad con tu fecha y tu número de invitados. Contestamos en veinticuatro horas hábiles, y si quieres verlo, coordinamos la visita y levantamos contigo la ficha técnica. Gracias por el recorrido.",
+        "en": "What now? The outdoors is available from October first and the building from November first. If the site works for you, request availability with your date and guest count. We reply within twenty-four business hours, and if you want to see it, we schedule the visit and survey the spec sheet with you. Thanks for taking the tour."
       },
       "hitos": {
         "es": [
+          {
+            "frase": "El exterior está disponible",
+            "cifra": "exterior · 1 oct · edificio · 1 nov"
+          },
           {
             "frase": "pide disponibilidad con tu fecha",
             "agregar": [
@@ -1150,6 +1167,10 @@
           }
         ],
         "en": [
+          {
+            "frase": "The outdoors is available",
+            "cifra": "outdoors · Oct 1 · building · Nov 1"
+          },
           {
             "frase": "request availability with your date",
             "agregar": [

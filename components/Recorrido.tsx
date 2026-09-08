@@ -15,6 +15,7 @@ import {
   type Hito,
   type Manifiesto,
   type Palabra,
+  type VistaRecorrido,
 } from "@/lib/recorrido";
 
 /**
@@ -167,6 +168,8 @@ interface EstadoCapitulo {
   /** A qué parte del terreno se refiere la frase que suena ahora. */
   punto: [number, number] | null;
   zoom: number;
+  /** Desde qué cámara se mira ahora (el load-in se cuenta desde el oeste). */
+  vista: VistaRecorrido;
   /** La foto que toca ahora, si el guion pidió una y todavía dura. */
   foto: FotoRecorrido | null;
   /** La cifra que se está diciendo, junto a la marca. */
@@ -339,6 +342,7 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
       zona: cap.zona as Zona | null,
       punto: (cap.punto as [number, number] | null) ?? null,
       zoom: cap.zoom ?? 1,
+      vista: cap.vista ?? "sur",
       foto: null,
       cifra: null,
       capas: cap.capas ?? [],
@@ -352,6 +356,7 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
       if (h.zona !== undefined) e = { ...e, zona: h.zona as Zona | null };
       if (h.punto !== undefined) e = { ...e, punto: (h.punto as [number, number] | null) ?? null };
       if (h.zoom !== undefined) e = { ...e, zoom: h.zoom };
+      if (h.vista) e = { ...e, vista: h.vista };
       if (h.cifra !== undefined) e = { ...e, cifra: h.cifra };
       if (h.agregar) e = { ...e, capas: Array.from(new Set([...e.capas, ...h.agregar])) };
       if (h.quitar) e = { ...e, capas: e.capas.filter((c) => !h.quitar!.includes(c)) };
@@ -1046,9 +1051,9 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
   // persona está probando su aforo, manda el aforo: mesas o gente en el jardín,
   // con la cámara un poco más cerca. Si no, nadie dirige.
   const dirigido = activo
-    ? { modo: estado.modo, zona: estado.zona, punto, zoom: estado.zoom, capas }
+    ? { modo: estado.modo, zona: estado.zona, punto, zoom: estado.zoom, capas, vista: estado.vista }
     : vistaAforo
-      ? { modo: (aforo.formato === "sentados" ? "mesas" : "gente") as Modo, zona: (aforo.formato === "sentados" ? "tiki" : "jardin") as Zona, punto: null, zoom: 1.3, capas: [] as string[] }
+      ? { modo: (aforo.formato === "sentados" ? "mesas" : "gente") as Modo, zona: (aforo.formato === "sentados" ? "tiki" : "jardin") as Zona, punto: null, zoom: 1.3, capas: [] as string[], vista: "sur" as VistaRecorrido }
       : null;
 
   return (
@@ -1077,6 +1082,7 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
         puntoDirigido={dirigido?.punto ?? null}
         zoomDirigido={dirigido?.zoom}
         capasDirigidas={dirigido?.capas}
+        vistaDirigida={dirigido?.vista}
         rotuloPunto={activo && estado.zona ? NOMBRE_ZONA[estado.zona][lang] : undefined}
         cifraPunto={activo ? estado.cifra : null}
         fotoDirigida={activo ? fotoDirigida : null}

@@ -13,6 +13,7 @@ import Dudas from "@/components/Dudas";
 import Cifras from "@/components/Cifras";
 import BotonRecorrido from "@/components/BotonRecorrido";
 import Galeria from "@/components/Galeria";
+import ParaQuien from "@/components/ParaQuien";
 
 /**
  * Home. El orden sigue cómo decide un productor:
@@ -88,8 +89,8 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           {/* Bloque de respuesta: primera frase = conclusión. */}
           <p className="respuesta" style={{ marginTop: 0, marginBottom: 26, color: "var(--texto)", maxWidth: "46ch" }}>
             {es
-              ? "Club Wynwood son ~22.000 ft² de exterior en el Wynwood Arts District de Miami, con una palapa techada de ~4.000 ft² que cubre el evento si llueve. Tú traes la producción; nosotros entregamos el espacio."
-              : "Club Wynwood is ~22,000 sq ft of outdoor space in Miami's Wynwood Arts District, with a ~4,000 sq ft covered structure for when it rains. You bring the production; we hand over the space."}
+              ? "Club Wynwood son ~22.000 ft² de exterior en el Wynwood Arts District de Miami, con una palapa techada de ~4.000 ft² que cubre el evento si llueve, estacionamiento propio y licencia de licor propia. Tú traes la producción; nosotros entregamos el espacio. Disponible desde el 1 de octubre; el edificio, desde el 1 de noviembre."
+              : "Club Wynwood is ~22,000 sq ft of outdoor space in Miami's Wynwood Arts District, with a ~4,000 sq ft covered structure for when it rains, its own parking and its own liquor license. You bring the production; we hand over the space. Available from October 1; the building, from November 1."}
           </p>
 
           {/* Las dos cosas que se pueden hacer, en la portada: pedir fecha o
@@ -146,6 +147,8 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       <Recorrido lang={lang} />
       {/* Las fotos, todas juntas y a su tamaño (Daniel, 7-sep: «que haya una zona con las fotos»). */}
       <Galeria lang={lang} />
+      {/* Art Week, disponibilidad, usos y para quién (Daniel, 7-sep). Ver components/ParaQuien.tsx. */}
+      <ParaQuien lang={lang} />
 
       {/* ---------------- QUÉ SE ALQUILA ---------------- */}
       <section style={{ borderBottom: "1px solid var(--regla)" }}>

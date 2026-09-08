@@ -28,12 +28,16 @@ import type { Idioma } from "@/lib/i18n";
 
 export type ModoRecorrido = "todo" | "lluvia" | "carpa" | "mesas" | "gente" | "camion" | "noche" | "barra";
 export type ZonaRecorrido = "jardin" | "tiki" | "cabanas" | "acceso" | "edificio";
+/** Desde dónde se mira el dibujo (las cinco cámaras de `lib/recinto.geo.ts`). Por defecto, el sur. */
+export type VistaRecorrido = "sur" | "norte" | "este" | "oeste" | "aerea";
 export type Pt = [number, number];
 
 export interface Hito {
   frase: string;
   modo?: ModoRecorrido;
   zona?: ZonaRecorrido | null;
+  /** Cambia la cámara al llegar la frase: el load-in se cuenta desde el oeste, donde está el portón de carga. */
+  vista?: VistaRecorrido;
   punto?: Pt | null;
   /** 1 = el recinto entero. 1,8 = la palapa llenando el encuadre. */
   zoom?: number;
@@ -92,6 +96,8 @@ export interface Capitulo {
   zona: ZonaRecorrido | null;
   punto: Pt | null;
   zoom: number;
+  /** Cámara con la que arranca el capítulo; si no viene, el sur. */
+  vista?: VistaRecorrido;
   /** Capas encendidas al empezar el capítulo. */
   capas?: string[];
   pregunta: Record<Idioma, string>;

@@ -43,6 +43,12 @@ export const VENUE = {
   telefono: "+1-305-970-7486",
   email: "info@clubwynwood.com",
   /**
+   * WhatsApp de consultas: es el de RENE (Daniel, 7-sep-2026). Vacío hasta
+   * tener el número: con la cadena vacía el sitio no muestra el botón. Formato
+   * internacional sin espacios, por ejemplo "+13055550000".
+   */
+  whatsapp: "" as string,
+  /**
    * ⚠️ Este horario es el del OPERADOR (FunDimension / Playa Wynwood) como local
    * de público, no el nuestro. NO publicarlo como `openingHours` del venue: el
    * alquiler es con cita previa y visita técnica. Se conserva porque condiciona
@@ -67,6 +73,32 @@ export const NO_INCLUIDO = [
   "laser tag", "arcade", "realidad virtual", "bowling", "bumper cars", "rock climbing",
 ] as const;
 
+/**
+ * DISPONIBILIDAD Y USOS (Daniel, 7-sep-2026, de sus notas): el exterior se
+ * puede reservar desde el 1 de octubre de 2026 y el edificio desde el 1 de
+ * noviembre. Dos tipos de uso: evento y oficina (el edificio). La cocina del
+ * edificio es un adicional. El recinto tiene licencia de licor propia, con su
+ * propio número (no todos los venues la tienen): se dice, no se publica el número.
+ */
+export const DISPONIBILIDAD = {
+  exterior: { desde: "2026-10-01", es: "1 de octubre de 2026", en: "October 1, 2026" },
+  edificio: { desde: "2026-11-01", es: "1 de noviembre de 2026", en: "November 1, 2026" },
+} as const;
+export const USOS = [
+  { clave: "evento", es: "Eventos", en: "Events", detalleEs: "El jardín, la palapa, o todo junto; el edificio como salón, camerinos o plan B.", detalleEn: "The garden, the structure, or everything together; the building as a hall, green rooms or plan B." },
+  { clave: "oficina", es: "Oficina", en: "Office", detalleEs: "El edificio de dos niveles, desde el 1 de noviembre, como sede o espacio de trabajo.", detalleEn: "The two-level building, from November 1, as a headquarters or workspace." },
+  { clave: "cocina", es: "Cocina (adicional)", en: "Kitchen (add-on)", detalleEs: "La cocina del edificio se suma al alquiler cuando el catering la necesita.", detalleEn: "The building's kitchen is added to the rental when catering needs it." },
+] as const;
+/** Para quién es (Daniel, 7-sep-2026). Manda en la pauta y en el copy. */
+export const PARA_QUIEN = [
+  { es: "Promotores de restaurantes, clubs y discotecas", en: "Restaurant, club and nightclub promoters" },
+  { es: "Promotores de eventos y entretenimiento", en: "Event and entertainment promoters" },
+  { es: "Artistas: pintores, escultores, galerías", en: "Artists: painters, sculptors, galleries" },
+  { es: "Marcas y agencias de activación", en: "Brands and activation agencies" },
+  { es: "Brokers e inmobiliarias", en: "Brokers and real estate" },
+  { es: "Productoras y empresas (lanzamientos, cenas, fiestas)", en: "Production companies and corporate (launches, dinners, parties)" },
+] as const;
+
 export const ESPACIOS = [
   {
     slug: "jardin",
@@ -76,11 +108,11 @@ export const ESPACIOS = [
     m2: 1672,
     cubierto: false,
     resumenEs:
-      "Paseo pavimentado central, franjas de césped artificial a ambos lados, dos hileras " +
-      "de palmeras reales, ocho cabañas amuebladas, mesas de picnic fijas y setos perimetrales.",
+      "Paseo pavimentado central de la puerta al estacionamiento, césped artificial del lado de la palapa y arena del " +
+      "lado de las cabañas, dos hileras de palmeras reales, ocho cabañas amuebladas, mesas de picnic fijas y setos perimetrales.",
     resumenEn:
-      "A central paved walk, artificial turf strips on both sides, two rows of real palms, " +
-      "eight furnished cabanas, fixed picnic tables and perimeter hedges.",
+      "A central paved walk from the door to the parking, artificial turf on the structure's side and sand on the cabanas' side, " +
+      "two rows of real palms, eight furnished cabanas, fixed picnic tables and perimeter hedges.",
   },
   {
     slug: "tiki-hut",
@@ -90,11 +122,11 @@ export const ESPACIOS = [
     m2: 372,
     cubierto: true,
     resumenEs:
-      "Palapa larga y paralela al paseo, techo de paja a cuatro aguas sobre dos hileras de " +
-      "postes de madera, abierta por los cuatro costados. Es el plan anti-lluvia.",
+      "Palapa de paja a cuatro aguas de unos 54 × 60 ft en la esquina suroeste, sobre retícula de postes de madera, " +
+      "abierta por los cuatro costados y con piso de césped artificial. Es el plan anti-lluvia.",
     resumenEn:
-      "A long palapa parallel to the walk, four-hip thatch roof on two rows of timber posts, " +
-      "open on all four sides. It is the rain plan.",
+      "A four-hip thatched structure of about 54 × 60 ft in the south-west corner, on a grid of timber posts, " +
+      "open on all four sides with an artificial-turf floor. It is the rain plan.",
   },
 ] as const;
 
@@ -117,6 +149,15 @@ export const FICHA: Dato[] = [
   { clave: "direccion", es: "Dirección", en: "Address",
     valorEs: "2129 NW 1st Ct, Miami FL 33127", valorEn: "2129 NW 1st Ct, Miami FL 33127",
     estado: "verificado", fuente: "Yelp / Wynwood BID / sitio del operador" },
+  { clave: "licor-propia", es: "Licencia de licor", en: "Liquor license",
+    valorEs: "Propia, con número de licencia propio", valorEn: "Its own, with its own license number",
+    estado: "verificado", fuente: "Daniel, 7-sep-2026: licencia de licor de Miami válida para el club, número propio" },
+  { clave: "disponibilidad", es: "Disponibilidad", en: "Availability",
+    valorEs: "Exterior desde el 1 oct 2026 · edificio desde el 1 nov 2026", valorEn: "Outdoors from Oct 1, 2026 · building from Nov 1, 2026",
+    estado: "verificado", fuente: "Daniel, 7-sep-2026" },
+  { clave: "accesos", es: "Entradas", en: "Entrances",
+    valorEs: "Principal por NW 21st Ct (invitados) · carga por NW 1st Ct", valorEn: "Main on NW 21st Ct (guests) · freight on NW 1st Ct",
+    estado: "verificado", fuente: "Daniel, 7-sep-2026: la mercancía no entra por la entrada principal; cenital del flyer" },
 
   // --- Lo que falta medir. Se publica como pendiente, nunca se rellena. ---
   { clave: "aforo-montaje", es: "Aforo por montaje", en: "Capacity per layout",
@@ -126,8 +167,6 @@ export const FICHA: Dato[] = [
   { clave: "loadin", es: "Load-in — ancho de portón, drive-in", en: "Load-in — gate width, drive-in",
     valorEs: "Por confirmar en la visita", valorEn: "To be confirmed at the visit", estado: "en-visita" },
   { clave: "parking", es: "Parking", en: "Parking",
-    valorEs: "Por confirmar en la visita", valorEn: "To be confirmed at the visit", estado: "en-visita" },
-  { clave: "licor", es: "Licencia de licor", en: "Liquor license",
     valorEs: "Por confirmar en la visita", valorEn: "To be confirmed at the visit", estado: "en-visita" },
   { clave: "curfew", es: "Curfew y límite de dB", en: "Curfew and dB limit",
     valorEs: "Por confirmar en la visita", valorEn: "To be confirmed at the visit", estado: "en-visita" },

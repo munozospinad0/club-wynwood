@@ -1586,7 +1586,7 @@
 .lam .capa { display: none; }
 .lam[data-capas~="pasillos"] .capa-pasillos { display: block; }
 .lam[data-capas~="lados"] .capa-lados { display: block; }
-.lam[data-capas~="porton"] .capa-porton { display: block; }
+.lam[data-capas~="porton"] .capa-porton, .lam[data-modo="camion"] .capa-porton { display: block; }
 .lam[data-capas~="picnic"] .picnic-fijo path, .lam[data-capas~="picnic"] .picnic-fijo line { stroke: var(--lam-ocre) !important; stroke-width: .8 !important; }
 .lam .picnic-fijo .picnic-entra { animation: none; }
 .lam[data-capas~="picnic"] .picnic-fijo .picnic-entra { transform-box: fill-box; transform-origin: 50% 100%; animation: lam-peso .5s ease both; animation-delay: calc(var(--i, 0) * 120ms); }
@@ -1913,6 +1913,10 @@
 .lam .palma, .lam .palapa-todo { transition: opacity .7s ease; }
 .lam[data-capas~="edificio"] .palma, .lam[data-capas~="edificio"] .palapa-todo { opacity: .1 !important; }
 .lam[data-capas~="edificio"] .peatones, .lam[data-capas~="edificio"] .gente-suelta { display: none; }
+/* La entrada de carga y el camión están en el apron, detrás de la palapa desde la cámara del sur: con el portón
+   encendido o en modo camión, la palapa se aparta para que se vea el apron. (En el recorrido ese capítulo se cuenta
+   desde el oeste, donde el apron está delante.) */
+.lam[data-capas~="porton"] .palapa-todo, .lam[data-modo="camion"] .palapa-todo { opacity: .15 !important; }
 .lam .a-cubierto { display: none; }
 .lam[data-modo="lluvia"] .a-cubierto, .lam[data-modo="carpa"] .a-cubierto { display: block; }
 /* El suelo mojado se oscurece, no se aclara. */

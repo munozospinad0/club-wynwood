@@ -271,26 +271,28 @@ export default function LaminaPlanta({ lang }: { lang: Idioma }) {
                 <circle key={`${xx}-${yy}`} cx={fx(xx)} cy={fy(yy)} r={0.75 * U} fill={OCRE} opacity="0.75" />
               )))}
 
-              {/* camión de 40 ft, a escala, entrando desde NW 21st Ct al estacionamiento sur:
-                  la mitad ya dentro del lote, la otra mitad todavía en la calle */}
+              {/* camión de 40 ft, a escala, entrando desde NW 1st Ct al apron junto al edificio (la entrada de carga;
+                  Daniel, 7-sep: «la mercancía no entra por la entrada principal»): la cola con la rampa junto al portón */}
               <g>
-                <rect x={fx(95)} y={fy(CALLE_S.y - 15)} width={CAMION.dx * U} height={CAMION.dy * U} rx="1.5"
+                <rect x={fx(CAMION.x)} y={fy(CAMION.y)} width={CAMION.dx * U} height={CAMION.dy * U} rx="1.5"
                       fill={PAV} stroke={OCRE} strokeWidth="1.2" />
-                <line x1={fx(95)} y1={fy(CALLE_S.y - 15 + 9)} x2={fx(95 + CAMION.dx)} y2={fy(CALLE_S.y - 15 + 9)}
+                <line x1={fx(CAMION.x + CAMION.dx - 9)} y1={fy(CAMION.y)} x2={fx(CAMION.x + CAMION.dx - 9)} y2={fy(CAMION.y + CAMION.dy)}
                       stroke={OCRE} strokeWidth="1" />
-                <text x={fx(95 + CAMION.dx) + 5} y={fy(CALLE_S.y + 16)} fill={OCRE} fontFamily={MONO} fontSize="6.8" letterSpacing="1">
-                  {es ? "CAMIÓN 40 FT" : "40 FT TRUCK"}
+                <path d={`M${fx(CALLE_O.x + 4)},${fy(PLAZA.y + PLAZA.dy / 2)} L${fx(PLAZA.x - 1)},${fy(PLAZA.y + PLAZA.dy / 2)}`} stroke={OCRE} strokeWidth="1.4" />
+                <path d={`M${fx(PLAZA.x - 1) - 5},${fy(PLAZA.y + PLAZA.dy / 2) - 3.5} L${fx(PLAZA.x - 1)},${fy(PLAZA.y + PLAZA.dy / 2)} L${fx(PLAZA.x - 1) - 5},${fy(PLAZA.y + PLAZA.dy / 2) + 3.5}`} fill="none" stroke={OCRE} strokeWidth="1.4" />
+                <text x={fx(CALLE_O.x + 2)} y={fy(PLAZA.y) - 5} fill={OCRE} fontFamily={MONO} fontSize="6.8" letterSpacing="1">
+                  {es ? "CARGA · CAMIÓN 40 FT" : "FREIGHT · 40 FT TRUCK"}
                 </text>
               </g>
 
-              {/* ---------- acceso: desde NW 21st Ct, por el estacionamiento sur, al paseo ---------- */}
+              {/* ---------- acceso principal (invitados): desde NW 21st Ct, por el estacionamiento sur, al paseo ---------- */}
               <g>
                 <path d={`M${fx(PASEO.x - 4)},${fy(LOTE.dy + 27)} L${fx(PASEO.x - 4)},${fy(PARKING_S.y + 4)}`}
                       stroke={TINTA} strokeWidth="1.5" />
                 <path d={`M${fx(PASEO.x - 4) - 3.5},${fy(PARKING_S.y + 4) + 5} L${fx(PASEO.x - 4)},${fy(PARKING_S.y + 4)} L${fx(PASEO.x - 4) + 3.5},${fy(PARKING_S.y + 4) + 5}`}
                       fill="none" stroke={TINTA} strokeWidth="1.5" />
                 <text x={fx(PASEO.x)} y={fy(CALLE_S.y + 16)} fill={TINTA} fontFamily={MONO} fontSize="8" letterSpacing="1.4">
-                  {es ? "ACCESO" : "ACCESS"}
+                  {es ? "ACCESO PRINCIPAL · INVITADOS" : "MAIN ENTRANCE · GUESTS"}
                 </text>
               </g>
 
@@ -302,7 +304,11 @@ export default function LaminaPlanta({ lang }: { lang: Idioma }) {
                     txt="TIKI HUT" sub={es ? "TECHADO · ~4 000 ft²" : "ROOFED · ~4,000 sq ft"} claro />
               <Zona x={fx(ARENA.x + ARENA.dx / 2)} y={fy(ARENA.y + 8)}
                     txt={es ? "ARENA · PICNIC" : "SAND · PICNIC"} />
-              <Zona x={fx(6)} y={fy(PLAZA.y + PLAZA.dy - 5)} ancla="start" txt={es ? "EL JARDÍN" : "THE GARDEN"} />
+              {/* el jardín, en vertical sobre el seto de NW 1st Ct: el césped está lleno de mesas y el apron, del camión */}
+              <text transform={`translate(${fx(2.2)},${fy(CESPED_O.y + 24)}) rotate(-90)`}
+                    fill={TINTA} textAnchor="end" fontFamily={MONO} fontSize="8" letterSpacing="1.4">
+                {es ? "EL JARDÍN" : "THE GARDEN"}
+              </text>
               <text x={fx(CABANAS.x + CABANAS.dx + 3)} y={fy(CABANAS.y0 + 3.5 * CABANAS.paso)} fill={GRIS}
                     fontFamily={MONO} fontSize="7.2" letterSpacing="1.2">{es ? "8 CABAÑAS" : "8 CABANAS"}</text>
               <text transform={`translate(${fx(PARKING_E.x + PARKING_E.dx / 2 - 6)},${fy(PARKING_E.y + PARKING_E.dy / 2)}) rotate(-90)`}

@@ -87,6 +87,21 @@ export default function Contacto({ lang }: { lang: Idioma }) {
       >
         {VENUE.email}
       </a>
+      {/* WhatsApp (el de Rene): solo cuando el número esté en venue.ts */}
+      {VENUE.whatsapp && (
+        <>
+          {" · "}
+          <a
+            href={`https://wa.me/${VENUE.whatsapp.replace(/[^\d]/g, "")}?text=${encodeURIComponent(es ? "Hola, quiero consultar disponibilidad en Club Wynwood." : "Hi, I would like to check availability at Club Wynwood.")}`}
+            style={enlace}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => ev("contact_click", { method: "whatsapp", desde: "cierre" })}
+          >
+            WhatsApp
+          </a>
+        </>
+      )}
       <br />
       {es
         ? "Para llamadas, de lunes a viernes en horario de Miami."

@@ -1181,6 +1181,8 @@
   color: var(--papel);
   animation: cine-entra 1.2s ease both;
 }
+/* La marca sobre el título, en la portada y en la tarjeta final del vídeo. */
+.cine-portada-marca { color: var(--papel); line-height: 0; padding-bottom: 6px; }
 .cine-tarjeta-nombre {
   font-family: var(--display);
   font-size: clamp(44px, 6vw, 96px);

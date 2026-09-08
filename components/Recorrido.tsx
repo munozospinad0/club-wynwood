@@ -17,6 +17,7 @@ import {
   type Palabra,
   type VistaRecorrido,
 } from "@/lib/recorrido";
+import { Simbolo } from "@/components/Marca";
 
 /**
  * EL RECORRIDO GUIADO. Alguien enseña el sitio, y el dibujo le sigue.
@@ -911,7 +912,10 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
         <>
           {/* ── la cabecera del cine ────────────────────────────────────── */}
           <div className="cine-cab">
-            <span className="cine-marca">Club Wynwood</span>
+            <span className="cine-marca" style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+              <Simbolo tam={16} />
+              Club Wynwood
+            </span>
             <span className="cine-ojo">{indice + 1} / {CAPITULOS.length}</span>
             {/* El idioma se cambia SIN perder el capítulo: la otra versión abre
                 sola en este mismo punto. Daniel: «que esté inglés y español». */}
@@ -1036,6 +1040,7 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
           {/* La tarjeta de cierre del vídeo exportado: quién, qué y a dónde ir. */}
           {grabando && ultimo && !sonando && (
             <div className="cine-tarjeta" aria-hidden="true">
+              <div className="cine-portada-marca"><Simbolo tam={48} /></div>
               <div className="cine-tarjeta-nombre">{t.tarjeta.nombre}</div>
               <div className="cine-tarjeta-linea">{t.tarjeta.linea}</div>
               <div className="cine-tarjeta-cta">{t.tarjeta.cta}</div>
@@ -1066,6 +1071,8 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={FOTOS.palmeras.src} alt="" style={{ objectPosition: FOTOS.palmeras.pos }} />
           <div className="cine-portada-texto">
+            {/* la marca abre el vídeo: quien lo ve en un reel tiene que saber de quién es desde el primer segundo */}
+            <div className="cine-portada-marca"><Simbolo tam={54} /></div>
             <div className="cine-tarjeta-nombre">{t.tarjeta.nombre}</div>
             <div className="cine-tarjeta-linea">{t.tarjeta.linea}</div>
             <div className="cine-portada-ojo">{t.ojo} · {CAPITULOS.length} {t.capitulos} · {minutos} {t.minutos}</div>

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <!-- La palapa con las proporciones reales del predio: cumbrera 14/54 del vano,
+       alto de techo 23/54. Techo en ocre (la paja), postes y suelo en papel,
+       fondo tinta. Mismo dibujo que components/Marca.tsx. -->
+  <rect width="32" height="32" fill="#211c15"/>
+  <path d="M3 19 L12.62 7.82 L19.38 7.82 L29 19 Z" fill="#c4772b"/>
+  <g stroke="#f8f3ea" stroke-width="1.4">
+    <path d="M12.62 7.82 L19.38 7.82" stroke-linecap="square"/>
+    <path d="M8 19 L8 24.6"/>
+    <path d="M16 19 L16 24.6"/>
+    <path d="M24 19 L24 24.6"/>
+    <path d="M4.4 24.6 L27.6 24.6" stroke-linecap="square"/>
+  </g>
+</svg>

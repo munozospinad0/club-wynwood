@@ -3,11 +3,12 @@ import { Fraunces, Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";
 import "../responsive.css";
 import "../lamina.css";
-import { BCP47, IDIOMAS, INDEXABLE, alternativas, asIdioma, href } from "@/lib/i18n";
+import { BASE, BCP47, IDIOMAS, INDEXABLE, alternativas, asIdioma, href } from "@/lib/i18n";
 const asIdioma_ = (p: { lang: string }) => ({ lang: asIdioma(p.lang) });
 import { VENUE } from "@/lib/venue";
 import { PAGINAS } from "@/lib/contenido";
 import type { ClaveRuta } from "@/lib/i18n";
+import Marca from "@/components/Marca";
 import SelectorIdioma from "@/components/SelectorIdioma";
 import Revelado from "@/components/Revelado";
 import Medicion from "@/components/Medicion";
@@ -23,6 +24,15 @@ export async function generateMetadata(
   const { lang } = asIdioma_(await params);
   const es = lang === "es";
   return {
+    /**
+     * La base de las URLs absolutas de la metadata. Sin esto, Next resuelve la
+     * imagen de `app/opengraph-image.png` contra `http://localhost:3000` y el
+     * enlace compartido por WhatsApp o por un anuncio llega sin imagen: el
+     * servidor de la otra punta intenta descargar una URL que no existe. Se usa
+     * la MISMA base que canonical, sitemap y JSON-LD (`lib/i18n.ts`), así que
+     * al poner NEXT_PUBLIC_BASE_URL se arregla todo a la vez.
+     */
+    metadataBase: new URL(BASE),
     title: {
       default: es
         ? "Club Wynwood — Jardín de eventos al aire libre · Wynwood, Miami"
@@ -44,7 +54,10 @@ export async function generateMetadata(
       siteName: "Club Wynwood",
       locale: BCP47[lang],
       alternateLocale: IDIOMAS.filter((l) => l !== lang).map((l) => BCP47[l]),
-      images: [{ url: "/assets/aerea-predio.jpg", width: 1024, height: 683 }],
+      // La imagen al compartir la genera `app/opengraph-image.png`: la aérea con
+      // la marca y el claim encima. Antes se compartía la foto pelada, sin decir
+      // de quién era ni qué se alquilaba — y es lo que ve quien recibe el enlace
+      // por WhatsApp o lo abre desde un anuncio.
     },
     twitter: { card: "summary_large_image" },
   };
@@ -177,14 +190,8 @@ export default async function Layout(
               gap: 24, height: 64, color: "var(--papel)",
             }}
           >
-            <a
-              href={href("home", lang)}
-              style={{
-                textDecoration: "none", fontFamily: "var(--mono)", fontSize: 12,
-                letterSpacing: ".18em", textTransform: "uppercase", fontWeight: 500,
-              }}
-            >
-              Club Wynwood
+            <a href={href("home", lang)} style={{ textDecoration: "none", color: "var(--papel)" }} aria-label="Club Wynwood">
+              <Marca />
             </a>
 
             <div style={{ display: "flex", gap: 22, alignItems: "center", flexWrap: "wrap" }}>
@@ -227,8 +234,8 @@ export default async function Layout(
               }}
             >
               <div>
-                <div style={{ fontFamily: "var(--mono)", fontSize: 12, letterSpacing: ".18em", textTransform: "uppercase", color: "var(--papel)", paddingBottom: 14 }}>
-                  Club Wynwood
+                <div style={{ color: "var(--papel)", paddingBottom: 14 }}>
+                  <Marca />
                 </div>
                 <p style={{ margin: 0, fontSize: 14, lineHeight: 1.6, color: "var(--texto-3)", maxWidth: "30ch" }}>
                   {es ? VENUE.descriptorEs : VENUE.descriptorEn}.{" "}

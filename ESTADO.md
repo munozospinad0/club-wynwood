@@ -283,6 +283,28 @@ cómo animarlo y unirlo con la voz».
   Regla: **una foto nunca más larga que la distancia al hito siguiente menos 1 s**, y un
   cambio de modo necesita al menos 3 s de voz por delante.
 
+### La marca (8-sep): el símbolo, el favicon y la tarjeta al compartir
+
+Daniel enseñó la pestaña del navegador con el globo gris por defecto: «quiero que esto tenga
+logo». No había **ningún** icono en el proyecto, y la marca era solo la palabra en Geist Mono.
+
+- **El símbolo es la palapa con las proporciones reales del predio** (`lib/recinto.geo.ts`):
+  cumbrera 14 sobre vano 54 (0,26) y 23 ft de alto de techo sobre 54 (0,43). Un monograma
+  «CW» habría sido cualquier club y a 16 px una mancha. Techo en ocre (la paja es ocre y el
+  ocre es el acento del sistema), postes y suelo en papel a un hairline.
+- `components/Marca.tsx` exporta `Simbolo` y `Marca`: barra, pie, cabecera del cine, portada
+  del vídeo y tarjeta final. `app/icon.svg` es el favicon (con fondo tinta, para que se vea
+  en cualquier tema); si se cambia la geometría en el componente hay que cambiarla ahí
+  también, son diez números.
+- `app/apple-icon.png` y `app/opengraph-image.png` los genera **`.qa/marca.cjs`** con
+  Playwright: la tarjeta lleva marca, claim, dirección y el dibujo del recinto sin rótulos
+  (con rótulos se cortan contra el borde). Comprobación: `.qa/ver-marca.sh`.
+- **Trampa que costaba la imagen al compartir:** sin `metadataBase`, Next resuelve
+  `opengraph-image` contra `http://localhost:3000` y el enlace llega sin imagen a WhatsApp o
+  a un anuncio. Se ata a la misma `BASE` de `lib/i18n.ts`.
+- Trampa de Playwright: `file://` está bloqueado desde una página cargada con `setContent`;
+  la imagen del dibujo va incrustada como data URI.
+
 ### Séptima tanda del 7-sep (noche): las correcciones de las notas de Daniel
 
 Notas de Daniel, en su orden, y qué se hizo:

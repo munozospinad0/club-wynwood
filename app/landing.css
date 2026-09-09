@@ -78,6 +78,14 @@
 }
 
 .lp-acciones { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+/* Apilados en un teléfono, cada botón tomaba el ancho de su texto: «TECHNICAL
+   TOUR · 3 MIN» salía más largo que «REQUEST AVAILABILITY» y el escalón se lee
+   como descuido. Al ancho completo quedan alineados y, de paso, con más área
+   donde acertar con el pulgar. */
+@media (max-width: 520px) {
+  .lp-acciones { flex-direction: column; align-items: stretch; }
+  .lp-acciones > * { text-align: center; }
+}
 .boton-fantasma {
   background: transparent;
   color: var(--tinta);

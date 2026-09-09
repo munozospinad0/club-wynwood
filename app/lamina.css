@@ -1172,6 +1172,15 @@
     gap: 6px 6px;
   }
   .lam.cine .rec-boton { padding: 8px 11px; font-size: 12px; }
+
+  /* Los mandos envueltos ocupan una fila más, y esa fila se la quitaban al
+     subtítulo: la frase quedaba cortada por la mitad justo debajo. El alto de
+     una pantalla de teléfono es un presupuesto cerrado, así que el dibujo cede
+     lo que los mandos necesitan. Sigue siendo el elemento más grande de la
+     pantalla; la frase que se está narrando no puede quedar a medias. */
+  .lam.cine .lam-fig { width: min(100%, 41vh); }
+  .cine-sub { padding: 10px 14px 6px; }
+  .cine-frase { font-size: 17px; }
 }
 
 /* ── el cierre: el formulario dentro del cine ─────────────────────────────── */

@@ -84,7 +84,15 @@ export default async function Landing({ params }: { params: Promise<{ lang: stri
    * técnica; aquí solo hace falta lo que se escanea. La fuente sigue siendo
    * `venue.ts`, así que no hay una segunda versión de la verdad.
    */
-  const corta = (v: string) => v.split(/\s*[·,]\s*/)[0].trim();
+  /**
+   * ⚠️ Se parte por «·» y NUNCA por la coma a secas: en inglés la coma es el
+   * separador de millares, así que «~22,000 sq ft» se quedaba en «~22». Solo
+   * después, si lo que queda sigue siendo una frase, se corta en la coma.
+   */
+  const corta = (v: string) => {
+    const primero = v.split("·")[0].trim();
+    return primero.length > 18 ? primero.split(",")[0].trim() : primero;
+  };
   const clave = ["superficie", "aforo", "techada", "cabanas"] as const;
   const cifras = clave
     .map((c) => FICHA.find((f) => f.clave === c))

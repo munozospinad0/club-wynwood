@@ -207,6 +207,25 @@ const JARDIN_FT2 = 18000;
  */
 const COLA_CAPITULO = 1.7;
 
+/**
+ * Cuánto se espera antes de empezar a precargar las fotos del recorrido.
+ *
+ * No es un número mágico: es la ventaja que se le da al MP3 de la voz del
+ * primer capítulo para que llegue antes de que ninguna imagen le dispute el
+ * ancho de banda. Sin esta pausa, en un teléfono la voz arranca tarde o no
+ * arranca, y el recorrido parece mudo aunque el audio esté bien publicado.
+ */
+const VENTAJA_AUDIO_MS = 1200;
+
+/**
+ * Cuánto se le da al audio para arrancar antes de sospechar, y el techo a
+ * partir del cual se da por perdido aunque siga descargando. El valor viejo era
+ * de 3 s de un solo golpe y apagaba la voz de la sesión entera; ver el vigilante
+ * más abajo.
+ */
+const ESPERA_AUDIO_MS = 9000;
+const TECHO_AUDIO_MS = 25000;
+
 declare global {
   interface Window {
     /** Lo escribe el modo de grabación: cuándo empezó cada capítulo, en reloj de pared. */
@@ -507,18 +526,47 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
    * segundos sin que el tiempo se mueva y se pasa al reloj estimado: se pierde
    * el sincronismo fino, no se pierde el recorrido.
    */
+  /**
+   * EL VIGILANTE DEL AUDIO. Aquí estaba por qué el recorrido sonaba mudo.
+   *
+   * Antes daba **tres segundos** y, si el audio no había avanzado, apagaba la
+   * voz de forma **definitiva** para el resto de la sesión. Tres segundos es
+   * muy poco para el primer MP3 en un teléfono, y era imposible de cumplir
+   * mientras las doce fotos del recorrido se descargaban en paralelo (ver
+   * `precargarFotos`). Resultado: el vigilante saltaba casi siempre, el
+   * recorrido caía al reloj estimado, y quedaba mudo aunque el audio estuviera
+   * perfectamente publicado y se sirviera bien. Los dos síntomas que parecían
+   * distintos —«va lento» y «no tiene audio»— eran el mismo problema.
+   *
+   * Ahora distingue las dos situaciones que antes se confundían:
+   *
+   * - **Todavía descargando** no es lo mismo que **roto**. Si el elemento sigue
+   *   pidiendo datos y aún no tiene suficientes para reproducir, se espera.
+   * - **Callado y sin descargar nada** sí es un fallo, y ahí se cae al reloj.
+   *
+   * Y hay un techo, para que un audio que nunca llega no deje el recorrido
+   * congelado esperándolo: pasado ese punto se sigue sin voz, que es
+   * exactamente lo que el componente ya sabe hacer.
+   */
   useEffect(() => {
     if (!activo || !sonando || hayAudio !== true) return;
     const partida = segundo;
-    const tm = setTimeout(() => {
+    const desde = Date.now();
+    const iv = window.setInterval(() => {
       const el = audio.current;
-      const avanzo = el ? el.currentTime > partida + 0.05 : false;
-      if (!avanzo) {
-        console.warn("[recorrido] el audio no avanza; se sigue con el reloj estimado");
-        setHayAudio(false);
-      }
-    }, 3000);
-    return () => clearTimeout(tm);
+      if (!el) return;
+      if (el.currentTime > partida + 0.05) { window.clearInterval(iv); return; }
+      const espera = Date.now() - desde;
+      if (espera < ESPERA_AUDIO_MS) return;
+      // NETWORK_LOADING (2) con readyState por debajo de HAVE_FUTURE_DATA (3)
+      // significa que el navegador sigue trayendo el MP3. No está roto.
+      const bajando = el.networkState === 2 && el.readyState < 3;
+      if (bajando && espera < TECHO_AUDIO_MS) return;
+      window.clearInterval(iv);
+      console.warn("[recorrido] el audio no arranca; se sigue con el reloj estimado");
+      setHayAudio(false);
+    }, 1500);
+    return () => window.clearInterval(iv);
     // `segundo` en las dependencias a propósito: mientras avance, el vigilante
     // se reinicia y nunca salta. Solo salta si deja de avanzar.
   }, [activo, sonando, hayAudio, segundo]);
@@ -665,6 +713,53 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
    */
   const [portada, setPortada] = useState(false);
 
+  /**
+   * LAS FOTOS DEL RECORRIDO, PEDIDAS CON CABEZA.
+   *
+   * Antes se pedían **las doce de golpe y en crudo**: un `new Image()` por cada
+   * `/assets/*.jpg`, que son unos 2,5 MB de JPEG sin optimizar saliendo a la
+   * vez, en el mismo instante en que el audio del primer capítulo tiene que
+   * cargar y empezar a sonar.
+   *
+   * Eso hacía daño por los dos lados a la vez, y explica dos síntomas que
+   * parecían distintos:
+   *
+   * - **El recorrido parecía mudo.** Con el ancho de banda repartido entre doce
+   *   descargas, el MP3 de la voz llegaba tarde; el `play()` se quedaba
+   *   esperando datos y el capítulo avanzaba en silencio. En un teléfono con
+   *   red normal, siempre.
+   * - **Las fotos tampoco llegaban antes.** Doce peticiones en paralelo se
+   *   estorban entre ellas: la primera foto, que es la única que hace falta en
+   *   los primeros segundos, competía con otras once que no se ven hasta
+   *   minutos después.
+   *
+   * Ahora van por el **optimizador de imágenes**, que las sirve en WebP o AVIF
+   * al ancho que de verdad se ve —la diferencia contra el JPEG original es de
+   * varias veces— y **de una en una**: la siguiente arranca cuando termina la
+   * anterior. Encadenarlas así se auto-regula en conexiones lentas, no satura
+   * nada, y deja la primera foto lista mucho antes que el método anterior.
+   *
+   * El retraso inicial es deliberado: le da ventaja al audio, que es lo que
+   * decide si la voz arranca a tiempo o el recorrido parece roto.
+   */
+  const precargando = useRef(false);
+  const precargarFotos = useCallback(() => {
+    if (precargando.current) return;
+    precargando.current = true;
+    const rutas = Object.values(FOTOS).map(
+      (f) => `/_next/image?url=${encodeURIComponent(f.src)}&w=1200&q=70`
+    );
+    let i = 0;
+    const siguiente = () => {
+      if (i >= rutas.length) return;
+      const img = document.createElement("img");
+      img.onload = siguiente;
+      img.onerror = siguiente; // una foto que falle no puede parar la cadena
+      img.src = rutas[i++];
+    };
+    window.setTimeout(siguiente, VENTAJA_AUDIO_MS);
+  }, []);
+
   const arrancar = useCallback((desde: number) => {
     // La sección que contiene el cine puede no haberse revelado (botón de la
     // portada en un teléfono, o ?recorrido=auto): se revela a mano, porque un
@@ -682,9 +777,7 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
   }, [grabando]);
 
   const alEmpezar = useCallback((desde = 0) => {
-    // Las fotos se piden ahora, para que al llegar su frase ya estén: una foto
-    // que entra a medio cargar es un cuadro gris donde tenía que haber palmeras.
-    for (const f of Object.values(FOTOS)) { const i = new Image(); i.src = f.src; }
+    precargarFotos();
     // La sección que contiene el cine puede no haberse revelado todavía (botón
     // de la portada en un teléfono): se revela a mano, porque un ancestro con
     // transform anula el position: fixed del cine. Refuerza a `.rv:has(.lam.cine)`.
@@ -695,7 +788,7 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
       return;
     }
     arrancar(desde);
-  }, [grabando, arrancar]);
+  }, [grabando, arrancar, precargarFotos]);
 
   // La portada del sitio tiene un botón «Ver el recorrido»: manda este evento.
   useEffect(() => {

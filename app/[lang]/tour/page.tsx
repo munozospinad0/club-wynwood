@@ -146,6 +146,48 @@ export default async function Landing({ params }: { params: Promise<{ lang: stri
       {/* ── el recorrido: lo que ningún competidor tiene ────────────────── */}
       <Recorrido lang={lang} />
 
+      {/**
+        * TRES FOTOS, NO UNA GALERÍA, Y LAS TRES DEL EXTERIOR.
+        *
+        * Después del recorrido la persona ya entiende el sitio; lo que le falta
+        * es creérselo. Tres fotografías reales bastan y una galería sobra: cada
+        * foto de más es una razón más para quedarse mirando en vez de escribir.
+        *
+        * Las tres cuentan una frase entera: **montado** (truss, altavoces y
+        * luces colgados de los cabios, que demuestra que aquí se produce de
+        * verdad), **el detalle** (las cabañas a ras de suelo, que es lo que
+        * nadie más publica) y **lleno de noche**, que es la única prueba de que
+        * el sitio funciona cuando importa.
+        *
+        * ⚠️ **Aquí no entra ni una foto del edificio.** El material del
+        * inmueble avisa de algo que es fácil de romper sin darse cuenta: el
+        * exterior y el edificio son dos activos con dos públicos, y mezclarlos
+        * en la misma pieza quema el mensaje. Quien llega desde un anuncio de
+        * eventos viene a ver un jardín; una nave industrial por dentro, puesta
+        * en medio, le hace dudar de si llegó al sitio correcto. El edificio
+        * aparece más abajo, en «los dos usos», donde ya está dicho que es otra
+        * cosa que se alquila aparte.
+        */}
+      <section className="lp-tira">
+        {[
+          { src: "/assets/palapa-sonido.jpg", w: 1600, h: 1200,
+            es: "Bajo la palapa, montada: truss, altavoces y luces colgados de los cabios",
+            en: "Under the structure, rigged: truss, speakers and lights hung from the rafters" },
+          { src: "/assets/cabanas-fila.jpg", w: 930, h: 614,
+            es: "La hilera de cabañas: pérgolas blancas, cortinas y sofás contra el muro verde",
+            en: "The cabana row: white pergolas, curtains and sofas against the green wall" },
+          { src: "/assets/recinto-noche.jpg", w: 1920, h: 1080,
+            es: "El recinto al anochecer, durante un evento",
+            en: "The site at dusk, during an event" },
+        ].map((f) => (
+          <figure key={f.src}>
+            <Image src={f.src} alt={es ? f.es : f.en} width={f.w} height={f.h}
+                   sizes="(max-width: 860px) 100vw, 33vw" />
+            <figcaption className="ojo">{es ? f.es : f.en}</figcaption>
+          </figure>
+        ))}
+      </section>
+
       {/* ── lo que NO se incluye, antes de pedir nada ───────────────────── */}
       <section className="lp-honesto">
         <h2>{t.honesto.titulo}</h2>
@@ -162,16 +204,31 @@ export default async function Landing({ params }: { params: Promise<{ lang: stri
         <p className="lp-nota">{t.honesto.pie}</p>
       </section>
 
-      {/* ── los dos usos: el segundo casi nadie sabe que existe ─────────── */}
+      {/**
+        * LOS DOS USOS, Y AQUÍ SÍ EL EDIFICIO.
+        *
+        * Este es el único sitio de la página donde el edificio puede aparecer
+        * sin confundir a nadie, porque el rótulo va delante: quien lea «Oficina»
+        * y vea una planta diáfana entiende que le están enseñando otra cosa, no
+        * el jardín que acaba de recorrer. Las fotos van pequeñas y a la misma
+        * altura, como ilustración de cada uso y no como argumento propio.
+        *
+        * El segundo uso casi nadie sabe que existe, y es la mitad del inmueble.
+        */}
       <section className="lp-usos">
         <h2>{t.usosTitulo}</h2>
         <div className="lp-tres">
-          {USOS.map((u) => (
-            <article key={u.clave}>
-              <p className="ojo">{es ? u.es : u.en}</p>
-              <p>{es ? u.detalleEs : u.detalleEn}</p>
-            </article>
-          ))}
+          {USOS.map((u) => {
+            const f = FOTO_USO[u.clave];
+            return (
+              <article key={u.clave}>
+                <Image src={f.src} alt={es ? f.es : f.en} width={f.w} height={f.h}
+                       sizes="(max-width: 720px) 100vw, 33vw" />
+                <p className="ojo">{es ? u.es : u.en}</p>
+                <p>{es ? u.detalleEs : u.detalleEn}</p>
+              </article>
+            );
+          })}
         </div>
       </section>
 
@@ -198,6 +255,24 @@ export default async function Landing({ params }: { params: Promise<{ lang: stri
     </>
   );
 }
+
+/**
+ * Una foto por uso, atada a la clave de `USOS` y no al orden del array: si
+ * mañana se añade un cuarto uso o se reordena la lista, esto no se descoloca —
+ * falta la entrada y TypeScript lo dice, que es mejor que enseñar la cocina
+ * debajo del rótulo «Oficina».
+ */
+const FOTO_USO: Record<(typeof USOS)[number]["clave"], { src: string; w: number; h: number; es: string; en: string }> = {
+  evento: { src: "/assets/flyer-palapa-lounge.jpg", w: 935, h: 614,
+    es: "Bajo la palapa, montada como lounge, con barra y guirnaldas",
+    en: "Under the structure, set up as a lounge, with a bar and string lights" },
+  oficina: { src: "/assets/edificio-doble-altura.jpg", w: 3214, h: 1924,
+    es: "Dentro del edificio: planta diáfana de doble altura y despachos acristalados al fondo",
+    en: "Inside the building: an open double-height floor and glass-walled offices at the back" },
+  cocina: { src: "/assets/edificio-cocina.jpg", w: 740, h: 428,
+    es: "La cocina del edificio, equipada, con isla y nevera industrial",
+    en: "The building's kitchen, equipped, with an island and a commercial fridge" },
+};
 
 /**
  * El texto vive aquí y no en `contenido.ts` a propósito: `PAGINAS` está tipado

@@ -26,6 +26,12 @@ const FLYER = { es: "flyer comercial del predio, 2026", en: "the property's comm
 const DRON = { es: "fotografía aérea del predio", en: "aerial photograph of the site" };
 const SITIO = { es: "fotografía del sitio", en: "site photograph" };
 const CALLE = { es: "fotografía del inmueble desde la calle, 2026", en: "photograph of the building from the street, 2026" };
+/**
+ * Material de la ficha comercial del inmueble (Newmark, 2026). Se cita la
+ * procedencia porque el sitio distingue lo propio de lo ajeno, y porque para
+ * usarlas en pauta pagada hay que confirmarlo con el broker.
+ */
+const BROKER = { es: "ficha comercial del inmueble, 2026", en: "the property's commercial listing, 2026" };
 
 export const GALERIA: FotoGaleria[] = [
   /**
@@ -62,6 +68,40 @@ export const GALERIA: FotoGaleria[] = [
     alt: { es: "Un montaje de sonido e iluminación bajo la palapa", en: "A sound and lighting setup under the structure" } },
   { id: "cabanas", src: "/assets/flyer-cabanas.jpg", w: 930, h: 614, fuente: FLYER,
     alt: { es: "Las cabañas: pérgolas con cortinas y sofás entre las palmeras", en: "The cabanas: pergolas with curtains and sofas among the palms" } },
+  { id: "cabanas-fila", src: "/assets/cabanas-fila.jpg", w: 930, h: 614, fuente: SITIO,
+    alt: { es: "La hilera de cabañas a ras de suelo: pérgolas blancas, cortinas, sofás y el muro verde detrás",
+           en: "The cabana row at ground level: white pergolas, curtains, sofas and the green wall behind" } },
+  { id: "palapa-sonido", src: "/assets/palapa-sonido.jpg", w: 1600, h: 1200, fuente: SITIO,
+    alt: { es: "Bajo la palapa, montada: truss, altavoces y luces colgados de los cabios",
+           en: "Under the structure, rigged: truss, speakers and lights hung from the rafters" } },
   { id: "noche", src: "/assets/recinto-noche.jpg", w: 1920, h: 1080, fuente: SITIO,
     alt: { es: "El recinto al anochecer durante un evento, visto desde arriba", en: "The site at dusk during an event, seen from above" } },
+
+  /**
+   * EL EDIFICIO. Llegaron el 9-sep-2026 en el paquete que recopiló el material
+   * público del inmueble, y son las primeras que existen: hasta ahora la zona 02
+   * se explicaba solo con el dibujo y con palabras, y quien quería ver el salón
+   * o la cocina no tenía nada que mirar.
+   *
+   * Las dos de máxima resolución son la fachada norte y el salón de doble
+   * altura. La cocina y la recepción vienen de la ficha comercial y son de
+   * 740 px: sirven a tamaño de galería y no para ocupar el ancho de la página.
+   * Están todas comprobadas una a una: **ninguna muestra al operador ni sus
+   * atracciones**, que es la condición que descarta a la mitad del material.
+   */
+  { id: "edificio-fachada", src: "/assets/edificio-fachada.jpg", w: 3117, h: 2219, fuente: BROKER,
+    alt: { es: "El edificio desde el norte: nave de dos niveles, zócalo azul y ventanas altas",
+           en: "The building from the north: a two-level warehouse, blue base and clerestory windows" } },
+  { id: "edificio-salon", src: "/assets/edificio-doble-altura.jpg", w: 3214, h: 1924, fuente: BROKER,
+    alt: { es: "Dentro del edificio: planta diáfana de doble altura, suelo pulido y despachos acristalados al fondo",
+           en: "Inside the building: an open double-height floor, polished concrete and glass-walled offices at the back" } },
+  { id: "edificio-cocina", src: "/assets/edificio-cocina.jpg", w: 740, h: 428, fuente: BROKER,
+    alt: { es: "La cocina del edificio, equipada, con isla y nevera industrial",
+           en: "The building's kitchen, equipped, with an island and a commercial fridge" } },
+  { id: "edificio-recepcion", src: "/assets/edificio-recepcion.jpg", w: 739, h: 428, fuente: BROKER,
+    alt: { es: "La recepción del edificio: mostrador curvo y puertas de vidrio a la calle",
+           en: "The building's reception: a curved counter and glass doors to the street" } },
+  { id: "contexto", src: "/assets/contexto-predio.jpg", w: 2014, h: 1913, fuente: DRON,
+    alt: { es: "El predio señalado sobre la manzana, con el skyline de Miami al fondo",
+           en: "The property outlined on its block, with the Miami skyline behind" } },
 ];

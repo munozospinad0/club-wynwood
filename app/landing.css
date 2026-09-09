@@ -100,6 +100,39 @@
 }
 .lp-foto figcaption { padding-top: 10px; color: var(--texto-3); }
 
+/* ── las tres fotos ─────────────────────────────────────────────────────── */
+.lp-tira {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(10px, 1.6vw, 20px);
+  max-width: var(--reja);
+  margin: 0 auto;
+  padding: clamp(26px, 4vw, 52px) clamp(18px, 4vw, 40px) 0;
+}
+/* En un teléfono no se apilan las tres a lo alto: se deslizan. Tres fotos
+   apiladas son tres pantallas de scroll antes de llegar al formulario, y ese
+   scroll se paga en clics perdidos. */
+@media (max-width: 860px) {
+  .lp-tira {
+    grid-template-columns: repeat(3, 78%);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .lp-tira::-webkit-scrollbar { display: none; }
+  .lp-tira figure { scroll-snap-align: start; }
+}
+.lp-tira figure { margin: 0; }
+.lp-tira img {
+  width: 100%;
+  height: clamp(190px, 22vw, 270px);
+  object-fit: cover;
+  display: block;
+  filter: saturate(0.94) contrast(1.04);
+}
+.lp-tira figcaption { padding-top: 8px; color: var(--texto-3); line-height: 1.5; }
+
 /* ── el bloque honesto: lo que no se incluye, antes de pedir nada ───────── */
 .lp-honesto,
 .lp-usos,
@@ -133,6 +166,16 @@
    que importa de verdad en la página: lo que entra y lo que no. */
 .lp-dos > div:first-child li::marker { color: var(--ocre); }
 
+/* La foto de cada uso: baja y del mismo alto en los tres, para que los rótulos
+   caigan en la misma línea y las tres columnas se lean como una sola pieza. */
+.lp-usos article img {
+  width: 100%;
+  height: clamp(130px, 15vw, 180px);
+  object-fit: cover;
+  display: block;
+  margin-bottom: 12px;
+  filter: saturate(0.94) contrast(1.04);
+}
 .lp-usos article p:last-child { margin: 8px 0 0; line-height: 1.6; color: var(--texto); }
 
 .lp-pedir { padding-bottom: clamp(36px, 6vw, 76px); }

@@ -38,7 +38,7 @@ export const PAGINAS: Pagina[] = [
     h1: { es: "El Jardín", en: "The Garden" },
     respuesta: {
       es: "El Jardín son ~18.000 ft² de exterior continuo en Wynwood, Miami: la superficie mayor del recinto y la que admite montaje libre. Un paseo pavimentado baja de la puerta del edificio al estacionamiento, con césped artificial del lado de la palapa y arena del lado de las cabañas, dos hileras de palmeras reales, un área de arena con mesas de picnic y cuatro cabañas amuebladas.",
-      en: "The Garden is ~18,000 sq ft of continuous outdoor space in Wynwood, Miami: the larger surface of the site and the one that takes an open build. A paved walk runs from the building door down to the parking lot, with artificial turf on both sides, two rows of real palms, a sand area with picnic tables and four furnished cabanas.",
+      en: "The Garden is ~18,000 sq ft of continuous outdoor space in Wynwood, Miami: the larger surface of the site and the one that takes an open build. A paved walk runs from the building door down to the parking lot, with artificial turf on the structure's side and sand on the cabanas' side, two rows of real palms, picnic tables and four furnished cabanas.",
     },
     title: {
       es: "El Jardín — ~18.000 ft² al aire libre en Wynwood | Club Wynwood",
@@ -69,7 +69,7 @@ export const PAGINAS: Pagina[] = [
         titulo: { es: "Qué hay en el suelo", en: "What's on the ground" },
         cuerpo: {
           es: "Paseo pavimentado central de la puerta al estacionamiento, con césped artificial a un lado y arena al otro. Setos perimetrales cierran el recinto y mesas de picnic fijas completan el mobiliario existente. Es superficie firme: no hay que resolver piso antes de montar.",
-          en: "A central paved walk running end to end, with artificial turf on both sides. Perimeter hedges close the site and fixed picnic tables complete the existing furniture. It is firm ground: you do not have to solve flooring before you build.",
+          en: "A central paved walk from the door to the parking lot, with artificial turf on one side and sand on the other. Perimeter hedges close the site and fixed picnic tables complete the existing furniture. The walk is firm ground: you do not have to solve flooring before you build.",
         },
       },
       {
@@ -552,8 +552,12 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "El paseo es el eje del montaje", en: "The walk is the spine of the build" },
         cuerpo: {
-          es: "Un mercado se ordena a lo largo de un recorrido, y aquí ya existe: pavimento continuo de extremo a extremo, con césped a los dos lados para los módulos. No hay que resolver piso ni trazar circulación desde cero, y eso son horas de montaje que no pagas.",
-          en: "A market organises itself along a route, and here one already exists: continuous paving end to end, with turf on both sides for the modules. You do not have to solve flooring or draw circulation from scratch, and that is load-in hours you do not pay for.",
+          /* Decía «césped a los dos lados» en los dos idiomas, que es la
+             redacción anterior al 7-sep: a un lado hay césped y al otro arena,
+             y para un mercado la diferencia importa —un módulo con patas no se
+             planta igual sobre arena—. */
+          es: "Un mercado se ordena a lo largo de un recorrido, y aquí ya existe: pavimento continuo de la puerta al estacionamiento, con césped a un lado y arena al otro para los módulos. No hay que resolver piso ni trazar circulación desde cero, y eso son horas de montaje que no pagas.",
+          en: "A market organises itself along a route, and here one already exists: continuous paving from the door to the parking lot, with turf on one side and sand on the other for the modules. You do not have to solve flooring or draw circulation from scratch, and that is load-in hours you do not pay for.",
         },
       },
       {
@@ -687,8 +691,13 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "Las cabañas quedan a mano", en: "The cabanas are right there" },
         cuerpo: {
-          es: "Las cuatro cabañas amuebladas están en el jardín, junto a la palapa. Aunque el alquiler sea solo del Tiki Hut, conviene preguntar en la visita si se pueden incluir: para un evento con niños o con gente mayor son la zona de descanso que suele faltar.",
-          en: "The four furnished cabanas sit in the garden, next to the structure. Even if you only book the Tiki Hut, it is worth asking at the visit whether they can be included: for an event with children or older guests they are the rest area that is usually missing.",
+          /* Decía «conviene preguntar si se pueden incluir», y eso da a entender
+             que son mobiliario opcional. No lo son: van con el inmueble y están
+             fijas donde están, así que no se pueden mover ni sacar del plano.
+             Un productor que planifique el montaje creyendo que puede retirarlas
+             pierde el día del montaje descubriéndolo. */
+          es: "Las cuatro cabañas amuebladas están en el jardín, junto a la palapa. Son fijas: van con el inmueble y no se mueven, así que cuentan en el plano de montaje aunque solo alquiles el Tiki Hut. Para un evento con niños o con gente mayor son la zona de descanso que suele faltar.",
+          en: "The four furnished cabanas sit in the garden, next to the structure. They are fixed: they come with the property and do not move, so they count in your layout even if you only book the Tiki Hut. For an event with children or older guests they are the rest area that is usually missing.",
         },
       },
     ],

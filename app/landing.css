@@ -46,11 +46,22 @@
 
 /* Las cuatro cifras verificadas. En fila, sin tarjetas: son datos, no
    argumentos, y encajonarlos les daría un aire de folleto que el resto del
-   sitio evita a propósito. */
+   sitio evita a propósito.
+
+   DOS Y DOS, FIJO. Con `flex-wrap` las cuatro cabían por los pelos y la cuarta
+   —«4 amuebladas»— se caía sola a una segunda línea: tres arriba y una debajo
+   se lee como un error de maquetación, no como una decisión. Con
+   `repeat(auto-fit, minmax(...))` seguía saliendo tres y una, porque el ancho
+   disponible depende de la columna del hero y queda justo en la frontera.
+
+   Así que se fija el 2×2 en vez de perseguir las cuatro en fila: ocupa el mismo
+   alto que el 3+1 que había, deja respirar valores largos como «~22 000 ft²» y
+   sobre todo no depende de que quepan — que es la clase de equilibrio que se
+   rompe el día que una cifra cambia de dígitos. */
 .lp-cifras {
-  display: flex;
-  flex-wrap: wrap;
-  gap: clamp(14px, 2.4vw, 30px);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(14px, 2vw, 22px) clamp(14px, 2.4vw, 26px);
   list-style: none;
   margin: 0 0 26px;
   padding: 16px 0;
@@ -179,6 +190,58 @@
 .lp-usos article p:last-child { margin: 8px 0 0; line-height: 1.6; color: var(--texto); }
 
 .lp-pedir { padding-bottom: clamp(36px, 6vw, 76px); }
+
+/* El formulario y, al lado, qué pasa después de enviarlo. La proporción no es
+   1:1: el formulario manda y la columna de al lado acompaña. */
+.lp-pedir-rejilla {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  gap: clamp(24px, 5vw, 64px);
+}
+/* Debajo de 900 px se apila, y la explicación va PRIMERO: en un teléfono, leer
+   por qué merece la pena escribir antes de ver nueve campos cambia si se
+   escribe o no. En escritorio el orden es el natural porque van lado a lado. */
+@media (max-width: 900px) {
+  .lp-pedir-rejilla { grid-template-columns: minmax(0, 1fr); gap: 26px; }
+  .lp-despues { order: -1; }
+}
+
+.lp-despues ol {
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 0;
+  counter-reset: paso;
+}
+.lp-despues li {
+  counter-increment: paso;
+  padding: 16px 0;
+  border-top: 1px solid var(--regla);
+}
+.lp-despues li:last-child { border-bottom: 1px solid var(--regla); }
+/* La numeración es información, no adorno: son tres pasos en orden y el orden
+   importa —primero contestamos, después se visita, y el precio sale de ahí—. */
+.lp-despues strong::before {
+  content: counter(paso, decimal-leading-zero);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .18em;
+  color: var(--ocre);
+  margin-right: 10px;
+  vertical-align: 1px;
+}
+.lp-despues strong {
+  display: block;
+  font-weight: 600;
+  font-size: 14.5px;
+  line-height: 1.35;
+  margin-bottom: 5px;
+}
+.lp-despues span {
+  display: block;
+  font-size: 13.5px;
+  line-height: 1.62;
+  color: var(--texto);
+}
 
 .lp-pie {
   display: flex;

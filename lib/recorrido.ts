@@ -1,5 +1,6 @@
 import guion from "./recorrido.guion.json";
 import type { Idioma } from "@/lib/i18n";
+import { ANCHO, optimizada } from "@/lib/imagen";
 
 /**
  * EL RECORRIDO GUIADO. El guion vive en `recorrido.guion.json` y lo leen dos
@@ -91,9 +92,8 @@ export interface Hito {
  * problema; 1200 px se ve nítido en cualquier pantalla y pesa una fracción del
  * original.
  */
-export const ANCHO_FOTO_RECORRIDO = 1200;
-export const fotoOptimizada = (src: string) =>
-  `/_next/image?url=${encodeURIComponent(src)}&w=${ANCHO_FOTO_RECORRIDO}&q=70`;
+export const ANCHO_FOTO_RECORRIDO = ANCHO.grande;
+export const fotoOptimizada = (src: string) => optimizada(src, ANCHO_FOTO_RECORRIDO);
 
 export const FOTOS = {
   /* La aérea completa lleva el rótulo del operador en el edificio del fondo.

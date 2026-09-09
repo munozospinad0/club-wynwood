@@ -33,6 +33,16 @@ export function GET() {
   const verificados = FICHA.filter((f) => f.estado === "verificado");
   const enVisita = FICHA.filter((f) => f.estado === "en-visita");
 
+  /**
+   * El número sale de la ficha, no de esta línea: ver el aviso del bloque «Qué
+   * incluye y qué no». Se extrae solo la cifra («4 amuebladas, en el jardín» →
+   * «4») y la frase se compone aquí, porque el valor de la ficha está redactado
+   * para leerse en una tabla y no dentro de una oración. Si la fila o la cifra
+   * desaparecieran, se dice lo genérico antes que inventar un número.
+   */
+  const nCabanas = FICHA.find((f) => f.clave === "cabanas")?.valorEs.match(/\d+/)?.[0];
+  const cabanas = nCabanas ? `las ${nCabanas} cabañas amuebladas` : "las cabañas amuebladas";
+
   const paginas = (Object.keys(RUTAS) as ClaveRuta[]).flatMap((clave) =>
     IDIOMAS.map((l) => `- [${clave} · ${l}](${url(clave, l)})`)
   );
@@ -60,9 +70,23 @@ export function GET() {
       `${e.cubierto ? "techado" : "al aire libre"}. ${e.resumenEs}`
     )),
 
+    /**
+     * ⚠️ ESTE BLOQUE DECÍA «LAS OCHO CABAÑAS», Y SE PUBLICÓ ASÍ.
+     *
+     * El 9-sep-2026 se corrigió el número en todo el sitio —ficha, dibujos,
+     * prosa, JSON-LD y hasta la voz del recorrido— y esta línea sobrevivió,
+     * porque es la única del archivo escrita a mano en vez de generada desde
+     * `FICHA`. Justo aquí: el archivo que existe para que un modelo resuma el
+     * negocio sin rastrear el HTML, y que por tanto propaga el error con más
+     * autoridad que ninguna página.
+     *
+     * Por eso ahora se compone desde la fila `cabanas` de la ficha. Si el dato
+     * vuelve a cambiar, esta línea cambia sola. La cabecera del archivo ya
+     * avisaba de que un llms.txt desincronizado es peor que no tenerlo.
+     */
     bloque("Qué incluye y qué no", [
-      "- INCLUIDO: el espacio exterior (jardín y estructura techada), las ocho",
-      "  cabañas amuebladas y las mesas de picnic fijas.",
+      `- INCLUIDO: el espacio exterior (jardín y estructura techada), ${cabanas}`,
+      "  y las mesas de picnic fijas.",
       "- NO INCLUIDO: producción, catering, sonido, iluminación y mobiliario",
       "  adicional. Los aporta el cliente o su productora.",
       `- IMPORTANTE: ${NO_INCLUIDO.join(", ")} y demás atracciones que puedan verse`,

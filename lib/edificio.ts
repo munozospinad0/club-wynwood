@@ -77,7 +77,15 @@ export const COTAS = {
   alturaDobleFt: 22,
 } as const;
 
-/** Lo que de verdad decide una productora, en un vistazo. */
+/**
+ * Lo que de verdad decide una productora, en un vistazo.
+ *
+ * ⚠️ HOY NO LA CONSUME NINGÚN COMPONENTE (comprobado el 9-sep-2026). Se conserva
+ * porque los datos son buenos y la lámina del edificio acabará usándolos, pero
+ * quien la enchufe tiene que leer antes el aviso de la fila «Cocina»: este array
+ * llegó a afirmar cosas que ninguna fuente sostiene, y precisamente por no estar
+ * publicado nadie las revisaba.
+ */
 export const CLAVES = [
   {
     etiqueta: { es: "Altura libre máxima", en: "Max clear height" },
@@ -92,12 +100,31 @@ export const CLAVES = [
     valor: "12 ft",
     nota: { es: "En el resto del nivel 01.", en: "Across the rest of level 01." },
   },
+  /**
+   * ⚠️ DECÍA «COCINA COMERCIAL CON CAMPANA DE EXTRACCIÓN · 580 ft²», Y NINGUNA
+   * DE LAS TRES COSAS TENÍA FUENTE.
+   *
+   * Comprobado el 9-sep-2026 contra todo el material del inmueble: «campana»,
+   * «hood» y «580» no aparecen ni una vez, ni en el flyer de Newmark de 2026 ni
+   * en el brochure de 2015. Los 580 ft² salían de la lámina ID-SK-01, que este
+   * proyecto cita como fuente y **nadie tiene**: el broker solo publicó la
+   * ID-SK-02. Y la única fotografía que existe de una cocina en el predio
+   * muestra una isla de cuarzo, una nevera doméstica de dos puertas, un
+   * microondas y alacenas: un office dentro de una nave, no una línea de
+   * producción.
+   *
+   * Es la clase de promesa que un catering desmonta en cinco minutos de visita
+   * técnica, y de las que cuestan el contrato. Se baja al nivel que sí aguanta,
+   * el mismo que ya usa la FAQ. El metraje se retira hasta que llegue la lámina
+   * que falta; el recinto se queda, porque la foto prueba que existe.
+   */
   {
     etiqueta: { es: "Cocina", en: "Kitchen" },
-    valor: "580 ft²",
+    /* Guion largo = no hay dato. Es lo cierto mientras falte la lámina ID-SK-01. */
+    valor: "—",
     nota: {
-      es: "Cocina comercial con campana de extracción. Deja de ser «trae tu catering y resuélvete».",
-      en: "Commercial kitchen with an exhaust hood. It stops being “bring your caterer and figure it out”.",
+      es: "Equipada, en el nivel 01. Se suma al alquiler cuando el catering la necesita. Superficie por confirmar.",
+      en: "Equipped, on level 01. It is added to the rental when catering needs it. Area to be confirmed.",
     },
   },
   {

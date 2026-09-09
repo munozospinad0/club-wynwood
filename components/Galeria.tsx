@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { Idioma } from "@/lib/i18n";
 import { GALERIA } from "@/lib/galeria";
+import { ANCHO, optimizada } from "@/lib/imagen";
 import { ev } from "@/lib/medicion";
 
 /**
@@ -75,7 +76,7 @@ export default function Galeria({ lang }: { lang: Idioma }) {
             <li key={f.id} className="gal-item">
               <button type="button" className="gal-boton" onClick={() => abrir(i)} aria-label={`${t.abrir}: ${f.alt[lang]}`}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={f.src} width={f.w} height={f.h} alt={f.alt[lang]} loading="lazy" decoding="async" />
+                <img src={optimizada(f.src, ANCHO.miniatura)} width={f.w} height={f.h} alt={f.alt[lang]} loading="lazy" decoding="async" />
               </button>
               <div className="gal-pie">
                 <span className="gal-n">{String(i + 1).padStart(2, "0")}</span>
@@ -99,7 +100,7 @@ export default function Galeria({ lang }: { lang: Idioma }) {
           {foto && (
             <figure className="gal-visor-marco" key={foto.id}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={foto.src} width={foto.w} height={foto.h} alt={foto.alt[lang]} decoding="async" />
+              <img src={optimizada(foto.src, ANCHO.visor, 78)} width={foto.w} height={foto.h} alt={foto.alt[lang]} decoding="async" />
               <figcaption className="gal-visor-pie">
                 <span className="gal-n">{String((abierta ?? 0) + 1).padStart(2, "0")} / {String(GALERIA.length).padStart(2, "0")}</span>
                 <span>{foto.alt[lang]}</span>

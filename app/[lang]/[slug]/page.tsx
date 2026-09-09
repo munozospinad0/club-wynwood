@@ -7,6 +7,7 @@ import {
   type ClaveRuta, type Idioma,
 } from "@/lib/i18n";
 import { PAGINAS, FAQ, pagina } from "@/lib/contenido";
+import { ENTORNO } from "@/lib/venue";
 import { grafo, breadcrumb, faqPage, localBusiness, eventVenue, webPage } from "@/lib/schema";
 import Calculadora from "@/components/Calculadora";
 import Residencia from "@/components/Residencia";
@@ -220,6 +221,9 @@ export default async function PaginaInterior(
         </div>
       </section>
 
+      {/* El entorno en cifras, solo donde alguien lo está buscando. Ver ENTORNO. */}
+      {CON_ENTORNO.has(clave) && <Entorno lang={lang} />}
+
       {/* La calculadora solo en /aforo-y-montajes/: es su sitio natural y
           repetirla por todo el sitio la convertiria en decoracion. */}
       {clave === "aforos" && (
@@ -245,6 +249,63 @@ export default async function PaginaInterior(
 
       <Seguir lang={lang} actual={clave} />
     </>
+  );
+}
+
+/**
+ * DÓNDE APARECE EL ENTORNO EN CIFRAS.
+ *
+ * En cinco páginas y no en las catorce, porque el dato solo sirve a quien está
+ * decidiendo *dónde*: una marca que evalúa una activación, un pop-up que
+ * necesita saber quién pasa por delante, una productora que justifica la
+ * localización, quien monta durante Art Basel y quien llega leyendo sobre el
+ * barrio. A la novia que busca sitio para su boda, «465 millones de gasto en
+ * comida y bebida» no le dice nada y le alarga la página.
+ */
+const CON_ENTORNO = new Set<ClaveRuta>(["corporativo", "popups", "produccion", "artbasel", "barrio"]);
+
+/**
+ * El barrio en números, con la fuente a la vista.
+ *
+ * Se cita a Newmark en el pie y no se disimula: son las cifras de la ficha
+ * comercial del inmueble, no un estudio propio, y el sitio distingue lo propio
+ * de lo ajeno en todas partes. Decir de quién son las hace más creíbles, no
+ * menos — quien las va a usar en una presentación necesita saber a quién citar.
+ */
+function Entorno({ lang }: { lang: Idioma }) {
+  const es = lang === "es";
+  return (
+    <section style={{ borderBottom: "1px solid var(--regla)" }}>
+      <div className="reja" style={{ paddingBlock: 66 }}>
+        <div className="ojo" style={{ paddingBottom: 16 }}>
+          {es ? "El entorno · " : "The surroundings · "}
+          {es ? ENTORNO.radio.es : ENTORNO.radio.en}
+        </div>
+        <h2 style={{ fontSize: 19, fontFamily: "var(--cuerpo)", fontWeight: 600, letterSpacing: "-.01em", marginBottom: 8, maxWidth: "34ch" }}>
+          {es
+            ? "Quién vive y quién gasta alrededor del predio."
+            : "Who lives and who spends around the site."}
+        </h2>
+        <p style={{ margin: "0 0 28px", fontSize: 15, lineHeight: 1.68, color: "#4a4335", maxWidth: "62ch" }}>
+          {es
+            ? "Wynwood no es solo un barrio de murales: es un distrito de bares, galerías y tiendas con público propio todo el año. Estas son las cifras del área inmediata, las mismas con las que se comercializa el inmueble."
+            : "Wynwood is not only a mural district: it is a neighbourhood of bars, galleries and shops with its own year-round crowd. These are the figures for the immediate area, the same ones the property is marketed with."}
+        </p>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(190px,1fr))", gap: "26px 32px" }}>
+          {ENTORNO.datos.map((d) => (
+            <div key={d.clave}>
+              <div style={{ fontFamily: "var(--display)", fontWeight: 600, fontSize: 27, lineHeight: 1.1, letterSpacing: "-.02em" }}>
+                {es ? d.valorEs : d.valorEn}
+              </div>
+              <div className="ojo" style={{ paddingTop: 8 }}>{es ? d.es : d.en}</div>
+            </div>
+          ))}
+        </div>
+        <p style={{ margin: "28px 0 0", fontSize: 13, color: "var(--texto)" }}>
+          {es ? "Fuente: " : "Source: "}{ENTORNO.fuente}.
+        </p>
+      </div>
+    </section>
   );
 }
 

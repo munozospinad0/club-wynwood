@@ -1,10 +1,27 @@
 /**
  * LA GALERÍA: todas las fotos del predio que se pueden enseñar, en un solo
  * sitio (Daniel, 7-sep-2026: «que haya una zona con las fotos, para poder
- * ver»). Solo entran fotos SIN la marca del operador en cuadro; a las dos que
- * la tenían (`aerea-predio.jpg`, `venue-exterior.webp`) se les retiró el rótulo
- * con `delogo` de ffmpeg. Las `flyer-*` vienen del flyer comercial del predio
- * (Newmark, LoopNet, 2026); las demás, de las fotos del sitio anterior.
+ * ver»). Solo entran fotos SIN la marca del operador en cuadro. Las `flyer-*`
+ * vienen del flyer comercial del predio (Newmark, LoopNet, 2026); las demás, de
+ * las fotos del sitio anterior.
+ *
+ * ⚠️ PENDIENTE, Y AQUÍ DECÍA QUE ESTABA RESUELTO. A `aerea-predio.jpg` y a
+ * `venue-exterior.webp` se les pasó `delogo` de ffmpeg sobre el rótulo del
+ * operador, y este comentario daba eso por «retirado». No lo está: `delogo`
+ * difumina, no reconstruye, y en las dos queda **un parche borroso que se ve a
+ * tamaño natural** — una banda de píxeles arrastrados sobre el mural en la
+ * primera, una mancha sobre el muro del fondo en la segunda.
+ *
+ * Importa más de lo que parece: son las dos fotos más usadas del sitio —diez
+ * huecos en las páginas interiores, la portada, la galería y el recorrido— y
+ * `aerea-predio.jpg` es además la tarjeta de Open Graph, así que el parche
+ * viaja en cada enlace que se comparte por WhatsApp.
+ *
+ * Lo que hace falta es rehacer el retoque con relleno consciente del contenido,
+ * conservando encuadre y dimensiones para no tocar ni una línea de maquetación.
+ * **No sustituirlas por `paseo-palmeras.jpg` ni `palmeras-aerea.jpg`**: son
+ * limpias, pero de proporciones muy distintas (3,2:1 y casi cuadrada) y
+ * romperían los diez huecos y la tarjeta de Open Graph.
  *
  * `w`/`h` son los píxeles reales: la galería reserva el hueco con ellos para
  * que la página no salte al cargar, y el visor nunca amplía por encima de
@@ -95,9 +112,17 @@ export const GALERIA: FotoGaleria[] = [
   { id: "edificio-salon", src: "/assets/edificio-doble-altura.jpg", w: 3214, h: 1924, fuente: BROKER,
     alt: { es: "Dentro del edificio: planta diáfana de doble altura, suelo pulido y despachos acristalados al fondo",
            en: "Inside the building: an open double-height floor, polished concrete and glass-walled offices at the back" } },
+  /**
+   * Decía «nevera industrial» / «a commercial fridge», y en la foto es una
+   * nevera doméstica de dos puertas junto a un microondas, una cafetera y una
+   * isla de cuarzo. El pie de una foto es una afirmación como cualquier otra, y
+   * esta la desmiente un catering en cinco minutos de visita: se describe lo
+   * que se ve. Lo mismo obligó a revisar «cocina comercial con campana de
+   * extracción» en `edificio.ts`, que no tenía ninguna fuente.
+   */
   { id: "edificio-cocina", src: "/assets/edificio-cocina.jpg", w: 740, h: 428, fuente: BROKER,
-    alt: { es: "La cocina del edificio, equipada, con isla y nevera industrial",
-           en: "The building's kitchen, equipped, with an island and a commercial fridge" } },
+    alt: { es: "La cocina del edificio: isla de cuarzo, nevera de dos puertas, microondas y alacenas",
+           en: "The building's kitchen: a quartz island, a two-door fridge, a microwave and cabinets" } },
   { id: "edificio-recepcion", src: "/assets/edificio-recepcion.jpg", w: 739, h: 428, fuente: BROKER,
     alt: { es: "La recepción del edificio: mostrador curvo y puertas de vidrio a la calle",
            en: "The building's reception: a curved counter and glass doors to the street" } },

@@ -1231,8 +1231,11 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
         <div className="cine-portada" aria-hidden="true">
           {/* La de palmeras y no la aérea: en la aérea se lee el rótulo del
               operador en el edificio del fondo, y esa es la regla que manda. */}
+          {/* Por el optimizador y con la MISMA url que usa la precarga: pedir aquí
+              el archivo crudo descargaba la foto dos veces —una para el cine y
+              otra para esta portada— y a tamaño completo. Ver lib/imagen.ts. */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={FOTOS.palmeras.src} alt="" style={{ objectPosition: FOTOS.palmeras.pos }} />
+          <img src={fotoOptimizada(FOTOS.palmeras.src)} alt="" style={{ objectPosition: FOTOS.palmeras.pos }} />
           <div className="cine-portada-texto">
             {/* la marca abre el vídeo: quien lo ve en un reel tiene que saber de quién es desde el primer segundo */}
             <div className="cine-portada-marca"><Simbolo tam={54} /></div>

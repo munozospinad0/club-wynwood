@@ -121,12 +121,21 @@ export const ESPACIOS = [
     sqft: 4000,
     m2: 372,
     cubierto: true,
+    /**
+     * Se dice el límite, y no por escrúpulo: una palapa abierta por los cuatro
+     * costados para la lluvia vertical y no la que entra de lado. Un productor
+     * que monta en diciembre lo sabe, y descubrir que el sitio no lo dijo cuesta
+     * más confianza que decirlo de entrada. Además convierte una objeción en una
+     * partida de presupuesto —carpas laterales— que se resuelve en la visita.
+     */
     resumenEs:
       "Palapa de paja a cuatro aguas de unos 54 × 60 ft en la esquina suroeste, sobre retícula de postes de madera, " +
-      "abierta por los cuatro costados y con piso de césped artificial. Es el plan anti-lluvia.",
+      "abierta por los cuatro costados y con piso de césped artificial. Es el plan anti-lluvia: para el sol y para la " +
+      "lluvia vertical. Con viento la lluvia entra de lado, así que un evento de invierno conviene que presupueste cierres laterales.",
     resumenEn:
       "A four-hip thatched structure of about 54 × 60 ft in the south-west corner, on a grid of timber posts, " +
-      "open on all four sides with an artificial-turf floor. It is the rain plan.",
+      "open on all four sides with an artificial-turf floor. It is the rain plan: it stops sun and vertical rain. " +
+      "In wind the rain comes in sideways, so a winter event should budget for side enclosures.",
   },
 ] as const;
 
@@ -164,10 +173,35 @@ export const FICHA: Dato[] = [
   { clave: "accesos", es: "Entradas", en: "Entrances",
     valorEs: "Principal por NW 21st Ct (invitados) · carga por NW 1st Ct", valorEn: "Main on NW 21st Ct (guests) · freight on NW 1st Ct",
     estado: "verificado", fuente: "Daniel, 7-sep-2026: la mercancía no entra por la entrada principal; cenital del flyer" },
+  /**
+   * EL EDIFICIO, EN CIFRAS. Se alquila aparte y hasta hoy no tenía ni una línea
+   * en la ficha: quien preguntaba por él no encontraba nada que leer. Estas son
+   * las del listing de Newmark (41534759, en mercado desde el 3-ago-2026), que
+   * es quien lo comercializa, y no las del operador.
+   *
+   * Se publica 15 961 ft² y no los «16 000» del material de marketing: la
+   * diferencia es de redondeo, pero el sitio distingue lo medido de lo redondo
+   * y ese es justamente el hábito que evitó publicar ocho cabañas.
+   */
+  { clave: "edificio", es: "Edificio (se alquila aparte)", en: "Building (rented separately)",
+    valorEs: "15 961 ft² · 2 niveles · construido en 1940", valorEn: "15,961 sq ft · 2 levels · built in 1940",
+    estado: "verificado", fuente: "listing de Newmark 41534759 (LoopNet, ago-2026): área arrendable bruta" },
+  { clave: "zonificacion", es: "Zonificación", en: "Zoning",
+    valorEs: "T5-O (NRD-1) · comercial, entretenimiento y uso mixto", valorEn: "T5-O (NRD-1) · commercial, entertainment and mixed use",
+    estado: "verificado", fuente: "listing de Newmark 41534759 (LoopNet, ago-2026)" },
 
   // --- Lo que falta medir. Se publica como pendiente, nunca se rellena. ---
+  /**
+   * Este ya no dice solo «por confirmar»: la propiedad declara un montaje
+   * concreto y decirlo ayuda a quien está calculando si le cabe la boda. Pero
+   * sigue en `en-visita` a propósito, porque es una cifra declarada y no hay
+   * plano cotizado del jardín contra el que comprobarla. Publicar el número sin
+   * el «declarado» sería exactamente el error de las ocho cabañas.
+   */
   { clave: "aforo-montaje", es: "Aforo por montaje", en: "Capacity per layout",
-    valorEs: "Por confirmar en la visita", valorEn: "To be confirmed at the visit", estado: "en-visita" },
+    valorEs: "Declarado: 24 mesas redondas de 10 + banquete de 60 sobre el paseo; solo la palapa, 16 mesas de 10. Por confirmar contra plano",
+    valorEn: "Stated: 24 round tables of 10 + a 60-seat banquet along the walk; the structure alone, 16 tables of 10. To be confirmed against a plan",
+    estado: "en-visita", fuente: "ficha comercial del inmueble, 2026 — montaje declarado por la propiedad" },
   { clave: "potencia", es: "Potencia — amperaje y fase", en: "Power — amperage and phase",
     valorEs: "Por confirmar en la visita", valorEn: "To be confirmed at the visit", estado: "en-visita" },
   { clave: "loadin", es: "Load-in — ancho de portón, drive-in", en: "Load-in — gate width, drive-in",
@@ -180,8 +214,19 @@ export const FICHA: Dato[] = [
     valorEs: "Por confirmar en la visita", valorEn: "To be confirmed at the visit", estado: "en-visita" },
 ];
 
-/** Tiempos aproximados desde el venue. Se muestran siempre como aproximados. */
+/**
+ * Tiempos aproximados desde el venue. Se muestran siempre como aproximados.
+ *
+ * Mana Wynwood va primero desde el 9-sep-2026 y no por cercanía geográfica: son
+ * seis acres a tres cuadras que en octubre, noviembre y enero traen al barrio
+ * III Points, el Real Estate Forum, Red Dot y la Miami Famous Expo. Quien
+ * produce una activación satélite alrededor de esos eventos necesita estar
+ * cerca y no cabe —o no quiere pagar— el recinto grande. Ese es el argumento
+ * comercial más fuerte de la ubicación, así que se publica como dato y no se
+ * deja escondido en un documento interno.
+ */
 export const TIEMPOS = [
+  { es: "Mana Wynwood", en: "Mana Wynwood", valor: "3 cuadras", valorEn: "3 blocks" },
   { es: "Wynwood Walls", en: "Wynwood Walls", valor: "4 min a pie", valorEn: "4 min walk" },
   { es: "Acceso I-95", en: "I-95 access", valor: "3 min", valorEn: "3 min" },
   { es: "Midtown / Design District", en: "Midtown / Design District", valor: "6 min", valorEn: "6 min" },
@@ -191,6 +236,31 @@ export const TIEMPOS = [
 ];
 
 /**
+ * EL ENTORNO EN CIFRAS — radio de 2 millas.
+ *
+ * Sirve a un público muy concreto: la marca o la agencia que está decidiendo
+ * dónde hacer una activación. A esa gente no la convence el metraje; la
+ * convence quién pasa por delante. Son las cifras del flyer comercial del
+ * inmueble (Newmark, 2026), y se citan como suyas.
+ *
+ * No van en la portada ni en la landing de anuncios: ahí estorban a quien busca
+ * sitio para una boda. Van en las páginas de corporativo, producción y Art
+ * Basel, que es donde alguien las está buscando.
+ */
+export const ENTORNO = {
+  fuente: "flyer comercial del inmueble (Newmark, 2026)",
+  radio: { es: "2 millas a la redonda", en: "within a 2-mile radius" },
+  datos: [
+    { clave: "poblacion", es: "Residentes", en: "Residents", valorEs: "143 912", valorEn: "143,912" },
+    { clave: "hogares", es: "Hogares", en: "Households", valorEs: "64 695 · +3,3 % al año", valorEn: "64,695 · +3.3% a year" },
+    { clave: "ingreso", es: "Ingreso medio del hogar", en: "Average household income", valorEs: "78 792 USD", valorEn: "USD 78,792" },
+    { clave: "gasto", es: "Gasto anual en comida y bebida", en: "Annual food & beverage spend", valorEs: "465 millones USD", valorEn: "USD 465 million" },
+    { clave: "edad", es: "Edad media", en: "Average age", valorEs: "38,1 años", valorEn: "38.1 years" },
+    { clave: "trafico", es: "Tráfico frente al predio", en: "Traffic in front of the site", valorEs: "18 000 vehículos al día", valorEn: "18,000 vehicles a day" },
+  ],
+} as const;
+
+/**
  * Medidas del modelo/dibujo, leídas del PLANO DEL SITIO del flyer comercial del
  * predio (Newmark, LoopNet, 2026). La fuente única de la geometría es
  * `lib/recinto.geo.ts`; esto es el resumen legible.
@@ -198,8 +268,14 @@ export const TIEMPOS = [
 export const GEOMETRIA = {
   /** Lote de esquina: NW 1st Ct al oeste, NW 21st Ct al sur. ±0,78 acres. */
   predioFt: { esteOeste: 131, norteSur: 258 },
-  /** Del operador, al norte; se alquila aparte. 16 000 SF con el altillo. */
-  edificioFt: { ancho: 120, fondo: 104, niveles: 2 },
+  /**
+   * Al norte; se alquila aparte. **15 961 ft² de área arrendable bruta** según
+   * el listing de Newmark, repartidos en dos niveles: abajo la nave de doble
+   * altura con cocina y baños, arriba un mezanine con cuatro cuartos cerrados.
+   * Decía «16 000 SF con el altillo», que es el redondeo del material de
+   * marketing.
+   */
+  edificioFt: { ancho: 120, fondo: 104, niveles: 2, sqft: 15961, anoConstruccion: 1940 },
   /** De la puerta del edificio a la calle de maniobra del estacionamiento sur. */
   paseoFt: { ancho: 15, largo: 108 },
   /** En la esquina suroeste, contra el seto de NW 1st Ct y con el estacionamiento sur delante; cumbrera paralela al paseo. */

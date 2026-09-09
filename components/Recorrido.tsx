@@ -778,6 +778,26 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
     window.setTimeout(siguiente, VENTAJA_AUDIO_MS);
   }, []);
 
+  /**
+   * EN EL TELÉFONO, QUE EL CAPÍTULO ACTUAL SE VEA.
+   *
+   * La tira de capítulos se desliza en horizontal, pero nunca se movía sola. En
+   * las capturas del 9-sep el recorrido iba por el capítulo 6 y la tira seguía
+   * enseñando el 01 y el 02: quien mira el teléfono no tiene forma de saber
+   * dónde está ni cuánto falta, que es justo lo que esa tira existe para
+   * contar. Ahora el activo se centra cada vez que cambia.
+   *
+   * `block: "nearest"` es importante: sin él, centrar en horizontal arrastraría
+   * también la página en vertical.
+   */
+  useEffect(() => {
+    if (!activo) return;
+    const el = raiz.current?.querySelector<HTMLElement>(".rec-cap.activo");
+    if (!el) return;
+    const quieta = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    el.scrollIntoView({ inline: "center", block: "nearest", behavior: quieta ? "auto" : "smooth" });
+  }, [indice, activo]);
+
   const arrancar = useCallback((desde: number) => {
     // La sección que contiene el cine puede no haberse revelado (botón de la
     // portada en un teléfono, o ?recorrido=auto): se revela a mano, porque un

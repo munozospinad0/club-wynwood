@@ -281,6 +281,16 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
               ? "Con el tipo de evento, la fecha y el número de invitados respondemos con disponibilidad real y condiciones. Si necesitas ver el espacio, coordinamos la visita y levantamos la ficha técnica contigo."
               : "With the event type, date and guest count we come back with real availability and terms. If you need to see the space, we schedule the visit and survey the spec sheet with you."}
           </p>
+          {/**
+            * Doce campos a la vista parecen doce campos obligatorios, y ahí es
+            * donde alguien cierra la pestaña. Solo hacen falta dos. Decirlo
+            * cuesta una línea y cambia lo que el formulario aparenta ser.
+            */}
+          <p className="ojo" style={{ color: "var(--texto-3)", marginBottom: 28 }}>
+            {es
+              ? "Solo el nombre y el correo son obligatorios. Lo demás nos deja responderte con cifras en vez de con un «depende»."
+              : "Only name and email are required. The rest lets us answer with numbers instead of «it depends»."}
+          </p>
           <Formulario lang={lang} />
           <Contacto lang={lang} />
         </div>

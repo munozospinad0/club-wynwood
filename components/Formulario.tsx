@@ -80,18 +80,25 @@ function idUnico(): string {
  * Preguntarlo convierte una suposición en un dato, y de paso da el país, que es
  * otra señal de coincidencia gratis.
  */
-const PREFIJOS: Array<{ cc: string; iso: string; etiqueta: string }> = [
-  { cc: "1", iso: "US", etiqueta: "Estados Unidos +1" },
-  { cc: "57", iso: "CO", etiqueta: "Colombia +57" },
-  { cc: "52", iso: "MX", etiqueta: "México +52" },
-  { cc: "34", iso: "ES", etiqueta: "España +34" },
-  { cc: "54", iso: "AR", etiqueta: "Argentina +54" },
-  { cc: "55", iso: "BR", etiqueta: "Brasil +55" },
-  { cc: "56", iso: "CL", etiqueta: "Chile +56" },
-  { cc: "51", iso: "PE", etiqueta: "Perú +51" },
-  { cc: "58", iso: "VE", etiqueta: "Venezuela +58" },
-  { cc: "507", iso: "PA", etiqueta: "Panamá +507" },
-  { cc: "593", iso: "EC", etiqueta: "Ecuador +593" },
+/**
+ * Los nombres van en los dos idiomas. Estaban solo en español y en la página
+ * inglesa el primer campo del teléfono decía «Estados Unidos +1», que es
+ * exactamente donde un productor de Miami se da cuenta de que la página no está
+ * hecha para él. La página por defecto es la inglesa, así que lo veía casi todo
+ * el mundo.
+ */
+const PREFIJOS: Array<{ cc: string; iso: string; es: string; en: string }> = [
+  { cc: "1", iso: "US", es: "Estados Unidos +1", en: "United States +1" },
+  { cc: "57", iso: "CO", es: "Colombia +57", en: "Colombia +57" },
+  { cc: "52", iso: "MX", es: "México +52", en: "Mexico +52" },
+  { cc: "34", iso: "ES", es: "España +34", en: "Spain +34" },
+  { cc: "54", iso: "AR", es: "Argentina +54", en: "Argentina +54" },
+  { cc: "55", iso: "BR", es: "Brasil +55", en: "Brazil +55" },
+  { cc: "56", iso: "CL", es: "Chile +56", en: "Chile +56" },
+  { cc: "51", iso: "PE", es: "Perú +51", en: "Peru +51" },
+  { cc: "58", iso: "VE", es: "Venezuela +58", en: "Venezuela +58" },
+  { cc: "507", iso: "PA", es: "Panamá +507", en: "Panama +507" },
+  { cc: "593", iso: "EC", es: "Ecuador +593", en: "Ecuador +593" },
 ];
 
 const TIPOS = [
@@ -342,7 +349,7 @@ export default function Formulario({ lang, idPrefijo, invitadosInicial }: { lang
               aria-label={es ? "Prefijo de país" : "Country code"}
             >
               {PREFIJOS.map((p) => (
-                <option key={p.cc + p.iso} value={p.cc}>{p.etiqueta}</option>
+                <option key={p.cc + p.iso} value={p.cc}>{es ? p.es : p.en}</option>
               ))}
             </select>
             <input style={campo} id={ide("telefono")} name="telefono" type="tel" inputMode="tel" autoComplete="tel-national" />

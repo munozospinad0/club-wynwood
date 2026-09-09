@@ -3,7 +3,40 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Idioma } from "@/lib/i18n";
 import { bandaInvitados, ev } from "@/lib/medicion";
-import LaminaRecinto, { type Aforo, type Modo, type Zona } from "@/components/LaminaRecinto";
+import dynamic from "next/dynamic";
+import type { Aforo, Modo, Zona } from "@/components/LaminaRecinto";
+
+/**
+ * EL DIBUJO NO VIAJA DENTRO DEL HTML. Aquí estaba el peso del sitio.
+ *
+ * Medido contra la página publicada: la portada pesaba **1,15 MB de HTML**, y
+ * **778 KB de eso era este único dibujo**, servido como SVG en línea con
+ * **15.424 elementos y 1.283 trazados**. El 68 % de la página era un dibujo que
+ * casi nadie mira en el primer segundo. La consecuencia se veía en todo: la
+ * primera pintura tardaba casi cinco segundos, la descarga entera pasaba de
+ * veinte, y el navegador tenía que construir quince mil nodos antes de poder
+ * reaccionar a nada. En un teléfono eso es la diferencia entre un sitio y una
+ * pantalla congelada.
+ *
+ * Con `ssr: false` el dibujo deja de existir en el HTML del servidor y se pide
+ * como un trozo aparte; con el observador de abajo, solo se monta cuando está a
+ * punto de verse. La página baja de 1,15 MB a unos 370 KB **sin tocar una sola
+ * línea del dibujo**: se ve exactamente igual, y su propia animación de entrada
+ * encaja con el momento en que ahora se monta.
+ *
+ * El hueco reserva la proporción del `viewBox` (689×490) para que, al aparecer,
+ * no empuje nada de lo que ya está leyendo la persona.
+ *
+ * ⚠️ No se le puede además retrasar el montaje hasta que entre en pantalla, por
+ * más tentador que suene: **el panel de mandos del recorrido se le pasa como
+ * prop `panel` y se dibuja dentro de él.** Si el dibujo no está montado, no hay
+ * botones ni capítulos. Cualquier intento de hacerlo perezoso tiene que sacar
+ * antes el panel de dentro del dibujo.
+ */
+const LaminaRecinto = dynamic(() => import("@/components/LaminaRecinto"), {
+  ssr: false,
+  loading: () => <div className="lam-hueco" style={{ aspectRatio: "689 / 490", width: "100%" }} aria-hidden />,
+});
 import Formulario from "@/components/Formulario";
 import {
   CAPITULOS,

@@ -1,0 +1,148 @@
+/* ─────────────────────────────────────────────────────────────────────────
+   LA PÁGINA A LA QUE LLEGAN LOS ANUNCIOS.
+
+   Mismo sistema que el resto del sitio —papel, tinta, ocre, Fraunces y Geist,
+   esquinas rectas, filetes de un píxel, sin sombras— pero con una jerarquía
+   más dura: aquí solo hay dos cosas que hacer, y todo lo demás está para que
+   se decida entre las dos.
+
+   Las medidas van en `clamp()` y no en saltos por consulta de medios: el hueco
+   entre un móvil grande y una tableta pequeña es donde suelen romperse las
+   landings, y ahí es donde llega media pauta.
+   ───────────────────────────────────────────────────────────────────────── */
+
+.lp-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(24px, 4vw, 56px);
+  align-items: center;
+  max-width: var(--reja);
+  margin: 0 auto;
+  padding: clamp(28px, 6vw, 72px) clamp(18px, 4vw, 40px) clamp(24px, 5vw, 56px);
+}
+@media (max-width: 900px) {
+  .lp-hero { grid-template-columns: minmax(0, 1fr); gap: 22px; }
+}
+
+.lp-h1 {
+  font-family: var(--display);
+  font-weight: 400;
+  /* Baja hasta 30px: el titular tiene que caber en dos líneas en un teléfono,
+     porque en tres empuja la llamada a la acción fuera del primer vistazo. */
+  font-size: clamp(30px, 5.4vw, 60px);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+  margin: 6px 0 14px;
+}
+
+.lp-lead {
+  max-width: 46ch;
+  font-size: clamp(15px, 1.5vw, 17.5px);
+  line-height: 1.62;
+  color: var(--texto);
+  margin: 0 0 22px;
+}
+
+/* Las cuatro cifras verificadas. En fila, sin tarjetas: son datos, no
+   argumentos, y encajonarlos les daría un aire de folleto que el resto del
+   sitio evita a propósito. */
+.lp-cifras {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(14px, 2.4vw, 30px);
+  list-style: none;
+  margin: 0 0 26px;
+  padding: 16px 0;
+  border-top: 1px solid var(--regla);
+  border-bottom: 1px solid var(--regla);
+}
+.lp-cifras li { display: flex; flex-direction: column; gap: 3px; }
+.lp-cifras strong {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(17px, 2vw, 22px);
+  line-height: 1.1;
+  color: var(--tinta);
+}
+
+.lp-acciones { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.boton-fantasma {
+  background: transparent;
+  color: var(--tinta);
+  border: 1px solid var(--regla);
+}
+.boton-fantasma:hover { border-color: var(--tinta); }
+
+.lp-nota {
+  margin: 16px 0 0;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--texto-3);
+}
+.lp-nota a { color: var(--texto); }
+
+.lp-foto { margin: 0; }
+.lp-foto img {
+  width: 100%;
+  height: auto;
+  display: block;
+  /* La foto es de una nave industrial con cielo de Miami: bajarle un punto la
+     saturación la acerca al papel del resto del sitio y evita que parezca
+     pegada de otro sitio. */
+  filter: saturate(0.94) contrast(1.04);
+}
+.lp-foto figcaption { padding-top: 10px; color: var(--texto-3); }
+
+/* ── el bloque honesto: lo que no se incluye, antes de pedir nada ───────── */
+.lp-honesto,
+.lp-usos,
+.lp-pedir {
+  max-width: var(--reja);
+  margin: 0 auto;
+  padding: clamp(30px, 5vw, 64px) clamp(18px, 4vw, 40px);
+  border-top: 1px solid var(--regla);
+}
+.lp-honesto h2,
+.lp-usos h2,
+.lp-pedir h2 {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(22px, 3.2vw, 34px);
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+  margin: 0 0 22px;
+}
+
+.lp-dos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(20px, 4vw, 52px); }
+.lp-tres { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(18px, 3vw, 40px); }
+@media (max-width: 720px) {
+  .lp-dos, .lp-tres { grid-template-columns: minmax(0, 1fr); gap: 22px; }
+}
+
+.lp-dos ul { margin: 10px 0 0; padding-left: 17px; }
+.lp-dos li { margin-bottom: 8px; line-height: 1.6; color: var(--texto); }
+/* El ocre solo marca estado en este sistema; aquí marca la única distinción
+   que importa de verdad en la página: lo que entra y lo que no. */
+.lp-dos > div:first-child li::marker { color: var(--ocre); }
+
+.lp-usos article p:last-child { margin: 8px 0 0; line-height: 1.6; color: var(--texto); }
+
+.lp-pedir { padding-bottom: clamp(36px, 6vw, 76px); }
+
+.lp-pie {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  max-width: var(--reja);
+  margin: 0 auto;
+  padding: 20px clamp(18px, 4vw, 40px) 40px;
+  border-top: 1px solid var(--regla);
+  color: var(--texto-3);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-hero, .lp-honesto, .lp-usos, .lp-pedir { animation: none; }
+}

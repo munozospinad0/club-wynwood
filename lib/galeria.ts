@@ -25,8 +25,19 @@ export interface FotoGaleria {
 const FLYER = { es: "flyer comercial del predio, 2026", en: "the property's commercial flyer, 2026" };
 const DRON = { es: "fotografía aérea del predio", en: "aerial photograph of the site" };
 const SITIO = { es: "fotografía del sitio", en: "site photograph" };
+const CALLE = { es: "fotografía del inmueble desde la calle, 2026", en: "photograph of the building from the street, 2026" };
 
 export const GALERIA: FotoGaleria[] = [
+  /**
+   * LA PRIMERA FOTO DEL EDIFICIO. Hasta el 9-sep-2026 el sitio no tenía ni una:
+   * se explicaba la zona 02 con el dibujo y con palabras, y quien quería ver
+   * dónde iba a montar su evento no tenía nada que mirar. Esta llega de la
+   * propiedad, es de la calle, y **no lleva el rótulo del operador en cuadro**,
+   * que es la condición que hacía inservibles a casi todas las anteriores.
+   */
+  { id: "edificio-calle", src: "/assets/edificio-calle.jpg", w: 2047, h: 1365, fuente: CALLE,
+    alt: { es: "El edificio desde NW 1st Ct: nave de dos niveles, portón de carga abierto y el mural en la esquina",
+           en: "The building from NW 1st Ct: a two-level warehouse, the freight gate open and the mural on the corner" } },
   { id: "aerea", src: "/assets/aerea-predio.jpg", w: 1024, h: 683, fuente: DRON,
     alt: { es: "El predio desde el aire: la palapa, el paseo entre las palmeras y el jardín", en: "The site from the air: the structure, the walk between the palms and the garden" } },
   { id: "cenital", src: "/assets/flyer-cenital.jpg", w: 935, h: 506, fuente: FLYER,

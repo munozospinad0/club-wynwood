@@ -71,6 +71,30 @@ export interface Hito {
  * la descarga a ese tamaño) y ampliarlas a 1080p las ablanda; a tamaño natural
  * se ven nítidas y la postal se lee como una elección, no como una carencia.
  */
+/**
+ * LA MISMA URL PARA MOSTRAR Y PARA PRECARGAR. Que no sean la misma es un fallo
+ * silencioso y caro.
+ *
+ * Las fotos del recorrido son JPEG originales de hasta 861 KB. Servidas en
+ * crudo son lo más pesado del recorrido, y en un teléfono se notan. Pasadas por
+ * el optimizador de imágenes salen en WebP o AVIF al ancho que de verdad se ve,
+ * varias veces más ligeras y sin tocar el archivo del repositorio.
+ *
+ * El motivo de que esto viva aquí y no en cada componente: el 9-sep-2026 la
+ * precarga se cambió para pedir la versión optimizada mientras el cine seguía
+ * mostrando la cruda. **Calentaba una URL que nadie usaba y descargaba el JPEG
+ * igual**, o sea el doble de tráfico y ninguna mejora. Con una sola función,
+ * mostrar y precargar no pueden volver a separarse.
+ *
+ * El ancho es fijo a propósito. Con `srcSet` el navegador elegiría en el
+ * teléfono una variante distinta de la que se precargó, y se volvería al mismo
+ * problema; 1200 px se ve nítido en cualquier pantalla y pesa una fracción del
+ * original.
+ */
+export const ANCHO_FOTO_RECORRIDO = 1200;
+export const fotoOptimizada = (src: string) =>
+  `/_next/image?url=${encodeURIComponent(src)}&w=${ANCHO_FOTO_RECORRIDO}&q=70`;
+
 export const FOTOS = {
   /* La aérea completa lleva el rótulo del operador en el edificio del fondo.
      Se encuadra hacia la izquierda y abajo para que quede fuera del recorte. */

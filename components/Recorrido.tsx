@@ -8,6 +8,7 @@ import Formulario from "@/components/Formulario";
 import {
   CAPITULOS,
   FOTOS,
+  fotoOptimizada,
   oraciones,
   rutaAudio,
   tiempoDeFrase,
@@ -762,9 +763,10 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
   const precargarFotos = useCallback(() => {
     if (precargando.current) return;
     precargando.current = true;
-    const rutas = Object.values(FOTOS).map(
-      (f) => `/_next/image?url=${encodeURIComponent(f.src)}&w=1200&q=70`
-    );
+    // La MISMA función que usa el cine para mostrarlas. Si estas dos URL se
+    // separan, se calienta una versión que nadie pide y se descarga todo dos
+    // veces. Ya pasó una vez; por eso vive en `lib/recorrido.ts`.
+    const rutas = Object.values(FOTOS).map((f) => fotoOptimizada(f.src));
     let i = 0;
     const siguiente = () => {
       if (i >= rutas.length) return;

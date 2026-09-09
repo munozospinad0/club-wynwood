@@ -11,6 +11,7 @@ import {
   MULTITUD_PALAPA, MULTITUD_PASEO, PLAZA, JARDINERAS,
   CENTRO, VISTAS, ORDEN_VISTAS, PALMERA_ALTO, type Pt, type Vista,
 } from "@/lib/recinto.geo";
+import { fotoOptimizada } from "@/lib/recorrido";
 
 /**
  * LÁMINA — EL RECINTO. Un solo dibujo que se explica solo.
@@ -1786,8 +1787,14 @@ export default function LaminaRecinto({
               <div className={`lam-foto${fotoDirigida ? " visible" : ""}${(fotoVista?.tamano ?? "lleno") === "postal" ? " postal" : ""}`} aria-hidden={!fotoDirigida}>
                 {fotoVista && (
                   <figure key={fotoVista.src} className="lam-foto-marco">
+                    {/*
+                      Va por el optimizador, no en crudo: el original pesa hasta
+                      861 KB y esto se ve en medio de una narración. Es la misma
+                      URL que precarga el recorrido, y tiene que seguir siéndolo.
+                      Ver `fotoOptimizada` en lib/recorrido.ts.
+                    */}
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={fotoVista.src} alt={fotoVista.alt} style={{ objectPosition: fotoVista.pos }} decoding="async" />
+                    <img src={fotoOptimizada(fotoVista.src)} alt={fotoVista.alt} style={{ objectPosition: fotoVista.pos }} decoding="async" />
                     <figcaption>{fotoVista.alt}</figcaption>
                   </figure>
                 )}

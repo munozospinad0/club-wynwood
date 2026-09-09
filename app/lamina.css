@@ -1178,7 +1178,13 @@
      una pantalla de teléfono es un presupuesto cerrado, así que el dibujo cede
      lo que los mandos necesitan. Sigue siendo el elemento más grande de la
      pantalla; la frase que se está narrando no puede quedar a medias. */
-  .lam.cine .lam-fig { width: min(100%, 41vh); }
+  /* Medido en un iPhone con las herramientas del navegador, no a ojo: el
+     subtítulo necesitaba 83 px de contenido y solo tenía 62, así que la frase
+     se cortaba por la mitad. La fila del dibujo se quedaba además con 54 px
+     muertos por debajo de la figura. Poniéndole techo a esa fila, el panel
+     recupera ese alto y la frase entra entera. */
+  .lam.cine .lam-escenario { max-height: 42vh; }
+  .lam.cine .lam-fig { width: min(100%, 40vh); }
   .cine-sub { padding: 10px 14px 6px; }
   .cine-frase { font-size: 17px; }
 }

@@ -109,10 +109,10 @@ export const ESPACIOS = [
     cubierto: false,
     resumenEs:
       "Paseo pavimentado central de la puerta al estacionamiento, césped artificial del lado de la palapa y arena del " +
-      "lado de las cabañas, dos hileras de palmeras reales, ocho cabañas amuebladas, mesas de picnic fijas y setos perimetrales.",
+      "lado de las cabañas, dos hileras de palmeras reales, cuatro cabañas amuebladas, mesas de picnic fijas y setos perimetrales.",
     resumenEn:
       "A central paved walk from the door to the parking, artificial turf on the structure's side and sand on the cabanas' side, " +
-      "two rows of real palms, eight furnished cabanas, fixed picnic tables and perimeter hedges.",
+      "two rows of real palms, four furnished cabanas, fixed picnic tables and perimeter hedges.",
   },
   {
     slug: "tiki-hut",
@@ -136,16 +136,22 @@ export const FICHA: Dato[] = [
     estado: "verificado", fuente: "18 000 ft² exteriores declarados por el operador + palapa" },
   { clave: "jardin", es: "Jardín abierto", en: "Open garden",
     valorEs: "~18 000 ft² · 1 672 m²", valorEn: "~18,000 sq ft · 1,672 m²",
-    estado: "verificado", fuente: "fundimensionusa.com — 'eight stylishly furnished cabanas / 18,000 sq ft of outdoor event space'" },
+    estado: "verificado", fuente: "cifra declarada por la propiedad y repetida en The Vendry y Tagvenue; pendiente de contrastar contra el levantamiento del predio" },
   { clave: "techada", es: "Superficie techada", en: "Covered area",
     valorEs: "~4 000 ft² · 372 m² · paja, cuatro aguas", valorEn: "~4,000 sq ft · 372 m² · thatch, four hips",
     estado: "verificado", fuente: "The Vendry + video del venue" },
   { clave: "aforo", es: "Aforo de pie / sentados", en: "Standing / seated",
     valorEs: "~600 / ~300", valorEn: "~600 / ~300",
     estado: "verificado", fuente: "The Vendry" },
+  /**
+   * SON CUATRO. Decía ocho, y el ocho salía de una frase de la web del operador
+   * («eight stylishly furnished cabanas»). Daniel las contó en el predio el
+   * 9-sep-2026. La lección es la fuente, no el número: una cifra del competidor
+   * no puede publicarse como verificada nuestra.
+   */
   { clave: "cabanas", es: "Cabañas", en: "Cabanas",
-    valorEs: "8 amuebladas, en el jardín", valorEn: "8 furnished, in the garden",
-    estado: "verificado", fuente: "fundimensionusa.com + confirmado por Daniel: van con el predio" },
+    valorEs: "4 amuebladas, en el jardín", valorEn: "4 furnished, in the garden",
+    estado: "verificado", fuente: "contadas en el predio (Daniel, 9-sep-2026); van con el inmueble" },
   { clave: "direccion", es: "Dirección", en: "Address",
     valorEs: "2129 NW 1st Ct, Miami FL 33127", valorEn: "2129 NW 1st Ct, Miami FL 33127",
     estado: "verificado", fuente: "Yelp / Wynwood BID / sitio del operador" },
@@ -201,7 +207,7 @@ export const GEOMETRIA = {
   postes: { filas: 3, porFila: 3, entreEjesFt: 24 },
   aleroFt: 11,
   cumbreraFt: 34,
-  cabanas: 8,
+  cabanas: 4,
   nota:
     "Disposición según el plano del sitio del flyer comercial del predio, contrastado con la foto cenital y las aéreas; medidas aproximadas. " +
     "El dibujo se rotula como esquema sin escala fina hasta contrastarlo con el boundary survey.",

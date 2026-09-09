@@ -23,7 +23,7 @@
  *     sobre césped artificial: en las fotos el lounge de debajo pisa césped).
  *   · Al ESTE del paseo todo es ARENA: en la cabecera, junto a la puerta, las
  *     velas de sombra y las mesas de picnic; después, en hilera de norte a sur,
- *     las ocho CABAÑAS-PÉRGOLA contra un muro verde alto.
+ *     las CABAÑAS-PÉRGOLA contra un muro verde alto.
  *   · ESTACIONAMIENTO al este de las pérgolas (una fila) y al sur, sobre NW 21st
  *     Ct, en DOS filas con calle de maniobra entre ellas; el paseo desemboca ahí.
  *
@@ -82,8 +82,24 @@ export const ARENA = { x: PASEO.x + PASEO.dx, y: EDIF.dy + 2, dx: 102 - 3 - (PAS
 export const ARENA_CABECERA = { x: PASEO.x + PASEO.dx, y: EDIF.dy + 2, dx: 40, dy: 22 };
 export const PICNIC: Pt[] = Array.from({ length: 5 }, (_, i): Pt => [84 + i * 6.5, 116]);
 
-/** Las ocho cabañas-pérgola, al este del paseo, en hilera de norte a sur, con aire entre unidades. */
-export const CABANAS = { x: 86, y0: 130, dx: 11, dy: 8, n: 8, paso: 10.4, h: 9 };
+/**
+ * Las cabañas-pérgola, al este del paseo, en hilera de norte a sur, con aire
+ * entre unidades.
+ *
+ * **SON CUATRO, no ocho.** El ocho venía de una frase de la web del operador
+ * —«eight stylishly furnished cabanas / 18,000 sq ft»— que el sitio publicó
+ * como dato verificado. Daniel lo corrigió el 9-sep-2026 mirando el predio: hay
+ * cuatro. La misma frase sostenía la superficie del jardín, así que esa cifra
+ * también dejó de citar al operador.
+ *
+ * **El `paso` NO se estira para rellenar la franja.** Cuatro cabañas separadas
+ * artificialmente se leen como un error de dibujo. La hilera ocupa lo que ocupa
+ * y el resto de la arena queda libre, que es lo que hay de verdad y además es
+ * superficie utilizable. Quien cambie `n` tiene que mover a mano el ancla de
+ * los rótulos en `LaminaRecinto` y el punto de cámara del capítulo 5 del guion:
+ * están calculados sobre el centro de la hilera y no siguen a esta constante.
+ */
+export const CABANAS = { x: 86, y0: 130, dx: 11, dy: 8, n: 4, paso: 10.4, h: 9 };
 
 /** Césped: la franja oeste entre el apron y el seto del sur; la palapa está sobre él. CESPED_E queda vacío: al este es arena. */
 export const CESPED_O = { x: 4, y: PLAZA.y + PLAZA.dy, dx: PASEO.x - 4, dy: 212 - (PLAZA.y + PLAZA.dy) };

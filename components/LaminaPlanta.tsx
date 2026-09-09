@@ -18,7 +18,7 @@ import {
  * trae el plano de verdad, y dice otra cosa: lote de esquina (NW 1st Ct al
  * oeste, NW 21st Ct al sur), el edificio al norte, el paseo bajando de su
  * puerta hacia el sur, la palapa al suroeste, arena con picnic entre las dos,
- * ocho pérgolas al este del paseo y estacionamiento propio al este y al sur.
+ * las pérgolas al este del paseo y estacionamiento propio al este y al sur.
  *
  * La geometría vive en `lib/recinto.geo.ts` y es LA MISMA que usa el dibujo
  * en perspectiva y el recorrido. Aquí no se declara ni una medida: si el plano
@@ -129,8 +129,8 @@ export default function LaminaPlanta({ lang }: { lang: Idioma }) {
           <figure style={{ margin: 0 }}>
             <svg viewBox={`0 0 ${VB.w.toFixed(0)} ${VB.h.toFixed(0)}`} role="img"
                  aria-label={es
-                   ? "Planta del recinto, norte arriba. Lote de esquina entre NW 1st Court al oeste y NW 21st Court al sur, de unos 131 por 258 pies. El edificio del operador ocupa el norte; de su puerta baja hacia el sur un paseo pavimentado de unos 108 pies con palmeras a los dos lados. Al oeste del paseo, en la esquina suroeste, la palapa techada de 54 por 60 pies sobre césped, con un apron pavimentado y una franja de césped entre ella y el edificio. Al este del paseo, junto a la puerta, un área de arena con mesas de picnic; después, ocho cabañas en hilera y, más allá, el estacionamiento. Dos filas de estacionamiento con calle de maniobra cierran el sur, sobre NW 21st Court, por donde entra la producción."
-                   : "Site plan, north up. Corner lot between NW 1st Court to the west and NW 21st Court to the south, about 131 by 258 feet. The operator's building takes the north; from its door a paved walk of about 108 feet runs south with palms on both sides. West of the walk, in the south-west corner, the 54 by 60 foot thatched structure on turf, with a paved apron and a strip of turf between it and the building. East of the walk, by the door, a sand area with picnic tables; then eight cabanas in a row and, beyond them, parking. Two rows of parking with a drive aisle close the south on NW 21st Court, where production comes in."}
+                   ? "Planta del recinto, norte arriba. Lote de esquina entre NW 1st Court al oeste y NW 21st Court al sur, de unos 131 por 258 pies. El edificio del operador ocupa el norte; de su puerta baja hacia el sur un paseo pavimentado de unos 108 pies con palmeras a los dos lados. Al oeste del paseo, en la esquina suroeste, la palapa techada de 54 por 60 pies sobre césped, con un apron pavimentado y una franja de césped entre ella y el edificio. Al este del paseo, junto a la puerta, un área de arena con mesas de picnic; después, cuatro cabañas en hilera y, más allá, el estacionamiento. Dos filas de estacionamiento con calle de maniobra cierran el sur, sobre NW 21st Court, por donde entra la producción."
+                   : "Site plan, north up. Corner lot between NW 1st Court to the west and NW 21st Court to the south, about 131 by 258 feet. The operator's building takes the north; from its door a paved walk of about 108 feet runs south with palms on both sides. West of the walk, in the south-west corner, the 54 by 60 foot thatched structure on turf, with a paved apron and a strip of turf between it and the building. East of the walk, by the door, a sand area with picnic tables; then four cabanas in a row and, beyond them, parking. Two rows of parking with a drive aisle close the south on NW 21st Court, where production comes in."}
                  style={{ width: "100%", height: "auto", maxHeight: "80vh", display: "block" }}>
 
               <defs>
@@ -309,8 +309,10 @@ export default function LaminaPlanta({ lang }: { lang: Idioma }) {
                     fill={TINTA} textAnchor="end" fontFamily={MONO} fontSize="8" letterSpacing="1.4">
                 {es ? "EL JARDÍN" : "THE GARDEN"}
               </text>
-              <text x={fx(CABANAS.x + CABANAS.dx + 3)} y={fy(CABANAS.y0 + 3.5 * CABANAS.paso)} fill={GRIS}
-                    fontFamily={MONO} fontSize="7.2" letterSpacing="1.2">{es ? "8 CABAÑAS" : "8 CABANAS"}</text>
+              {/* La cifra sale de la geometría, no escrita a mano: así no se vuelve
+                  a quedar desfasada del dibujo, que es lo que pasó con el ocho. */}
+              <text x={fx(CABANAS.x + CABANAS.dx + 3)} y={fy(CABANAS.y0 + (CABANAS.n - 1) / 2 * CABANAS.paso + CABANAS.dy / 2)} fill={GRIS}
+                    fontFamily={MONO} fontSize="7.2" letterSpacing="1.2">{CABANAS.n} {es ? "CABAÑAS" : "CABANAS"}</text>
               <text transform={`translate(${fx(PARKING_E.x + PARKING_E.dx / 2 - 6)},${fy(PARKING_E.y + PARKING_E.dy / 2)}) rotate(-90)`}
                     fill={GRIS} textAnchor="middle" fontFamily={MONO} fontSize="7.2" letterSpacing="1.4">
                 {es ? "ESTACIONAMIENTO" : "PARKING"}

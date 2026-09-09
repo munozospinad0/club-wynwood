@@ -23,7 +23,7 @@ import { fotoOptimizada } from "@/lib/recorrido";
  * Daniel encontró el flyer de Newmark en LoopNet con el PLANO DEL SITIO. Con él
  * se rehizo la geometría (`lib/recinto.geo.ts`): edificio al norte, paseo que
  * baja de su puerta hacia el sur, palapa al suroeste junto a NW 1st Ct, área de
- * arena con picnic entre palapa y edificio, ocho pérgolas al este del paseo,
+ * arena con picnic entre palapa y edificio, las pérgolas al este del paseo,
  * estacionamiento al este y al sur. El lote es de esquina, no una franja.
  *
  * Y se cambió la PROYECCIÓN (`lib/perspectiva.ts`): en vez de isométrica, una
@@ -1079,7 +1079,7 @@ const T = {
     ojo: "Plano del recinto · vista desde el sur",
     titulo: "~18 000 ft² al aire libre con palapa techada de ~4 000 ft².",
     intro: "El recinto exterior visto desde el sur, como en la foto aérea, a partir del plano del sitio y las fotografías. Selecciona una zona para ver su ficha, o activa una capa de montaje: plan de lluvia, aforo sentado, load-in o montaje nocturno.",
-    aria: "Perspectiva del recinto desde el sur: el edificio de dos niveles al fondo con su puerta, el paseo pavimentado bajando hacia la cámara, la palapa de paja a la izquierda en la esquina suroeste sobre césped, con una franja de césped y un apron pavimentado entre ella y el edificio, el área de arena con mesas de picnic a la derecha de la puerta, ocho cabañas-pérgola a la derecha del paseo, palmeras, setos, estacionamiento al este y dos filas de estacionamiento al sur.",
+    aria: "Perspectiva del recinto desde el sur: el edificio de dos niveles al fondo con su puerta, el paseo pavimentado bajando hacia la cámara, la palapa de paja a la izquierda en la esquina suroeste sobre césped, con una franja de césped y un apron pavimentado entre ella y el edificio, el área de arena con mesas de picnic a la derecha de la puerta, cuatro cabañas-pérgola a la derecha del paseo, palmeras, setos, estacionamiento al este y dos filas de estacionamiento al sur.",
     modos: { todo: "Vista general", lluvia: "Plan de lluvia", mesas: "Aforo sentado · 300", camion: "Load-in · camión 40 ft", noche: "Montaje nocturno" } as Partial<Record<Modo, string>>,
     vistaOjo: "Punto de vista",
     vistas: { sur: "Desde el sur", oeste: "Desde el oeste", norte: "Desde el norte", este: "Desde el este", aerea: "Aérea" } as Record<Vista, string>,
@@ -1107,7 +1107,7 @@ const T = {
         ojo: "Para el agua que cae recta basta sola; con viento conviene cerrar los costados. La luz libre entre postes se levanta en la visita.",
       },
       cabanas: {
-        nombre: "Ocho cabañas", dato: "pérgolas amuebladas · en hilera",
+        nombre: "Cuatro cabañas", dato: "pérgolas amuebladas · en hilera",
         lee: "Pérgolas de postes y listones blancos, abiertas, con sofá, en hilera al este del paseo entre las palmeras.",
         sirve: "Camerino, guardarropa, salón VIP o rincón de descanso sin tener que montar nada.",
         ojo: "Van con el predio: no se pueden mover ni retirar del montaje.",
@@ -1137,7 +1137,7 @@ const T = {
     ojo: "Site plan · view from the south",
     titulo: "~18,000 sq ft outdoors with a ~4,000 sq ft thatched structure.",
     intro: "The outdoor site seen from the south, as in the aerial photograph, from the site plan and the photographs. Select a zone to see its data, or turn on a layout layer: rain plan, seated capacity, load-in or night setup.",
-    aria: "Perspective of the site from the south: the two-level building at the far end with its door, the paved walk coming down towards the camera, the thatched structure on the left in the south-west corner on turf, with a strip of turf and a paved apron between it and the building, the sand area with picnic tables to the right of the door, eight pergola cabanas on the right of the walk, palms, hedges, parking to the east and two rows of parking to the south.",
+    aria: "Perspective of the site from the south: the two-level building at the far end with its door, the paved walk coming down towards the camera, the thatched structure on the left in the south-west corner on turf, with a strip of turf and a paved apron between it and the building, the sand area with picnic tables to the right of the door, four pergola cabanas on the right of the walk, palms, hedges, parking to the east and two rows of parking to the south.",
     modos: { todo: "Overview", lluvia: "Rain plan", mesas: "Seated capacity · 300", camion: "Load-in · 40 ft truck", noche: "Night setup" } as Partial<Record<Modo, string>>,
     vistaOjo: "Point of view",
     vistas: { sur: "From the south", oeste: "From the west", norte: "From the north", este: "From the east", aerea: "Aerial" } as Record<Vista, string>,
@@ -1165,7 +1165,7 @@ const T = {
         ojo: "For vertical rain it is enough on its own; with wind you will want the sides closed. Clear span between posts is surveyed at the visit.",
       },
       cabanas: {
-        nombre: "Eight cabanas", dato: "furnished pergolas · in a row",
+        nombre: "Four cabanas", dato: "furnished pergolas · in a row",
         lee: "Open pergolas of posts and white slats, with a sofa, in a row east of the walk between the palms.",
         sirve: "Green room, coat check, VIP lounge or a quiet corner, without building anything.",
         ojo: "They come with the site: they cannot be moved or taken out of the layout.",
@@ -1679,13 +1679,13 @@ export default function LaminaRecinto({
   const ROTULOS = vista === "sur" ? [
     rotulo("jardin", p(PASEO.x + 3, 198, 0), -14, 60, "der", "inf"),
     rotulo("tiki", p(cxP, cyP, PALAPA_CUMBRE), -26, -50, "der"),
-    rotulo("cabanas", p(CABANAS.x + CABANAS.dx / 2, CABANAS.y0 + 3 * CABANAS.paso + 5, CABANAS.h), 96, -74),
+    rotulo("cabanas", p(CABANAS.x + CABANAS.dx / 2, CABANAS.y0 + (CABANAS.n - 1) / 2 * CABANAS.paso + 5, CABANAS.h), 96, -74),
     rotulo("acceso", p(PASEO.x + PASEO.dx / 2 + 6, LOTE.dy + 14, 0), 30, -4),
     rotulo("edificio", p(EDIF.x + EDIF.dx - 22, EDIF.y + 60, EDIF.h1), 26, -18),
   ] : rotulosAuto([
     ["jardin", p(PASEO.x + 3, 190, 0)],
     ["tiki", p(cxP, cyP, PALAPA_CUMBRE)],
-    ["cabanas", p(CABANAS.x + CABANAS.dx / 2, CABANAS.y0 + 3 * CABANAS.paso + 5, CABANAS.h)],
+    ["cabanas", p(CABANAS.x + CABANAS.dx / 2, CABANAS.y0 + (CABANAS.n - 1) / 2 * CABANAS.paso + 5, CABANAS.h)],
     ["acceso", p(PASEO.x + PASEO.dx / 2, LOTE.dy + 12, 0)],
     ["edificio", p(EDIF.x + EDIF.dx / 2, EDIF.y + 50, EDIF.h1)],
   ]);

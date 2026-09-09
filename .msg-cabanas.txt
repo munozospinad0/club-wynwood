@@ -1,0 +1,40 @@
+Las cabanas son cuatro, no ocho, y la fuente ya no es el competidor
+
+Daniel las conto en el predio. El sitio decia ocho en veintitantos sitios, las
+dibujaba ocho veces, lo publicaba en la ficha como dato VERIFICADO, lo emitia en
+los datos estructurados que leen Google y las IA, y la voz del recorrido lo
+decia en alto en los dos idiomas.
+
+De donde venia el error: una frase de la web del operador, "eight stylishly
+furnished cabanas / 18,000 sq ft of outdoor event space", citada literalmente
+como fuente en la ficha. Habia ademas una tercera cifra ya escrita y sin atar en
+12-PAUTA-ARTWEEK.md, que cita el anuncio del operador en Tagvenue diciendo
+CINCO. Ocho, cinco y cuatro, y publicabamos la mas alta como verificada.
+
+Lo corregido:
+
+- La geometria, que ahora manda: n pasa de 8 a 4 y arrastra cuerpos, lamparas y
+  jardineras del dibujo en perspectiva y los rectangulos de la planta.
+- Las tres cosas que NO seguian a la geometria y por eso sobrevivieron al
+  cambio: el rotulo literal "8 CABANAS" de la planta, los anclas de rotulo del
+  dibujo (calculados sobre el centro de una hilera de ocho) y la banda de
+  cifras. Las tres pasan a calcularse desde la geometria, para que no vuelva a
+  pasar.
+- La prosa en los dos idiomas: contenido.ts, el guion del recorrido, llms.txt,
+  las etiquetas de accesibilidad de las dos laminas y la lista de fotos.
+- La ficha tecnica y GEOMETRIA en venue.ts, que alimentan el sitio, llms.txt y
+  el JSON-LD.
+- La voz: regenerado el capitulo 5 en los dos idiomas con ElevenLabs y
+  normalizado a -16 LUFS. Comprobado con el alineamiento palabra a palabra que
+  ya no dice "ocho" ni "eight" como palabra suelta.
+
+El paso entre cabanas NO se estira para rellenar la franja: cuatro separadas
+artificialmente se leerian como un error de dibujo. La hilera ocupa lo que ocupa
+y el resto queda como arena libre, que es lo que hay y ademas es superficie
+utilizable.
+
+Y la leccion, escrita en el codigo: la superficie del jardin salia de la MISMA
+frase del operador. Se le cambia la fuente y queda pendiente de contrastar
+contra el levantamiento del predio, que sigue sin bajarse del correo de Rene.
+El plano que si tenemos es el interior del operador y ademas es de otra
+direccion, 2501 NW 1st Court.

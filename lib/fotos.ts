@@ -146,8 +146,8 @@ export const HUECOS: Hueco[] = [
     proporcion: "3/2",
     donde: "/el-jardin/, /eventos-pequenos/",
     encargo: {
-      es: "Las ocho cabañas amuebladas, o al menos tres o cuatro en fila. Salen en la ficha técnica como dato verificado y no hay ninguna foto suya.",
-      en: "The eight furnished cabanas, or at least three or four in a row. They appear in the spec sheet as verified data and there is no photograph of them.",
+      es: "Las cuatro cabañas amuebladas, o al menos tres o cuatro en fila. Salen en la ficha técnica como dato verificado y no hay ninguna foto suya.",
+      en: "The four furnished cabanas, or at least three or four in a row. They appear in the spec sheet as verified data and there is no photograph of them.",
     },
     alt: {
       es: "Cabañas amuebladas en el jardín, con asientos y cortinas",

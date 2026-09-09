@@ -37,20 +37,20 @@ export const PAGINAS: Pagina[] = [
     ojo: { es: "Espacio 01 · al aire libre", en: "Space 01 · open-air" },
     h1: { es: "El Jardín", en: "The Garden" },
     respuesta: {
-      es: "El Jardín son ~18.000 ft² de exterior continuo en Wynwood, Miami: la superficie mayor del recinto y la que admite montaje libre. Un paseo pavimentado baja de la puerta del edificio al estacionamiento, con césped artificial del lado de la palapa y arena del lado de las cabañas, dos hileras de palmeras reales, un área de arena con mesas de picnic y ocho cabañas amuebladas.",
-      en: "The Garden is ~18,000 sq ft of continuous outdoor space in Wynwood, Miami: the larger surface of the site and the one that takes an open build. A paved walk runs from the building door down to the parking lot, with artificial turf on both sides, two rows of real palms, a sand area with picnic tables and eight furnished cabanas.",
+      es: "El Jardín son ~18.000 ft² de exterior continuo en Wynwood, Miami: la superficie mayor del recinto y la que admite montaje libre. Un paseo pavimentado baja de la puerta del edificio al estacionamiento, con césped artificial del lado de la palapa y arena del lado de las cabañas, dos hileras de palmeras reales, un área de arena con mesas de picnic y cuatro cabañas amuebladas.",
+      en: "The Garden is ~18,000 sq ft of continuous outdoor space in Wynwood, Miami: the larger surface of the site and the one that takes an open build. A paved walk runs from the building door down to the parking lot, with artificial turf on both sides, two rows of real palms, a sand area with picnic tables and four furnished cabanas.",
     },
     title: {
       es: "El Jardín — ~18.000 ft² al aire libre en Wynwood | Club Wynwood",
       en: "The Garden — ~18,000 sq ft outdoors in Wynwood | Club Wynwood",
     },
     description: {
-      es: "El Jardín de Club Wynwood: ~18.000 ft² de exterior en Wynwood, Miami, con paseo pavimentado, césped artificial, dos hileras de palmeras y ocho cabañas amuebladas.",
-      en: "Club Wynwood's Garden: ~18,000 sq ft outdoors in Wynwood, Miami, with a paved walk, artificial turf, two rows of palms and eight furnished cabanas.",
+      es: "El Jardín de Club Wynwood: ~18.000 ft² de exterior en Wynwood, Miami, con paseo pavimentado, césped artificial, dos hileras de palmeras y cuatro cabañas amuebladas.",
+      en: "Club Wynwood's Garden: ~18,000 sq ft outdoors in Wynwood, Miami, with a paved walk, artificial turf, two rows of palms and four furnished cabanas.",
     },
     cifras: [
       { etiqueta: { es: "Superficie", en: "Area" }, valor: "~18 000 ft²" },
-      { etiqueta: { es: "Cabañas amuebladas", en: "Furnished cabanas" }, valor: "8" },
+      { etiqueta: { es: "Cabañas amuebladas", en: "Furnished cabanas" }, valor: "4" },
       { etiqueta: { es: "De pie (recinto completo)", en: "Standing (whole site)" }, valor: "~600" },
     ],
     foto: {
@@ -189,8 +189,8 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "Tu planner, tus proveedores", en: "Your planner, your vendors" },
         cuerpo: {
-          es: "No imponemos catering ni decoración. Trabajas con tu wedding planner y tus proveedores; nosotros entregamos el espacio. Ocho cabañas amuebladas y las mesas de picnic ya están en el jardín.",
-          en: "We do not impose catering or decor. You work with your wedding planner and your vendors; we hand over the space. Eight furnished cabanas and the picnic tables are already in the garden.",
+          es: "No imponemos catering ni decoración. Trabajas con tu wedding planner y tus proveedores; nosotros entregamos el espacio. Cuatro cabañas amuebladas y las mesas de picnic ya están en el jardín.",
+          en: "We do not impose catering or decor. You work with your wedding planner and your vendors; we hand over the space. Four furnished cabanas and the picnic tables are already in the garden.",
         },
       },
       {
@@ -279,7 +279,7 @@ export const PAGINAS: Pagina[] = [
     cifras: [
       { etiqueta: { es: "Superficie privada", en: "Private area" }, valor: "~22 000 ft²" },
       { etiqueta: { es: "Sombra fija", en: "Permanent shade" }, valor: "~4 000 ft²" },
-      { etiqueta: { es: "Cabañas amuebladas", en: "Furnished cabanas" }, valor: "8" },
+      { etiqueta: { es: "Cabañas amuebladas", en: "Furnished cabanas" }, valor: "4" },
     ],
     foto: {
       src: "/assets/venue-exterior.webp",
@@ -421,7 +421,7 @@ export const PAGINAS: Pagina[] = [
     cifras: [
       { etiqueta: { es: "Sentados", en: "Seated" }, valor: "~300" },
       { etiqueta: { es: "Bajo techo", en: "Under roof" }, valor: "~4 000 ft²" },
-      { etiqueta: { es: "Cabañas", en: "Cabanas" }, valor: "8" },
+      { etiqueta: { es: "Cabañas", en: "Cabanas" }, valor: "4" },
     ],
     foto: {
       src: "/assets/venue-exterior.webp",
@@ -445,8 +445,8 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "Cena y baile bajo techo", en: "Dinner and dancing under cover" },
         cuerpo: {
-          es: "La palapa de ~4.000 ft² cubre la parte sentada del evento. Eso resuelve dos cosas a la vez: la lluvia y el sol de Miami a las cinco de la tarde. Las ocho cabañas amuebladas del jardín funcionan como zonas de descanso para los invitados mayores.",
-          en: "The ~4,000 sq ft structure covers the seated part of the event. That solves two things at once: the rain and the five-o'clock Miami sun. The eight furnished cabanas in the garden work as rest areas for older guests.",
+          es: "La palapa de ~4.000 ft² cubre la parte sentada del evento. Eso resuelve dos cosas a la vez: la lluvia y el sol de Miami a las cinco de la tarde. Las cuatro cabañas amuebladas del jardín funcionan como zonas de descanso para los invitados mayores.",
+          en: "The ~4,000 sq ft structure covers the seated part of the event. That solves two things at once: the rain and the five-o'clock Miami sun. The four furnished cabanas in the garden work as rest areas for older guests.",
         },
       },
       {
@@ -687,8 +687,8 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "Las cabañas quedan a mano", en: "The cabanas are right there" },
         cuerpo: {
-          es: "Las ocho cabañas amuebladas están en el jardín, junto a la palapa. Aunque el alquiler sea solo del Tiki Hut, conviene preguntar en la visita si se pueden incluir: para un evento con niños o con gente mayor son la zona de descanso que suele faltar.",
-          en: "The eight furnished cabanas sit in the garden, next to the structure. Even if you only book the Tiki Hut, it is worth asking at the visit whether they can be included: for an event with children or older guests they are the rest area that is usually missing.",
+          es: "Las cuatro cabañas amuebladas están en el jardín, junto a la palapa. Aunque el alquiler sea solo del Tiki Hut, conviene preguntar en la visita si se pueden incluir: para un evento con niños o con gente mayor son la zona de descanso que suele faltar.",
+          en: "The four furnished cabanas sit in the garden, next to the structure. Even if you only book the Tiki Hut, it is worth asking at the visit whether they can be included: for an event with children or older guests they are the rest area that is usually missing.",
         },
       },
     ],
@@ -942,8 +942,8 @@ export const FAQ: Array<{ q: Record<Idioma, string>; a: Record<Idioma, string> }
   {
     q: { es: "¿Qué incluye el alquiler de Club Wynwood?", en: "What does renting Club Wynwood include?" },
     a: {
-      es: "Se alquila el espacio exterior: el Jardín de ~18.000 ft² y el Tiki Hut techado de ~4.000 ft², por separado o juntos, con las ocho cabañas amuebladas y las mesas de picnic que ya están en el jardín. La producción, el catering, el sonido, la iluminación y el mobiliario adicional los aporta tu equipo o tu productora.",
-      en: "You rent the outdoor space: the ~18,000 sq ft Garden and the ~4,000 sq ft covered Tiki Hut, separately or together, with the eight furnished cabanas and the picnic tables already in the garden. Production, catering, sound, lighting and extra furniture come from your team or your production company.",
+      es: "Se alquila el espacio exterior: el Jardín de ~18.000 ft² y el Tiki Hut techado de ~4.000 ft², por separado o juntos, con las cuatro cabañas amuebladas y las mesas de picnic que ya están en el jardín. La producción, el catering, el sonido, la iluminación y el mobiliario adicional los aporta tu equipo o tu productora.",
+      en: "You rent the outdoor space: the ~18,000 sq ft Garden and the ~4,000 sq ft covered Tiki Hut, separately or together, with the four furnished cabanas and the picnic tables already in the garden. Production, catering, sound, lighting and extra furniture come from your team or your production company.",
     },
   },
   {

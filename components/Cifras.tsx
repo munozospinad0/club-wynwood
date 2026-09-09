@@ -1,5 +1,5 @@
 import type { Idioma } from "@/lib/i18n";
-import { LOTE, EDIF, PALAPA } from "@/lib/recinto.geo";
+import { LOTE, EDIF, PALAPA, CABANAS } from "@/lib/recinto.geo";
 
 /**
  * LAS CIFRAS, DIBUJADAS.
@@ -28,7 +28,8 @@ import { LOTE, EDIF, PALAPA } from "@/lib/recinto.geo";
  * · De pie y sentados van en puntos, uno por cada veinte personas. Treinta
  *   puntos contra quince: la mitad se ve, no se calcula.
  *
- * · Las cabañas son ocho formas. Con ocho, contar es más rápido que leer.
+ * · Las cabañas son una forma por cabaña. Con tan pocas, contar es más rápido
+ *   que leer, y el glifo no puede mentir porque sale de la misma geometría.
  *
  * Nada de esto añade un dato nuevo. Son las mismas cifras verificadas, puestas
  * en una forma que se entiende antes de terminar de leer la etiqueta.
@@ -136,9 +137,11 @@ const CELDAS: Celda[] = [
     lectura: { es: "La mitad que de pie", en: "Half of standing" },
   },
   {
+    // La cifra y el glifo salen de la geometría del dibujo. Estaban escritos a
+    // mano y por eso sobrevivieron al cambio de ocho a cuatro sin enterarse.
     etiqueta: { es: "Cabañas", en: "Cabanas" },
-    valor: "8", sub: "",
-    glifo: <Cabanas n={8} />,
+    valor: String(CABANAS.n), sub: "",
+    glifo: <Cabanas n={CABANAS.n} />,
     lectura: { es: "Amuebladas, ya en el jardín", en: "Furnished, already in the garden" },
   },
 ];

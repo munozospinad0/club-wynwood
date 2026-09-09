@@ -1183,6 +1183,10 @@
      se cortaba por la mitad. La fila del dibujo se quedaba además con 54 px
      muertos por debajo de la figura. Poniéndole techo a esa fila, el panel
      recupera ese alto y la frase entra entera. */
+  /* El `max-height` sobre el elemento no bastaba: encogía el dibujo pero la
+     FILA de la rejilla seguía midiendo lo mismo, así que el hueco se quedaba
+     vacío entre el dibujo y el panel. Hay que decírselo a la rejilla. */
+  .lam.cine { grid-template-rows: minmax(0, 42vh) minmax(0, 1fr); }
   .lam.cine .lam-escenario { max-height: 42vh; }
   .lam.cine .lam-fig { width: min(100%, 40vh); }
   .cine-sub { padding: 10px 14px 6px; }

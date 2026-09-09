@@ -573,12 +573,28 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
 
   // ── el audio ─────────────────────────────────────────────────────────────
 
+  /**
+   * Pone la pista del capítulo y la reproduce.
+   *
+   * **Solo cambia el `src` si de verdad es otro.** Antes lo asignaba siempre, y
+   * asignar la misma cadena a `src` hace que el navegador recargue el archivo y
+   * lo devuelva al segundo cero. Como el desbloqueo del teléfono ya arranca la
+   * pista del primer capítulo dentro del gesto (ver `alEmpezar`), este efecto
+   * llegaba después y la cortaba de raíz.
+   *
+   * Y un `play()` rechazado ya no apaga la voz de la sesión: de eso se encarga
+   * el vigilante, que sabe distinguir «todavía cargando» de «roto». En un
+   * teléfono, el primer intento se rechaza a menudo y no significa nada.
+   */
   useEffect(() => {
     const el = audio.current;
     if (!el || !activo || hayAudio !== true) return;
-    el.src = rutaAudio(lang, indice).mp3;
-    el.load();
-    if (sonando) void el.play().catch(() => setHayAudio(false));
+    const pista = rutaAudio(lang, indice).mp3;
+    if (!el.currentSrc.endsWith(pista) && !el.src.endsWith(pista)) {
+      el.src = pista;
+      el.load();
+    }
+    if (sonando) void el.play().catch(() => { /* lo evalúa el vigilante */ });
   }, [activo, hayAudio, indice, lang, sonando]);
 
   // ── las marcas de tiempo para la grabación ───────────────────────────────
@@ -777,6 +793,38 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
   }, [grabando]);
 
   const alEmpezar = useCallback((desde = 0) => {
+    /**
+     * EL DESBLOQUEO DEL AUDIO EN EL TELÉFONO. Va lo primero, y va aquí.
+     *
+     * Medido el 9-sep-2026 contra el sitio publicado: en escritorio la voz
+     * sonaba, y **en teléfono no arrancaba nunca**. No era el audio ni la red:
+     * es la política de reproducción de los navegadores móviles, que solo
+     * permiten sonar a un elemento al que se le pidió reproducir **dentro del
+     * gesto de la persona**. Aquí estamos justo dentro del clic; el efecto que
+     * ponía la pista corría después, ya fuera del gesto, y el teléfono lo
+     * bloqueaba en silencio.
+     *
+     * Por eso la pista del primer capítulo se pone y se lanza aquí mismo, de
+     * forma síncrona. A partir de ese momento el elemento queda «permitido» y
+     * los cambios de capítulo, que ya no vienen de un gesto, funcionan solos.
+     *
+     * La cama musical va después y a propósito: si el navegador solo concede
+     * un desbloqueo, que se lo lleve la voz, que es la que cuenta el recorrido.
+     */
+    if (!grabando) {
+      const voz = audio.current;
+      if (voz) {
+        const pista = rutaAudio(lang, desde).mp3;
+        if (!voz.currentSrc.endsWith(pista)) { voz.src = pista; voz.load(); }
+        const p = voz.play();
+        if (p && p.catch) p.catch(() => { /* el vigilante decide, no aquí */ });
+      }
+      const musica = cama.current;
+      if (musica) {
+        const p = musica.play();
+        if (p && p.catch) p.catch(() => { /* la música es prescindible */ });
+      }
+    }
     precargarFotos();
     // La sección que contiene el cine puede no haberse revelado todavía (botón
     // de la portada en un teléfono): se revela a mano, porque un ancestro con
@@ -788,7 +836,7 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
       return;
     }
     arrancar(desde);
-  }, [grabando, arrancar, precargarFotos]);
+  }, [grabando, arrancar, precargarFotos, lang]);
 
   // La portada del sitio tiene un botón «Ver el recorrido»: manda este evento.
   useEffect(() => {

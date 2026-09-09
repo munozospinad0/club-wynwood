@@ -1347,6 +1347,25 @@
   .lam.cine .rec-grabando .cine-frase { font-size: clamp(28px, 6.2vw, 50px); }
 }
 
+/* ── el teléfono de verdad, que no es lo mismo que «vertical» ────────────────
+   El bloque de arriba nace para el formato 9:16 del vídeo, donde el subtítulo
+   va enorme bajo el dibujo. Un teléfono en la mano cumple esa misma condición
+   de proporción, pero además tiene mandos, tira de capítulos y cabecera que el
+   vídeo no tiene, y con el 52 % del alto para el dibujo no queda sitio: medido
+   en un iPhone, el subtítulo necesitaba 172 px de contenido y tenía 62, así que
+   la frase narrada se cortaba por la mitad.
+
+   Va DESPUÉS de aquel bloque a propósito: es el único sitio donde gana, porque
+   comparten especificidad. Y el ancho máximo deja fuera la grabación del MP4,
+   que corre a 1080 px de ancho y tiene que conservar su maqueta intacta. */
+@media (max-width: 460px) and (max-aspect-ratio: 9/15) {
+  .lam.cine { grid-template-rows: minmax(0, 40%) minmax(0, 60%); }
+  .lam.cine .lam-escenario { padding: 10px 12px 0; }
+  .cine-sub { padding-top: 12px; }
+  .cine-frase { font-size: clamp(18px, 5vw, 26px); line-height: 1.28; }
+  .lam.cine .rec-cap { font-size: 13px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .lam.cine, .cine-frase, .cine-tarjeta { animation: none; }
   .cine-segmento-relleno, .cine-frase > span { transition: none; }

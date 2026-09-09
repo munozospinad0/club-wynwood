@@ -74,7 +74,17 @@ export default async function Landing({ params }: { params: Promise<{ lang: stri
   const es = lang === "es";
   const t = TEXTO[lang];
 
-  /** Las cuatro cifras que deciden, sacadas de la ficha verificada. */
+  /**
+   * Las cuatro cifras que deciden, sacadas de la ficha verificada.
+   *
+   * Se recorta en el primer separador porque la ficha guarda el dato completo
+   * —«~4 000 ft² · 372 m² · paja, cuatro aguas»— y eso, puesto en fila en una
+   * portada, deja de ser una cifra y pasa a ser una frase: rompe el ritmo y ya
+   * no se lee de un vistazo. El detalle entero sigue estando en la ficha
+   * técnica; aquí solo hace falta lo que se escanea. La fuente sigue siendo
+   * `venue.ts`, así que no hay una segunda versión de la verdad.
+   */
+  const corta = (v: string) => v.split(/\s*[·,]\s*/)[0].trim();
   const clave = ["superficie", "aforo", "techada", "cabanas"] as const;
   const cifras = clave
     .map((c) => FICHA.find((f) => f.clave === c))
@@ -92,7 +102,7 @@ export default async function Landing({ params }: { params: Promise<{ lang: stri
           <ul className="lp-cifras">
             {cifras.map((f) => (
               <li key={f.clave}>
-                <strong>{es ? f.valorEs : f.valorEn}</strong>
+                <strong>{corta(es ? f.valorEs : f.valorEn)}</strong>
                 <span className="ojo">{es ? f.es : f.en}</span>
               </li>
             ))}

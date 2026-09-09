@@ -1,0 +1,12 @@
+Landing: cifras que se escanean y foto que equilibra la columna
+
+Las cifras salian enteras de la ficha, y la ficha guarda el dato completo. Una
+cadena como "~4.000 ft2 - 372 m2 - paja, cuatro aguas", puesta en fila en una
+portada, deja de ser una cifra y pasa a ser una frase: rompe el ritmo y ya no se
+lee de un vistazo. Se recorta en el primer separador. El detalle entero sigue en
+la ficha tecnica y la fuente sigue siendo venue.ts, asi que no aparece una
+segunda version de la verdad escrita a mano.
+
+Y la foto quedaba flotando con aire muerto arriba y abajo. Ahora toma el alto de
+la columna de texto y se recorta, que es lo que hace que las dos mitades se lean
+como una sola pieza en vez de como dos bloques sueltos.

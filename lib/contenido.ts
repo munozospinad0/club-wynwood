@@ -68,8 +68,8 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "Qué hay en el suelo", en: "What's on the ground" },
         cuerpo: {
-          es: "Paseo pavimentado central de la puerta al estacionamiento, con césped artificial a un lado y arena al otro. Setos perimetrales cierran el recinto y mesas de picnic fijas completan el mobiliario existente. Es superficie firme: no hay que resolver piso antes de montar.",
-          en: "A central paved walk from the door to the parking lot, with artificial turf on one side and sand on the other. Perimeter hedges close the site and fixed picnic tables complete the existing furniture. The walk is firm ground: you do not have to solve flooring before you build.",
+          es: "Paseo pavimentado central de la puerta al estacionamiento, con césped artificial a un lado y arena al otro. Setos perimetrales cierran el recinto y mesas de picnic fijas completan el mobiliario existente. Es superficie firme: no hay que resolver piso antes de montar. El paseo mide unos 15 ft de ancho por 108 de largo, según el plano del predio; medida aproximada hasta contrastarla con el levantamiento. Tres superficies a pocos metros es también lo que aprovecha un offsite de empresa para zonificar sin mover mobiliario.",
+          en: "A central paved walk from the door to the parking lot, with artificial turf on one side and sand on the other. Perimeter hedges close the site and fixed picnic tables complete the existing furniture. The walk is firm ground: you do not have to solve flooring before you build. The walk is about 15 ft wide by 108 ft long according to the site plan; an approximate figure until it is checked against the survey. Three surfaces a few steps apart is also what a corporate offsite uses to zone the day without moving furniture.",
         },
       },
       {
@@ -125,15 +125,15 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "Por qué importa en Miami", en: "Why it matters in Miami" },
         cuerpo: {
-          es: "Una fecha al aire libre en Miami depende del cielo. ~4.000 ft² techados significan que el evento tiene a dónde moverse sin cancelar. La cubierta es fija y ya está ahí: para el agua que cae recta basta sola, y con viento conviene cerrar los costados.",
-          en: "An outdoor date in Miami depends on the sky. ~4,000 sq ft under roof means the event has somewhere to go without cancelling. The cover is permanent and already there: for vertical rain it is enough on its own, and with wind you will want the sides closed.",
+          es: "Una fecha al aire libre en Miami depende del cielo. ~4.000 ft² techados significan que el evento tiene a dónde moverse sin cancelar. La cubierta es fija y ya está ahí: para el agua que cae recta basta sola, y con viento conviene cerrar los costados. Contratado suelto, sin el jardín, es además el formato de una boda pequeña de 30 a 80: ceremonia, cena y baile bajo la misma paja.",
+          en: "An outdoor date in Miami depends on the sky. ~4,000 sq ft under roof means the event has somewhere to go without cancelling. The cover is permanent and already there: for vertical rain it is enough on its own, and with wind you will want the sides closed. Booked on its own, without the garden, it's also the format for a small wedding of 30 to 80: ceremony, dinner and dancing under the same thatch.",
         },
       },
       {
         titulo: { es: "Abierta por los costados", en: "Open on all sides" },
         cuerpo: {
-          es: "No es una sala: no hay cerramiento. Eso mantiene la ventilación y la continuidad visual con el Jardín, y es la razón por la que el recinto se lee como un solo espacio y no como dos.",
-          en: "It is not a room: there is no enclosure. That keeps ventilation and visual continuity with the Garden, and it is why the site reads as one space rather than two.",
+          es: "No es una sala: no hay cerramiento. Eso mantiene la ventilación y la continuidad visual con el Jardín, y es la razón por la que el recinto se lee como un solo espacio y no como dos. Se contrata suelto, sin el jardín: para un evento pequeño o un Sweet 16 de menos de ~150 invitados suele ser la medida justa.",
+          en: "It is not a room: there is no enclosure. That keeps ventilation and visual continuity with the Garden, and it is why the site reads as one space rather than two. It books on its own, without the garden: for a small event or a Sweet 16 under ~150 guests it is usually the right size.",
         },
       },
       {
@@ -182,15 +182,15 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "Dos ambientes en un recinto", en: "Two settings, one site" },
         cuerpo: {
-          es: "El Jardín y el Tiki Hut son contiguos y comparten el paseo. Eso permite separar ceremonia, cóctel y baile sin que los invitados salgan del recinto ni haya traslado.",
-          en: "The Garden and the Tiki Hut are contiguous and share the walk. That lets you separate ceremony, cocktail hour and dancing without guests leaving the site and without transfers.",
+          es: "El Jardín y el Tiki Hut son contiguos y comparten el paseo. Eso permite separar ceremonia, cóctel y baile sin que los invitados salgan del recinto ni haya traslado. Ese reparto tiene sentido a partir de unos 80 invitados; por debajo, el recinto completo queda grande y la boda cabe en el Tiki Hut solo: son las bodas pequeñas de 30 a 80. La cena de ensayo tiene su propia página: la misma dirección, la noche anterior.",
+          en: "The Garden and the Tiki Hut are contiguous and share the walk. That lets you separate ceremony, cocktail hour and dancing without guests leaving the site and without transfers. That split makes sense from about 80 guests up; below that, the whole site is too big and the wedding fits in the Tiki Hut alone: those are the small weddings of 30 to 80. The rehearsal dinner has its own page: same address, the night before.",
         },
       },
       {
         titulo: { es: "Tu planner, tus proveedores", en: "Your planner, your vendors" },
         cuerpo: {
-          es: "No imponemos catering ni decoración. Trabajas con tu wedding planner y tus proveedores; nosotros entregamos el espacio. seis cabañas amuebladas y las mesas de picnic ya están en el jardín.",
-          en: "We do not impose catering or decor. You work with your wedding planner and your vendors; we hand over the space. six furnished cabanas and the picnic tables are already in the garden.",
+          es: "No imponemos catering ni decoración. Trabajas con tu wedding planner y tus proveedores; nosotros entregamos el espacio. Las seis cabañas amuebladas y las mesas de picnic ya están en el jardín. El bridal shower, meses antes, cabe en el Tiki Hut suelto: está en la página de showers.",
+          en: "We do not impose catering or decor. You work with your wedding planner and your vendors; we hand over the space. The six furnished cabanas and the picnic tables are already in the garden. The bridal shower, months earlier, fits under the Tiki Hut on its own: see the showers page.",
         },
       },
       {
@@ -239,8 +239,8 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "Un lienzo, no un salón", en: "A canvas, not a ballroom" },
         cuerpo: {
-          es: "La razón por la que una marca elige este recinto es que no tiene estética propia que imponer. Superficie firme, límites claros y cero ambigüedad sobre qué está incluido.",
-          en: "The reason a brand picks this site is that it has no aesthetic of its own to impose. Firm ground, clear boundaries and zero ambiguity about what is included.",
+          es: "La razón por la que una marca elige este recinto es que no tiene estética propia que imponer. Superficie firme, límites claros y cero ambigüedad sobre qué está incluido. Si la activación es un desfile o una presentación de colección, la pasarela sobre el paseo tiene página propia: Desfiles de moda. Esta página es para marcas y empresas; si lo que buscas es un salón de fiestas para una celebración familiar, la comparación salón/jardín está en «Salón de fiestas en Miami, al aire libre».",
+          en: "The reason a brand picks this site is that it has no aesthetic of its own to impose. Firm ground, clear boundaries and zero ambiguity about what is included. If the activation is a runway show or a collection presentation, the runway on the walkway has its own page: Runway shows. This page is for brands and companies; if you are after a banquet hall for a family celebration, the hall-versus-garden comparison is on “Outdoor party hall rental in Miami”.",
         },
       },
       {
@@ -253,8 +253,8 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "Lo que decide un productor", en: "What a producer decides on" },
         cuerpo: {
-          es: "Potencia, load-in, ancho de portón, parking, curfew y límite de dB se levantan contigo en la visita técnica y se entregan por escrito. Preferimos eso a publicar cifras que luego no se sostengan.",
-          en: "Power, load-in, gate width, parking, curfew and dB limit are surveyed with you at the technical visit and delivered in writing. We prefer that to publishing figures that will not hold up.",
+          es: "Potencia, load-in, ancho de portón, parking, curfew y límite de dB se levantan contigo en la visita técnica y se entregan por escrito. Preferimos eso a publicar cifras que luego no se sostengan. Si lo que traes no es una marca ni un lanzamiento sino tu propio equipo —un retiro, una jornada de trabajo fuera de la oficina—, esa es otra página: offsite de empresa.",
+          en: "Power, load-in, gate width, parking, curfew and dB limit are surveyed with you at the technical visit and delivered in writing. We prefer that to publishing figures that will not hold up. If what you're bringing isn't a brand or a launch but your own team — a retreat, a workday away from the office — that is a different page: corporate offsite.",
         },
       },
     ],
@@ -438,22 +438,22 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "La entrada tiene recorrido", en: "The entrance has a walk" },
         cuerpo: {
-          es: "El paseo pavimentado recorre el jardín de extremo a extremo entre dos hileras de palmeras reales. Es un pasillo de entrada que ya existe: no hay que montarlo ni alfombrarlo, y las fotos salen con las palmeras y los murales del barrio de fondo, no con una pared.",
-          en: "The paved walk runs the length of the garden between two rows of real palms. It is an entrance aisle that already exists: it does not need building or carpeting, and the photographs come out with palms and the neighbourhood murals behind, not a wall.",
+          es: "El paseo pavimentado recorre el jardín de la puerta del edificio al estacionamiento, 15 × 108 ft entre dos hileras de palmeras reales. Es un pasillo de entrada que ya existe: no hay que montarlo ni alfombrarlo, y las fotos salen con las palmeras, el cielo abierto y la paja de la palapa de fondo, no con una pared. Los murales del barrio quedan a cuatro minutos a pie, en Wynwood Walls. Es el mismo paseo que en los desfiles de moda hace de pasarela; aquí es pasillo de entrada, sin tarima ni backstage.",
+          en: "The paved walk runs from the building door to the parking lot, 15 by 108 ft between two rows of real palms. It is an entrance aisle that already exists: nothing to build, no runner to roll out, and the photos come out with palms, open sky and the thatch of the tiki hut behind, not a wall. The neighbourhood murals are a four-minute walk away, at Wynwood Walls. It is the same walkway that serves as the runway for fashion shows; here it is an entrance aisle, with no stage and no backstage.",
         },
       },
       {
         titulo: { es: "Cena y baile bajo techo", en: "Dinner and dancing under cover" },
         cuerpo: {
-          es: "La palapa de ~4.000 ft² cubre la parte sentada del evento. Eso resuelve dos cosas a la vez: la lluvia y el sol de Miami a las cinco de la tarde. Las seis cabañas amuebladas del jardín funcionan como zonas de descanso para los invitados mayores.",
-          en: "The ~4,000 sq ft structure covers the seated part of the event. That solves two things at once: the rain and the five-o'clock Miami sun. The six furnished cabanas in the garden work as rest areas for older guests.",
+          es: "La palapa de ~4.000 ft² cubre la parte sentada del evento. Eso resuelve dos cosas a la vez: la lluvia y el sol de Miami a las cinco de la tarde. Las seis cabañas amuebladas del jardín funcionan como zonas de descanso para los invitados mayores. Si la fiesta es un Sweet 16 —de pie, con DJ y sin vals— y son menos de ~150 invitados, la página de Sweet 16 explica cuándo basta con el Tiki Hut solo.",
+          en: "The ~4,000 sq ft structure covers the seated part of the event. That solves two things at once: the rain and the five-o'clock Miami sun. The six furnished cabanas in the garden work as rest areas for older guests. If the party is a Sweet 16 — standing, with a DJ and no waltz — and under ~150 guests, the Sweet 16 page explains when the Tiki Hut alone is enough.",
         },
       },
       {
         titulo: { es: "Tu decoración, sin competencia", en: "Your decor, uncontested" },
         cuerpo: {
-          es: "El recinto no tiene una estética propia que imponer. Eso importa en una quinceañera más que en ningún otro evento: el color y el montaje los pone la familia o su decorador, y aquí no hay moqueta ni lámparas ni un salón que pelee con ellos.",
-          en: "The site has no aesthetic of its own to impose. That matters more at a quinceañera than at any other event: the colour scheme and the build come from the family or their decorator, and here there is no carpet, no chandeliers and no ballroom competing with them.",
+          es: "El recinto no tiene una estética propia que imponer. Eso importa en una quinceañera más que en ningún otro evento: el color y el montaje los pone la familia o su decorador, y aquí no hay moqueta ni lámparas ni un salón que pelee con ellos. Si la fiesta no es una quinceañera —un cumpleaños, un aniversario, una celebración familiar—, la comparación entre un salón de fiestas y este jardín está en «Salón de fiestas en Miami, al aire libre».",
+          en: "The site has no aesthetic of its own to impose. That matters more at a quinceañera than at any other event: the colour scheme and the build come from the family or their decorator, and here there is no carpet, no chandeliers and no ballroom competing with them. If the party is not a quinceañera — a birthday, an anniversary, a family celebration — the comparison between a banquet hall and this garden is on “Outdoor party hall rental in Miami”.",
         },
       },
     ],
@@ -502,8 +502,8 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "Por separado o combinado", en: "Separately or combined" },
         cuerpo: {
-          es: "El Jardín (~18.000 ft²) y el Tiki Hut (~4.000 ft²) se alquilan sueltos o juntos. Las cifras de ~600 y ~300 son del recinto completo; si contratas solo uno de los dos, el aforo baja en proporción a la superficie que uses. Son contiguos y comparten el paseo, así que combinados funcionan como un solo recinto.",
-          en: "The Garden (~18,000 sq ft) and the Tiki Hut (~4,000 sq ft) rent separately or together. The ~600 and ~300 figures are for the whole site; if you take only one, capacity drops in proportion to the surface you use. They are contiguous and share the walk, so combined they work as a single site.",
+          es: "El Jardín (~18.000 ft²) y el Tiki Hut (~4.000 ft²) se alquilan sueltos o juntos. Las cifras de ~600 y ~300 son del recinto completo; si contratas solo uno de los dos, el aforo baja en proporción a la superficie que uses. Son contiguos y comparten el paseo, así que combinados funcionan como un solo recinto. Una fiesta de pie con DJ —un Sweet 16, por ejemplo— usa la superficie de otra manera que un banquete, y por eso se mide contra la cifra de pie, no contra la de sentados. Si llegaste buscando un salón de fiestas, la comparación entre un salón y este jardín —entradas, licencia de licor, cocina— está en la página «Salón de fiestas en Miami, al aire libre»; aquí solo el aforo.",
+          en: "The Garden (~18,000 sq ft) and the Tiki Hut (~4,000 sq ft) rent separately or together. The ~600 and ~300 figures are for the whole site; if you take only one, capacity drops in proportion to the surface you use. They are contiguous and share the walk, so combined they work as a single site. A standing party with a DJ — a Sweet 16, say — uses the surface differently from a banquet, which is why it is measured against the standing figure, not the seated one. If you got here looking for a banquet hall, the comparison between a hall and this garden — entrances, liquor license, kitchen — is on the page “Outdoor party hall rental in Miami”; this page is only about capacity.",
         },
       },
       {
@@ -646,16 +646,16 @@ export const PAGINAS: Pagina[] = [
     ojo: { es: "Uso · evento pequeño", en: "Use · small event" },
     h1: { es: "Eventos pequeños", en: "Small events" },
     respuesta: {
-      es: "Sí se puede alquilar solo una parte. El Tiki Hut son ~4.000 ft² techados que se contratan sueltos, sin el jardín, y esa es la medida que encaja con un baby shower, un bautizo o un cumpleaños de 50 a 150 invitados. Contratar los ~22.000 ft² completos para eso no tiene sentido y no lo recomendamos.",
-      en: "Yes, you can rent just one part. The Tiki Hut is ~4,000 sq ft under roof that books on its own, without the garden, and that is the size that fits a baby shower, a christening or a birthday of 50 to 150 guests. Taking the full ~22,000 sq ft for that makes no sense and we do not recommend it.",
+      es: "Sí se puede alquilar solo una parte. El Tiki Hut son ~4.000 ft² techados que se contratan sueltos, sin el jardín, y esa es la medida que encaja con un bautizo, un cumpleaños íntimo o una comida de familia de 50 a 150 invitados. Contratar los ~22.000 ft² completos para eso no tiene sentido y no lo recomendamos.",
+      en: "Yes, you can rent just one part. The Tiki Hut is ~4,000 sq ft under roof that books on its own, without the garden, and that is the size that fits a christening, an intimate birthday or a family lunch of 50 to 150 guests. Taking the full ~22,000 sq ft for that makes no sense and we do not recommend it.",
     },
     title: {
       es: "Eventos pequeños en Wynwood: alquilar solo el Tiki Hut | Club Wynwood",
       en: "Small events in Wynwood: renting just the Tiki Hut | Club Wynwood",
     },
     description: {
-      es: "Para baby showers, bautizos y cumpleaños de 50 a 150 invitados se alquila solo el Tiki Hut: ~4.000 ft² techados en Wynwood, sin contratar el jardín entero.",
-      en: "For baby showers, christenings and birthdays of 50 to 150 guests you can rent just the Tiki Hut: ~4,000 sq ft under roof in Wynwood, without taking the whole garden.",
+      es: "Para bautizos, cumpleaños íntimos y reuniones de 50 a 150 invitados se alquila solo el Tiki Hut: ~4.000 ft² techados en Wynwood, sin contratar el jardín entero.",
+      en: "For christenings, intimate birthdays and gatherings of 50 to 150 guests, rent just the Tiki Hut: ~4,000 sq ft under roof in Wynwood, not the whole garden.",
     },
     cifras: [
       { etiqueta: { es: "Solo el Tiki Hut", en: "Tiki Hut only" }, valor: "~4 000 ft²" },
@@ -677,15 +677,15 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "Por qué no alquilarlo todo", en: "Why not take the whole thing" },
         cuerpo: {
-          es: "Un evento de 80 personas en ~22.000 ft² se ve vacío, y además pagas superficie que no usas. Con solo el Tiki Hut el grupo queda reunido bajo techo, la conversación funciona y el presupuesto se va a comida y decoración en vez de a metros cuadrados.",
-          en: "An 80-person event in ~22,000 sq ft looks empty, and you are paying for surface you do not use. With just the Tiki Hut the group stays together under cover, conversation works, and the budget goes to food and decor instead of square footage.",
+          es: "Un evento de 80 personas en ~22.000 ft² se ve vacío, y además pagas superficie que no usas. Con solo el Tiki Hut el grupo queda reunido bajo techo, la conversación funciona y el presupuesto se va a comida y decoración en vez de a metros cuadrados. Una fiesta de compromiso o una cena de ensayo de ese tamaño entran aquí; si lo que se organiza es el fin de semana de boda entero, con dos noches seguidas, eso está en la página de la cena de ensayo. Si lo que se celebra es la boda misma, con 30 a 80 invitados, tiene página propia: bodas pequeñas de 30 a 80. Vale igual para un Sweet 16 de menos de ~150 invitados; la página de Sweet 16 lo desarrolla con el formato de pie y con DJ. A partir de 150 invitados la cuenta se invierte: un cumpleaños de adulto grande, de noche, es el recinto entero, y eso lo cuenta la página de cumpleaños de adulto. A partir de unos 150 sentados, cuando hacen falta el jardín y la palapa juntos, la comparación con un salón de fiestas tiene su propia página: «Salón de fiestas en Miami, al aire libre».",
+          en: "An 80-person event in ~22,000 sq ft looks empty, and you are paying for surface you do not use. With just the Tiki Hut the group stays together under cover, conversation works, and the budget goes to food and decor instead of square footage. An engagement party or a rehearsal dinner of that size fits here; if you are planning the whole wedding weekend, two nights back to back, that lives on the rehearsal dinner page. If what you're celebrating is the wedding itself, with 30 to 80 guests, it has its own page: small weddings of 30 to 80. The same goes for a Sweet 16 under ~150 guests; the Sweet 16 page covers it, standing format and DJ included. From 150 guests up the arithmetic flips: a big adult birthday at night takes the whole site, and that's what the adult birthday page covers. From around 150 seated, when it takes the garden and the tiki hut together, the comparison with a banquet hall has its own page: “Outdoor party hall rental in Miami”.",
         },
       },
       {
         titulo: { es: "Techado y abierto a la vez", en: "Covered and open at once" },
         cuerpo: {
-          es: "La palapa tiene techo de paja pero no tiene paredes: está abierta por los cuatro costados. Para un evento de día eso significa sombra sin encierro y sin aire acondicionado, que es exactamente lo que se busca en un baby shower o un bautizo a mediodía.",
-          en: "The structure has a thatched roof but no walls: it is open on all four sides. For a daytime event that means shade without being shut in and without air conditioning, which is exactly what a midday baby shower or christening wants.",
+          es: "La palapa tiene techo de paja pero no tiene paredes: está abierta por los cuatro costados. Para un evento de día eso significa sombra sin encierro y sin aire acondicionado, que es exactamente lo que se busca en un bautizo o un almuerzo de cumpleaños a mediodía. Si lo que organizas es un bridal shower o un baby shower, la página de showers cuenta ese montaje de mediodía. Vale igual para una empresa: un equipo de hasta 150 personas cabe bajo el Tiki Hut suelto; si la jornada necesita zonificar el jardín entero, mira la página de offsite de empresa.",
+          en: "The structure has a thatched roof but no walls: it is open on all four sides. For a daytime event that means shade without being shut in and without air conditioning, which is exactly what a midday christening or birthday lunch wants. If what you are hosting is a bridal shower or a baby shower, the showers page covers that midday setup. The same goes for a company: a team of up to 150 fits under the Tiki Hut on its own; if the day needs the whole garden zoned, see the corporate offsite page.",
         },
       },
       {
@@ -770,8 +770,8 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "Del 30 de noviembre al 6 de diciembre, con fechas abiertas", en: "November 30 to December 6, with open dates" },
         cuerpo: {
-          es: "Miami Art Week 2026 va del 30 de noviembre al 6 de diciembre, con Art Basel Miami Beach del 4 al 6. Es la semana más disputada del año en el barrio y todavía quedan fechas. Hay un plazo que sí manda: la City of Miami cierra las solicitudes de permiso de evento especial para esa semana el 11 de octubre, así que si tu activación necesita permiso, la conversación útil es ahora. Escríbenos con la fecha y el aforo y te decimos disponibilidad real.",
-          en: "Miami Art Week 2026 runs from November 30 to December 6, with Art Basel Miami Beach on the 4th to the 6th. It is the most contested week of the year in this neighbourhood and there are still dates. One deadline does rule: the City of Miami closes special-event permit applications for that week on October 11, so if your activation needs a permit, the useful conversation is now. Write to us with the date and headcount and we come back with real availability.",
+          es: "Miami Art Week 2026 va del 30 de noviembre al 6 de diciembre, con Art Basel Miami Beach del 4 al 6. Es la semana más disputada del año en el barrio y todavía quedan fechas. Hay un plazo que sí manda: la City of Miami cierra las solicitudes de permiso de evento especial para esa semana el 11 de octubre, así que si tu activación necesita permiso, la conversación útil es ahora. Escríbenos con la fecha y el aforo y te decimos disponibilidad real. Si lo tuyo es la otra semana grande del año, un desfile satélite de Miami Swim Week, tiene página propia: Desfiles de moda.",
+          en: "Miami Art Week 2026 runs from November 30 to December 6, with Art Basel Miami Beach on the 4th to the 6th. It is the most contested week of the year in this neighbourhood and there are still dates. One deadline does rule: the City of Miami closes special-event permit applications for that week on October 11, so if your activation needs a permit, the useful conversation is now. Write to us with the date and headcount and we come back with real availability. If yours is the other big week of the year, a Miami Swim Week satellite show, it has its own page: Runway shows.",
         },
       },
       {
@@ -837,15 +837,15 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "Sin proveedor impuesto", en: "No imposed supplier" },
         cuerpo: {
-          es: "Los hoteles suelen atar el catering y la barra a su cocina, y ahí es donde se va el presupuesto de una cena de empresa. Aquí se alquila el espacio: eliges proveedor, menú y barra, y el ahorro se nota justo en la partida más grande.",
-          en: "Hotels usually tie catering and bar to their own kitchen, and that is where a company dinner's budget goes. Here you rent the space: you choose supplier, menu and bar, and the saving shows up in the largest line item.",
+          es: "Los hoteles suelen atar el catering y la barra a su cocina, y ahí es donde se va el presupuesto de una cena de empresa. Aquí se alquila el espacio: eliges proveedor, menú y barra, y el ahorro se nota justo en la partida más grande. Y si lo que estás comparando es un salón de fiestas y no un hotel, la página «Salón de fiestas en Miami, al aire libre» hace esa comparación punto por punto.",
+          en: "Hotels usually tie catering and bar to their own kitchen, and that is where a company dinner's budget goes. Here you rent the space: you choose supplier, menu and bar, and the saving shows up in the largest line item. And if what you are weighing is a banquet hall rather than a hotel, the page “Outdoor party hall rental in Miami” makes that comparison point by point.",
         },
       },
       {
         titulo: { es: "Las fechas de diciembre vuelan", en: "December dates go fast" },
         cuerpo: {
-          es: "Las dos primeras semanas de diciembre son las más pedidas del año, y coinciden además con Art Week. Si la fecha es esa, conviene cerrarla con meses de margen: escríbenos con el número de asistentes y te decimos qué hay libre.",
-          en: "The first two weeks of December are the most requested of the year, and they overlap with Art Week. If that is your date, close it months ahead: write to us with your headcount and we come back with what is free.",
+          es: "Las dos primeras semanas de diciembre son las más pedidas del año, y coinciden además con Art Week. Si la fecha es esa, conviene cerrarla con meses de margen: escríbenos con el número de asistentes y te decimos qué hay libre. Y si lo que se celebra no es la empresa sino un cumpleaños de 30, 40 o 50 con más de 150 invitados, para eso está la página de cumpleaños de adulto.",
+          en: "The first two weeks of December are the most requested of the year, and they overlap with Art Week. If that is your date, close it months ahead: write to us with your headcount and we come back with what is free. And if what you're celebrating isn't the company but a 30th, 40th or 50th with more than 150 guests, that's what the adult birthday page is for.",
         },
       },
     ],
@@ -894,8 +894,8 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "Está bien conectado", en: "It is well connected" },
         cuerpo: {
-          es: "Tres minutos al acceso de la I-95, seis a Midtown y el Design District, nueve a Downtown y Brickell, dieciséis al aeropuerto MIA y dieciocho a Miami Beach. Para un evento con invitados de fuera, esos dieciséis minutos al aeropuerto valen más que cualquier argumento de marca.",
-          en: "Three minutes to the I-95 access, six to Midtown and the Design District, nine to Downtown and Brickell, sixteen to MIA airport and eighteen to Miami Beach. For an event with out-of-town guests, those sixteen minutes to the airport are worth more than any brand argument.",
+          es: "Tres minutos al acceso de la I-95, seis a Midtown y el Design District, nueve a Downtown y Brickell, dieciséis al aeropuerto MIA y dieciocho a Miami Beach. Para un evento con invitados de fuera, esos dieciséis minutos al aeropuerto valen más que cualquier argumento de marca. Para la cena de ensayo de una boda de destino, con la familia aterrizando el jueves, hay página propia.",
+          en: "Three minutes to the I-95 access, six to Midtown and the Design District, nine to Downtown and Brickell, sixteen to MIA airport and eighteen to Miami Beach. For an event with out-of-town guests, those sixteen minutes to the airport are worth more than any brand argument. For the rehearsal dinner of a destination wedding, with the family landing on Thursday, there is a page of its own.",
         },
       },
       {

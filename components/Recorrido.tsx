@@ -679,13 +679,34 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
     }
   }, [activo, grabando, sonando, porcentaje, transcurrido, datosVideo]);
 
-  // Termina: el último capítulo acabó y `siguiente` apagó el sonido con el reloj en cero.
+  /**
+   * TERMINÓ EL RECORRIDO.
+   *
+   * ⚠️ ESTE EVENTO NO SE DISPARÓ NUNCA. Exigía que SEIS condiciones coincidieran
+   * en el mismo render —activo, no grabando, último capítulo, audio parado,
+   * `segundo === 0` y el último capítulo en «oídos»— y esa combinación es una
+   * carrera que casi nunca se gana: cuando el audio termina, `segundo` se queda
+   * en el último valor del capítulo y no vuelve a cero, así que la puerta se
+   * cerraba justo en el momento en que debía abrirse. Medido el 9-sep-2026:
+   * 20 `video_start`, 10 `video_progress` y **0 `video_complete`**.
+   *
+   * Ahora se ata a algo CONTINUO y no a una coincidencia de estados: el
+   * porcentaje, que es el mismo que ya gobierna los umbrales de 10/25/50/75 y
+   * que sube solo con el reloj. A partir del 98 % se da por terminado — el 2 %
+   * que sobra son los últimos segundos de la tarjeta final, no contenido.
+   *
+   * La condición vieja se conserva como segunda vía por si el reloj se queda
+   * corto: `progreso.current.completo` garantiza que solo se manda una vez,
+   * venga por donde venga.
+   */
   useEffect(() => {
-    if (!activo || grabando || !ultimo || sonando || segundo !== 0) return;
-    if (!oidos.has(CAPITULOS.length - 1) || progreso.current.completo) return;
+    if (!activo || grabando || progreso.current.completo) return;
+    const porReloj = porcentaje >= 98;
+    const porEstado = ultimo && !sonando && oidos.has(CAPITULOS.length - 1);
+    if (!porReloj && !porEstado) return;
     progreso.current.completo = true;
     ev("video_complete", datosVideo({ video_percent: 100, video_current_time: Math.round(totalRecorrido) }));
-  }, [activo, grabando, ultimo, sonando, segundo, oidos, datosVideo, totalRecorrido]);
+  }, [activo, grabando, porcentaje, ultimo, sonando, oidos, datosVideo, totalRecorrido]);
 
   // ── el aforo interactivo, antes de empezar ───────────────────────────────
 

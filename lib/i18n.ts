@@ -89,6 +89,14 @@ export const RUTAS = {
   artbasel: { es: "art-basel-y-miami-art-week", en: "art-basel-and-miami-art-week" },
   finDeAno: { es: "fiesta-de-fin-de-ano-de-empresa", en: "company-holiday-party" },
   barrio: { es: "por-que-wynwood", en: "why-wynwood" },
+  offsite: { es: "offsite-de-empresa", en: "corporate-offsite" },
+  cumpleanosAdultos: { es: "fiesta-de-cumpleanos-para-adultos", en: "adult-birthday-party-venue" },
+  bodasIntimas: { es: "bodas-pequenas", en: "small-weddings" },
+  showers: { es: "bridal-shower-y-baby-shower", en: "bridal-shower-venue" },
+  finDeSemanaBoda: { es: "cena-de-ensayo", en: "rehearsal-dinner-venue" },
+  salonVsJardin: { es: "salon-de-fiestas-miami", en: "party-hall-rental-miami" },
+  sweet16: { es: "sweet-sixteen", en: "sweet-16-venue" },
+  swimWeek: { es: "desfiles-de-moda-y-miami-swim-week", en: "runway-shows-and-miami-swim-week" },
   /* Servicio legal de Law Offices of Sandra Clavijo, no del venue. Vive en
      este dominio porque ya vivía en el sitio anterior; no entra en la
      navegación y su formulario va al CRM de la firma. Ver components/Residencia.tsx. */

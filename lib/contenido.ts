@@ -26,7 +26,7 @@ export interface Pagina {
   respuesta: Record<Idioma, string>;
   title: Record<Idioma, string>;
   description: Record<Idioma, string>;
-  cifras: Array<{ etiqueta: Record<Idioma, string>; valor: string }>;
+  cifras: Array<{ etiqueta: Record<Idioma, string>; valor: string | Record<Idioma, string> }>;
   foto: { src: string; alt: Record<Idioma, string>; pie: Record<Idioma, string> };
   bloques: Bloque[];
 }
@@ -777,8 +777,8 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "Barra propia, estacionamiento propio", en: "Your own bar, our own parking" },
         cuerpo: {
-          es: "El recinto tiene licencia de licor propia, con su número de licencia, cosa que no todos los espacios de la zona pueden decir; la barra la monta y la opera tu equipo. Y hay estacionamiento en el propio predio, al este y al sur, que en esa semana y en este barrio deja de ser un detalle. La carga entra por su propia puerta, aparte de la de los invitados.",
-          en: "The site holds its own liquor license, with its own license number, which not every space in the area can say; your team sets up and runs the bar. And there is parking on site, to the east and south, which during that week and in this neighbourhood stops being a detail. Freight comes in through its own gate, separate from the guests'.",
+          es: "El recinto tiene licencia de licor propia, con su número de licencia, cosa que no todos los espacios de la zona pueden decir, y hay área donde montar barra. Y hay estacionamiento en el propio predio, al este y al sur, que en esa semana y en este barrio deja de ser un detalle. La carga entra por su propia puerta, aparte de la de los invitados.",
+          en: "The site holds its own liquor license, with its own license number, which not every space in the area can say, and there is an area where a bar can be set up. And there is parking on site, to the east and south, which during that week and in this neighbourhood stops being a detail. Freight comes in through its own gate, separate from the guests'.",
         },
       },
     ],
@@ -914,6 +914,511 @@ export const PAGINAS: Pagina[] = [
       },
     ],
   },
+
+  /**
+   * Página nueva del 10-sep-2026: demanda medida con el planificador y sin
+   * página propia hasta hoy. Escrita y revisada por tres vías (veracidad contra
+   * venue.ts, solape con las existentes, inglés nativo). Ver .qa/paginas-corregidas.json.
+   */
+  {
+    clave: "offsite",
+    ojo: { es: "Uso · offsite de empresa", en: "Use · corporate offsite" },
+    h1: { es: "Offsite de empresa", en: "Corporate offsites and retreats" },
+    respuesta: {
+      es: "Club Wynwood funciona como sede de offsite y retiro de empresa al aire libre en Wynwood, Miami: ~18.000 ft² con pavimento, césped artificial y arena a pocos metros, seis cabañas amuebladas y ~4.000 ft² bajo el Tiki Hut para el almuerzo. No es una sala de reuniones: sin salas, sin AV, sin proyector.",
+      en: "Club Wynwood is an outdoor offsite and corporate retreat venue in Wynwood, Miami: ~18,000 sq ft with paving, artificial turf and sand a few steps apart, six furnished cabanas and ~4,000 sq ft under the Tiki Hut for lunch. It isn't a meeting venue: no breakout rooms, no AV, no projector.",
+    },
+    title: {
+      es: "Offsite de empresa al aire libre en Wynwood | Club Wynwood",
+      en: "Corporate offsite venue in Wynwood, Miami | Club Wynwood",
+    },
+    description: {
+      es: "Offsite de empresa al aire libre en Wynwood, Miami: ~18.000 ft², tres superficies, seis cabañas fijas y ~4.000 ft² techados. Sin salas ni AV: traes tu montaje.",
+      en: "Outdoor corporate offsite and retreat venue in Wynwood, Miami: ~18,000 sq ft, 3 surfaces, 6 cabanas, ~4,000 sq ft under the Tiki Hut. No meeting rooms, no AV.",
+    },
+    cifras: [
+      { etiqueta: { es: "Jardín abierto", en: "Open garden" }, valor: { es: "~18.000 ft²", en: "~18,000 sq ft" } },
+      { etiqueta: { es: "Bajo el Tiki Hut", en: "Under the Tiki Hut" }, valor: { es: "~4.000 ft²", en: "~4,000 sq ft" } },
+      { etiqueta: { es: "Cabañas amuebladas", en: "Furnished cabanas" }, valor: { es: "6", en: "6" } },
+      { etiqueta: { es: "De pie (recinto completo)", en: "Standing (full buyout)" }, valor: { es: "~600", en: "~600" } },
+    ],
+    foto: {
+      src: "/assets/flyer-cenital.jpg",
+      alt: { es: "Cenital del recinto: la palapa, el área de arena, las cabañas y el paseo pavimentado en un mismo encuadre", en: "Overhead view of the venue: the Tiki Hut, the sand area, the cabanas and the paved walkway in one frame" },
+      pie: { es: "Las tres superficies del Jardín —pavimento, césped y arena— a pocos metros unas de otras.", en: "The three surfaces on the grounds — paving, turf and sand — a few steps from one another." },
+    },
+    bloques: [
+      {
+        titulo: { es: "Empieza por lo que no hay", en: "Start with what isn't here" },
+        cuerpo: {
+          es: "Al aire libre no hay salas de reunión, ni equipo audiovisual, ni proyector, ni climatización; la conectividad se confirma en la visita. Se alquila el recinto vacío: las actividades las trae tu equipo, igual que el catering. Un facilitador, una empresa de dinámicas de grupo o un proveedor de actividades monta aquí con lo suyo, y lo que nadie traiga no está. El exterior —el Jardín y el Tiki Hut— se puede reservar desde el 1 de octubre de 2026. El edificio de 15.961 ft² se alquila aparte desde el 1 de noviembre, y su cocina se suma cuando el catering la necesita. Quien necesita una sala con proyector y aire acondicionado necesita un salón de hotel, no un recinto al aire libre.",
+          en: "Outdoors there are no meeting rooms, no AV, no projector and no climate control; connectivity gets confirmed on the site visit. You rent the venue empty: your team brings the activities the same way it brings catering. A facilitator, a group-activities company or an activity vendor sets up here with their own gear, and whatever nobody brings isn't there. The outdoor venue — the Garden and the Tiki Hut — can be booked from October 1, 2026. The 15,961 sq ft building rents separately from November 1, and its kitchen is added when catering needs it. Anyone who needs a room with a projector and air conditioning needs a hotel ballroom, not an open-air venue.",
+        },
+      },
+      {
+        titulo: { es: "Tres suelos y seis rincones", en: "Three surfaces, six corners" },
+        cuerpo: {
+          es: "Las tres superficies del Jardín —pavimento, césped artificial y arena— están a pocos metros unas de otras, y eso es lo que un facilitador de team building aprovecha sin mover un solo mueble: la dinámica física sobre la arena, las mesas de trabajo sobre el pavimento firme del paseo, la puesta en común sobre el césped. Cada grupo cambia de zona caminando y el día no se detiene a reorganizar nada. Las seis cabañas amuebladas —pérgolas con cortinas y sofás— son seis rincones de reunión ya montados: sitios para conversar, no escritorios. Cabañas, mesas de picnic y setos perimetrales están fijos, así que el plano del día parte de ellos y no al revés.",
+          en: "The three surfaces on the Garden's grounds — paving, artificial turf and sand — sit a few steps from one another, and that is what a team-building facilitator uses without moving a single piece of furniture: the physical exercise on sand, the breakout tables on the firm paving of the walkway, the debrief on turf. Each group changes zone on foot and the day never stops to reset anything. The six furnished cabanas — pergolas with curtains and sofas — are six ready-made seating corners: places to talk, not desks. Cabanas, picnic tables and perimeter hedges are all fixed in place, so the day's floor plan starts from them, not the other way round.",
+        },
+      },
+      {
+        titulo: { es: "A la sombra, no al sol", en: "In the shade, not the sun" },
+        cuerpo: {
+          es: "Un día de octubre en Miami se aguanta a la sombra, no al sol, así que la agenda se arma alrededor del Tiki Hut: ~4.000 ft² techados de paja que son el comedor de mediodía, con sombra y sin aire acondicionado, y el único techo del exterior cuando llueve. Para el agua que cae recta basta solo; con viento entra de lado, y un offsite de enero conviene que presupueste cierres laterales. El recinto completo admite ~600 de pie o ~300 sentados; un equipo de 40 u 80 personas usa una fracción, y para ese tamaño suele bastar el Tiki Hut suelto, como en los eventos pequeños. Las sesiones al sol van temprano; el trabajo largo, bajo la paja.",
+          en: "An October day in Miami is bearable in the shade, not in the sun, so the agenda gets built around the Tiki Hut: ~4,000 sq ft of thatched cover that works as the midday dining room — shaded, no air conditioning — and the only roof outdoors when it rains. It handles rain that falls straight down on its own; open on the sides, it lets wind-driven rain in, so a January offsite should budget for sidewalls. A full buyout holds ~600 standing or ~300 seated; a team of 40 or 80 uses a fraction of that, and for a group that size the Tiki Hut on its own is usually the right booking, as with small events. Sun sessions go early; long work goes under the thatch.",
+        },
+      },
+      {
+        titulo: { es: "El montaje que nadie ve", en: "The load-in nobody sees" },
+        cuerpo: {
+          es: "Hay dos entradas y no se cruzan: la carga entra por NW 1st Ct y los invitados por NW 21st Ct. Para un offsite eso pesa más de lo que parece. El proveedor de la actividad descarga, arma y prueba por su puerta mientras el equipo llega por la otra, y la primera impresión del día no es un camión abierto ni cajas a medio sacar. Hay estacionamiento propio en el predio, así que quien viene en coche no busca sitio en la calle. Lo que todavía no publicamos —potencia y amperaje, ancho del portón de carga, número de baños, plazas de estacionamiento y curfew— lo recorremos contigo en la visita y te lo confirmamos por escrito.",
+          en: "There are two entrances and they never cross: freight comes in on NW 1st Ct, guests on NW 21st Ct. For an offsite, that matters more than it sounds. The activity vendor unloads, rigs and tests through one gate while the team walks in through the other, and the day's first impression isn't an open truck or half-unpacked crates. There's on-site parking as well, so nobody arriving by car hunts for a spot on the street. What we don't publish yet — electrical service and amperage, the freight gate width, restroom counts, parking spaces and curfew — we walk with you on the site visit and confirm in writing.",
+        },
+      },
+    ],
+  },
+  /**
+   * Página nueva del 10-sep-2026: demanda medida con el planificador y sin
+   * página propia hasta hoy. Escrita y revisada por tres vías (veracidad contra
+   * venue.ts, solape con las existentes, inglés nativo). Ver .qa/paginas-corregidas.json.
+   */
+  {
+    clave: "cumpleanosAdultos",
+    ojo: { es: "Uso · cumpleaños de adulto", en: "Use · adult birthday" },
+    h1: { es: "Cumpleaños de adulto en Wynwood", en: "Adult birthday parties in Wynwood" },
+    respuesta: {
+      es: "Para un cumpleaños de 30, 40 o 50 con más de 150 invitados, Club Wynwood se alquila entero: ~22.000 ft² al aire libre en Wynwood, Miami, con ~4.000 ft² bajo la palapa, estacionamiento propio y licencia de licor propia. Por debajo de 150 invitados se alquila solo el Tiki Hut. Se alquila el recinto vacío, no una mesa.",
+      en: "For a 30th, 40th or 50th birthday with more than 150 guests, Club Wynwood rents as a whole: ~22,000 sq ft of open-air space in Wynwood, Miami, with ~4,000 sq ft under the tiki hut, its own parking and its own liquor license. Under 150 guests, you rent just the Tiki Hut. You're renting the empty site, not a table.",
+    },
+    title: {
+      es: "Fiesta de cumpleaños para adultos en Wynwood | Club Wynwood",
+      en: "Adult birthday party venue in Wynwood, Miami | Club Wynwood",
+    },
+    description: {
+      es: "Cumpleaños de adultos en Wynwood, Miami: desde 150 invitados se alquila el recinto entero, ~22.000 ft² al aire libre, licencia de licor propia y parking propio.",
+      en: "Adult birthday party venue in Wynwood, Miami: from 150 guests you rent the whole site, ~22,000 sq ft outdoors with its own liquor license and its own parking.",
+    },
+    cifras: [
+      { etiqueta: { es: "Recinto completo", en: "Whole site" }, valor: { es: "~22.000 ft²", en: "~22,000 sq ft" } },
+      { etiqueta: { es: "De pie", en: "Standing" }, valor: { es: "~600", en: "~600" } },
+      { etiqueta: { es: "Sentados", en: "Seated" }, valor: { es: "~300", en: "~300" } },
+      { etiqueta: { es: "Bajo techo · plan de lluvia", en: "Under roof · rain plan" }, valor: { es: "~4.000 ft²", en: "~4,000 sq ft" } },
+    ],
+    foto: {
+      src: "/assets/recinto-noche.jpg",
+      alt: { es: "El recinto al anochecer durante una fiesta, visto desde arriba: invitados repartidos por el jardín, el paseo con alfombra roja entre las palmeras iluminadas desde el tronco y el techo de paja de la palapa", en: "The site at dusk during a party, seen from above: guests spread across the garden, the walkway with a red carpet between palms uplit at the base, and the tiki hut's thatched roof" },
+      pie: { es: "Una fiesta al anochecer en el recinto. Es el fotograma de un evento real, no una recreación: la alfombra roja y el arco de globos los trajo esa producción, no vienen con el recinto.", en: "An evening party on site. A frame from a real event, not a staged shot: the red carpet and the balloon arch were that production's own — they don't come with the site." },
+    },
+    bloques: [
+      {
+        titulo: { es: "Un club te vende una mesa; esto es el recinto entero", en: "A club sells you a table; this is the whole site" },
+        cuerpo: {
+          es: "Cuando cumples 30, 40 o 50, la opción por defecto es reservar mesa en un club: pagas un mínimo de consumo, te dan una sección acordonada y la fiesta sigue siendo del local. Aquí el trato es el contrario: alquilas el recinto vacío —~22.000 ft² al aire libre, con ~4.000 ft² bajo la palapa— y traes tu música, tu decoración y tu comida. El presupuesto se cotiza por espacio, horas y día, no por lo que se consuma. El corte es el tamaño: a partir de 150 invitados tiene sentido el recinto entero; por debajo, se alquila solo el Tiki Hut, que es lo que explica la página de eventos pequeños.",
+          en: "Turn 30, 40 or 50 and the default is a table at a club: you commit to a minimum spend, you get a roped-off section, and the night still belongs to the venue. This is the opposite deal: you rent the empty site — ~22,000 sq ft outdoors, ~4,000 of them under the tiki hut — and you bring the music, the decor and the food. The quote is based on space, hours and day, not on what gets consumed. The dividing line is headcount: from 150 guests up, the whole site makes sense; below that, you rent just the Tiki Hut, which is what the small-events page covers.",
+        },
+      },
+      {
+        titulo: { es: "150, 300 o 600: cómo se reparte la noche", en: "150, 300 or 600: how the night splits up" },
+        cuerpo: {
+          es: "El recinto completo admite ~600 personas de pie o ~300 sentadas; con solo una parte, proporcionalmente menos. Para un cumpleaños de noche el reparto que funciona es cena y pista bajo la palapa y el resto en el jardín: llegada y fotos por el paseo pavimentado entre las dos hileras de palmeras, mesas de picnic fijas y seis cabañas amuebladas del lado de la arena, que sirven de zona de descanso. Los ~4.000 ft² techados son además el plan de lluvia: si cae un aguacero, la pista y la cena ya están bajo cubierta. La palapa está abierta por los cuatro costados; con viento entra agua de lado, así que en invierno conviene presupuestar cierres laterales. El aforo con tu montaje concreto se confirma en la visita.",
+          en: "The whole site takes ~600 standing or ~300 seated; one part alone, proportionally fewer. For a birthday at night the split that works is dinner and dance floor under the tiki hut and everything else in the garden: arrival and photos along the paved walkway between the two rows of palms, fixed picnic tables and six furnished cabanas on the sand side, which work as a rest area. The ~4,000 sq ft under roof are also the rain plan: if a downpour hits, the dance floor and the dinner are already covered. The tiki hut is open on all four sides; in wind the rain comes in sideways, so a winter date should budget for side enclosures. Capacity for your specific layout is confirmed at the visit.",
+        },
+      },
+      {
+        titulo: { es: "Licencia de licor propia y un área donde montar la barra", en: "Its own liquor license, and an area to set up the bar" },
+        cuerpo: {
+          es: "El recinto tiene licencia de licor propia, con su propio número, cosa que no todos los espacios de la zona pueden decir. Hay área donde montar barra; dónde queda dentro de tu montaje se define en la visita. Quién la opera, qué se sirve y en qué condiciones se cierra por escrito con la ficha técnica, que es donde van el número de licencia y sus condiciones: nada se improvisa la noche del evento. No hay proveedor impuesto ni comisión por traer el tuyo, y el alquiler se cotiza por espacio, horas y día, no por consumo. Si el plan es barra libre o coctelería, dilo en el primer correo: condiciona dónde va la barra, el hielo y la carga.",
+          en: "The site holds its own liquor license, with its own license number — not something every space in Wynwood can say. There's an area to set up a bar; where it lands in your layout is defined at the site visit. Who runs it, what gets poured and on what terms is put in writing with the spec sheet, which is where the license number and its conditions go: nothing gets improvised on the night. There's no imposed supplier and no fee for bringing your own, and the rental is quoted on space, hours and day, not on consumption. If the plan is an open bar or a cocktail program, say so in the first email: it decides where the bar, the ice and the load-in go.",
+        },
+      },
+      {
+        titulo: { es: "Dos puertas, y hasta qué hora", en: "Two gates — and how late you can go" },
+        cuerpo: {
+          es: "Los invitados entran por NW 21st Ct y la carga —proveedores, hielo, sonido— por NW 1st Ct, con su propia puerta: la reposición de hielo y la descarga del DJ no cruzan la fiesta. Los setos perimetrales cierran el jardín por la calle y hay estacionamiento en el propio predio, al este y al sur. El recinto se alquila por franja, con fecha y hora; qué queda cerrado, desde qué hora y con qué control de acceso se fija por escrito en la visita técnica. Ahí mismo se cierran el horario tope y el límite de decibelios, porque Wynwood tiene vecinos: no publicamos una cifra porque depende del evento. Si el plan es DJ hasta tarde, dilo en el primer correo.",
+          en: "Guests come in through NW 21st Ct and load-in — vendors, ice, sound gear — through a separate service gate on NW 1st Ct: ice restocking and the DJ's unload never cut across the party. Perimeter hedges close the garden off from the street, and there's parking on the property, to the east and south. The site is rented by the slot, with a date and a time; what is closed off, from when, and how access is controlled is set in writing at the site visit. The curfew and the decibel limit are set there too, because Wynwood has residential neighbors: we don't publish a number because it depends on the event. If the plan is a DJ running late, say so in the first email.",
+        },
+      },
+    ],
+  },
+  /**
+   * Página nueva del 10-sep-2026: demanda medida con el planificador y sin
+   * página propia hasta hoy. Escrita y revisada por tres vías (veracidad contra
+   * venue.ts, solape con las existentes, inglés nativo). Ver .qa/paginas-corregidas.json.
+   */
+  {
+    clave: "bodasIntimas",
+    ojo: { es: "Uso · boda pequeña", en: "Use · small wedding" },
+    h1: { es: "Bodas pequeñas", en: "Small weddings" },
+    respuesta: {
+      es: "Una boda de 30 a 80 invitados en Wynwood, Miami, se resuelve contratando solo el Tiki Hut: ~4.000 ft² cubiertos que se alquilan sueltos, sin el jardín, con ceremonia, cena y baile bajo la misma paja. El montaje se define con tu plano en la visita. No hay paquete cerrado; hay licencia de licor propia y área donde montar barra.",
+      en: "A wedding of 30 to 80 guests in Wynwood, Miami, needs only the Tiki Hut: ~4,000 sq ft under cover, rented on its own without the Garden, with ceremony, dinner and dancing under one thatched roof. The seated layout is set from your floor plan at the site visit. No set packages; the venue holds its own liquor license.",
+    },
+    title: {
+      es: "Bodas pequeñas de 30 a 80 en Wynwood | Club Wynwood",
+      en: "Small wedding venue in Wynwood, Miami | Club Wynwood",
+    },
+    description: {
+      es: "Bodas pequeñas de 30 a 80 invitados en Wynwood, Miami: el Tiki Hut, ~4.000 ft² techados, se alquila solo; el jardín con palmeras y seis cabañas se suma aparte.",
+      en: "Small and intimate wedding venue in Wynwood, Miami, for 30 to 80 guests: the covered Tiki Hut, ~4,000 sq ft, books on its own; the Garden is added separately.",
+    },
+    cifras: [
+      { etiqueta: { es: "Solo el Tiki Hut", en: "Tiki Hut only" }, valor: { es: "~4.000 ft²", en: "~4,000 sq ft" } },
+      { etiqueta: { es: "Planta de la palapa", en: "Tiki Hut footprint" }, valor: { es: "~54 × 60 ft", en: "~54 × 60 ft" } },
+      { etiqueta: { es: "El paseo", en: "The walk" }, valor: { es: "~15 × 108 ft", en: "~15 × 108 ft" } },
+      { etiqueta: { es: "Al aeropuerto MIA, en coche", en: "To MIA airport, by car" }, valor: { es: "16 min", en: "16 min" } },
+    ],
+    foto: {
+      src: "/assets/flyer-palapa-lounge.jpg",
+      alt: { es: "Bajo la palapa: un montaje lounge con barra y guirnaldas", en: "Under the Tiki Hut: a lounge setup with a bar and string lights" },
+      pie: { es: "Bajo la palapa, montada en lounge: ~4.000 ft² bajo un mismo techo.", en: "Under the Tiki Hut, set up as a lounge: ~4,000 sq ft under one roof." },
+    },
+    bloques: [
+      {
+        titulo: { es: "Ceremonia, cena y baile bajo un mismo techo", en: "Ceremony, dinner and dancing under one roof" },
+        cuerpo: {
+          es: "Para 30 a 80 invitados ese es el formato: ceremonia, cena y baile bajo la misma cubierta, sin sala aparte y sin traslado de invitados entre espacios. Cuántas mesas entran y de qué tamaño se resuelve con tu plano en la visita: no publicamos un aforo bajo la palapa que no esté medido. Lo que no hay son paredes: la palapa está abierta por los cuatro costados, así que no tiene aire acondicionado y con viento la lluvia entra de lado; una fecha de invierno conviene que presupueste cierres laterales como parte del plan de lluvia. Las dimensiones y la estructura están en la página del Tiki Hut. Por encima de 80 invitados el montaje pide el recinto completo: esa es la página de bodas.",
+          en: "At 30 to 80 guests that's the format: ceremony, dinner and dancing under one cover, with no second room and no moving guests between spaces. How many tables fit, and what size, is worked out from your floor plan at the site visit: we don't publish a seated capacity under the Tiki Hut that hasn't been measured. What it doesn't have is walls: it's open on all four sides, so there's no air conditioning, and wind-driven rain blows in sideways; if you're booking a winter date, budget for sidewalls as part of the rain plan. Dimensions and structure are on the Tiki Hut page. Above 80 guests the layout calls for the whole site: that's the weddings page.",
+        },
+      },
+      {
+        titulo: { es: "El pasillo mide 15 × 108 ft, y es del Jardín", en: "The aisle is 15 × 108 ft, and it belongs to the Garden" },
+        cuerpo: {
+          es: "El paseo pavimentado del recinto mide unos 15 ft de ancho por 108 de largo entre dos hileras de palmeras reales: baja de la puerta del edificio hasta el estacionamiento del sur y pasa por delante de la palapa, que queda a su lado oeste. La medida sale del plano del predio y es aproximada. Es la decisión que separa las dos formas de contratar esta boda. Con solo el Tiki Hut, la ceremonia se celebra dentro de la palapa. Si quieres la entrada sobre el paseo, entre las palmeras, el paseo pertenece al Jardín y hay que sumar el Jardín al contrato: el recinto pasa a ser el completo, y lo describe la página del Jardín.",
+          en: "The site's paved walk runs about 15 ft wide by 108 ft long between two rows of live palms: it comes down from the building door to the south parking and runs past the Tiki Hut, which sits along its west side. The measurement comes from the property's site plan and is approximate. It's the decision that separates the two ways of booking this wedding. With the Tiki Hut alone, the ceremony takes place inside the pavilion. If you want the processional on the walk, between the palms, the walk belongs to the Garden and the Garden has to be added to the contract: you're then booking the whole site, and the Garden page describes it.",
+        },
+      },
+      {
+        titulo: { es: "Sin paquete cerrado", en: "No set package" },
+        cuerpo: {
+          es: "No hay paquete cerrado. Contratas el espacio y traes a tus proveedores: catering, sonido, iluminación, mobiliario y montaje. El recinto tiene licencia de licor propia, con su propio número, y hay área donde montar barra; el número de licencia y sus condiciones se entregan con la ficha técnica. Es lo contrario del paquete de boda pequeña de un hotel, y corta en los dos sentidos: aquí no viene nada resuelto. Si nadie contrata catering, no hay comida, y al aire libre no hay cocina: la del edificio, disponible desde el 1 de noviembre de 2026, se suma al alquiler cuando el catering la necesita. Para 30 a 80 invitados eso da control total sobre el menú y la estética, y toda la responsabilidad.",
+          en: "There's no set package. You book the space and bring your own vendors: caterer, sound, lighting, furniture rentals, load-in. The venue holds its own liquor license, under its own number, and there is an area to set up a bar; the license number and its conditions come with the spec sheet. It's the opposite of a hotel's small-wedding package, and it cuts both ways: nothing comes handled for you. If nobody books a caterer there's no food, and there's no kitchen outdoors: the building's kitchen, available from November 1, 2026, is added to the rental when the caterer needs it. For 30 to 80 guests that buys full control of the menu and the look, and full responsibility with it.",
+        },
+      },
+      {
+        titulo: { es: "Invitados por una puerta, proveedores por otra", en: "Guests through one gate, vendors through another" },
+        cuerpo: {
+          es: "Los invitados entran por NW 21st Ct y la carga por NW 1st Ct: el catering y el sonido no se cruzan con la fila de llegada. Hay estacionamiento en el propio predio; el número de plazas se confirma en la visita. La dirección es 2129 NW 1st Ct, a cuatro minutos a pie de Wynwood Walls y a 16 minutos en coche del aeropuerto MIA, lo que importa cuando media lista de invitados llega de fuera. Las seis cabañas amuebladas están en el jardín, al otro lado del paseo, del lado de la arena: son fijas y cuentan en el plano aunque solo contrates el Tiki Hut, pero usarlas como zona de descanso significa sumar el Jardín. Fechas de exterior: desde el 1 de octubre de 2026.",
+          en: "Guests come in on NW 21st Ct and freight on NW 1st Ct: the caterer and the sound crew don't cross the arrival line. There's parking on the property; the number of spaces is confirmed at the site visit. The address is 2129 NW 1st Ct, a four-minute walk from Wynwood Walls and a 16-minute drive from Miami International (MIA), which matters when half the guest list flies in. The six furnished cabanas sit in the Garden across the walk, on the sand side: they're fixed and count in your layout even if you only book the Tiki Hut, but using them as a lounge area means adding the Garden. The outdoor space is available for events from October 1, 2026.",
+        },
+      },
+    ],
+  },
+  /**
+   * Página nueva del 10-sep-2026: demanda medida con el planificador y sin
+   * página propia hasta hoy. Escrita y revisada por tres vías (veracidad contra
+   * venue.ts, solape con las existentes, inglés nativo). Ver .qa/paginas-corregidas.json.
+   */
+  {
+    clave: "showers",
+    ojo: { es: "Uso · shower a mediodía", en: "Use · midday bridal & baby showers" },
+    h1: { es: "Bridal showers y baby showers", en: "Bridal and baby showers" },
+    respuesta: {
+      es: "Club Wynwood alquila el Tiki Hut suelto para bridal showers y baby showers de mediodía en Wynwood, Miami: ~4.000 ft² de techo de paja continuo, abierto por los cuatro costados, para grupos de 50 a 150 invitados a la sombra y sin aire acondicionado. La decoración y el catering los traes tú.",
+      en: "Club Wynwood rents the Tiki Hut on its own for midday bridal showers and baby showers in Wynwood, Miami: ~4,000 sq ft of continuous thatched roof, open on all four sides, for groups of 50 to 150 guests in the shade with no walls around you and no air conditioning. You bring the decor and the caterer.",
+    },
+    title: {
+      es: "Bridal shower y baby shower en Wynwood, Miami | Club Wynwood",
+      en: "Bridal & baby shower venue in Wynwood, Miami | Club Wynwood",
+    },
+    description: {
+      es: "Bridal shower o baby shower a mediodía en Wynwood, Miami: el Tiki Hut suelto, ~4.000 ft² de paja abiertos por los cuatro costados, y el catering lo traes tú.",
+      en: "Open-air bridal and baby shower venue in Wynwood, Miami: the Tiki Hut on its own, ~4,000 sq ft of thatched shade open on four sides, and you bring the caterer.",
+    },
+    cifras: [
+      { etiqueta: { es: "Sombra bajo techo", en: "Shaded area" }, valor: { es: "~4.000 ft²", en: "~4,000 sq ft" } },
+      { etiqueta: { es: "Cabañas, en el jardín", en: "Cabanas, in the garden" }, valor: { es: "6", en: "6" } },
+      { etiqueta: { es: "Jardín, si entra en la reserva", en: "Garden, if booked" }, valor: { es: "~18.000 ft²", en: "~18,000 sq ft" } },
+      { etiqueta: { es: "Exterior, se reserva desde", en: "Outdoors, bookable from" }, valor: { es: "1 oct 2026", en: "Oct 1, 2026" } },
+    ],
+    foto: {
+      src: "/assets/flyer-palapa-lounge.jpg",
+      alt: { es: "Bajo la palapa: un montaje lounge con barra y guirnaldas entre los postes de madera", en: "Under the thatch: a lounge setup with a bar and string lights among the wood posts" },
+      pie: { es: "Bajo el Tiki Hut, montado en lounge. La sombra ya está; el resto lo pone quien organiza.", en: "Under the Tiki Hut, set up as a lounge. The shade is already there; whoever hosts brings the rest." },
+    },
+    bloques: [
+      {
+        titulo: { es: "El problema de un bridal shower es la hora", en: "The problem with a bridal shower brunch is the time of day" },
+        cuerpo: {
+          es: "Un shower casi nunca es de noche: es un brunch o un almuerzo, entre las once y las tres. Es el peor sol del día en Miami, y por eso la alternativa habitual es un restaurante, que resuelve el sol encerrando a treinta personas en una sala con aire acondicionado. Aquí la palapa hace lo mismo sin cerrar nada: techo de paja a cuatro aguas, ~4.000 ft² de sombra continua, abierta por los cuatro costados. Corre el aire, se oye la conversación y las fotos salen con luz de día, no con luz de techo. La palapa para el sol y la lluvia vertical, pero no tiene cierres laterales: con viento el agua entra de lado, y un shower fuera de la temporada seca conviene que presupueste carpas laterales.",
+          en: "A shower is almost never a night event: it is brunch or lunch, somewhere between eleven and three. That is the worst stretch of sun in the Miami day, which is why the usual answer is a restaurant, and a restaurant handles the sun by shutting thirty people into a room with the air conditioning running. The Tiki Hut does the same job without closing anything: a hipped thatch roof, some 4,000 sq ft of continuous shade, open on all four sides. Air moves, conversation carries, and the photos come out in daylight, not under ceiling lights. The thatch stops sun and vertical rain, but it has no side enclosures: in wind the rain comes in sideways, and a shower outside the dry season should budget for side panels.",
+        },
+      },
+      {
+        titulo: { es: "Qué hay debajo del techo: nueve postes y césped", en: "What's under the roof: nine posts and turf" },
+        cuerpo: {
+          es: "El montaje gira alrededor de tres cosas que ya existen. Los postes: el techo de paja descansa sobre una retícula de nueve postes de madera, a unos 24 ft entre ejes, y la mesa larga, la de postres y el fondo de fotos van entre ellos, no contra una pared. El piso: bajo la palapa es césped artificial; la arena del jardín queda del lado de las cabañas, no aquí. Y el paseo pavimentado entre las dos hileras de palmeras, fondo de fotos sin montar nada, a cuatro minutos a pie de Wynwood Walls. Colgar de la estructura —arcos, guirnaldas, telas— se estudia en la visita técnica: cada carga se revisa punto por punto antes de autorizarla, y no hay límite de carga publicado porque no está levantado.",
+          en: "The layout works around three things that already exist. The posts: the thatch roof rests on a grid of nine wood posts, about 24 ft apart, and the long table, the dessert table and the photo backdrop go between them, not against a wall. The floor: under the Tiki Hut it is artificial turf; the garden's sand is over on the cabanas' side, not here. And the paved walk between the two rows of palms, a photo backdrop before you build a thing, a four-minute walk from Wynwood Walls. Hanging anything from the structure—arches, garlands, fabric—is assessed at the site visit: every hanging load is reviewed point by point before it is signed off, and no load limit is published because it has not been surveyed yet.",
+        },
+      },
+      {
+        titulo: { es: "Brunch sin cocina al aire libre, y la pregunta de las mimosas", en: "Brunch with no outdoor kitchen, and the mimosa question" },
+        cuerpo: {
+          es: "Al aire libre no hay cocina: el catering del brunch monta en el sitio, y si necesita cocina, la del edificio es un adicional que se suma al alquiler desde el 1 de noviembre de 2026. No hay catering obligatorio ni lista de proveedores preferidos, y no cobramos comisión por traer el tuyo; en un shower, donde la cuenta suele repartirse entre varias personas, esa partida pesa más que el precio del espacio. La otra pregunta de todo shower es la mesa de mimosas. El recinto tiene licencia de licor propia, con su propio número, y hay área donde montar barra; las condiciones bajo las que se sirve alcohol en un evento privado se entregan por escrito con la ficha técnica, antes de firmar.",
+          en: "There is no kitchen outdoors: the brunch caterer sets up on site, and if they need a kitchen, the building's is an add-on that joins the rental from November 1, 2026. There is no required caterer and no preferred-vendor list, and we take no commission on yours; at a shower, where the bill is usually split between several people, that line moves the total more than the rental rate does. The other question at every shower is the mimosa table. The site holds its own liquor license, with its own license number, and there is an area to set up a bar; the conditions under which alcohol is served at a private event come in writing with the spec sheet, before you sign.",
+        },
+      },
+      {
+        titulo: { es: "Cuánto recinto hace falta, y qué se mide en la visita", en: "How much of the site you need, and what gets measured at the visit" },
+        cuerpo: {
+          es: "Para un shower el Tiki Hut suelto suele bastar; el jardín de ~18.000 ft² se suma solo si hace falta. Hace falta si quieres las cabañas: las seis cabañas amuebladas están en el jardín, no bajo la palapa. Son fijas y van con el inmueble: con el jardín en la reserva no se cobran aparte. Un baby shower funciona igual a esta hora; si tu pregunta es si se puede alquilar solo una parte, o buscas sitio para un bautizo o un cumpleaños, esa respuesta está en Eventos pequeños, y el día grande de la boda, en Bodas. El número de baños y el aforo sentado y de pie con tu montaje no se publican porque no están medidos: se levantan en la visita técnica y se entregan por escrito.",
+          en: "For a shower the Tiki Hut on its own is usually enough; the ~18,000 sq ft garden joins only if needed. You need it if you want the cabanas: the six furnished cabanas sit in the garden, not under the thatch. They are fixed and come with the property: with the garden in the booking, there is no separate charge. A baby shower works the same way at this hour; if your question is whether you can rent just one part, or you need a christening or birthday venue, see Small events; the big day is on Weddings. The number of restrooms and seated and standing capacity for your setup are not published because they are not measured yet: both are measured at the site visit and delivered in writing.",
+        },
+      },
+    ],
+  },
+  /**
+   * Página nueva del 10-sep-2026: demanda medida con el planificador y sin
+   * página propia hasta hoy. Escrita y revisada por tres vías (veracidad contra
+   * venue.ts, solape con las existentes, inglés nativo). Ver .qa/paginas-corregidas.json.
+   */
+  {
+    clave: "finDeSemanaBoda",
+    ojo: { es: "Uso · fin de semana de boda", en: "Use · wedding weekend" },
+    h1: { es: "Cena de ensayo en Wynwood", en: "Rehearsal dinner venue in Wynwood" },
+    respuesta: {
+      es: "Club Wynwood alquila el recinto para la cena de ensayo y el fin de semana de boda en Wynwood, Miami. La cena de la víspera se monta bajo la palapa techada, que es también el plan de lluvia, y el after-party en el jardín: dos espacios contiguos en una sola dirección. No vendemos comida: el catering lo eliges tú.",
+      en: "Club Wynwood rents the venue for the rehearsal dinner and the rest of the wedding weekend in Wynwood, Miami. Friday's dinner goes under the covered Tiki Hut, which doubles as the rain plan, and the after-party in the garden: two adjacent spaces at one address. We do not sell food: you hire your own caterer.",
+    },
+    title: {
+      es: "Cena de ensayo en Wynwood, Miami | Club Wynwood",
+      en: "Rehearsal dinner venue in Wynwood, Miami | Club Wynwood",
+    },
+    description: {
+      es: "Cena de ensayo y fin de semana de boda en Wynwood, Miami: la víspera bajo la palapa techada, el after-party en el jardín. No vendemos comida: tu catering.",
+      en: "Rehearsal dinner venue in Wynwood, Miami: Friday under the covered Tiki Hut, Saturday's after-party in the garden. We do not sell food: you hire your caterer.",
+    },
+    cifras: [
+      { etiqueta: { es: "Bajo techo (la cena)", en: "Covered (the dinner)" }, valor: { es: "~4.000 ft²", en: "~4,000 sq ft" } },
+      { etiqueta: { es: "Al aire libre (el after-party)", en: "Open air (the after-party)" }, valor: { es: "~18.000 ft²", en: "~18,000 sq ft" } },
+      { etiqueta: { es: "Al aeropuerto MIA", en: "To MIA airport" }, valor: { es: "~16 min", en: "~16 min" } },
+      { etiqueta: { es: "Cabañas amuebladas", en: "Furnished cabanas" }, valor: { es: "6", en: "6" } },
+    ],
+    foto: {
+      src: "/assets/flyer-palapa-lounge.jpg",
+      alt: { es: "Bajo la palapa: un montaje lounge con barra y guirnaldas", en: "Under the structure: a lounge setup with a bar and string lights" },
+      pie: { es: "La palapa montada con barra y guirnaldas: el mismo techo que recoge la cena del viernes.", en: "The Tiki Hut set up as a lounge with a bar: the same roof that hosts Friday's dinner." },
+    },
+    bloques: [
+      {
+        titulo: { es: "No vendemos comida", en: "We do not sell food" },
+        cuerpo: {
+          es: "La cena de ensayo suele terminar en el salón privado de un restaurante, y ahí las condiciones las pone el restaurante: su carta, su barra y un mínimo de consumo que hay que alcanzar aunque la lista se acorte. Aquí no vendemos comida, así que el catering lo eliges tú: tu menú, tu proveedor y tu número real de invitados. Lo que se contrata es el espacio, y eso tiene su reverso: el alquiler del exterior no incluye vajilla, ni mantelería, ni personal de servicio. Todo eso llega con el catering, que es quien mejor sabe qué necesita para una cena sentada. El sitio pone el suelo, la sombra y la dirección; la mesa la pone tu equipo.",
+          en: "A rehearsal dinner usually ends up in a restaurant's private dining room, and there the restaurant sets the terms: their menu, their bar and an F&B minimum you have to hit even if the guest list shrinks. We do not sell food, so you pick the caterer: your menu, your vendor and your real guest count. What you book is the space, and that has a flip side: the outdoor rental includes no tableware, no linens and no service staff. All of that comes with the caterer, who knows best what a seated dinner needs. The venue provides the ground, the shade and the address; your team provides the table.",
+        },
+      },
+      {
+        titulo: { es: "Viernes bajo la palapa, sábado en el jardín", en: "Friday under the Tiki Hut, Saturday in the garden" },
+        cuerpo: {
+          es: "Los dos espacios están uno al lado del otro, pero no se sienten igual. El Tiki Hut son ~4.000 ft² de paja a cuatro aguas: techo fijo, abierto por los cuatro costados. Para el sol y para la lluvia vertical basta solo; si la fecha es de viento, conviene presupuestar cierres laterales. Con la luz baja funciona como comedor. Una cena de ensayo el viernes bajo la palapa y un after-party el sábado en los ~18.000 ft² del jardín ocurren en la misma dirección sin parecer el mismo evento, con una sola visita técnica y un solo interlocutor. Los dos montajes no ocupan el mismo suelo, aunque comparten el paseo de entrada: el orden y los tiempos entre una noche y otra se planifican en la visita.",
+          en: "The two spaces sit side by side, but they do not feel alike. The Tiki Hut is ~4,000 sq ft under a four-sided thatch roof, open on all four sides. For sun and vertical rain it is enough on its own; on a windy date, budget for side enclosures. With the lighting down it works as a dining room. A Friday rehearsal dinner under the Tiki Hut and a Saturday after-party across the ~18,000 sq ft of garden happen at one address without looking like the same event, with one site visit and one point of contact. The two load-ins do not sit on the same ground, though they share the entrance walk: the order and timing between the two nights are planned at the site visit.",
+        },
+      },
+      {
+        titulo: { es: "La comitiva que llega el jueves", en: "The group that lands on Thursday" },
+        cuerpo: {
+          es: "En una boda de destino la familia de fuera aterriza el jueves o el viernes, y la primera cita del calendario, la fiesta de bienvenida, es la que ordena a todo el mundo. MIA queda a unos 16 minutos; el resto de tiempos del barrio están en la página Por qué Wynwood. Wynwood Walls queda a unos 4 minutos a pie, así que quien llega temprano tiene barrio que recorrer en vez de un lobby de hotel. El estacionamiento es propio. La carga entra por NW 1st Ct y los invitados por NW 21st Ct: el camión del catering no se cruza con la gente que va llegando, que en una fiesta de bienvenida llega escalonada durante dos horas.",
+          en: "At a destination wedding the out-of-town family lands on Thursday or Friday, and the first date on the calendar, the welcome party, is the one that sorts everyone out. MIA is about 16 minutes away; the rest of the neighborhood's travel times are on the Why Wynwood page. Wynwood Walls is about a four-minute walk, so guests who arrive early have a neighborhood to explore on foot instead of a hotel lobby. Parking is on site. Load-in runs off NW 1st Ct while guests arrive on NW 21st Ct: the catering truck never crosses paths with your guests, who at a welcome party trickle in over two hours.",
+        },
+      },
+      {
+        titulo: { es: "Cocina de apoyo, y la fiesta de compromiso", en: "A support kitchen, and the engagement party" },
+        cuerpo: {
+          es: "Al aire libre no hay cocina. El edificio, que se alquila aparte desde el 1 de noviembre de 2026, tiene una cocina de apoyo —isla, nevera de dos puertas, microondas y alacenas—, no una cocina de producción. Si tu catering necesita cocinar en sitio, eso se resuelve con equipo móvil y se define en la visita. Club Wynwood tiene licencia de licor propia, con su propio número, y hay área donde montar la barra; el detalle del servicio de bebidas se cierra en la visita. La fiesta de compromiso es otro calendario: llega meses antes, sin ceremonia ni protocolo, y usa uno solo de los dos espacios y de pie. Si son 50 a 150 invitados, la página de eventos pequeños explica cómo se contrata solo el Tiki Hut.",
+          en: "Outdoors there is no kitchen. The building, rented separately and available from November 1, 2026, has a support kitchen — an island, a two-door fridge, a microwave and cabinets — not a production kitchen. If your caterer needs to cook on site, that is solved with mobile equipment and settled at the site visit. Club Wynwood holds its own liquor license, and there is a dedicated area for the bar setup; beverage service is settled at the visit. An engagement party runs on a different calendar: it comes months earlier, with no ceremony and no timeline, and uses just one of the two spaces, standing. If it is 50 to 150 guests, the small events page explains how to book just the Tiki Hut.",
+        },
+      },
+    ],
+  },
+  /**
+   * Página nueva del 10-sep-2026: demanda medida con el planificador y sin
+   * página propia hasta hoy. Escrita y revisada por tres vías (veracidad contra
+   * venue.ts, solape con las existentes, inglés nativo). Ver .qa/paginas-corregidas.json.
+   */
+  {
+    clave: "salonVsJardin",
+    ojo: { es: "Comparación · salón o jardín", en: "Comparison · ballroom vs. garden" },
+    h1: { es: "En vez de un salón", en: "Instead of a banquet hall" },
+    respuesta: {
+      es: "Club Wynwood es un recinto de fiestas al aire libre en Wynwood, Miami: ~22.000 ft² con ~4.000 ft² techados bajo palapa, y no un salón cerrado. Frente a un salón cambian tres cosas: la carga entra por una calle distinta de la de los invitados, el catering lo eliges tú y el recinto tiene licencia de licor propia.",
+      en: "Club Wynwood is a ~22,000 sq ft open-air party venue in Wynwood, Miami, with ~4,000 sq ft covered by the tiki hut, not an enclosed banquet hall. Compared with a hall, three things change: freight comes in on a different street from your guests, you choose your own caterer, and the venue holds its own liquor license.",
+    },
+    title: {
+      es: "Salón de fiestas en Miami, al aire libre | Club Wynwood",
+      en: "Outdoor party hall rental in Miami | Club Wynwood",
+    },
+    description: {
+      es: "¿Buscas un salón de fiestas en Miami? Esto es un recinto al aire libre de ~22.000 ft² en Wynwood, con ~4.000 techados, tu catering y licencia de licor propia.",
+      en: "Looking for a party hall rental in Miami? This is a ~22,000 sq ft open-air venue in Wynwood, ~4,000 under the tiki hut, your caterer and its own liquor license.",
+    },
+    cifras: [
+      { etiqueta: { es: "Techado", en: "Covered" }, valor: { es: "~4.000 ft²", en: "~4,000 sq ft" } },
+      { etiqueta: { es: "Entradas separadas", en: "Separate entrances" }, valor: { es: "2", en: "2" } },
+      { etiqueta: { es: "Licencia de licor", en: "Liquor license" }, valor: { es: "Propia", en: "Its own" } },
+      { etiqueta: { es: "Exterior disponible desde", en: "Outdoors available from" }, valor: { es: "1 oct 2026", en: "Oct 1, 2026" } },
+    ],
+    foto: {
+      src: "/assets/flyer-palapa-lounge.jpg",
+      alt: { es: "Bajo la palapa, montada para una fiesta: barra, guirnaldas y techo de paja sobre postes de madera", en: "Under the tiki hut, set up for a party: a bar, string lights and a thatched roof on timber posts" },
+      pie: { es: "Un montaje de fiesta bajo la palapa: lo que en un salón serían moqueta y lámparas, aquí es paja y guirnaldas.", en: "A party setup under the tiki hut: where a hall would have carpet and chandeliers, here it is thatch and string lights." },
+    },
+    bloques: [
+      {
+        titulo: { es: "Dos calles: la carga por una, los invitados por otra", en: "Two streets: freight on one, guests on the other" },
+        cuerpo: {
+          es: "En un salón de banquetes el camión del decorador, el catering y los invitados suelen entrar por la misma puerta, y el montaje queda a la vista. Aquí hay dos entradas en dos calles distintas: la carga entra por NW 1st Ct y los invitados por NW 21st Ct. Eso cambia el día de la fiesta: el decorador puede seguir trabajando mientras llega la gente, la carga del catering no cruza el paseo por donde entran los invitados, y el desmontaje sale por la misma puerta por la que entró. Hay además estacionamiento propio en el predio, que en Wynwood pesa más que en cualquier otro barrio de Miami.",
+          en: "At a banquet hall the decorator's truck, the caterer and the guests usually come through the same door, and the load-in happens in plain sight. Here there are two entrances on two different streets: freight comes in on NW 1st Ct and guests arrive on NW 21st Ct. That changes the day itself: the decorator can keep working while people arrive, the catering load-in never crosses the guest path, and load-out leaves through the same gate it came in. There is on-site parking as well, which in Wynwood counts for more than in any other Miami neighborhood.",
+        },
+      },
+      {
+        titulo: { es: "Licencia de licor propia, con número propio", en: "Its own liquor license, with its own number" },
+        cuerpo: {
+          es: "Es la pregunta que más presupuestos rompe al comparar salones, y conviene hacerla antes de reservar: ¿el sitio tiene licencia de licor propia o depende de un tercero? Club Wynwood tiene licencia de licor de Miami propia, con su propio número, y no todos los venues de la zona la tienen. El número y sus condiciones no se publican: se entregan con la ficha técnica. Hay área donde montar barra bajo la palapa. Con la comida pasa lo mismo que con la barra: no hay proveedor impuesto. Al aire libre no hay cocina, así que el catering monta en el sitio; si necesita cocina, la del edificio se suma al alquiler como adicional desde el 1 de noviembre de 2026.",
+          en: "It is the question that breaks the most budgets when comparing halls, and worth asking before you book: does the venue hold its own liquor license, or does it depend on a third party? Club Wynwood holds its own Miami liquor license, with its own license number, and not every venue in the area does. The number and its conditions are not published: they come with the spec sheet. There is room for a bar setup under the tiki hut. Food works the same way as the bar: there is no exclusive caterer and no preferred-vendor list. Outdoors there is no kitchen, so the caterer sets up on site; if they need one, the building's kitchen is available as an add-on to the rental starting November 1, 2026.",
+        },
+      },
+      {
+        titulo: { es: "Para qué fiesta es esta página, y para cuál no", en: "Which party this page is for, and which it is not" },
+        cuerpo: {
+          es: "Quien busca un salón de fiestas suele pensar en una fiesta sentada de entre 150 y 300 personas: un cumpleaños redondo, un aniversario, un bautizo grande, una celebración familiar. Esa es la medida de esta página, y aquí se hace con el jardín y la palapa juntos; cuánta gente cabe con tu montaje —mesas, pista, barra— está en la página de aforo. Si la fiesta es de 50 a 150 invitados no hace falta contratar el recinto entero: se alquila solo el Tiki Hut, y eso tiene su propia página, Eventos pequeños. Una quinceañera tiene la suya. Y una activación de marca o una cena de empresa están en corporativo y en fin de año.",
+          en: "Anyone searching for a banquet hall usually has a seated party of 150 to 300 people in mind: a milestone birthday, an anniversary, a large christening, a family celebration. That is the size this page is about, and here it takes the garden and the tiki hut together; how many people fit with your layout — tables, dance floor, bar — lives on the capacity page. If the party is 50 to 150 guests you do not need the whole venue: the Tiki Hut books on its own, and that has its own page, Small events. A quinceañera or a sweet sixteen has its own. And a brand activation or a company dinner lives under corporate and holiday party.",
+        },
+      },
+      {
+        titulo: { es: "Cuándo un salón te sirve más", en: "When a banquet hall suits you better" },
+        cuerpo: {
+          es: "Si lo que necesitas es aire acondicionado, comida incluida y un precio cerrado por persona, un salón te va a servir mejor que esto. Aquí no hay paredes: la palapa resuelve el sol y la lluvia que cae recta, pero con viento el agua entra de lado, así que conviene presupuestar cierres laterales como plan de lluvia; en invierno, con más razón. Tampoco hay mobiliario de banquete: lo fijo son las palmeras, los setos, las seis cabañas amuebladas y las mesas de picnic; el resto lo traes tú, y no hay moqueta ni lámparas que discutan con tu decoración. Potencia, baños, plazas de estacionamiento, load-in, curfew y límite de decibelios no se publican: se miden en la visita y se confirman por escrito.",
+          en: "If what you need is air conditioning, food included and a flat per-person price, a hall will serve you better than this. There are no walls here: the tiki hut handles sun and rain falling straight down, but in wind the water comes in sideways, so budget for tent sidewalls as your rain plan — in winter all the more so. There is no banquet furniture either: what is fixed are the palms, the hedges, the six furnished cabanas and the picnic tables; everything else you bring, and there is no carpet or chandeliers arguing with your decor. Power, restrooms, parking spaces, load-in, curfew and the decibel limit are not published: they are measured on the site visit and confirmed in writing.",
+        },
+      },
+    ],
+  },
+  /**
+   * Página nueva del 10-sep-2026: demanda medida con el planificador y sin
+   * página propia hasta hoy. Escrita y revisada por tres vías (veracidad contra
+   * venue.ts, solape con las existentes, inglés nativo). Ver .qa/paginas-corregidas.json.
+   */
+  {
+    clave: "sweet16",
+    ojo: { es: "Uso · Sweet 16", en: "Use · Sweet 16" },
+    h1: { es: "Sweet 16", en: "Sweet 16" },
+    respuesta: {
+      es: "Club Wynwood es un venue al aire libre para un Sweet 16 en Wynwood, Miami. Hasta ~150 invitados, se contrata solo el Tiki Hut: ~4.000 ft² bajo una palapa abierta por los cuatro costados. Con más invitados, el recinto completo de ~22.000 ft², hasta ~600 de pie. El espacio llega vacío; DJ, catering y decoración los pones tú.",
+      en: "Club Wynwood is an outdoor Sweet 16 venue in Wynwood, Miami. A sweet sixteen of up to ~150 guests books the Tiki Hut alone: ~4,000 sq ft under a thatched roof open on all four sides. Larger parties take the whole ~22,000 sq ft site, up to ~600 standing. The space comes empty; DJ, catering and decor are your vendors.",
+    },
+    title: {
+      es: "Sweet 16 al aire libre en Wynwood, Miami | Club Wynwood",
+      en: "Outdoor Sweet 16 venue in Wynwood, Miami | Club Wynwood",
+    },
+    description: {
+      es: "Sweet 16 al aire libre en Wynwood, Miami: hasta ~150 invitados, solo el Tiki Hut de ~4.000 ft²; con más, el recinto completo de ~22.000 ft². Llega vacío.",
+      en: "Outdoor Sweet 16 venue in Wynwood, Miami: up to ~150 guests, book just the ~4,000 sq ft Tiki Hut; more than that, the whole ~22,000 sq ft site. Comes empty.",
+    },
+    cifras: [
+      { etiqueta: { es: "Solo el Tiki Hut", en: "Tiki Hut only" }, valor: { es: "~4.000 ft²", en: "~4,000 sq ft" } },
+      { etiqueta: { es: "Recinto completo", en: "Whole site" }, valor: { es: "~22.000 ft²", en: "~22,000 sq ft" } },
+      { etiqueta: { es: "De pie (recinto completo)", en: "Standing (whole site)" }, valor: { es: "~600", en: "~600" } },
+      { etiqueta: { es: "Cabañas fijas", en: "Fixed cabanas" }, valor: { es: "6", en: "6" } },
+    ],
+    foto: {
+      src: "/assets/flyer-paseo-puerta.jpg",
+      alt: { es: "El paseo pavimentado entre las dos hileras de palmeras hasta la puerta del edificio, a ras de suelo, con el Tiki Hut a la izquierda y las cabañas a la derecha: el recorrido de entrada de un Sweet 16", en: "The paved walk between two rows of palms up to the building door, shot from ground level, with the Tiki Hut on the left and the cabanas on the right: the grand entrance walk for a Sweet 16" },
+      pie: { es: "El paseo: 15 × 108 ft entre dos hileras de palmeras, de la puerta del edificio al estacionamiento.", en: "The walk: 15 by 108 ft between two rows of palms, from the building door to the parking lot." },
+    },
+    bloques: [
+      {
+        titulo: { es: "Lo que preguntan los padres", en: "What the parents ask" },
+        cuerpo: {
+          es: "Los padres traen otra lista. El predio es un lote privado con setos perimetrales, no un parque ni una calle. Tiene estacionamiento propio, y las dos entradas están separadas: los invitados llegan por NW 21st Ct y la carga entra por NW 1st Ct, así que los camiones del montaje no pasan por la entrada de la fiesta. Cómo se controla el acceso el día del evento —y si hace falta personal de seguridad— se define contigo en la visita técnica. Cuatro datos no se publican porque todavía no están medidos: cuántas plazas tiene el estacionamiento, cuántos baños hay, el límite de dB y la hora de cierre. Los cuatro salen de la visita técnica y se entregan por escrito.",
+          en: "Parents arrive with a different list. The site is a private lot enclosed by perimeter hedges, not a park and not a street. It has its own on-site parking, and the two entrances are separate: guests come in on NW 21st Ct and load-in on NW 1st Ct, so the vendors' trucks do not come through the guest entrance. How access is controlled on the day — and whether security staff is needed — is settled with you at the site visit. Four things we do not publish because they are not measured yet: how many parking spaces, how many restrooms, the dB limit and the curfew. All four come out of the site visit, in writing.",
+        },
+      },
+      {
+        titulo: { es: "El número de invitados decide qué parte contratas", en: "The guest count decides what you book" },
+        cuerpo: {
+          es: "Un Sweet 16 rara vez son 300 personas, y la lista de invitados es el primer número que decide qué parte del recinto contratas. Hasta unos 150 invitados, solo el Tiki Hut: ~4.000 ft² que se contratan sin el jardín y mantienen la fiesta reunida en vez de repartida por un lote que no puede llenar. Con más, el recinto completo: ~18.000 ft² de jardín más el Tiki Hut, ~22.000 ft² en total, hasta ~600 de pie o ~300 sentados. El Tiki Hut es además el plan de lluvia —techo de paja, abierto por los cuatro costados, cierres laterales para una fecha de invierno con viento— y tiene su propia página. Cuánta gente cabe bajo la palapa con tu montaje concreto se confirma en la visita técnica.",
+          en: "A Sweet 16 is rarely 300 people, and the guest list is the first number that decides which part of the site you book. Up to about 150 guests, the Tiki Hut alone: ~4,000 sq ft that book without the garden and keep the party together instead of scattered across a lot it cannot fill. Above that, the whole site: ~18,000 sq ft of garden plus the Tiki Hut, ~22,000 sq ft in all, up to ~600 standing or ~300 seated. The Tiki Hut is also the rain plan — thatch roof, open on all four sides, sidewalls for a windy winter date — and it has its own page. How many people fit under it with your specific layout is confirmed at the site visit.",
+        },
+      },
+      {
+        titulo: { es: "De pie y con DJ, no un banquete sentado", en: "Standing, with a DJ — not a seated banquet" },
+        cuerpo: {
+          es: "Una quinceañera va sentada —corte de honor, vals, cena— y el sitio tiene una página para eso. Un Sweet 16 va al revés: DJ, pista de baile, photobooth y casi toda la noche de pie. Por eso la cifra que importa aquí es la de pie, no la de sentados. Los postes y cabios de madera del Tiki Hut son de donde cuelgan el sonido y las luces; cualquier carga colgada, y la potencia que pide el DJ, se miden y se aprueban en la visita técnica. El paseo pavimentado entre dos hileras de palmeras es la entrada, y ya está hecha. Todo lo demás —catering, DJ, iluminación, mesas y sillas— lo traen tus proveedores: al aire libre no hay cocina y el espacio llega vacío.",
+          en: "A quinceañera runs seated — a court, a waltz, a dinner — and the site has a page for that. A Sweet 16 runs the other way: a DJ, a dance floor, a photo booth, most of the night on your feet. That is why the figure that matters here is standing, not seated. The Tiki Hut's timber posts and rafters are where sound and lights hang; any hung load, and the DJ's power draw, are measured and approved at the site visit. The paved walk between two rows of palms is the grand entrance, already built. Everything else — catering, DJ, lighting, tables and chairs — comes from your own vendors: there is no kitchen outdoors, and the space comes empty.",
+        },
+      },
+      {
+        titulo: { es: "La licencia de licor en una fiesta de menores", en: "The liquor license at a party of minors" },
+        cuerpo: {
+          es: "El recinto tiene licencia de licor propia y un área donde montar barra. En un Sweet 16 eso plantea la pregunta antes de que nadie la haga: la homenajeada tiene dieciséis y la mayoría de los invitados es menor de 21. Cómo funciona una barra en una fiesta de menores —si la hay para los adultos, quién sirve y en qué condiciones, o si el evento va sin alcohol— no se publica aquí como política: se define con la familia en la visita técnica y queda por escrito, igual que la hora de cierre. Mientras tanto, dos hechos se sostienen: la licencia existe, y el sitio para la barra también. Lo que ninguna página puede decidir por ti se resuelve en persona, antes de confirmar la fecha.",
+          en: "The venue has its own liquor license and an area where a bar can be set up. At a Sweet 16 that raises the question before anyone asks it: the guest of honor is sixteen and most of the guests are under 21. How a bar works at a party of minors — whether there is one for the adults, who serves and under what conditions, or whether the event runs without alcohol — is not published here as a policy: it is defined with the family at the site visit and put in writing, the same as the curfew. Two facts stand meanwhile: the license exists, and so does the space for a bar. What no page can decide for you is settled in person, before the date is confirmed.",
+        },
+      },
+    ],
+  },
+  /**
+   * Página nueva del 10-sep-2026: demanda medida con el planificador y sin
+   * página propia hasta hoy. Escrita y revisada por tres vías (veracidad contra
+   * venue.ts, solape con las existentes, inglés nativo). Ver .qa/paginas-corregidas.json.
+   */
+  {
+    clave: "swimWeek",
+    ojo: { es: "Uso · desfiles y pasarela", en: "Use · runway and fashion shows" },
+    h1: { es: "Desfiles de moda", en: "Runway shows" },
+    respuesta: {
+      es: "Club Wynwood alquila un lote al aire libre en Wynwood, Miami, donde un desfile se monta sobre un paseo pavimentado de unos 15 × 108 ft, con la palapa techada de ~4.000 ft² al costado como backstage y carga por puerta propia. No es sede oficial de Miami Swim Week: es donde se produce el show satélite.",
+      en: "Club Wynwood rents an open-air lot in Wynwood, Miami, where a runway show sets up on a paved walkway of about 15 × 108 ft, with the ~4,000 sq ft thatched structure beside it as covered backstage and its own load-in gate. It is not an official Miami Swim Week venue: it is where the satellite show gets produced.",
+    },
+    title: {
+      es: "Desfiles de moda y satélites de Swim Week | Club Wynwood",
+      en: "Runway shows in Wynwood: Swim Week satellites | Club Wynwood",
+    },
+    description: {
+      es: "Venue para desfiles y shows satélite de Swim Week en Wynwood, Miami: un paseo pavimentado de ~15 × 108 ft que ya es pasarela, backstage techado y carga aparte.",
+      en: "Runway-show venue in Wynwood, Miami, for Swim Week satellites: a paved ~15 × 108 ft walkway that is already the runway, covered backstage and a load-in gate.",
+    },
+    cifras: [
+      { etiqueta: { es: "Traza de pasarela (según plano)", en: "Runway line (per site plan)" }, valor: { es: "~15 × ~108 ft", en: "~15 × ~108 ft" } },
+      { etiqueta: { es: "Superficie techada, con aleros", en: "Covered area, incl. eaves" }, valor: { es: "~4.000 ft²", en: "~4,000 sq ft" } },
+      { etiqueta: { es: "Cabañas fijas, lado este", en: "Fixed cabanas, east side" }, valor: { es: "6", en: "6" } },
+      { etiqueta: { es: "Exterior reservable desde", en: "Outdoors bookable from" }, valor: { es: "1 oct 2026", en: "Oct 1, 2026" } },
+    ],
+    foto: {
+      src: "/assets/flyer-paseo-puerta.jpg",
+      alt: { es: "El paseo pavimentado visto a ras de suelo, recto hasta la puerta del edificio, con las palmeras a los lados", en: "Ground-level view of the paved walkway, running straight to the building door, live palms on either side" },
+      pie: { es: "El paseo pavimentado hasta la puerta del edificio, en losas con juntas de césped.", en: "The paved walkway up to the building door, in slabs with turf joints." },
+    },
+    bloques: [
+      {
+        titulo: { es: "La traza de la pasarela ya está", en: "The runway line is already there" },
+        cuerpo: {
+          es: "El paseo pavimentado que cruza el recinto mide unos 15 ft de ancho por unos 108 de largo según el plano del sitio, de la puerta del edificio al estacionamiento sur. Son losas grandes con juntas de césped, planas y sin escalones: la traza de la pasarela ya existe, no hay que replantearla ni nivelar terreno. Si el desfile pide superficie continua —tacón fino, dolly, ruedas de cámara— o pasarela elevada, tu producción lo monta encima y el paseo le da la base plana. Las dos hileras de palmeras están plantadas a pie y medio del borde de las losas: dejan los 15 ft libres y entre troncos quedan unos 18 ft. La medida es aproximada hasta contrastarla con el levantamiento del predio.",
+          en: "The paved walkway that crosses the site is about 15 ft wide and about 108 ft long per the site plan, from the building door to the south parking lot. It is large slabs with turf joints, flat and step-free: the runway line already exists, with no layout to set out and no ground to level. If the show needs a continuous surface — thin heels, a dolly, camera wheels — or a raised runway, your production builds it on top and the walkway gives it a flat base. The two rows of live palms stand a foot and a half off the slab edge: the 15 ft stay clear and there are about 18 ft between trunks. The figure stays approximate until it is checked against the survey.",
+        },
+      },
+      {
+        titulo: { es: "Los dos costados no son iguales", en: "The two sides are not the same" },
+        cuerpo: {
+          es: "Conviene saberlo antes de dibujar el montaje. Al oeste del paseo hay césped y el apron pavimentado de la fachada, con la palapa detrás: es el costado que admite filas de silla sobre firme. Al este todo es arena, y sobre ella la hilera de seis cabañas amuebladas, que son fijas y cuentan en el plano: sirven de primera fila con sofá, y lo que se siente delante de ellas pide entablado. Cuántas filas admite cada costado se define en la visita. El público entra por el sur, donde desemboca el paseo, así que el remate visual de la pasarela es la fachada del edificio con su puerta y su mural, y las fotos del final del recorrido salen con eso detrás.",
+          en: "Worth knowing before drawing the layout. West of the walkway there is turf and the paved apron along the façade, with the thatched structure behind: that is the side that takes rows of chairs on firm ground. East of it everything is sand, and on it the row of six furnished cabanas, which are fixed and count in the plan: they work as a sofa front row, and anything seated in front of them needs decking. How many rows each side takes is settled at the site visit. Guests come in from the south, where the walkway ends, so the visual end of the runway is the building façade with its door and mural, and the photos at the top of the walk come out with that behind.",
+        },
+      },
+      {
+        titulo: { es: "Backstage a pie de pasarela, carga por otra puerta", en: "Backstage at the runway's edge, load-in through its own gate" },
+        cuerpo: {
+          es: "La palapa está al costado del tramo sur de la pasarela, en la esquina suroeste, con la cumbrera paralela al paseo: unos 54 × 60 ft, ~4.000 ft² techados contando aleros, abierta por los cuatro costados. Queda a pie de pasarela, así que sirve de backstage, maquillaje o sala de prensa sin alquilar carpa; el cierre visual para el cambio de vestuario lo trae tu producción, porque no hay paredes. Los accesos son dos y no se cruzan: la carga entra por NW 1st Ct, al oeste, a la franja pavimentada junto a la fachada, a un paso de la palapa; los invitados por NW 21st Ct, al sur. El ancho del portón y la carga admisible de los cabios se miden en la visita.",
+          en: "The thatched structure sits alongside the southern stretch of the runway, in the south-west corner, its ridge parallel to the walkway: about 54 × 60 ft, ~4,000 sq ft covered including eaves, open on all four sides. It is right at the runway edge, so it works as backstage, hair and makeup or a press area without renting a tent; the visual screen for changing is on your production, because there are no walls. There are two entrances and they do not cross: load-in is off NW 1st Ct to the west, onto the paved strip along the façade, a step from the structure; guests come in off NW 21st Ct to the south. Gate width and the rafters' load rating get measured at the site visit.",
+        },
+      },
+      {
+        titulo: { es: "Luz, lluvia y temporada", en: "Light, rain and the season" },
+        cuerpo: {
+          es: "Un desfile aquí se hace al anochecer, y el recinto no tiene iluminación de casa: la luz de pasarela la trae tu producción, y la potencia disponible se confirma en la visita. El techo de paja aguanta la lluvia vertical; con viento el agua entra de lado, así que el plan de lluvia debe presupuestar lonas laterales para la palapa. Aforo sentado y de pie del montaje concreto, curfew, límite de decibelios y número de baños se levantan en la visita y quedan por escrito. Sobre el calendario: el exterior se reserva desde el 1 de octubre de 2026, así que la primera Swim Week vendible es la de 2027; si el show necesita permiso de evento especial de la City of Miami, la conversación útil empieza meses antes.",
+          en: "A show here runs at dusk, and the site has no house lighting: runway lighting is on your production, and the available power, with its amperage, is confirmed at the site visit. The thatched roof handles straight-down rain; in wind it blows in sideways, so the rain plan should budget sidewalls for the structure. Seated and standing capacity for your layout, curfew, the decibel limit and the restroom count are measured at that same visit and put in writing. On the calendar: the outdoor site takes bookings from October 1, 2026, so the first Swim Week on sale is the 2027 edition; if the show needs a City of Miami special-event permit, the useful conversation starts months ahead.",
+        },
+      },
+    ],
+  },
 ];
 
 export function pagina(clave: string): Pagina | undefined {
@@ -959,7 +1464,7 @@ export const FAQ: Array<{ q: Record<Idioma, string>; a: Record<Idioma, string> }
     q: { es: "¿Puedo traer mi propio catering y mi propia barra?", en: "Can I bring my own catering and bar?" },
     a: {
       es: "Sí. No hay proveedor impuesto ni comisión por traer el tuyo. Al aire libre no hay cocina: el catering monta en el sitio, o usa la cocina del edificio si lo alquilas también. La barra la pone tu equipo.",
-      en: "Yes. There is no imposed supplier and no fee for bringing your own. Outdoors there is no kitchen: catering sets up on site, or uses the building's kitchen if you rent it as well. Your team runs the bar.",
+      en: "Yes. There is no imposed supplier and no fee for bringing your own. Outdoors there is no kitchen: catering sets up on site, or uses the building's kitchen if you rent it as well. There is an area where a bar can be set up.",
     },
   },
   {
@@ -986,8 +1491,8 @@ export const FAQ: Array<{ q: Record<Idioma, string>; a: Record<Idioma, string> }
   {
     q: { es: "¿Tiene licencia de licor?", en: "Does it have a liquor license?" },
     a: {
-      es: "Sí. El recinto tiene licencia de licor de Miami propia, con su propio número de licencia, cosa que no todos los venues de la zona pueden decir. La barra la monta y la opera tu equipo; el número de licencia y sus condiciones se entregan con la ficha técnica.",
-      en: "Yes. The site holds its own Miami liquor license, with its own license number, which not every venue in the area can say. Your team sets up and runs the bar; the license number and its conditions come with the spec sheet.",
+      es: "Sí. El recinto tiene licencia de licor de Miami propia, con su propio número de licencia, cosa que no todos los venues de la zona pueden decir. Hay área donde montar barra; el número de licencia y sus condiciones se entregan con la ficha técnica.",
+      en: "Yes. The site holds its own Miami liquor license, with its own license number, which not every venue in the area can say. There is an area where a bar can be set up; the license number and its conditions come with the spec sheet.",
     },
   },
   {

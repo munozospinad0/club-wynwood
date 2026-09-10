@@ -214,7 +214,7 @@ export default async function PaginaInterior(
             <div key={c.etiqueta.es} style={{ flex: "1 1 200px", padding: "26px 24px", borderRight: "1px solid var(--regla)" }}>
               <div className="ojo" style={{ paddingBottom: 12 }}>{c.etiqueta[lang]}</div>
               <div style={{ fontFamily: "var(--display)", fontWeight: 600, fontSize: 34, lineHeight: 1, letterSpacing: "-.02em" }}>
-                {c.valor}
+                {typeof c.valor === "string" ? c.valor : c.valor[lang]}
               </div>
             </div>
           ))}
@@ -262,7 +262,7 @@ export default async function PaginaInterior(
  * barrio. A la novia que busca sitio para su boda, «465 millones de gasto en
  * comida y bebida» no le dice nada y le alarga la página.
  */
-const CON_ENTORNO = new Set<ClaveRuta>(["corporativo", "popups", "produccion", "artbasel", "barrio"]);
+const CON_ENTORNO = new Set<ClaveRuta>(["corporativo", "swimWeek", "offsite", "popups", "produccion", "artbasel", "barrio"]);
 
 /**
  * El barrio en números, con la fuente a la vista.
@@ -340,6 +340,14 @@ function Migas({ lang, nombre }: { lang: Idioma; nombre: string }) {
  * sería peor que no personalizar.
  */
 const TEMA: Partial<Record<string, { es: string; en: string }>> = {
+  swimWeek: { es: "tu desfile", en: "your runway show" },
+  sweet16: { es: "el Sweet 16", en: "the Sweet 16" },
+  salonVsJardin: { es: "tu fiesta", en: "your party" },
+  finDeSemanaBoda: { es: "la cena de ensayo", en: "the rehearsal dinner" },
+  showers: { es: "el shower", en: "your bridal or baby shower" },
+  bodasIntimas: { es: "tu boda pequeña", en: "your small wedding" },
+  cumpleanosAdultos: { es: "tu cumpleaños", en: "your birthday" },
+  offsite: { es: "el offsite de tu equipo", en: "your team's offsite" },
   jardin:       { es: "tu evento en el Jardín",     en: "your event in the Garden" },
   tikiHut:      { es: "tu evento bajo el Tiki Hut", en: "your event under the Tiki Hut" },
   bodas:        { es: "tu boda",                    en: "your wedding" },
@@ -354,6 +362,14 @@ const TEMA: Partial<Record<string, { es: string; en: string }>> = {
 };
 
 const FAMILIA: Record<string, "espacio" | "ocasion" | "referencia"> = {
+  swimWeek: "ocasion",
+  sweet16: "ocasion",
+  salonVsJardin: "referencia",
+  finDeSemanaBoda: "ocasion",
+  showers: "ocasion",
+  bodasIntimas: "ocasion",
+  cumpleanosAdultos: "ocasion",
+  offsite: "ocasion",
   jardin: "espacio", tikiHut: "espacio",
   bodas: "ocasion", corporativo: "ocasion", quinces: "ocasion",
   graduaciones: "ocasion", popups: "ocasion", produccion: "ocasion",

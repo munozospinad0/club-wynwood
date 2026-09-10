@@ -171,8 +171,8 @@ export default async function Layout(
   const nombre = (clave: ClaveRuta) => PAGINAS.find((p) => p.clave === clave)?.h1[lang] ?? clave;
   const GRUPOS: Array<{ titulo: string; claves: ClaveRuta[] }> = [
     { titulo: es ? "Qué se alquila" : "What is rented", claves: ["jardin", "tikiHut", "aforos"] },
-    { titulo: es ? "Para qué" : "What for", claves: ["bodas", "quinces", "graduaciones", "corporativo", "finDeAno", "artbasel", "popups", "produccion", "pequenos"] },
-    { titulo: es ? "Cómo funciona" : "How it works", claves: ["guia", "barrio", "faq"] },
+    { titulo: es ? "Para qué" : "What for", claves: ["bodas", "quinces", "graduaciones", "corporativo", "finDeAno", "artbasel", "popups", "produccion", "pequenos", "offsite"] },
+    { titulo: es ? "Cómo funciona" : "How it works", claves: ["guia", "barrio", "salonVsJardin", "faq"] },
   ];
 
   return (

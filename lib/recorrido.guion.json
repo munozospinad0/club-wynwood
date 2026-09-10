@@ -594,14 +594,14 @@
         "en": "Included infrastructure"
       },
       "texto": {
-        "es": "¿Qué hay, y qué no? Hay cuatro cabañas amuebladas en hilera, mesas de picnic fijas y un área donde montar barra, con licencia de licor propia. El edificio del fondo, donde termina el paseo, tiene dos niveles: abajo, un salón a doble altura con cocina y baños; arriba, un altillo con cuatro salas privadas. Se alquila aparte, como evento o como oficina, con su propia lámina, y resuelve camerinos, cocina de catering o plan B bajo techo. Al aire libre no hay cocina, ni cerramiento fijo, ni climatización: el catering monta en el sitio. Producción, sonido, iluminación y mobiliario los trae tu equipo, y esa libertad es justamente la propuesta.",
-        "en": "What is here, and what is not? Four furnished cabanas in a row, fixed picnic tables and an area where a bar can be set up, with its own liquor license. The building at the far end, where the walk ends, has two levels: downstairs, a double-height hall with a kitchen and restrooms; upstairs, a mezzanine with four private rooms. It is rented separately, for events or as an office, with its own plate, and covers green rooms, a catering kitchen or a plan B under a roof. Outdoors there is no kitchen, no fixed enclosure and no climate control: catering sets up on site. Production, sound, lighting and furniture come with your team, and that freedom is precisely the point."
+        "es": "¿Qué hay, y qué no? Hay seis cabañas amuebladas en hilera, mesas de picnic fijas y un área donde montar barra, con licencia de licor propia. El edificio del fondo, donde termina el paseo, tiene dos niveles: abajo, un salón a doble altura con cocina y baños; arriba, un altillo con cuatro salas privadas. Se alquila aparte, como evento o como oficina, con su propia lámina, y resuelve camerinos, cocina de catering o plan B bajo techo. Al aire libre no hay cocina, ni cerramiento fijo, ni climatización: el catering monta en el sitio. Producción, sonido, iluminación y mobiliario los trae tu equipo, y esa libertad es justamente la propuesta.",
+        "en": "What is here, and what is not? Six furnished cabanas in a row, fixed picnic tables and an area where a bar can be set up, with its own liquor license. The building at the far end, where the walk ends, has two levels: downstairs, a double-height hall with a kitchen and restrooms; upstairs, a mezzanine with four private rooms. It is rented separately, for events or as an office, with its own plate, and covers green rooms, a catering kitchen or a plan B under a roof. Outdoors there is no kitchen, no fixed enclosure and no climate control: catering sets up on site. Production, sound, lighting and furniture come with your team, and that freedom is precisely the point."
       },
       "hitos": {
         "es": [
           {
-            "frase": "Hay cuatro cabañas",
-            "cifra": "4 cabañas · pérgolas",
+            "frase": "Hay seis cabañas",
+            "cifra": "6 cabañas · pérgolas",
             "foto": "cabanas",
             "segundos": 2.4
           },
@@ -713,8 +713,8 @@
         ],
         "en": [
           {
-            "frase": "Four furnished cabanas",
-            "cifra": "4 cabanas · pergolas",
+            "frase": "Six furnished cabanas",
+            "cifra": "6 cabanas · pergolas",
             "foto": "cabanas",
             "segundos": 2.4
           },

@@ -222,7 +222,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         </div>
       </section>
       {/* Las cifras, dibujadas. Ver components/Cifras.tsx: el plano a escala, los
-          puntos de veinte en veinte y las cuatro cabañas dicen en un vistazo lo
+          puntos de veinte en veinte y las seis cabañas dicen en un vistazo lo
           que cinco números en fila obligaban a deducir. */}
       <Cifras lang={lang} />
       {/* Las dos láminas técnicas, para quien ya está montando. El dibujo que

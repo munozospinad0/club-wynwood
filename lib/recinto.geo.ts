@@ -86,20 +86,33 @@ export const PICNIC: Pt[] = Array.from({ length: 5 }, (_, i): Pt => [84 + i * 6.
  * Las cabañas-pérgola, al este del paseo, en hilera de norte a sur, con aire
  * entre unidades.
  *
- * **SON CUATRO, no ocho.** El ocho venía de una frase de la web del operador
- * —«eight stylishly furnished cabanas / 18,000 sq ft»— que el sitio publicó
- * como dato verificado. Daniel lo corrigió el 9-sep-2026 mirando el predio: hay
- * cuatro. La misma frase sostenía la superficie del jardín, así que esa cifra
- * también dejó de citar al operador.
+ * **SON SEIS.** Y este número ha cambiado tres veces, así que conviene la
+ * historia entera antes de volver a tocarlo:
  *
- * **El `paso` NO se estira para rellenar la franja.** Cuatro cabañas separadas
+ *   ocho  — de una frase de la web del operador («eight stylishly furnished
+ *           cabanas / 18,000 sq ft»), publicada durante meses como dato
+ *           *verificado* nuestro. Nunca lo fue: era del competidor.
+ *   cuatro— Daniel, 9-sep-2026, mirando el predio. Se corrigió en veintitantos
+ *           sitios, incluida la voz del recorrido.
+ *   seis  — Daniel, 9-sep-2026, el mismo día. **Este es el vigente.**
+ *
+ * La lección no es el número: es que **solo cuenta lo contado en el predio**, y
+ * que hasta que alguien las fotografíe en fila y la foto entre en la galería,
+ * este dato sigue dependiendo de una memoria. Si vuelve a bailar, la primera
+ * pregunta es si se están contando las mismas cosas —pérgolas fijas frente a
+ * carpas que se montan y se quitan— y no cuál de los números es el bueno.
+ *
+ * **El `paso` NO se estira para rellenar la franja.** Cabañas separadas
  * artificialmente se leen como un error de dibujo. La hilera ocupa lo que ocupa
  * y el resto de la arena queda libre, que es lo que hay de verdad y además es
- * superficie utilizable. Quien cambie `n` tiene que mover a mano el ancla de
- * los rótulos en `LaminaRecinto` y el punto de cámara del capítulo 5 del guion:
- * están calculados sobre el centro de la hilera y no siguen a esta constante.
+ * superficie utilizable. Con seis, la hilera llega a y≈190 y la franja de arena
+ * termina en 212: sigue cabiendo sin tocar el paso.
+ *
+ * Quien cambie `n` tiene que mover a mano el ancla de los rótulos en
+ * `LaminaRecinto` y el punto de cámara del capítulo 5 del guion: están
+ * calculados sobre el centro de la hilera y no siguen a esta constante.
  */
-export const CABANAS = { x: 86, y0: 130, dx: 11, dy: 8, n: 4, paso: 10.4, h: 9 };
+export const CABANAS = { x: 86, y0: 130, dx: 11, dy: 8, n: 6, paso: 10.4, h: 9 };
 
 /** Césped: la franja oeste entre el apron y el seto del sur; la palapa está sobre él. CESPED_E queda vacío: al este es arena. */
 export const CESPED_O = { x: 4, y: PLAZA.y + PLAZA.dy, dx: PASEO.x - 4, dy: 212 - (PLAZA.y + PLAZA.dy) };

@@ -109,10 +109,10 @@ export const ESPACIOS = [
     cubierto: false,
     resumenEs:
       "Paseo pavimentado central de la puerta al estacionamiento, césped artificial del lado de la palapa y arena del " +
-      "lado de las cabañas, dos hileras de palmeras reales, cuatro cabañas amuebladas, mesas de picnic fijas y setos perimetrales.",
+      "lado de las cabañas, dos hileras de palmeras reales, seis cabañas amuebladas, mesas de picnic fijas y setos perimetrales.",
     resumenEn:
       "A central paved walk from the door to the parking, artificial turf on the structure's side and sand on the cabanas' side, " +
-      "two rows of real palms, four furnished cabanas, fixed picnic tables and perimeter hedges.",
+      "two rows of real palms, six furnished cabanas, fixed picnic tables and perimeter hedges.",
   },
   {
     slug: "tiki-hut",
@@ -159,7 +159,7 @@ export const FICHA: Dato[] = [
    * no puede publicarse como verificada nuestra.
    */
   { clave: "cabanas", es: "Cabañas", en: "Cabanas",
-    valorEs: "4 amuebladas, en el jardín", valorEn: "4 furnished, in the garden",
+    valorEs: "6 amuebladas, en el jardín", valorEn: "6 furnished, in the garden",
     estado: "verificado", fuente: "contadas en el predio (Daniel, 9-sep-2026); van con el inmueble" },
   { clave: "direccion", es: "Dirección", en: "Address",
     valorEs: "2129 NW 1st Ct, Miami FL 33127", valorEn: "2129 NW 1st Ct, Miami FL 33127",
@@ -283,7 +283,7 @@ export const GEOMETRIA = {
   postes: { filas: 3, porFila: 3, entreEjesFt: 24 },
   aleroFt: 11,
   cumbreraFt: 34,
-  cabanas: 4,
+  cabanas: 6,
   nota:
     "Disposición según el plano del sitio del flyer comercial del predio, contrastado con la foto cenital y las aéreas; medidas aproximadas. " +
     "El dibujo se rotula como esquema sin escala fina hasta contrastarlo con el boundary survey.",

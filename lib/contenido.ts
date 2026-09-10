@@ -50,7 +50,7 @@ export const PAGINAS: Pagina[] = [
     },
     cifras: [
       { etiqueta: { es: "Superficie", en: "Area" }, valor: "~18 000 ft²" },
-      { etiqueta: { es: "Cabañas amuebladas", en: "Furnished cabanas" }, valor: "4" },
+      { etiqueta: { es: "Cabañas amuebladas", en: "Furnished cabanas" }, valor: "6" },
       { etiqueta: { es: "De pie (recinto completo)", en: "Standing (whole site)" }, valor: "~600" },
     ],
     foto: {
@@ -279,7 +279,7 @@ export const PAGINAS: Pagina[] = [
     cifras: [
       { etiqueta: { es: "Superficie privada", en: "Private area" }, valor: "~22 000 ft²" },
       { etiqueta: { es: "Sombra fija", en: "Permanent shade" }, valor: "~4 000 ft²" },
-      { etiqueta: { es: "Cabañas amuebladas", en: "Furnished cabanas" }, valor: "4" },
+      { etiqueta: { es: "Cabañas amuebladas", en: "Furnished cabanas" }, valor: "6" },
     ],
     foto: {
       src: "/assets/venue-exterior.webp",
@@ -421,7 +421,7 @@ export const PAGINAS: Pagina[] = [
     cifras: [
       { etiqueta: { es: "Sentados", en: "Seated" }, valor: "~300" },
       { etiqueta: { es: "Bajo techo", en: "Under roof" }, valor: "~4 000 ft²" },
-      { etiqueta: { es: "Cabañas", en: "Cabanas" }, valor: "4" },
+      { etiqueta: { es: "Cabañas", en: "Cabanas" }, valor: "6" },
     ],
     foto: {
       src: "/assets/venue-exterior.webp",

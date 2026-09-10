@@ -1218,7 +1218,7 @@ export const PAGINAS: Pagina[] = [
         titulo: { es: "La comitiva que llega el jueves", en: "The group that lands on Thursday" },
         cuerpo: {
           es: "En una boda de destino la familia de fuera aterriza el jueves o el viernes, y la primera cita del calendario, la fiesta de bienvenida, es la que ordena a todo el mundo. MIA queda a unos 16 minutos; el resto de tiempos del barrio están en la página Por qué Wynwood. Wynwood Walls queda a unos 4 minutos a pie, así que quien llega temprano tiene barrio que recorrer en vez de un lobby de hotel. El estacionamiento es propio. La carga entra por NW 1st Ct y los invitados por NW 21st Ct: el camión del catering no se cruza con la gente que va llegando, que en una fiesta de bienvenida llega escalonada durante dos horas.",
-          en: "At a destination wedding the out-of-town family lands on Thursday or Friday, and the first date on the calendar, the welcome party, is the one that sorts everyone out. MIA is about 16 minutes away; the rest of the neighborhood's travel times are on the Why Wynwood page. Wynwood Walls is about a four-minute walk, so guests who arrive early have a neighborhood to explore on foot instead of a hotel lobby. Parking is on site. Load-in runs off NW 1st Ct while guests arrive on NW 21st Ct: the catering truck never crosses paths with your guests, who at a welcome party trickle in over two hours.",
+          en: "At a destination wedding the out-of-town family lands on Thursday or Friday, and the first date on the calendar, the welcome party, is the one that sorts everyone out. MIA is about 16 minutes away; the rest of the neighbourhood's travel times are on the Why Wynwood page. Wynwood Walls is about a four-minute walk, so guests who arrive early have a neighbourhood to explore on foot instead of a hotel lobby. Parking is on site. Load-in runs off NW 1st Ct while guests arrive on NW 21st Ct: the catering truck never crosses paths with your guests, who at a welcome party trickle in over two hours.",
         },
       },
       {
@@ -1267,7 +1267,7 @@ export const PAGINAS: Pagina[] = [
         titulo: { es: "Dos calles: la carga por una, los invitados por otra", en: "Two streets: freight on one, guests on the other" },
         cuerpo: {
           es: "En un salón de banquetes el camión del decorador, el catering y los invitados suelen entrar por la misma puerta, y el montaje queda a la vista. Aquí hay dos entradas en dos calles distintas: la carga entra por NW 1st Ct y los invitados por NW 21st Ct. Eso cambia el día de la fiesta: el decorador puede seguir trabajando mientras llega la gente, la carga del catering no cruza el paseo por donde entran los invitados, y el desmontaje sale por la misma puerta por la que entró. Hay además estacionamiento propio en el predio, que en Wynwood pesa más que en cualquier otro barrio de Miami.",
-          en: "At a banquet hall the decorator's truck, the caterer and the guests usually come through the same door, and the load-in happens in plain sight. Here there are two entrances on two different streets: freight comes in on NW 1st Ct and guests arrive on NW 21st Ct. That changes the day itself: the decorator can keep working while people arrive, the catering load-in never crosses the guest path, and load-out leaves through the same gate it came in. There is on-site parking as well, which in Wynwood counts for more than in any other Miami neighborhood.",
+          en: "At a banquet hall the decorator's truck, the caterer and the guests usually come through the same door, and the load-in happens in plain sight. Here there are two entrances on two different streets: freight comes in on NW 1st Ct and guests arrive on NW 21st Ct. That changes the day itself: the decorator can keep working while people arrive, the catering load-in never crosses the guest path, and load-out leaves through the same gate it came in. There is on-site parking as well, which in Wynwood counts for more than in any other Miami neighbourhood.",
         },
       },
       {
@@ -1463,7 +1463,7 @@ export const FAQ: Array<{ q: Record<Idioma, string>; a: Record<Idioma, string> }
   {
     q: { es: "¿Puedo traer mi propio catering y mi propia barra?", en: "Can I bring my own catering and bar?" },
     a: {
-      es: "Sí. No hay proveedor impuesto ni comisión por traer el tuyo. Al aire libre no hay cocina: el catering monta en el sitio, o usa la cocina del edificio si lo alquilas también. La barra la pone tu equipo.",
+      es: "Sí. No hay proveedor impuesto ni comisión por traer el tuyo. Al aire libre no hay cocina: el catering monta en el sitio, o usa la cocina del edificio si lo alquilas también. Hay área donde montar barra.",
       en: "Yes. There is no imposed supplier and no fee for bringing your own. Outdoors there is no kitchen: catering sets up on site, or uses the building's kitchen if you rent it as well. There is an area where a bar can be set up.",
     },
   },

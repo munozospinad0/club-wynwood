@@ -74,7 +74,7 @@ export const GALERIA: FotoGaleria[] = [
   { id: "palmeras", src: "/assets/palmeras-aerea.jpg", w: 736, h: 682, fuente: DRON,
     alt: { es: "Las dos hileras de palmeras reales sobre el césped y la palapa", en: "The two rows of real palms over the turf and the structure" } },
   { id: "paseo", src: "/assets/paseo-palmeras.jpg", w: 1280, h: 400, fuente: SITIO,
-    alt: { es: "El paseo pavimentado, continuo y a nivel, entre las palmeras", en: "The paved walk, continuous and level, between the palms" } },
+    alt: { es: "El paseo pavimentado, en losas con juntas de césped, entre las palmeras", en: "The paved walkway, in slabs with turf joints, between the palms" } },
   { id: "bajo-palapa", src: "/assets/venue-palapa.webp", w: 1280, h: 960, fuente: SITIO,
     alt: { es: "Bajo la palapa: paja sobre madera, abierta por los costados", en: "Under the structure: thatch on timber, open on the sides" } },
   { id: "lounge", src: "/assets/flyer-palapa-lounge.jpg", w: 935, h: 614, fuente: FLYER,

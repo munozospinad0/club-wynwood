@@ -381,9 +381,34 @@ function Seguir({ lang, actual }: { lang: Idioma; actual: ClaveRuta }) {
   const mismas = PAGINAS.filter((p) => p.clave !== actual && FAMILIA[p.clave] === miFamilia);
   const espacios = PAGINAS.filter((p) => p.clave !== actual && FAMILIA[p.clave] === "espacio");
 
-  // Sin repetidos y con tope: tres de su familia y los espacios para rellenar.
+  /**
+   * LAS TRES HERMANAS SE ELIGEN EN RUEDA, NO SIEMPRE LAS TRES PRIMERAS.
+   *
+   * Medido el 10-sep-2026 con la auditoría de contenido: **diez páginas del
+   * venue no recibían ni un enlace desde el cuerpo de ninguna otra** —pop-ups,
+   * graduaciones, eventos pequeños, fin de año, Art Basel, en los dos idiomas—.
+   * La familia «ocasión» tiene nueve páginas y `slice(0, 3)` devolvía siempre
+   * bodas, corporativo y quinceañeras: las seis restantes solo vivían del pie.
+   * Para el rastreador eso son páginas huérfanas, y para quien lee, un
+   * «relacionado» que repite lo mismo en todas partes.
+   *
+   * Ahora cada página arranca la rueda en la posición siguiente a la suya
+   * dentro de su familia, así que las nueve se reparten los enlaces entre sí de
+   * forma pareja y determinista: la misma página enlaza siempre a las mismas
+   * tres, pero cada una recibe enlaces de otras tres. Es un anillo, no una
+   * lista con cabecera fija.
+   */
+  const familiaEntera = PAGINAS.filter((p) => FAMILIA[p.clave] === miFamilia);
+  const miIndice = Math.max(0, familiaEntera.findIndex((p) => p.clave === actual));
+  const enRueda = mismas.length
+    ? Array.from({ length: Math.min(3, mismas.length) }, (_, i) =>
+        familiaEntera[(miIndice + 1 + i) % familiaEntera.length])
+      .filter((p) => p.clave !== actual)
+    : [];
+
+  // Sin repetidos y con tope: tres de su familia en rueda y los espacios para rellenar.
   const vistos = new Set<string>();
-  const elegidas = [...mismas.slice(0, 3), ...espacios]
+  const elegidas = [...enRueda, ...espacios]
     .filter((p) => !vistos.has(p.clave) && vistos.add(p.clave))
     .slice(0, 5);
 

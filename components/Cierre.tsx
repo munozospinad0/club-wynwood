@@ -1,5 +1,4 @@
 import Formulario from "@/components/Formulario";
-import Contacto from "@/components/Contacto";
 import type { Idioma } from "@/lib/i18n";
 
 /**
@@ -54,7 +53,6 @@ export default function Cierre({ lang, tema }: { lang: Idioma; tema?: string }) 
         </p>
 
         <Formulario lang={lang} />
-        <Contacto lang={lang} />
       </div>
     </section>
   );

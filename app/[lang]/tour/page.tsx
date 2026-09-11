@@ -282,18 +282,24 @@ export default async function Landing({ params }: { params: Promise<{ lang: stri
             <h2>{t.form.titulo}</h2>
             <p className="lp-lead">{t.form.intro}</p>
             <p className="ojo lp-nota">{t.form.soloDos}</p>
+            {/* Sin teléfono ni correo debajo (Daniel, 11-sep-2026: «no les
+                pongas la posibilidad de pasar sin llenar el formulario»).
+                Al enviarlo, el propio formulario lleva a WhatsApp. */}
             <Formulario lang={lang} idPrefijo="lp" />
-            <p className="lp-nota">
-              <a href={`tel:${VENUE.telefono.replace(/[^+\d]/g, "")}`}>{VENUE.telefono}</a>
-              {" · "}
-              <a href={`mailto:${VENUE.email}`}>{VENUE.email}</a>
-            </p>
           </div>
 
           <aside className="lp-despues">
             <p className="ojo">{t.despues.ojo}</p>
             <ol>
-              {t.despues.pasos.map((p) => (
+              {(VENUE.whatsapp
+                ? [
+                    es
+                      ? { titulo: "Sigues por WhatsApp", cuerpo: "Al enviar se abre WhatsApp con tu solicitud ya escrita, para hablar con una persona del equipo." }
+                      : { titulo: "You continue on WhatsApp", cuerpo: "When you send it, WhatsApp opens with your request already written, to talk to a person on the team." },
+                    ...t.despues.pasos,
+                  ]
+                : t.despues.pasos
+              ).map((p) => (
                 <li key={p.titulo}>
                   <strong>{p.titulo}</strong>
                   <span>{p.cuerpo}</span>

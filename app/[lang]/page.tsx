@@ -4,7 +4,6 @@ import { FICHA, TIEMPOS, VENUE } from "@/lib/venue";
 import { PAGINAS, FAQ } from "@/lib/contenido";
 import { grafo, faqPage, localBusiness, eventVenue, webPage } from "@/lib/schema";
 import Formulario from "@/components/Formulario";
-import Contacto from "@/components/Contacto";
 import LaminaEdificio from "@/components/LaminaEdificio";
 import Laminas from "@/components/Laminas";
 import LaminaPlanta from "@/components/LaminaPlanta";
@@ -292,7 +291,6 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
               : "Only name and email are required. The rest lets us answer with numbers instead of «it depends»."}
           </p>
           <Formulario lang={lang} />
-          <Contacto lang={lang} />
         </div>
       </section>
     </>

@@ -140,6 +140,22 @@ p { line-height: 1.66; text-wrap: pretty; }
   .boton:hover { background: var(--regla-osc); }
 }
 
+/* Lo que se ve al enviar el formulario: el recibido y, si hay número, el paso a
+   WhatsApp (components/Formulario.tsx). El verde es el de WhatsApp a propósito:
+   es lo que hace que se reconozca sin leer. */
+.enviado { display: grid; gap: 14px; justify-items: start; }
+.enviado-sigue { margin: 0; font-size: 15px; line-height: 1.6; color: var(--tinta-2); max-width: 60ch; }
+.boton--wa { background: #1a7a48; color: #fff; }
+@media (hover: hover) and (pointer: fine) {
+  .boton--wa:hover { background: #13613a; }
+}
+.enviado-cuenta { margin: 0; font-size: 13.5px; color: var(--texto); }
+.enviado-cuenta button {
+  background: none; border: 0; padding: 0; font: inherit; color: var(--tinta);
+  text-decoration: underline; text-underline-offset: 3px; cursor: pointer;
+}
+.cine-cierre .enviado-sigue, .cine-cierre .enviado-cuenta, .cine-cierre .enviado-cuenta button { color: var(--papel); }
+
 /* Revelado al scroll. La clase la añade el JS, así que sin JS se ve todo. */
 .rv { opacity: 0; transform: translateY(18px); }
 .rv.dentro {

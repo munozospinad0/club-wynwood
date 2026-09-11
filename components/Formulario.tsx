@@ -5,6 +5,7 @@ import type { Idioma } from "@/lib/i18n";
 import { bandaInvitados, ev, horizonteFecha } from "@/lib/medicion";
 import { encolar, vaciarCola } from "@/lib/cola";
 import { paraElLead } from "@/lib/atribucion";
+import { VENUE } from "@/lib/venue";
 
 /**
  * EL FORMULARIO. Va DIRECTO al CRM: ya no pasa por n8n.
@@ -130,6 +131,126 @@ interface Respuesta {
   degradado?: boolean;
 }
 
+interface Pedido {
+  nombre: string;
+  tipo: string;
+  fecha: string;
+  invitados: string;
+}
+
+/**
+ * EL MENSAJE DE WHATSAPP, YA ESCRITO con lo que acaba de pedir. Así la
+ * conversación empieza con contexto y el equipo no tiene que preguntar lo que
+ * la persona ya contestó en el formulario.
+ */
+const TIPO_EN_FRASE: Record<string, { es: string; en: string }> = {
+  "Activación de marca": { es: "una activación de marca", en: "a brand activation" },
+  "Corporativo": { es: "un evento corporativo", en: "a corporate event" },
+  "Fiesta privada": { es: "una fiesta privada", en: "a private party" },
+  "Rodaje / producción": { es: "un rodaje o producción", en: "a shoot or production" },
+  "Otro": { es: "un evento", en: "an event" },
+};
+
+function mensajeWhatsApp(es: boolean, p: Pedido | null): string {
+  const nombre = p?.nombre.trim().split(/\s+/)[0] ?? "";
+  const tipo = p?.tipo ? TIPO_EN_FRASE[p.tipo]?.[es ? "es" : "en"] ?? "" : "";
+  let fecha = "";
+  if (p?.fecha && /^\d{4}-\d{2}-\d{2}$/.test(p.fecha)) {
+    const d = new Date(`${p.fecha}T00:00:00Z`);
+    fecha = new Intl.DateTimeFormat(es ? "es-US" : "en-US", { timeZone: "UTC", day: "numeric", month: "long" }).format(d);
+  }
+  const personas = p?.invitados && /^\d+$/.test(p.invitados.trim()) ? p.invitados.trim() : "";
+  if (es) {
+    return [
+      `Hola${nombre ? `, soy ${nombre}` : ""}. Acabo de pedir disponibilidad en clubwynwood.com`,
+      tipo ? ` para ${tipo}` : "",
+      fecha ? ` el ${fecha}` : "",
+      personas ? `, unas ${personas} personas` : "",
+      ".",
+    ].join("");
+  }
+  return [
+    `Hi${nombre ? `, this is ${nombre}` : ""}. I just requested availability on clubwynwood.com`,
+    tipo ? ` for ${tipo}` : "",
+    fecha ? ` on ${fecha}` : "",
+    personas ? `, about ${personas} guests` : "",
+    ".",
+  ].join("");
+}
+
+/**
+ * LO QUE VE AL TERMINAR.
+ *
+ * Daniel, 11-sep-2026: «no les pongas la posibilidad de pasar sin llenar el
+ * formulario; cuando lo terminen de llenar, que sí los lleve a WhatsApp». Por
+ * eso WhatsApp no aparece en ningún otro sitio de la página: se llega aquí
+ * después de enviar, y la solicitud ya está en el CRM con su atribución.
+ *
+ * Se espera unos segundos antes de salir por una razón que no es de cortesía:
+ * `generate_lead` acaba de salir hacia GTM y las etiquetas de conversión de
+ * Google Ads necesitan ese margen para enviarse. Irse en el mismo instante
+ * perdería justo la conversión que paga la pauta. Se sale con
+ * `location.href`, no con `window.open`: fuera de un clic el navegador
+ * bloquea las ventanas nuevas.
+ *
+ * Sin número en `venue.ts` (el WhatsApp de Rene), se queda el mensaje de
+ * recibido de siempre.
+ */
+function Enviado({ es, pedido }: { es: boolean; pedido: Pedido | null }) {
+  const numero = VENUE.whatsapp.replace(/[^\d]/g, "");
+  const enlace = numero ? `https://wa.me/${numero}?text=${encodeURIComponent(mensajeWhatsApp(es, pedido))}` : null;
+  const [segundos, setSegundos] = useState(4);
+  const [quieto, setQuieto] = useState(false);
+
+  useEffect(() => {
+    if (!enlace || quieto) return;
+    if (segundos <= 0) {
+      ev("contact_click", { method: "whatsapp", desde: "tras_formulario", automatico: "si" });
+      window.location.href = enlace;
+      return;
+    }
+    const t = setTimeout(() => setSegundos((s) => s - 1), 1000);
+    return () => clearTimeout(t);
+  }, [enlace, quieto, segundos]);
+
+  return (
+    <div className="enviado" role="status">
+      <p className="respuesta">
+        {es
+          ? "Recibido. Respondemos en 24 h hábiles con disponibilidad, condiciones y la ficha técnica completa."
+          : "Received. We reply within 24 business hours with availability, terms and the full spec sheet."}
+      </p>
+      {enlace && (
+        <>
+          <p className="enviado-sigue">
+            {es
+              ? "Si quieres adelantar, sigue por WhatsApp: tu solicitud ya va escrita."
+              : "If you want to move faster, continue on WhatsApp: your request is already written."}
+          </p>
+          <a
+            className="boton boton--wa"
+            href={enlace}
+            onClick={() => {
+              setQuieto(true);
+              ev("contact_click", { method: "whatsapp", desde: "tras_formulario", automatico: "no" });
+            }}
+          >
+            {es ? "Continuar en WhatsApp" : "Continue on WhatsApp"}
+          </a>
+          {!quieto && (
+            <p className="enviado-cuenta">
+              {es ? `Te llevamos en ${segundos} s.` : `Taking you there in ${segundos}s.`}{" "}
+              <button type="button" onClick={() => setQuieto(true)}>
+                {es ? "Prefiero quedarme aquí" : "I'd rather stay here"}
+              </button>
+            </p>
+          )}
+        </>
+      )}
+    </div>
+  );
+}
+
 /** Tres intentos con espera creciente. Un 4xx no se reintenta: no mejora. */
 async function entregar(cuerpo: Record<string, unknown>): Promise<Respuesta | null> {
   for (let intento = 1; intento <= 3; intento++) {
@@ -165,6 +286,8 @@ export default function Formulario({ lang, idPrefijo, invitadosInicial }: { lang
   const es = lang === "es";
   const ide = (n: string) => (idPrefijo ? `${idPrefijo}-${n}` : n);
   const [estado, setEstado] = useState<Estado>("idle");
+  /** Lo que pidió, para escribirlo en el WhatsApp que se abre al terminar. */
+  const [pedido, setPedido] = useState<Pedido | null>(null);
   const empezado = useRef(false);
   const pintado = useRef(Date.now());
   const invitadosRef = useRef<HTMLInputElement>(null);
@@ -280,6 +403,7 @@ export default function Formulario({ lang, idPrefijo, invitadosInicial }: { lang
     // descartó el envío, y celebrarlo sería mentirle a la persona y contarle a
     // GA4 un lead que no existe. Ver el comentario de `Respuesta.id`.
     if (r?.id) {
+      setPedido({ nombre: d.nombre || "", tipo: d.tipo || "", fecha: d.fecha || "", invitados: d.invitados || "" });
       setEstado("ok");
       // Todo envío cuenta como generate_lead, pero SOLO el calificado es
       // conversión primaria. Contar todo entrena a las plataformas a traer
@@ -306,13 +430,7 @@ export default function Formulario({ lang, idPrefijo, invitadosInicial }: { lang
   };
 
   if (estado === "ok") {
-    return (
-      <p className="respuesta" role="status">
-        {es
-          ? "Recibido. Respondemos en 24 h hábiles con disponibilidad, condiciones y la ficha técnica completa."
-          : "Received. We reply within 24 business hours with availability, terms and the full spec sheet."}
-      </p>
-    );
+    return <Enviado es={es} pedido={pedido} />;
   }
 
   return (

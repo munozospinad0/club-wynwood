@@ -43,11 +43,14 @@ export const VENUE = {
   telefono: "+1-305-970-7486",
   email: "info@clubwynwood.com",
   /**
-   * WhatsApp de consultas: es el de RENE (Daniel, 7-sep-2026). Vacío hasta
-   * tener el número: con la cadena vacía el sitio no muestra el botón. Formato
-   * internacional sin espacios, por ejemplo "+13055550000".
+   * WhatsApp de consultas. Daniel, 11-sep-2026: «+1 (305) 970-7486, mira el
+   * número» — el mismo del teléfono. Formato internacional sin espacios.
+   *
+   * SOLO se usa DESPUÉS del formulario (components/Formulario.tsx): Daniel
+   * pidió que nadie pueda saltarse el formulario para escribir por WhatsApp.
+   * Con la cadena vacía, el formulario termina en «Recibido» y no abre nada.
    */
-  whatsapp: "" as string,
+  whatsapp: "+13059707486" as string,
   /**
    * ⚠️ Este horario es el del OPERADOR (FunDimension / Playa Wynwood) como local
    * de público, no el nuestro. NO publicarlo como `openingHours` del venue: el

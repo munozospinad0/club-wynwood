@@ -115,3 +115,68 @@ img, svg, video, table { max-width: 100%; }
   #interior * { min-width: 0; }
   #interior svg { width: 100% !important; height: auto !important; }
 }
+
+/* ---------- BARRA FIJA DEL MÓVIL ---------- */
+/* Por qué existe: medido el 12-sep-2026, en /en el formulario empieza a 17.753
+   px de arriba, veintiuna pantallas de desplazamiento. Quien llega de un
+   anuncio no baja veintiuna pantallas. Los motivos y la lógica de cuándo
+   aparece están en components/BarraFija.tsx. */
+.barra-fija { display: none; }
+
+@media (max-width: 760px) {
+  .barra-fija {
+    display: block;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 40;
+    padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+    background: var(--papel);
+    border-top: 1px solid var(--regla);
+    /* Sube desde abajo en vez de aparecer de golpe. Se animan transform y
+       opacity, que no obligan al navegador a recalcular la página. */
+    transform: translateY(110%);
+    opacity: 0;
+    visibility: hidden;
+    transition: transform .32s cubic-bezier(.32,.72,0,1), opacity .24s linear, visibility 0s .32s;
+  }
+
+  .barra-fija--vista {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+    transition: transform .32s cubic-bezier(.32,.72,0,1), opacity .24s linear, visibility 0s;
+  }
+
+  .barra-fija__boton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 52px;
+    padding: 0 20px;
+    background: var(--ocre);
+    color: var(--papel);
+    text-decoration: none;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+  }
+
+  .barra-fija__boton:active { filter: brightness(.92); }
+
+  .barra-fija__nota {
+    margin: 6px 0 0;
+    text-align: center;
+    font-size: 12px;
+    color: var(--texto);
+  }
+
+  /* Que la barra no tape el final de la página al llegar abajo del todo. */
+  body { padding-bottom: 84px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .barra-fija { transition: none; }
+}

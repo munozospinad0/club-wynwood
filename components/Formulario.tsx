@@ -288,6 +288,21 @@ export default function Formulario({ lang, idPrefijo, invitadosInicial }: { lang
   const [estado, setEstado] = useState<Estado>("idle");
   /** Lo que pidió, para escribirlo en el WhatsApp que se abre al terminar. */
   const [pedido, setPedido] = useState<Pedido | null>(null);
+  /**
+   * LOS CUATRO CAMPOS QUE FILTRAN, PLEGADOS.
+   *
+   * Empresa, ciudad, quién produce y presupuesto son los que sirven para
+   * cualificar, y son también los que un desconocido no quiere contestar antes
+   * de que nadie le haya dicho si la fecha está libre. Doce cajas idénticas en
+   * un móvil son un muro; siete no. Los cuatro siguen ahí, un botón más allá y
+   * con una razón escrita para abrirlos: quien los rellena recibe números en
+   * vez de un «sí, está libre».
+   *
+   * No se pierde cualificación de los que no abren: invitados, fecha y tipo
+   * —tres de las cuatro señales— siguen a la vista, porque además son las
+   * preguntas que la persona esperaba que le hicieran.
+   */
+  const [detalles, setDetalles] = useState(false);
   const empezado = useRef(false);
   const pintado = useRef(Date.now());
   const invitadosRef = useRef<HTMLInputElement>(null);
@@ -419,15 +434,39 @@ export default function Formulario({ lang, idPrefijo, invitadosInicial }: { lang
     setEstado("error");
   }
 
+  /**
+   * 16 px de tipo en los campos, no 15. Por debajo de 16, Safari en iPhone hace
+   * zoom solo al enfocar un campo y ya no vuelve: la persona se queda con la
+   * página ampliada y el botón de enviar fuera de la pantalla. Y 48 px de alto
+   * mínimo, que es el objetivo táctil que piden Apple y Google.
+   */
   const campo: React.CSSProperties = {
-    width: "100%", padding: "12px 14px", border: "1px solid var(--regla)",
-    background: "var(--papel)", font: "inherit", fontSize: 15, color: "var(--tinta-2)",
+    width: "100%", minHeight: 48, padding: "12px 14px", border: "1px solid var(--regla)",
+    background: "var(--papel)", font: "inherit", fontSize: 16, color: "var(--tinta-2)",
   };
   const etiqueta: React.CSSProperties = {
     display: "block", fontFamily: "var(--mono)", fontSize: 10,
     letterSpacing: ".2em", textTransform: "uppercase", color: "var(--texto)",
     paddingBottom: 8,
   };
+  /** La frase en minúsculas bajo un campo: es donde cabe hablar como persona. */
+  const pista: React.CSSProperties = {
+    margin: "6px 0 0", fontSize: 13, lineHeight: 1.45, color: "var(--texto)",
+  };
+  const rejilla: React.CSSProperties = {
+    display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))", gap: 18,
+  };
+  /** Encabezado de bloque. Tres bloques cortos se leen; doce cajas seguidas, no. */
+  const Bloque = ({ titulo, nota }: { titulo: string; nota?: string }) => (
+    <div style={{ display: "grid", gap: 4, borderTop: "1px solid var(--regla)", paddingTop: 14 }}>
+      <h3 style={{ margin: 0, fontFamily: "var(--mono)", fontSize: 10, letterSpacing: ".2em", textTransform: "uppercase", color: "var(--tinta-2)" }}>{titulo}</h3>
+      {nota && <p style={{ margin: 0, fontSize: 13, lineHeight: 1.45, color: "var(--texto)" }}>{nota}</p>}
+    </div>
+  );
+  /** El punto ocre que marca lo que sí hace falta. Va con texto para el lector de pantalla. */
+  const Falta = () => (
+    <span style={{ color: "var(--ocre)" }} aria-hidden="true"> ·</span>
+  );
 
   if (estado === "ok") {
     return <Enviado es={es} pedido={pedido} />;
@@ -444,21 +483,23 @@ export default function Formulario({ lang, idPrefijo, invitadosInicial }: { lang
         <input id={ide("cw-web")} name="trampa" type="text" tabIndex={-1} autoComplete="off" />
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))", gap: 18 }}>
+      {/* ── 1. cómo te contestamos ─────────────────────────────────────── */}
+      <Bloque
+        titulo={es ? "Cómo te contestamos" : "How we reach you"}
+        nota={es ? "Con el punto naranja son los dos que hacen falta." : "The two with an orange dot are the ones we need."}
+      />
+      <div style={rejilla}>
         <div>
-          <label style={etiqueta} htmlFor={ide("nombre")}>{es ? "Nombre" : "Name"}</label>
-          <input style={campo} id={ide("nombre")} name="nombre" required autoComplete="name" />
+          <label style={etiqueta} htmlFor={ide("nombre")}>{es ? "Nombre" : "Name"}<Falta /></label>
+          <input style={campo} id={ide("nombre")} name="nombre" required autoComplete="name"
+                 placeholder={es ? "Cómo te llamamos" : "What we should call you"} />
         </div>
         <div>
-          <label style={etiqueta} htmlFor={ide("empresa")}>{es ? "Empresa / productora" : "Company"}</label>
-          <input style={campo} id={ide("empresa")} name="empresa" autoComplete="organization" />
+          <label style={etiqueta} htmlFor={ide("email")}>Email<Falta /></label>
+          <input style={campo} id={ide("email")} name="email" type="email" required autoComplete="email"
+                 placeholder="tu@correo.com" />
         </div>
-        <div>
-          <label style={etiqueta} htmlFor={ide("email")}>Email</label>
-          <input style={campo} id={ide("email")} name="email" type="email" required autoComplete="email" />
-        </div>
-
-        <div>
+        <div style={{ gridColumn: "1 / -1" }}>
           <label style={etiqueta} htmlFor={ide("telefono")}>{es ? "Teléfono" : "Phone"}</label>
           <div style={{ display: "flex", gap: 8 }}>
             <select
@@ -470,63 +511,127 @@ export default function Formulario({ lang, idPrefijo, invitadosInicial }: { lang
                 <option key={p.cc + p.iso} value={p.cc}>{es ? p.es : p.en}</option>
               ))}
             </select>
-            <input style={campo} id={ide("telefono")} name="telefono" type="tel" inputMode="tel" autoComplete="tel-national" />
+            <input style={campo} id={ide("telefono")} name="telefono" type="tel" inputMode="tel"
+                   autoComplete="tel-national" placeholder="305 970 7486" />
           </div>
+          <p style={pista}>
+            {es
+              ? "Si lo dejas, al enviar te abrimos WhatsApp con tu solicitud ya escrita."
+              : "Leave it and we open WhatsApp for you, with your request already written."}
+          </p>
         </div>
+      </div>
 
+      {/* ── 2. el evento ────────────────────────────────────────────────── */}
+      <Bloque titulo={es ? "Tu evento" : "Your event"} />
+      <div style={rejilla}>
         <div>
-          <label style={etiqueta} htmlFor={ide("ciudad")}>{es ? "Ciudad" : "City"}</label>
-          <input style={campo} id={ide("ciudad")} name="ciudad" autoComplete="address-level2" />
-        </div>
-
-        <div>
-          <label style={etiqueta} htmlFor={ide("tipo")}>{es ? "Tipo de evento" : "Event type"}</label>
+          <label style={etiqueta} htmlFor={ide("tipo")}>{es ? "Qué vas a hacer" : "What you are planning"}</label>
           <select style={campo} id={ide("tipo")} name="tipo" defaultValue="">
-            <option value="">—</option>
+            <option value="">{es ? "Elige una opción" : "Pick one"}</option>
             {TIPOS.map((t) => (
               <option key={t.valor} value={t.valor}>{es ? t.es : t.en}</option>
             ))}
           </select>
         </div>
-
         <div>
-          <label style={etiqueta} htmlFor={ide("fecha")}>{es ? "Fecha estimada" : "Estimated date"}</label>
+          <label style={etiqueta} htmlFor={ide("invitados")}>{es ? "Cuánta gente" : "How many people"}</label>
+          <input ref={invitadosRef} style={campo} id={ide("invitados")} name="invitados"
+                 inputMode="numeric" placeholder="120" />
+          <p style={pista}>{es ? "Un número aproximado sirve." : "A rough number is enough."}</p>
+        </div>
+        <div>
+          <label style={etiqueta} htmlFor={ide("fecha")}>{es ? "Fecha" : "Date"}</label>
           <input style={campo} id={ide("fecha")} name="fecha" type="date" />
+          <p style={pista}>
+            {es ? "Si todavía no la tienes, déjala en blanco." : "Leave it blank if you don't have one yet."}
+          </p>
         </div>
         <div>
-          <label style={etiqueta} htmlFor={ide("invitados")}>{es ? "Invitados estimados" : "Estimated guests"}</label>
-          <input ref={invitadosRef} style={campo} id={ide("invitados")} name="invitados" inputMode="numeric" />
-        </div>
-        <div>
-          <label style={etiqueta} htmlFor={ide("produccion")}>{es ? "Quién produce" : "Who produces it"}</label>
-          <select style={campo} id={ide("produccion")} name="produccion" defaultValue="">
-            <option value="">—</option>
-            <option value="productora">{es ? "Trabajo con una productora" : "I work with a production company"}</option>
-            <option value="equipo">{es ? "Lo produce mi equipo" : "My team produces it"}</option>
-            <option value="sin-resolver">{es ? "Todavía no lo tengo resuelto" : "Not decided yet"}</option>
-          </select>
-        </div>
-        <div>
-          <label style={etiqueta} htmlFor={ide("presupuesto")}>{es ? "Presupuesto (USD)" : "Budget (USD)"}</label>
-          <select style={campo} id={ide("presupuesto")} name="presupuesto" defaultValue="">
-            <option value="">—</option>
-            <option value="alto">{es ? "Más de 15 000" : "Over 15,000"}</option>
-            <option value="medio">6 000 – 15 000</option>
-            <option value="bajo">{es ? "Menos de 6 000" : "Under 6,000"}</option>
-            <option value="sin-definir">{es ? "Todavía por definir" : "Not defined yet"}</option>
-          </select>
+          <label style={etiqueta} htmlFor={ide("mensaje")}>{es ? "Algo que debamos saber" : "Anything we should know"}</label>
+          <textarea style={{ ...campo, minHeight: 92, resize: "vertical" }} id={ide("mensaje")} name="mensaje"
+                    placeholder={es ? "Cena sentada, música hasta tarde, hace falta carpa…" : "Seated dinner, late music, we'd need a tent…"} />
         </div>
       </div>
 
-      <div>
-        <label style={etiqueta} htmlFor={ide("mensaje")}>{es ? "Qué necesitas del espacio" : "What you need from the space"}</label>
-        <textarea style={{ ...campo, minHeight: 110, resize: "vertical" }} id={ide("mensaje")} name="mensaje" />
-      </div>
+      {/* ── 3. lo que afina la propuesta, plegado ───────────────────────── */}
+      {!detalles ? (
+        <div style={{ borderTop: "1px solid var(--regla)", paddingTop: 14 }}>
+          <button
+            type="button"
+            onClick={() => {
+              // Sin evento propio al abrir: los nombres son un contrato con GTM
+              // (`lib/medicion.ts`) y uno inventado se pierde sin avisar.
+              // `form_start` ya cuenta a quien toca el formulario.
+              setDetalles(true);
+              alEmpezar();
+            }}
+            style={{
+              minHeight: 48, width: "100%", padding: "12px 16px", cursor: "pointer",
+              border: "1px dashed var(--regla)", background: "transparent",
+              font: "inherit", fontSize: 15, color: "var(--tinta-2)", textAlign: "left",
+            }}
+          >
+            {es ? "Añadir cuatro datos más (opcional)" : "Add four more details (optional)"}
+          </button>
+          <p style={pista}>
+            {es
+              ? "Con ellos te contestamos con números y montaje. Sin ellos, con disponibilidad."
+              : "With them we reply with numbers and a layout. Without them, with availability."}
+          </p>
+        </div>
+      ) : (
+        <>
+          <Bloque
+            titulo={es ? "Para ajustar la propuesta" : "To tailor the quote"}
+            nota={es ? "Todo esto es opcional y nada de esto descarta a nadie." : "All optional, and none of it rules anyone out."}
+          />
+          <div style={rejilla}>
+            <div>
+              <label style={etiqueta} htmlFor={ide("empresa")}>{es ? "Empresa o productora" : "Company"}</label>
+              <input style={campo} id={ide("empresa")} name="empresa" autoComplete="organization" />
+            </div>
+            <div>
+              <label style={etiqueta} htmlFor={ide("ciudad")}>{es ? "Desde dónde escribes" : "Where you are writing from"}</label>
+              <input style={campo} id={ide("ciudad")} name="ciudad" autoComplete="address-level2" placeholder="Miami" />
+            </div>
+            <div>
+              <label style={etiqueta} htmlFor={ide("produccion")}>{es ? "Quién lo monta" : "Who sets it up"}</label>
+              <select style={campo} id={ide("produccion")} name="produccion" defaultValue="">
+                <option value="">{es ? "Elige una opción" : "Pick one"}</option>
+                <option value="productora">{es ? "Trabajo con una productora" : "I work with a production company"}</option>
+                <option value="equipo">{es ? "Lo produce mi equipo" : "My team produces it"}</option>
+                <option value="sin-resolver">{es ? "Todavía no lo tengo resuelto" : "Not decided yet"}</option>
+              </select>
+              <p style={pista}>
+                {es
+                  ? "Aquí se alquila el espacio: la producción la traes tú. Si no la tienes, te pasamos proveedores."
+                  : "Here you rent the space and bring the production. If you have none, we can point you to vendors."}
+              </p>
+            </div>
+            <div>
+              <label style={etiqueta} htmlFor={ide("presupuesto")}>{es ? "Presupuesto en mente" : "Budget in mind"}</label>
+              <select style={campo} id={ide("presupuesto")} name="presupuesto" defaultValue="">
+                <option value="">{es ? "Elige una opción" : "Pick one"}</option>
+                <option value="sin-definir">{es ? "Todavía no lo sé" : "I don't know yet"}</option>
+                <option value="bajo">{es ? "Menos de 6 000 USD" : "Under 6,000 USD"}</option>
+                <option value="medio">6 000 – 15 000 USD</option>
+                <option value="alto">{es ? "Más de 15 000 USD" : "Over 15,000 USD"}</option>
+              </select>
+              <p style={pista}>
+                {es
+                  ? "Es solo para saber qué proponerte. No publicamos tarifas porque cada montaje es distinto."
+                  : "Only so we know what to propose. We don't publish rates because every setup differs."}
+              </p>
+            </div>
+          </div>
+        </>
+      )}
 
       <button className="boton" type="submit" disabled={estado === "enviando"}>
         {estado === "enviando"
           ? (es ? "Enviando…" : "Sending…")
-          : (es ? "Solicitar disponibilidad" : "Request availability")}
+          : (es ? "Consultar mi fecha" : "Check my date")}
       </button>
 
       {estado === "error" && (

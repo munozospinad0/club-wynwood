@@ -13,6 +13,7 @@ import SelectorIdioma from "@/components/SelectorIdioma";
 import Revelado from "@/components/Revelado";
 import Medicion from "@/components/Medicion";
 import Atribucion from "@/components/Atribucion";
+import BarraFija from "@/components/BarraFija";
 
 export function generateStaticParams() {
   return IDIOMAS.map((lang) => ({ lang }));
@@ -318,6 +319,11 @@ export default async function Layout(
         </footer>
 
         <Revelado />
+        {/* Va al final del body a propósito: es `position: fixed`, así que su
+            sitio en el árbol no cambia dónde se pinta, y quien navega con
+            teclado o lector de pantalla llega a ella después del contenido y
+            del pie, no antes. */}
+        <BarraFija lang={lang} />
       </body>
     </html>
   );

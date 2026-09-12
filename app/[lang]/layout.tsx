@@ -40,9 +40,13 @@ export async function generateMetadata(
         : "Club Wynwood — Open-air event garden · Wynwood, Miami",
       template: "%s | Club Wynwood",
     },
+    // Por debajo de 160 caracteres a propósito: pasado ese punto Google trunca,
+    // y con los anuncios dinámicos encendidos esta frase es además la que usa
+    // para escribir el anuncio. Un anuncio cortado a media palabra es peor que
+    // uno corto. Se comprueba con `.qa/meta-largas.mjs`.
     description: es
-      ? "Venue al aire libre en el Wynwood Arts District, Miami. ~22.000 ft² entre jardín y palapa techada. Aforo ~600 de pie. Tú traes la producción; nosotros entregamos el espacio."
-      : "Open-air venue in Miami's Wynwood Arts District. ~22,000 sq ft between garden and covered structure. ~600 standing. You bring the production; we hand over the space.",
+      ? "Venue al aire libre en Wynwood, Miami: ~22.000 ft² entre jardín y palapa techada, ~600 de pie. Tú traes la producción; nosotros el espacio."
+      : "Open-air venue in Wynwood, Miami: ~22,000 sq ft of garden and covered structure, ~600 standing. You bring the production; we hand over the space.",
     alternates: alternativas("home", lang),
     // Cerrado mientras esto viva en Vercel: robots.txt solo frena el rastreo,
     // no la indexación de una URL que alguien enlace. La meta sí. Se necesitan

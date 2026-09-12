@@ -45,7 +45,7 @@ export const PAGINAS: Pagina[] = [
       en: "The Garden — ~18,000 sq ft outdoors in Wynwood | Club Wynwood",
     },
     description: {
-      es: "El Jardín de Club Wynwood: ~18.000 ft² de exterior en Wynwood, Miami, con paseo pavimentado, césped artificial, dos hileras de palmeras y seis cabañas amuebladas.",
+      es: "El Jardín de Club Wynwood: ~18.000 ft² al aire libre en Wynwood, Miami. Paseo pavimentado, césped artificial, palmeras reales y seis cabañas amuebladas.",
       en: "Club Wynwood's Garden: ~18,000 sq ft outdoors in Wynwood, Miami, with a paved walk, artificial turf, two rows of palms and six furnished cabanas.",
     },
     cifras: [
@@ -102,7 +102,7 @@ export const PAGINAS: Pagina[] = [
       en: "The Tiki Hut — ~4,000 sq ft covered in Wynwood | Club Wynwood",
     },
     description: {
-      es: "El Tiki Hut de Club Wynwood: palapa de paja de ~4.000 ft² sobre estructura de madera, abierta por los cuatro costados. Sombra permanente y plan de lluvia en Wynwood, Miami.",
+      es: "El Tiki Hut: palapa de paja de ~4.000 ft² abierta por los cuatro costados, en Wynwood, Miami. Sombra todo el día y el plan de lluvia ya construido.",
       en: "Club Wynwood's Tiki Hut: a ~4,000 sq ft thatched structure on a timber frame, open on all four sides. Permanent shade and rain plan in Wynwood, Miami.",
     },
     cifras: [
@@ -273,7 +273,7 @@ export const PAGINAS: Pagina[] = [
       en: "Film and production location in Wynwood, Miami | Club Wynwood",
     },
     description: {
-      es: "Locación al aire libre en Wynwood para rodaje, fotografía y producción: palmeras, palapa de paja de ~4.000 ft², césped y paseo pavimentado. ~22.000 ft² privados.",
+      es: "Locación al aire libre en Wynwood para rodaje y fotografía: palmeras, palapa de ~4.000 ft², césped y paseo pavimentado. ~22.000 ft² privados.",
       en: "Outdoor location in Wynwood for film, photography and production: palms, a ~4,000 sq ft thatched structure, turf and a paved walk. ~22,000 sq ft private.",
     },
     cifras: [
@@ -330,7 +330,7 @@ export const PAGINAS: Pagina[] = [
       en: "How to host an event in Wynwood, Miami — the checklist | Club Wynwood",
     },
     description: {
-      es: "Las seis preguntas que hay que hacerle a cualquier venue de Wynwood antes de reservar: aforo, plan de lluvia, potencia, load-in, curfew y barra. Con lo que respondemos nosotros.",
+      es: "Las seis preguntas que hacerle a un venue de Wynwood antes de reservar: aforo, lluvia, potencia, carga, curfew y barra. Y lo que respondemos nosotros.",
       en: "The six questions to ask any Wynwood venue before booking: capacity, rain plan, power, load-in, curfew and bar. Including how we answer them.",
     },
     cifras: [
@@ -415,8 +415,8 @@ export const PAGINAS: Pagina[] = [
       en: "Quinceañera venue in Wynwood, Miami — up to 300 guests | Club Wynwood",
     },
     description: {
-      es: "Venue al aire libre para quinceañeras en Wynwood, Miami: hasta ~300 sentados, jardín para la entrada y el vals, y palapa techada de ~4.000 ft² para la cena y el baile.",
-      en: "Open-air quinceañera venue in Wynwood, Miami: up to ~300 seated, a garden for the entrance and waltz, and a ~4,000 sq ft covered structure for dinner and dancing.",
+      es: "Venue al aire libre para quinceañeras en Wynwood, Miami: hasta ~300 sentados, jardín para la entrada y el vals, y ~4.000 ft² techados para la cena.",
+      en: "Open-air quinceañera venue in Wynwood, Miami: up to ~300 seated, a garden for the entrance and waltz, and ~4,000 sq ft covered for dinner and dancing.",
     },
     cifras: [
       { etiqueta: { es: "Sentados", en: "Seated" }, valor: "~300" },
@@ -473,7 +473,7 @@ export const PAGINAS: Pagina[] = [
     },
     description: {
       es: "Cuánta gente cabe en Club Wynwood: ~600 de pie o ~300 sentados en ~22.000 ft². Cómo cambia el aforo según el montaje y por qué las dos cifras son tan distintas.",
-      en: "How many people fit at Club Wynwood: ~600 standing or ~300 seated across ~22,000 sq ft. How capacity changes with the layout and why the two figures differ so much.",
+      en: "How many people fit at Club Wynwood: ~600 standing or ~300 seated across ~22,000 sq ft, and how the layout changes both figures.",
     },
     cifras: [
       { etiqueta: { es: "De pie", en: "Standing" }, valor: "~600" },
@@ -529,7 +529,7 @@ export const PAGINAS: Pagina[] = [
       en: "Pop-up and market space in Wynwood, Miami | Club Wynwood",
     },
     description: {
-      es: "Recinto al aire libre para pop-ups y mercados en Wynwood: ~22.000 ft², paseo pavimentado para montar módulos y ~4.000 ft² techados. A una cuadra de Wynwood Walls.",
+      es: "Recinto al aire libre para pop-ups y mercados en Wynwood: ~22.000 ft², paseo pavimentado para montar módulos y ~4.000 ft² techados. Junto a Wynwood Walls.",
       en: "Open-air site for pop-ups and markets in Wynwood: ~22,000 sq ft, a paved walk for building modules and ~4,000 sq ft under roof. One block from Wynwood Walls.",
     },
     cifras: [
@@ -716,8 +716,8 @@ export const PAGINAS: Pagina[] = [
       en: "Miami Art Week 2026 venue in Wynwood · open dates | Club Wynwood",
     },
     description: {
-      es: "Recinto al aire libre de ~22.000 ft² en el Wynwood Arts District con fechas abiertas para Miami Art Week 2026 (30 nov – 6 dic): a tres cuadras de Mana Wynwood, aforo ~600 de pie, ~4.000 ft² techados, estacionamiento y licencia de licor propios.",
-      en: "A ~22,000 sq ft open-air site in the Wynwood Arts District with open dates for Miami Art Week 2026 (Nov 30 – Dec 6): three blocks from Mana Wynwood, ~600 standing, ~4,000 sq ft under roof, own parking and own liquor license.",
+      es: "Recinto al aire libre de ~22.000 ft² en Wynwood con fechas abiertas para Miami Art Week 2026, del 30 de noviembre al 6 de diciembre. A tres cuadras de Mana.",
+      en: "A ~22,000 sq ft open-air site in Wynwood with open dates for Miami Art Week 2026, November 30 to December 6. Three blocks from Mana Wynwood.",
     },
     cifras: [
       { etiqueta: { es: "Miami Art Week 2026", en: "Miami Art Week 2026" }, valor: "30 nov – 6 dic" },

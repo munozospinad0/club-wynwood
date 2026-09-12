@@ -120,6 +120,13 @@ export default async function PaginaInterior(
             ))}
           </div>
         </section>
+        {/* El cierre también aquí. Preguntas frecuentes está en el feed de
+            páginas de Google Ads, así que es una de las que puede recibir un
+            clic pagado, y hasta hoy terminaba en trece enlaces y nada más: sin
+            formulario, sin ancla `disponibilidad` y, por tanto, sin la barra
+            fija del móvil. Alguien que llega buscando «¿puedo traer mi
+            catering?», lee que sí y no encuentra dónde pedir la fecha. */}
+        <Cierre lang={lang} />
         <Seguir lang={lang} actual={clave} />
       </>
     );

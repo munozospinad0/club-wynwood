@@ -1,6 +1,7 @@
 import { VENUE, ESPACIOS, FICHA, TIEMPOS, NO_INCLUIDO } from "@/lib/venue";
 import { BASE, RUTAS, IDIOMAS, url, type ClaveRuta } from "@/lib/i18n";
 import guion from "@/lib/recorrido.guion.json";
+import { textoVisible } from "@/lib/recorrido";
 
 /**
  * /llms.txt — estándar emergente de AEO.
@@ -111,7 +112,7 @@ export function GET() {
      * no puede contradecir lo que el sitio dice.
      */
     bloque("Recorrido guiado: las ocho preguntas de un productor, respondidas",
-      guion.capitulos.flatMap((c) => [`### ${c.pregunta.es}`, c.texto.es, ""])),
+      guion.capitulos.flatMap((c) => [`### ${c.pregunta.es}`, textoVisible(c.texto.es), ""])),
 
     bloque("Tarifas", [
       "No se publican. Los paquetes se arman contra cada evento porque el precio",

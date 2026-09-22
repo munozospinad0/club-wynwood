@@ -11,6 +11,7 @@ import {
   fotoOptimizada,
   oraciones,
   rutaAudio,
+  textoVisible,
   tiempoDeFrase,
   type FotoRecorrido,
   type Hito,
@@ -1087,7 +1088,7 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
             {CAPITULOS.map((c, i) => (
               <div key={c.id} className="rec-transcripcion-cap">
                 <h3><span className="rec-cap-n">{nn(i)}</span> {c.pregunta[lang]}</h3>
-                <p>{c.texto[lang]}</p>
+                <p>{textoVisible(c.texto[lang])}</p>
               </div>
             ))}
           </details>

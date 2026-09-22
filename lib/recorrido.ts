@@ -132,6 +132,22 @@ export interface Capitulo {
 export const CAPITULOS = guion.capitulos as Capitulo[];
 export const VERSION_GUION = guion.version;
 
+/**
+ * PUENTE HASTA REHACER LA VOZ (29-sep-2026, cuando se renuevan los créditos de
+ * ElevenLabs). Daniel: «quita la palabra palapa de todo». La locución todavía la
+ * dice, y `texto` tiene que seguir igual al audio porque de él sale la
+ * sincronización (tiempoDeFrase). Así que el cambio va solo en lo que se LEE: la
+ * transcripción. Al rehacer la voz, se corrige el guion y esto sobra: borrarlo.
+ */
+const SIN_PALAPA: Array<[RegExp, string]> = [
+  [/la palapa techada/g, "el pabellón techado"],
+  [/de la palapa/g, "del pabellón"],
+  [/la palapa/g, "el pabellón"],
+  [/the thatched structure/g, "the covered pavilion"],
+  [/the structure/g, "the pavilion"],
+];
+export const textoVisible = (t: string) => SIN_PALAPA.reduce((s, [a, b]) => s.replace(a, b), t);
+
 /** Ruta de los archivos de audio de un capítulo. Se sirven desde /public. */
 export function rutaAudio(lang: Idioma, indice: number): { mp3: string; palabras: string } {
   const nn = String(indice + 1).padStart(2, "0");

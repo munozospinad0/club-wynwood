@@ -51,7 +51,7 @@ export function GET() {
     `# ${VENUE.nombre}`,
     "",
     `> ${VENUE.descriptorEs} en el Wynwood Arts District de Miami. Se alquila el`,
-    `> espacio, no un paquete cerrado: ~18.000 ft² de jardín y una palapa techada`,
+    `> espacio, no un paquete cerrado: ~18.000 ft² de jardín y un pabellón techado`,
     `> de ~4.000 ft², por separado o juntos. Aforo ~600 de pie o ~300 sentados.`,
     "",
     `Dirección: ${d.calle}, ${d.ciudad}, ${d.region} ${d.cp}, ${d.pais}`,

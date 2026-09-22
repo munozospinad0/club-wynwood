@@ -148,8 +148,8 @@ export default async function Landing({ params }: { params: Promise<{ lang: stri
           <Image
             src="/assets/palapa-sonido.jpg"
             alt={es
-              ? "Un evento montado bajo la palapa: cabina de DJ, congas, torres de altavoces y truss con focos colgado de los cabios"
-              : "An event rigged under the structure: a DJ booth, congas, speaker stacks and a lighting truss hung from the rafters"}
+              ? "Un evento montado bajo el pabellón: cabina de DJ, congas, torres de altavoces y truss con focos colgado de los cabios"
+              : "An event rigged under the Pavilion: a DJ booth, congas, speaker stacks and a lighting truss hung from the rafters"}
             width={1600}
             height={1200}
             priority
@@ -198,8 +198,8 @@ export default async function Landing({ params }: { params: Promise<{ lang: stri
              encuadre deja fuera. Un pie que promete lo que no está hace dudar
              del resto. */
           { src: "/assets/flyer-cenital.jpg", w: 935, h: 506,
-            es: "Desde arriba: la palapa en el centro, las palmeras y las pérgolas alrededor, y el estacionamiento propio al fondo",
-            en: "From above: the structure at the centre, palms and pergolas around it, and the on-site parking behind" },
+            es: "Desde arriba: el pabellón en el centro, las palmeras y las pérgolas alrededor, y el estacionamiento propio al fondo",
+            en: "From above: the Pavilion at the centre, palms and pergolas around it, and the on-site parking behind" },
           { src: "/assets/cabanas-fila.jpg", w: 930, h: 614,
             es: "La hilera de cabañas: pérgolas blancas, cortinas y sofás contra el muro verde",
             en: "The cabana row: white pergolas, curtains and sofas against the green wall" },
@@ -328,8 +328,8 @@ export default async function Landing({ params }: { params: Promise<{ lang: stri
  */
 const FOTO_USO: Record<(typeof USOS)[number]["clave"], { src: string; w: number; h: number; es: string; en: string }> = {
   evento: { src: "/assets/flyer-palapa-lounge.jpg", w: 935, h: 614,
-    es: "Bajo la palapa, montada como lounge, con barra y guirnaldas",
-    en: "Under the structure, set up as a lounge, with a bar and string lights" },
+    es: "Bajo el pabellón, montado como lounge, con barra y guirnaldas",
+    en: "Under the Pavilion, set up as a lounge, with a bar and string lights" },
   oficina: { src: "/assets/edificio-doble-altura.jpg", w: 3214, h: 1924,
     es: "Dentro del edificio: planta diáfana de doble altura y despachos acristalados al fondo",
     en: "Inside the building: an open double-height floor and glass-walled offices at the back" },
@@ -351,7 +351,7 @@ const TEXTO = {
     lead: "Se alquila el espacio, no un paquete cerrado. Tú traes la producción, el catering y el equipo; nosotros entregamos el jardín, la estructura techada y el estacionamiento.",
     cta2: "Pedir disponibilidad",
     usosTitulo: "Dos usos, y un adicional.",
-    pieFoto: "Bajo la palapa, con un montaje real: del techo cuelgan truss, focos y sonido. Todo eso lo trae la producción del evento.",
+    pieFoto: "Bajo el pabellón, con un montaje real: del techo cuelgan truss, focos y sonido. Todo eso lo trae la producción del evento.",
     honesto: {
       titulo: "Qué se alquila y qué no. Sin sorpresas en la visita.",
       siOjo: "Va incluido",
@@ -363,7 +363,7 @@ const TEXTO = {
       ],
       noOjo: "Lo trae tu equipo",
       /**
-       * La tercera línea es nueva y dice algo que el sitio callaba: la palapa no
+       * La tercera línea es nueva y dice algo que el sitio callaba: el pabellón no
        * tiene cierres. Para el sol y para la lluvia que cae recta va sobrada;
        * con viento, el agua entra de lado. Un productor que monte en diciembre
        * lo sabe, y enterarse el día del montaje de que nadie se lo dijo cuesta
@@ -374,7 +374,7 @@ const TEXTO = {
         "Producción, sonido, iluminación y mobiliario.",
         "Catering y personal de servicio.",
         "Afuera no hay cocina ni climatización: el catering monta en sitio.",
-        "La palapa no tiene cierres laterales: para el sol y la lluvia vertical va sobrada, pero con viento el agua entra de lado.",
+        "El pabellón no tiene cierres laterales: para el sol y la lluvia vertical va sobrada, pero con viento el agua entra de lado.",
       ],
       pie: "Esa libertad es la propuesta, no una carencia: es lo que permite que el evento sea el tuyo y no el del venue.",
     },
@@ -392,22 +392,22 @@ const TEXTO = {
         { titulo: "Si encaja, visita técnica",
           cuerpo: "Se recorre el recinto y se entrega por escrito lo que un montaje necesita saber: potencia, ancho del portón de carga, baños y aforo según tu plano." },
         { titulo: "No publicamos tarifas, y hay un motivo",
-          cuerpo: "El precio depende de la fecha, de las horas y de si usas el jardín, la palapa o todo. Un número en la web sería falso para casi todos los eventos." },
+          cuerpo: "El precio depende de la fecha, de las horas y de si usas el jardín, el pabellón o todo. Un número en la web sería falso para casi todos los eventos." },
       ],
     },
   },
   en: {
     ojo: "Open-air event garden · Wynwood, Miami",
     h1: "See the site in three minutes, then ask for your date.",
-    lead: "You rent the space, not a closed package. You bring production, catering and crew; we hand over the garden, the covered structure and the parking.",
+    lead: "You rent the space, not a closed package. You bring production, catering and crew; we hand over the garden, the covered pavilion and the parking.",
     cta2: "Request availability",
     usosTitulo: "Two uses, and one add-on.",
-    pieFoto: "Under the structure, with a real setup: truss, lights and sound hang from the roof. All of it is brought in by the event's production.",
+    pieFoto: "Under the Pavilion, with a real setup: truss, lights and sound hang from the roof. All of it is brought in by the event's production.",
     honesto: {
       titulo: "What is rented and what is not. No surprises at the visit.",
       siOjo: "Included",
       si: [
-        "The open-air garden and the covered structure, together or separately.",
+        "The open-air garden and the covered pavilion, together or separately.",
         "The furnished cabanas and the picnic tables, already in the garden.",
         "An area where a bar can be set up, with its own liquor license.",
         "On-site parking and a separate freight gate.",
@@ -417,7 +417,7 @@ const TEXTO = {
         "Production, sound, lighting and furniture.",
         "Catering and service staff.",
         "There is no kitchen and no climate control outdoors: catering sets up on site.",
-        "The structure has no side enclosures: it handles sun and vertical rain, but in wind the rain comes in sideways.",
+        "The Pavilion has no side enclosures: it handles sun and vertical rain, but in wind the rain comes in sideways.",
       ],
       pie: "That freedom is the offer, not a gap: it is what makes the event yours and not the venue's.",
     },
@@ -435,7 +435,7 @@ const TEXTO = {
         { titulo: "If it fits, a technical visit",
           cuerpo: "We walk the site and hand over in writing what a build needs to know: power, freight-gate width, restrooms and capacity for your own layout." },
         { titulo: "We do not publish rates, and there is a reason",
-          cuerpo: "The price depends on the date, the hours and whether you take the garden, the structure or everything. A number on the site would be wrong for almost every event." },
+          cuerpo: "The price depends on the date, the hours and whether you take the garden, the Pavilion or everything. A number on the site would be wrong for almost every event." },
       ],
     },
   },

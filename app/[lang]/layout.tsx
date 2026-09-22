@@ -45,8 +45,8 @@ export async function generateMetadata(
     // para escribir el anuncio. Un anuncio cortado a media palabra es peor que
     // uno corto. Se comprueba con `.qa/meta-largas.mjs`.
     description: es
-      ? "Venue al aire libre en Wynwood, Miami: ~22.000 ft² entre jardín y palapa techada, ~600 de pie. Tú traes la producción; nosotros el espacio."
-      : "Open-air venue in Wynwood, Miami: ~22,000 sq ft of garden and covered structure, ~600 standing. You bring the production; we hand over the space.",
+      ? "Venue al aire libre en Wynwood, Miami: ~22.000 ft² entre jardín y pabellón techado, ~600 de pie. Tú traes la producción; nosotros el espacio."
+      : "Open-air venue in Wynwood, Miami: ~22,000 sq ft of garden and covered pavilion, ~600 standing. You bring the production; we hand over the space.",
     alternates: alternativas("home", lang),
     // Cerrado mientras esto viva en Vercel: robots.txt solo frena el rastreo,
     // no la indexación de una URL que alguien enlace. La meta sí. Se necesitan
@@ -147,7 +147,7 @@ const geistMono = Geist_Mono({
 
 const NAV = [
   { es: "El lugar", en: "The venue", clave: "jardin" as const },
-  { es: "Tiki Hut", en: "Tiki Hut", clave: "tikiHut" as const },
+  { es: "El Pabellón", en: "The Pavilion", clave: "tikiHut" as const },
   { es: "Bodas", en: "Weddings", clave: "bodas" as const },
   { es: "Corporativo", en: "Corporate", clave: "corporativo" as const },
   { es: "Preguntas", en: "FAQ", clave: "faq" as const },
@@ -278,7 +278,7 @@ export default async function Layout(
                   {es ? VENUE.descriptorEs : VENUE.descriptorEn}.{" "}
                   {es
                     ? "Se alquila el exterior: jardín y estructura techada. Tú traes la producción."
-                    : "The exterior is what's rented: garden and covered structure. You bring the production."}
+                    : "The exterior is what's rented: garden and covered pavilion. You bring the production."}
                 </p>
                 <p style={{ margin: "16px 0 0", fontSize: 14, lineHeight: 1.7 }}>
                   {VENUE.direccion.calle}<br />

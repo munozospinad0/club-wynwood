@@ -88,7 +88,7 @@ export const DISPONIBILIDAD = {
   edificio: { desde: "2026-11-01", es: "1 de noviembre de 2026", en: "November 1, 2026" },
 } as const;
 export const USOS = [
-  { clave: "evento", es: "Eventos", en: "Events", detalleEs: "El jardín, la palapa, o todo junto; el edificio como salón, camerinos o plan B.", detalleEn: "The garden, the structure, or everything together; the building as a hall, green rooms or plan B." },
+  { clave: "evento", es: "Eventos", en: "Events", detalleEs: "El jardín, el pabellón, o todo junto; el edificio como salón, camerinos o plan B.", detalleEn: "The garden, the Pavilion, or everything together; the building as a hall, green rooms or plan B." },
   { clave: "oficina", es: "Oficina", en: "Office", detalleEs: "El edificio de dos niveles, desde el 1 de noviembre, como sede o espacio de trabajo.", detalleEn: "The two-level building, from November 1, as a headquarters or workspace." },
   { clave: "cocina", es: "Cocina (adicional)", en: "Kitchen (add-on)", detalleEs: "La cocina del edificio se suma al alquiler cuando el catering la necesita.", detalleEn: "The building's kitchen is added to the rental when catering needs it." },
 ] as const;
@@ -111,32 +111,32 @@ export const ESPACIOS = [
     m2: 1672,
     cubierto: false,
     resumenEs:
-      "Paseo pavimentado central de la puerta al estacionamiento, césped artificial del lado de la palapa y arena del " +
+      "Paseo pavimentado central de la puerta al estacionamiento, césped artificial del lado del pabellón y arena del " +
       "lado de las cabañas, dos hileras de palmeras reales, seis cabañas amuebladas, mesas de picnic fijas y setos perimetrales.",
     resumenEn:
-      "A central paved walk from the door to the parking, artificial turf on the structure's side and sand on the cabanas' side, " +
+      "A central paved walk from the door to the parking, artificial turf on the Pavilion's side and sand on the cabanas' side, " +
       "two rows of real palms, six furnished cabanas, fixed picnic tables and perimeter hedges.",
   },
   {
-    slug: "tiki-hut",
-    es: "El Tiki Hut",
-    en: "The Tiki Hut",
+    slug: "pabellon",
+    es: "El Pabellón",
+    en: "The Pavilion",
     sqft: 4000,
     m2: 372,
     cubierto: true,
     /**
-     * Se dice el límite, y no por escrúpulo: una palapa abierta por los cuatro
+     * Se dice el límite, y no por escrúpulo: un pabellón abierto por los cuatro
      * costados para la lluvia vertical y no la que entra de lado. Un productor
      * que monta en diciembre lo sabe, y descubrir que el sitio no lo dijo cuesta
      * más confianza que decirlo de entrada. Además convierte una objeción en una
      * partida de presupuesto —carpas laterales— que se resuelve en la visita.
      */
     resumenEs:
-      "Palapa de paja a cuatro aguas de unos 54 × 60 ft en la esquina suroeste, sobre retícula de postes de madera, " +
-      "abierta por los cuatro costados y con piso de césped artificial. Es el plan anti-lluvia: para el sol y para la " +
+      "Pabellón con techo de paja a cuatro aguas de unos 54 × 60 ft en la esquina suroeste, sobre retícula de postes de madera, " +
+      "abierto por los cuatro costados y con piso de césped artificial. Es el plan anti-lluvia: para el sol y para la " +
       "lluvia vertical. Con viento la lluvia entra de lado, así que un evento de invierno conviene que presupueste cierres laterales.",
     resumenEn:
-      "A four-hip thatched structure of about 54 × 60 ft in the south-west corner, on a grid of timber posts, " +
+      "A four-hip thatch-roofed pavilion of about 54 × 60 ft in the south-west corner, on a grid of timber posts, " +
       "open on all four sides with an artificial-turf floor. It is the rain plan: it stops sun and vertical rain. " +
       "In wind the rain comes in sideways, so a winter event should budget for side enclosures.",
   },
@@ -145,7 +145,7 @@ export const ESPACIOS = [
 export const FICHA: Dato[] = [
   { clave: "superficie", es: "Superficie total", en: "Total area",
     valorEs: "~22 000 ft² · 2 045 m²", valorEn: "~22,000 sq ft · 2,045 m²",
-    estado: "verificado", fuente: "18 000 ft² exteriores declarados por el operador + palapa" },
+    estado: "verificado", fuente: "18 000 ft² exteriores declarados por el operador + pabellón" },
   { clave: "jardin", es: "Jardín abierto", en: "Open garden",
     valorEs: "~18 000 ft² · 1 672 m²", valorEn: "~18,000 sq ft · 1,672 m²",
     estado: "verificado", fuente: "cifra declarada por la propiedad y repetida en The Vendry y Tagvenue; pendiente de contrastar contra el levantamiento del predio" },
@@ -202,8 +202,8 @@ export const FICHA: Dato[] = [
    * el «declarado» sería exactamente el error de las ocho cabañas.
    */
   { clave: "aforo-montaje", es: "Aforo por montaje", en: "Capacity per layout",
-    valorEs: "Declarado: 24 mesas redondas de 10 + banquete de 60 sobre el paseo; solo la palapa, 16 mesas de 10. Por confirmar contra plano",
-    valorEn: "Stated: 24 round tables of 10 + a 60-seat banquet along the walk; the structure alone, 16 tables of 10. To be confirmed against a plan",
+    valorEs: "Declarado: 24 mesas redondas de 10 + banquete de 60 sobre el paseo; solo el pabellón, 16 mesas de 10. Por confirmar contra plano",
+    valorEn: "Stated: 24 round tables of 10 + a 60-seat banquet along the walk; the Pavilion alone, 16 tables of 10. To be confirmed against a plan",
     estado: "en-visita", fuente: "ficha comercial del inmueble, 2026 — montaje declarado por la propiedad" },
   { clave: "potencia", es: "Potencia — amperaje y fase", en: "Power — amperage and phase",
     valorEs: "Por confirmar en la visita", valorEn: "To be confirmed at the visit", estado: "en-visita" },

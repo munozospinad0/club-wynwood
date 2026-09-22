@@ -178,7 +178,7 @@ interface EstadoCapitulo {
   cifra: string | null;
   /**
    * CAPAS ADITIVAS. El modo es exclusivo (lluvia O noche O mesas); las capas se
-   * suman: «pasillos» encima de las mesas, «postes» encima de la palapa, el
+   * suman: «pasillos» encima de las mesas, «postes» encima del pabellón, el
    * escenario montándose pieza a pieza. Es lo que permite que cada frase
    * encienda exactamente lo que dice, como en Loymark Academy.
    */
@@ -188,7 +188,7 @@ interface EstadoCapitulo {
 /** Cómo se llama, en la lámina, la zona de la que se está hablando. */
 const NOMBRE_ZONA: Record<Zona, Record<"es" | "en", string>> = {
   jardin: { es: "El Jardín", en: "The Garden" },
-  tiki: { es: "El Tiki Hut", en: "The Tiki Hut" },
+  tiki: { es: "El Pabellón", en: "The Pavilion" },
   cabanas: { es: "Las cabañas", en: "The cabanas" },
   acceso: { es: "El acceso", en: "The entrance" },
   edificio: { es: "El edificio", en: "The building" },

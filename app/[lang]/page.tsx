@@ -88,8 +88,8 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           {/* Bloque de respuesta: primera frase = conclusión. */}
           <p className="respuesta" style={{ marginTop: 0, marginBottom: 26, color: "var(--texto)", maxWidth: "46ch" }}>
             {es
-              ? "Club Wynwood son ~22.000 ft² de exterior en el Wynwood Arts District de Miami, con una palapa techada de ~4.000 ft² que cubre el evento si llueve, estacionamiento propio y licencia de licor propia. Tú traes la producción; nosotros entregamos el espacio. Disponible desde el 1 de octubre; el edificio, desde el 1 de noviembre."
-              : "Club Wynwood is ~22,000 sq ft of outdoor space in Miami's Wynwood Arts District, with a ~4,000 sq ft covered structure for when it rains, its own parking and its own liquor license. You bring the production; we hand over the space. Available from October 1; the building, from November 1."}
+              ? "Club Wynwood son ~22.000 ft² de exterior en el Wynwood Arts District de Miami, con un pabellón techado de ~4.000 ft² que cubre el evento si llueve, estacionamiento propio y licencia de licor propia. Tú traes la producción; nosotros entregamos el espacio. Disponible desde el 1 de octubre; el edificio, desde el 1 de noviembre."
+              : "Club Wynwood is ~22,000 sq ft of outdoor space in Miami's Wynwood Arts District, with a ~4,000 sq ft covered pavilion for when it rains, its own parking and its own liquor license. You bring the production; we hand over the space. Available from October 1; the building, from November 1."}
           </p>
 
           {/* Las dos cosas que se pueden hacer, en la portada: pedir fecha o
@@ -107,8 +107,8 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           <Image
             src="/assets/aerea-predio.jpg"
             alt={es
-              ? "Vista aérea del predio: la palapa techada, el paseo central y el jardín"
-              : "Aerial view of the site: the covered structure, the central walk and the garden"}
+              ? "Vista aérea del predio: el pabellón techado, el paseo central y el jardín"
+              : "Aerial view of the site: the covered pavilion, the central walk and the garden"}
             fill
             priority
             sizes="(max-width: 880px) 100vw, 46vw"

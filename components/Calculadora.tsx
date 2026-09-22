@@ -37,7 +37,7 @@ const RATIO: Record<Formato, number> = {
 const TECHO: Record<Formato, number> = { coctel: 600, banquete: 300, ceremonia: 300 };
 
 const ESPACIOS = [
-  { id: "tiki", sqft: 4000, es: "El Tiki Hut", en: "The Tiki Hut", techado: true },
+  { id: "tiki", sqft: 4000, es: "El Pabellón", en: "The Pavilion", techado: true },
   { id: "jardin", sqft: 18000, es: "El Jardín", en: "The Garden", techado: false },
   { id: "todo", sqft: 22000, es: "El recinto completo", en: "The whole site", techado: false },
 ];

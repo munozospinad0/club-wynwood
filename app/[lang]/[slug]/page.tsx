@@ -356,7 +356,7 @@ const TEMA: Partial<Record<string, { es: string; en: string }>> = {
   cumpleanosAdultos: { es: "tu cumpleaños", en: "your birthday" },
   offsite: { es: "el offsite de tu equipo", en: "your team's offsite" },
   jardin:       { es: "tu evento en el Jardín",     en: "your event in the Garden" },
-  tikiHut:      { es: "tu evento bajo el Tiki Hut", en: "your event under the Tiki Hut" },
+  tikiHut:      { es: "tu evento bajo el Pabellón", en: "your event under the Pavilion" },
   bodas:        { es: "tu boda",                    en: "your wedding" },
   corporativo:  { es: "tu evento de empresa",       en: "your company event" },
   quinces:      { es: "los quince",                 en: "the quinceañera" },

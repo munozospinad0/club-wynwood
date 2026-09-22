@@ -53,8 +53,8 @@ function direccion() {
 export function localBusiness(lang: Idioma) {
   const desc =
     lang === "es"
-      ? "Venue de eventos al aire libre en el Wynwood Arts District de Miami. Se alquila el espacio: ~18.000 ft² de jardín y una palapa techada de ~4.000 ft², por separado o juntos."
-      : "Open-air event venue in Miami's Wynwood Arts District. The space is what's rented: ~18,000 sq ft of garden and a ~4,000 sq ft covered structure, separately or together.";
+      ? "Venue de eventos al aire libre en el Wynwood Arts District de Miami. Se alquila el espacio: ~18.000 ft² de jardín y un pabellón techado de ~4.000 ft², por separado o juntos."
+      : "Open-air event venue in Miami's Wynwood Arts District. The space is what's rented: ~18,000 sq ft of garden and a ~4,000 sq ft covered pavilion, separately or together.";
 
   return {
     "@type": "LocalBusiness",

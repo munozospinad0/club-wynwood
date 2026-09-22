@@ -37,8 +37,8 @@ export const PAGINAS: Pagina[] = [
     ojo: { es: "Espacio 01 · al aire libre", en: "Space 01 · open-air" },
     h1: { es: "El Jardín", en: "The Garden" },
     respuesta: {
-      es: "El Jardín son ~18.000 ft² de exterior continuo en Wynwood, Miami: la superficie mayor del recinto y la que admite montaje libre. Un paseo pavimentado baja de la puerta del edificio al estacionamiento, con césped artificial del lado de la palapa y arena del lado de las cabañas, dos hileras de palmeras reales, un área de arena con mesas de picnic y seis cabañas amuebladas.",
-      en: "The Garden is ~18,000 sq ft of continuous outdoor space in Wynwood, Miami: the larger surface of the site and the one that takes an open build. A paved walk runs from the building door down to the parking lot, with artificial turf on the structure's side and sand on the cabanas' side, two rows of real palms, picnic tables and six furnished cabanas.",
+      es: "El Jardín son ~18.000 ft² de exterior continuo en Wynwood, Miami: la superficie mayor del recinto y la que admite montaje libre. Un paseo pavimentado baja de la puerta del edificio al estacionamiento, con césped artificial del lado del pabellón y arena del lado de las cabañas, dos hileras de palmeras reales, un área de arena con mesas de picnic y seis cabañas amuebladas.",
+      en: "The Garden is ~18,000 sq ft of continuous outdoor space in Wynwood, Miami: the larger surface of the site and the one that takes an open build. A paved walk runs from the building door down to the parking lot, with artificial turf on the Pavilion's side and sand on the cabanas' side, two rows of real palms, picnic tables and six furnished cabanas.",
     },
     title: {
       es: "El Jardín — ~18.000 ft² al aire libre en Wynwood | Club Wynwood",
@@ -56,8 +56,8 @@ export const PAGINAS: Pagina[] = [
     foto: {
       src: "/assets/venue-exterior.webp",
       alt: {
-        es: "El paseo pavimentado entre las dos hileras de palmeras, con la palapa al fondo",
-        en: "The paved walk between the two rows of palms, with the structure behind",
+        es: "El paseo pavimentado entre las dos hileras de palmeras, con el pabellón al fondo",
+        en: "The paved walk between the two rows of palms, with the Pavilion behind",
       },
       pie: {
         es: "El paseo central del Jardín, entre las dos hileras de palmeras.",
@@ -82,8 +82,8 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "Si llueve", en: "If it rains" },
         cuerpo: {
-          es: "El Jardín es contiguo al Tiki Hut, la palapa techada de ~4.000 ft². Se alquilan por separado o juntos: contratar los dos convierte la cubierta en el plan de lluvia del mismo recinto, sin mover el evento de sitio.",
-          en: "The Garden is contiguous with the Tiki Hut, the ~4,000 sq ft covered structure. They rent separately or together: taking both turns the roof into the rain plan for the same site, without moving the event.",
+          es: "El Jardín es contiguo al Pabellón, el espacio techado de ~4.000 ft². Se alquilan por separado o juntos: contratar los dos convierte la cubierta en el plan de lluvia del mismo recinto, sin mover el evento de sitio.",
+          en: "The Garden is contiguous with the Pavilion, the ~4,000 sq ft covered space. They rent separately or together: taking both turns the roof into the rain plan for the same site, without moving the event.",
         },
       },
     ],
@@ -92,18 +92,18 @@ export const PAGINAS: Pagina[] = [
   {
     clave: "tikiHut",
     ojo: { es: "Espacio 02 · techado", en: "Space 02 · covered" },
-    h1: { es: "El Tiki Hut", en: "The Tiki Hut" },
+    h1: { es: "El Pabellón", en: "The Pavilion" },
     respuesta: {
-      es: "El Tiki Hut son ~4.000 ft² de palapa: techo de paja a cuatro aguas sobre nueve postes de madera, abierta por los cuatro costados. Es la zona de sombra permanente del recinto y el plan anti-lluvia de la fecha, sin mover el evento de sede. Para el agua que cae recta basta sola; con viento conviene cerrar los costados.",
-      en: "The Tiki Hut is ~4,000 sq ft of covered structure: a four-hipped thatched roof on nine timber posts, open on all four sides. It is the site's permanent shade zone and the rain plan for your date, without changing venue. For vertical rain it is enough on its own; with wind you will want the sides closed.",
+      es: "El Pabellón son ~4.000 ft² techados: techo de paja a cuatro aguas sobre nueve postes de madera, abierto por los cuatro costados. Es la zona de sombra permanente del recinto y el plan anti-lluvia de la fecha, sin mover el evento de sede. Para el agua que cae recta basta solo; con viento conviene cerrar los costados.",
+      en: "The Pavilion is ~4,000 sq ft of covered space: a four-hipped thatched roof on nine timber posts, open on all four sides. It is the site's permanent shade zone and the rain plan for your date, without changing venue. For vertical rain it is enough on its own; with wind you will want the sides closed.",
     },
     title: {
-      es: "El Tiki Hut — ~4.000 ft² techados en Wynwood | Club Wynwood",
-      en: "The Tiki Hut — ~4,000 sq ft covered in Wynwood | Club Wynwood",
+      es: "El Pabellón — ~4.000 ft² techados en Wynwood | Club Wynwood",
+      en: "The Pavilion — ~4,000 sq ft covered in Wynwood | Club Wynwood",
     },
     description: {
-      es: "El Tiki Hut: palapa de paja de ~4.000 ft² abierta por los cuatro costados, en Wynwood, Miami. Sombra todo el día y el plan de lluvia ya construido.",
-      en: "Club Wynwood's Tiki Hut: a ~4,000 sq ft thatched structure on a timber frame, open on all four sides. Permanent shade and rain plan in Wynwood, Miami.",
+      es: "El Pabellón: ~4.000 ft² bajo techo de paja, abierto por los cuatro costados, en Wynwood, Miami. Sombra todo el día y el plan de lluvia ya construido.",
+      en: "Club Wynwood's Pavilion: a ~4,000 sq ft thatch-roofed space on a timber frame, open on all four sides. Permanent shade and rain plan in Wynwood, Miami.",
     },
     cifras: [
       { etiqueta: { es: "Superficie techada", en: "Covered area" }, valor: "~4 000 ft²" },
@@ -113,12 +113,12 @@ export const PAGINAS: Pagina[] = [
     foto: {
       src: "/assets/venue-palapa.webp",
       alt: {
-        es: "Bajo la palapa: techo de paja sobre estructura de postes de madera",
-        en: "Under the structure: thatch roof on timber posts",
+        es: "Bajo el pabellón: techo de paja sobre estructura de postes de madera",
+        en: "Under the Pavilion: thatch roof on timber posts",
       },
       pie: {
-        es: "Bajo la palapa: paja sobre estructura de madera, abierta por los costados.",
-        en: "Under the structure: thatch on a timber frame, open on all sides.",
+        es: "Bajo el pabellón: paja sobre estructura de madera, abierto por los costados.",
+        en: "Under the Pavilion: thatch on a timber frame, open on all sides.",
       },
     },
     bloques: [
@@ -126,7 +126,7 @@ export const PAGINAS: Pagina[] = [
         titulo: { es: "Por qué importa en Miami", en: "Why it matters in Miami" },
         cuerpo: {
           es: "Una fecha al aire libre en Miami depende del cielo. ~4.000 ft² techados significan que el evento tiene a dónde moverse sin cancelar. La cubierta es fija y ya está ahí: para el agua que cae recta basta sola, y con viento conviene cerrar los costados. Contratado suelto, sin el jardín, es además el formato de una boda pequeña de 30 a 80: ceremonia, cena y baile bajo la misma paja.",
-          en: "An outdoor date in Miami depends on the sky. ~4,000 sq ft under roof means the event has somewhere to go without cancelling. The cover is permanent and already there: for vertical rain it is enough on its own, and with wind you will want the sides closed. Booked on its own, without the garden, it's also the format for a small wedding of 30 to 80: ceremony, dinner and dancing under the same thatch.",
+          en: "An outdoor date in Miami depends on the sky. ~4,000 sq ft under roof means the event has somewhere to go without cancelling. The cover is permanent and already there: for vertical rain it is enough on its own, and with wind you will want the sides closed. Booked on its own, without the garden, it's also the format for a small wedding of 30 to 80: ceremony, dinner and dancing under the same roof.",
         },
       },
       {
@@ -140,7 +140,7 @@ export const PAGINAS: Pagina[] = [
         titulo: { es: "Rigging y alturas", en: "Rigging and heights" },
         cuerpo: {
           es: "La estructura es de paja sobre madera. Las alturas al alero y a cumbrera, y cualquier carga colgada, se miden y se aprueban en la visita técnica: no publicamos cotas que no hayamos levantado.",
-          en: "The structure is thatch on timber. Eave and ridge heights, and any hung load, are measured and approved at the technical visit: we do not publish dimensions we have not surveyed.",
+          en: "The Pavilion's roof is thatch on timber. Eave and ridge heights, and any hung load, are measured and approved at the technical visit: we do not publish dimensions we have not surveyed.",
         },
       },
     ],
@@ -151,16 +151,16 @@ export const PAGINAS: Pagina[] = [
     ojo: { es: "Uso · boda", en: "Use · wedding" },
     h1: { es: "Bodas", en: "Weddings" },
     respuesta: {
-      es: "Club Wynwood admite bodas de hasta ~300 invitados sentados o ~600 de pie usando el recinto completo. La ceremonia va en el Jardín y la recepción bajo la palapa, o al revés, y los ~4.000 ft² techados son el plan de lluvia sin cambiar de sede.",
-      en: "Club Wynwood takes weddings of up to ~300 seated or ~600 standing across the whole site. The ceremony goes in the Garden and the reception under the structure, or the other way round, and the ~4,000 sq ft under roof are the rain plan without changing venue.",
+      es: "Club Wynwood admite bodas de hasta ~300 invitados sentados o ~600 de pie usando el recinto completo. La ceremonia va en el Jardín y la recepción bajo el pabellón, o al revés, y los ~4.000 ft² techados son el plan de lluvia sin cambiar de sede.",
+      en: "Club Wynwood takes weddings of up to ~300 seated or ~600 standing across the whole site. The ceremony goes in the Garden and the reception under the Pavilion, or the other way round, and the ~4,000 sq ft under roof are the rain plan without changing venue.",
     },
     title: {
       es: "Bodas al aire libre en Wynwood, Miami | Club Wynwood",
       en: "Outdoor weddings in Wynwood, Miami | Club Wynwood",
     },
     description: {
-      es: "Venue para bodas al aire libre en Wynwood, Miami: ~22.000 ft², hasta ~300 sentados y una palapa techada de ~4.000 ft² como plan de lluvia.",
-      en: "Outdoor wedding venue in Wynwood, Miami: ~22,000 sq ft, up to ~300 seated and a ~4,000 sq ft covered structure as the rain plan.",
+      es: "Venue para bodas al aire libre en Wynwood, Miami: ~22.000 ft², hasta ~300 sentados y un pabellón techado de ~4.000 ft² como plan de lluvia.",
+      en: "Outdoor wedding venue in Wynwood, Miami: ~22,000 sq ft, up to ~300 seated and a ~4,000 sq ft covered pavilion as the rain plan.",
     },
     cifras: [
       { etiqueta: { es: "Sentados", en: "Seated" }, valor: "~300" },
@@ -170,11 +170,11 @@ export const PAGINAS: Pagina[] = [
     foto: {
       src: "/assets/aerea-predio.jpg",
       alt: {
-        es: "Vista aérea del predio completo: la palapa techada, el paseo central y el jardín",
-        en: "Aerial view of the whole site: the covered structure, the central walk and the garden",
+        es: "Vista aérea del predio completo: el pabellón techado, el paseo central y el jardín",
+        en: "Aerial view of the whole site: the covered pavilion, the central walk and the garden",
       },
       pie: {
-        es: "El predio completo: palapa, paseo central y jardín.",
+        es: "El predio completo: pabellón, paseo central y jardín.",
         en: "The whole site: structure, central walk and garden.",
       },
     },
@@ -182,22 +182,22 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "Dos ambientes en un recinto", en: "Two settings, one site" },
         cuerpo: {
-          es: "El Jardín y el Tiki Hut son contiguos y comparten el paseo. Eso permite separar ceremonia, cóctel y baile sin que los invitados salgan del recinto ni haya traslado. Ese reparto tiene sentido a partir de unos 80 invitados; por debajo, el recinto completo queda grande y la boda cabe en el Tiki Hut solo: son las bodas pequeñas de 30 a 80. La cena de ensayo tiene su propia página: la misma dirección, la noche anterior.",
-          en: "The Garden and the Tiki Hut are contiguous and share the walk. That lets you separate ceremony, cocktail hour and dancing without guests leaving the site and without transfers. That split makes sense from about 80 guests up; below that, the whole site is too big and the wedding fits in the Tiki Hut alone: those are the small weddings of 30 to 80. The rehearsal dinner has its own page: same address, the night before.",
+          es: "El Jardín y el Pabellón son contiguos y comparten el paseo. Eso permite separar ceremonia, cóctel y baile sin que los invitados salgan del recinto ni haya traslado. Ese reparto tiene sentido a partir de unos 80 invitados; por debajo, el recinto completo queda grande y la boda cabe en el Pabellón solo: son las bodas pequeñas de 30 a 80. La cena de ensayo tiene su propia página: la misma dirección, la noche anterior.",
+          en: "The Garden and the Pavilion are contiguous and share the walk. That lets you separate ceremony, cocktail hour and dancing without guests leaving the site and without transfers. That split makes sense from about 80 guests up; below that, the whole site is too big and the wedding fits in the Pavilion alone: those are the small weddings of 30 to 80. The rehearsal dinner has its own page: same address, the night before.",
         },
       },
       {
         titulo: { es: "Tu planner, tus proveedores", en: "Your planner, your vendors" },
         cuerpo: {
-          es: "No imponemos catering ni decoración. Trabajas con tu wedding planner y tus proveedores; nosotros entregamos el espacio. Las seis cabañas amuebladas y las mesas de picnic ya están en el jardín. El bridal shower, meses antes, cabe en el Tiki Hut suelto: está en la página de showers.",
-          en: "We do not impose catering or decor. You work with your wedding planner and your vendors; we hand over the space. The six furnished cabanas and the picnic tables are already in the garden. The bridal shower, months earlier, fits under the Tiki Hut on its own: see the showers page.",
+          es: "No imponemos catering ni decoración. Trabajas con tu wedding planner y tus proveedores; nosotros entregamos el espacio. Las seis cabañas amuebladas y las mesas de picnic ya están en el jardín. El bridal shower, meses antes, cabe en el Pabellón suelto: está en la página de showers.",
+          en: "We do not impose catering or decor. You work with your wedding planner and your vendors; we hand over the space. The six furnished cabanas and the picnic tables are already in the garden. The bridal shower, months earlier, fits under the Pavilion on its own: see the showers page.",
         },
       },
       {
         titulo: { es: "Wynwood como fondo", en: "Wynwood as the backdrop" },
         cuerpo: {
           es: "2129 NW 1st Ct, a cuatro minutos a pie de Wynwood Walls. Las palmeras, la paja y los murales del barrio son el fondo real de las fotos, no un set.",
-          en: "2129 NW 1st Ct, a four-minute walk from Wynwood Walls. The palms, the thatch and the neighbourhood murals are the real backdrop of the photographs, not a set.",
+          en: "2129 NW 1st Ct, a four-minute walk from Wynwood Walls. The palms, the thatch roof and the neighbourhood murals are the real backdrop of the photographs, not a set.",
         },
       },
     ],
@@ -227,12 +227,12 @@ export const PAGINAS: Pagina[] = [
     foto: {
       src: "/assets/aerea-predio.jpg",
       alt: {
-        es: "Vista aérea del predio con la palapa techada al centro",
-        en: "Aerial view of the site with the covered structure at the centre",
+        es: "Vista aérea del predio con el pabellón techado al centro",
+        en: "Aerial view of the site with the covered pavilion at the centre",
       },
       pie: {
-        es: "~22.000 ft² de exterior, con la palapa techada al centro.",
-        en: "~22,000 sq ft outdoors, with the covered structure at the centre.",
+        es: "~22.000 ft² de exterior, con el pabellón techado al centro.",
+        en: "~22,000 sq ft outdoors, with the covered pavilion at the centre.",
       },
     },
     bloques: [
@@ -273,8 +273,8 @@ export const PAGINAS: Pagina[] = [
       en: "Film and production location in Wynwood, Miami | Club Wynwood",
     },
     description: {
-      es: "Locación al aire libre en Wynwood para rodaje y fotografía: palmeras, palapa de ~4.000 ft², césped y paseo pavimentado. ~22.000 ft² privados.",
-      en: "Outdoor location in Wynwood for film, photography and production: palms, a ~4,000 sq ft thatched structure, turf and a paved walk. ~22,000 sq ft private.",
+      es: "Locación al aire libre en Wynwood para rodaje y fotografía: palmeras, pabellón de ~4.000 ft², césped y paseo pavimentado. ~22.000 ft² privados.",
+      en: "Outdoor location in Wynwood for film, photography and production: palms, a ~4,000 sq ft covered pavilion, turf and a paved walk. ~22,000 sq ft private.",
     },
     cifras: [
       { etiqueta: { es: "Superficie privada", en: "Private area" }, valor: "~22 000 ft²" },
@@ -303,8 +303,8 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "Sombra sin carpa", en: "Shade without a tent" },
         cuerpo: {
-          es: "La palapa da ~4.000 ft² de sombra continua: sirve de base, de comedor o de cobertura si cambia el clima, sin sumar estructura al presupuesto.",
-          en: "The structure gives ~4,000 sq ft of continuous shade: it works as base camp, as crew dining or as cover if the weather turns, without adding structure to the budget.",
+          es: "El pabellón da ~4.000 ft² de sombra continua: sirve de base, de comedor o de cobertura si cambia el clima, sin sumar estructura al presupuesto.",
+          en: "The Pavilion gives ~4,000 sq ft of continuous shade: it works as base camp, as crew dining or as cover if the weather turns, without adding structure to the budget.",
         },
       },
       {
@@ -360,7 +360,7 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "2. ¿Qué pasa si llueve?", en: "2. What happens if it rains?" },
         cuerpo: {
-          es: "En Miami esta pregunta no es opcional. Hay tres respuestas posibles y solo una es buena: «hay cubierta fija», «se alquila carpa» (súmalo al presupuesto y comprueba que cabe) o «se reprograma» (que no es un plan). Pregunta cuántos ft² están techados de verdad, no si «hay una zona cubierta». Aquí son ~4.000 ft² de palapa fija.",
+          es: "En Miami esta pregunta no es opcional. Hay tres respuestas posibles y solo una es buena: «hay cubierta fija», «se alquila carpa» (súmalo al presupuesto y comprueba que cabe) o «se reprograma» (que no es un plan). Pregunta cuántos ft² están techados de verdad, no si «hay una zona cubierta». Aquí son ~4.000 ft² de pabellón fijo.",
           en: "In Miami this question is not optional. There are three possible answers and only one is good: “there is permanent cover”, “a tent is rented” (add it to the budget and check it fits) or “we reschedule” (which is not a plan). Ask how many square feet are actually roofed, not whether “there is a covered area”. Here it is ~4,000 sq ft of permanent structure.",
         },
       },
@@ -407,8 +407,8 @@ export const PAGINAS: Pagina[] = [
     ojo: { es: "Uso · quinceañera", en: "Use · quinceañera" },
     h1: { es: "Quinceañeras", en: "Quinceañeras" },
     respuesta: {
-      es: "El recinto admite hasta ~300 invitados sentados, con la entrada y el vals en el jardín y la cena y el baile bajo la palapa techada de ~4.000 ft². Los ~4.000 ft² cubiertos son además el plan de lluvia, así que la fecha no depende del cielo de Miami.",
-      en: "The site takes up to ~300 seated guests, with the entrance and the waltz in the garden and dinner and dancing under the ~4,000 sq ft covered structure. Those covered square feet are also the rain plan, so the date does not depend on the Miami sky.",
+      es: "El recinto admite hasta ~300 invitados sentados, con la entrada y el vals en el jardín y la cena y el baile bajo el pabellón techado de ~4.000 ft². Los ~4.000 ft² cubiertos son además el plan de lluvia, así que la fecha no depende del cielo de Miami.",
+      en: "The site takes up to ~300 seated guests, with the entrance and the waltz in the garden and dinner and dancing under the ~4,000 sq ft covered pavilion. Those covered square feet are also the rain plan, so the date does not depend on the Miami sky.",
     },
     title: {
       es: "Salón para quinceañeras en Wynwood, Miami — hasta 300 invitados | Club Wynwood",
@@ -438,15 +438,15 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "La entrada tiene recorrido", en: "The entrance has a walk" },
         cuerpo: {
-          es: "El paseo pavimentado recorre el jardín de la puerta del edificio al estacionamiento, 15 × 108 ft entre dos hileras de palmeras reales. Es un pasillo de entrada que ya existe: no hay que montarlo ni alfombrarlo, y las fotos salen con las palmeras, el cielo abierto y la paja de la palapa de fondo, no con una pared. Los murales del barrio quedan a cuatro minutos a pie, en Wynwood Walls. Es el mismo paseo que en los desfiles de moda hace de pasarela; aquí es pasillo de entrada, sin tarima ni backstage.",
-          en: "The paved walk runs from the building door to the parking lot, 15 by 108 ft between two rows of real palms. It is an entrance aisle that already exists: nothing to build, no runner to roll out, and the photos come out with palms, open sky and the thatch of the tiki hut behind, not a wall. The neighbourhood murals are a four-minute walk away, at Wynwood Walls. It is the same walkway that serves as the runway for fashion shows; here it is an entrance aisle, with no stage and no backstage.",
+          es: "El paseo pavimentado recorre el jardín de la puerta del edificio al estacionamiento, 15 × 108 ft entre dos hileras de palmeras reales. Es un pasillo de entrada que ya existe: no hay que montarlo ni alfombrarlo, y las fotos salen con las palmeras, el cielo abierto y el techo de paja del pabellón de fondo, no con una pared. Los murales del barrio quedan a cuatro minutos a pie, en Wynwood Walls. Es el mismo paseo que en los desfiles de moda hace de pasarela; aquí es pasillo de entrada, sin tarima ni backstage.",
+          en: "The paved walk runs from the building door to the parking lot, 15 by 108 ft between two rows of real palms. It is an entrance aisle that already exists: nothing to build, no runner to roll out, and the photos come out with palms, open sky and the Pavilion's thatch roof behind, not a wall. The neighbourhood murals are a four-minute walk away, at Wynwood Walls. It is the same walkway that serves as the runway for fashion shows; here it is an entrance aisle, with no stage and no backstage.",
         },
       },
       {
         titulo: { es: "Cena y baile bajo techo", en: "Dinner and dancing under cover" },
         cuerpo: {
-          es: "La palapa de ~4.000 ft² cubre la parte sentada del evento. Eso resuelve dos cosas a la vez: la lluvia y el sol de Miami a las cinco de la tarde. Las seis cabañas amuebladas del jardín funcionan como zonas de descanso para los invitados mayores. Si la fiesta es un Sweet 16 —de pie, con DJ y sin vals— y son menos de ~150 invitados, la página de Sweet 16 explica cuándo basta con el Tiki Hut solo.",
-          en: "The ~4,000 sq ft structure covers the seated part of the event. That solves two things at once: the rain and the five-o'clock Miami sun. The six furnished cabanas in the garden work as rest areas for older guests. If the party is a Sweet 16 — standing, with a DJ and no waltz — and under ~150 guests, the Sweet 16 page explains when the Tiki Hut alone is enough.",
+          es: "El pabellón de ~4.000 ft² cubre la parte sentada del evento. Eso resuelve dos cosas a la vez: la lluvia y el sol de Miami a las cinco de la tarde. Las seis cabañas amuebladas del jardín funcionan como zonas de descanso para los invitados mayores. Si la fiesta es un Sweet 16 —de pie, con DJ y sin vals— y son menos de ~150 invitados, la página de Sweet 16 explica cuándo basta con el Pabellón solo.",
+          en: "The ~4,000 sq ft structure covers the seated part of the event. That solves two things at once: the rain and the five-o'clock Miami sun. The six furnished cabanas in the garden work as rest areas for older guests. If the party is a Sweet 16 — standing, with a DJ and no waltz — and under ~150 guests, the Sweet 16 page explains when the Pavilion alone is enough.",
         },
       },
       {
@@ -483,11 +483,11 @@ export const PAGINAS: Pagina[] = [
     foto: {
       src: "/assets/aerea-predio.jpg",
       alt: {
-        es: "Vista aérea del recinto completo, con la palapa techada y el jardín",
-        en: "Aerial view of the whole site, with the covered structure and the garden",
+        es: "Vista aérea del recinto completo, con el pabellón techado y el jardín",
+        en: "Aerial view of the whole site, with the covered pavilion and the garden",
       },
       pie: {
-        es: "El recinto completo: ~22.000 ft² entre jardín y palapa.",
+        es: "El recinto completo: ~22.000 ft² entre jardín y pabellón.",
         en: "The whole site: ~22,000 sq ft between garden and structure.",
       },
     },
@@ -502,8 +502,8 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "Por separado o combinado", en: "Separately or combined" },
         cuerpo: {
-          es: "El Jardín (~18.000 ft²) y el Tiki Hut (~4.000 ft²) se alquilan sueltos o juntos. Las cifras de ~600 y ~300 son del recinto completo; si contratas solo uno de los dos, el aforo baja en proporción a la superficie que uses. Son contiguos y comparten el paseo, así que combinados funcionan como un solo recinto. Una fiesta de pie con DJ —un Sweet 16, por ejemplo— usa la superficie de otra manera que un banquete, y por eso se mide contra la cifra de pie, no contra la de sentados. Si llegaste buscando un salón de fiestas, la comparación entre un salón y este jardín —entradas, licencia de licor, cocina— está en la página «Salón de fiestas en Miami, al aire libre»; aquí solo el aforo.",
-          en: "The Garden (~18,000 sq ft) and the Tiki Hut (~4,000 sq ft) rent separately or together. The ~600 and ~300 figures are for the whole site; if you take only one, capacity drops in proportion to the surface you use. They are contiguous and share the walk, so combined they work as a single site. A standing party with a DJ — a Sweet 16, say — uses the surface differently from a banquet, which is why it is measured against the standing figure, not the seated one. If you got here looking for a banquet hall, the comparison between a hall and this garden — entrances, liquor license, kitchen — is on the page “Outdoor party hall rental in Miami”; this page is only about capacity.",
+          es: "El Jardín (~18.000 ft²) y el Pabellón (~4.000 ft²) se alquilan sueltos o juntos. Las cifras de ~600 y ~300 son del recinto completo; si contratas solo uno de los dos, el aforo baja en proporción a la superficie que uses. Son contiguos y comparten el paseo, así que combinados funcionan como un solo recinto. Una fiesta de pie con DJ —un Sweet 16, por ejemplo— usa la superficie de otra manera que un banquete, y por eso se mide contra la cifra de pie, no contra la de sentados. Si llegaste buscando un salón de fiestas, la comparación entre un salón y este jardín —entradas, licencia de licor, cocina— está en la página «Salón de fiestas en Miami, al aire libre»; aquí solo el aforo.",
+          en: "The Garden (~18,000 sq ft) and the Pavilion (~4,000 sq ft) rent separately or together. The ~600 and ~300 figures are for the whole site; if you take only one, capacity drops in proportion to the surface you use. They are contiguous and share the walk, so combined they work as a single site. A standing party with a DJ — a Sweet 16, say — uses the surface differently from a banquet, which is why it is measured against the standing figure, not the seated one. If you got here looking for a banquet hall, the comparison between a hall and this garden — entrances, liquor license, kitchen — is on the page “Outdoor party hall rental in Miami”; this page is only about capacity.",
         },
       },
       {
@@ -570,7 +570,7 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "El sábado no depende del cielo", en: "Saturday does not depend on the sky" },
         cuerpo: {
-          es: "Un mercado se cae con la lluvia y no se reprograma: los expositores ya vinieron. Los ~4.000 ft² de palapa fija permiten concentrar los módulos bajo techo si cambia el tiempo, sin carpas de última hora ni devolver el día.",
+          es: "Un mercado se cae con la lluvia y no se reprograma: los expositores ya vinieron. Los ~4.000 ft² de pabellón fijo permiten concentrar los módulos bajo techo si cambia el tiempo, sin carpas de última hora ni devolver el día.",
           en: "A market dies in the rain and does not get rescheduled: the vendors already showed up. The ~4,000 sq ft of permanent structure let you concentrate modules under cover if the weather turns, with no last-minute tents and no refunding the day.",
         },
       },
@@ -589,16 +589,16 @@ export const PAGINAS: Pagina[] = [
     ojo: { es: "Uso · graduación", en: "Use · graduation" },
     h1: { es: "Graduaciones", en: "Graduations" },
     respuesta: {
-      es: "El recinto admite ~300 invitados sentados o ~600 de pie, que cubre desde una promoción entera hasta una fiesta de familia. La ceremonia o los discursos van en el jardín, la cena bajo la palapa techada, y los ~4.000 ft² cubiertos resuelven la lluvia de mayo y junio en Miami.",
-      en: "The site takes ~300 seated or ~600 standing, which covers anything from a whole graduating class to a family party. The ceremony or speeches go in the garden, dinner under the covered structure, and the ~4,000 sq ft under roof handle the May and June rain in Miami.",
+      es: "El recinto admite ~300 invitados sentados o ~600 de pie, que cubre desde una promoción entera hasta una fiesta de familia. La ceremonia o los discursos van en el jardín, la cena bajo el pabellón techado, y los ~4.000 ft² cubiertos resuelven la lluvia de mayo y junio en Miami.",
+      en: "The site takes ~300 seated or ~600 standing, which covers anything from a whole graduating class to a family party. The ceremony or speeches go in the garden, dinner under the covered pavilion, and the ~4,000 sq ft under roof handle the May and June rain in Miami.",
     },
     title: {
       es: "Venue para graduaciones en Wynwood, Miami — hasta 600 invitados | Club Wynwood",
       en: "Graduation venue in Wynwood, Miami — up to 600 guests | Club Wynwood",
     },
     description: {
-      es: "Espacio al aire libre para fiestas de graduación en Wynwood, Miami: ~600 de pie o ~300 sentados, con palapa techada de ~4.000 ft² como plan de lluvia.",
-      en: "Open-air space for graduation parties in Wynwood, Miami: ~600 standing or ~300 seated, with a ~4,000 sq ft covered structure as the rain plan.",
+      es: "Espacio al aire libre para fiestas de graduación en Wynwood, Miami: ~600 de pie o ~300 sentados, con pabellón techado de ~4.000 ft² como plan de lluvia.",
+      en: "Open-air space for graduation parties in Wynwood, Miami: ~600 standing or ~300 seated, with a ~4,000 sq ft covered pavilion as the rain plan.",
     },
     cifras: [
       { etiqueta: { es: "De pie", en: "Standing" }, valor: "~600" },
@@ -608,12 +608,12 @@ export const PAGINAS: Pagina[] = [
     foto: {
       src: "/assets/aerea-predio.jpg",
       alt: {
-        es: "Vista aérea del recinto completo, con la palapa techada y el jardín",
-        en: "Aerial view of the whole site, with the covered structure and the garden",
+        es: "Vista aérea del recinto completo, con el pabellón techado y el jardín",
+        en: "Aerial view of the whole site, with the covered pavilion and the garden",
       },
       pie: {
-        es: "El recinto completo, con la palapa al centro.",
-        en: "The whole site, with the structure at the centre.",
+        es: "El recinto completo, con el pabellón al centro.",
+        en: "The whole site, with the Pavilion at the centre.",
       },
     },
     bloques: [
@@ -646,46 +646,46 @@ export const PAGINAS: Pagina[] = [
     ojo: { es: "Uso · evento pequeño", en: "Use · small event" },
     h1: { es: "Eventos pequeños", en: "Small events" },
     respuesta: {
-      es: "Sí se puede alquilar solo una parte. El Tiki Hut son ~4.000 ft² techados que se contratan sueltos, sin el jardín, y esa es la medida que encaja con un bautizo, un cumpleaños íntimo o una comida de familia de 50 a 150 invitados. Contratar los ~22.000 ft² completos para eso no tiene sentido y no lo recomendamos.",
-      en: "Yes, you can rent just one part. The Tiki Hut is ~4,000 sq ft under roof that books on its own, without the garden, and that is the size that fits a christening, an intimate birthday or a family lunch of 50 to 150 guests. Taking the full ~22,000 sq ft for that makes no sense and we do not recommend it.",
+      es: "Sí se puede alquilar solo una parte. El Pabellón son ~4.000 ft² techados que se contratan sueltos, sin el jardín, y esa es la medida que encaja con un bautizo, un cumpleaños íntimo o una comida de familia de 50 a 150 invitados. Contratar los ~22.000 ft² completos para eso no tiene sentido y no lo recomendamos.",
+      en: "Yes, you can rent just one part. The Pavilion is ~4,000 sq ft under roof that books on its own, without the garden, and that is the size that fits a christening, an intimate birthday or a family lunch of 50 to 150 guests. Taking the full ~22,000 sq ft for that makes no sense and we do not recommend it.",
     },
     title: {
-      es: "Eventos pequeños en Wynwood: alquilar solo el Tiki Hut | Club Wynwood",
-      en: "Small events in Wynwood: renting just the Tiki Hut | Club Wynwood",
+      es: "Eventos pequeños en Wynwood: alquilar solo el Pabellón | Club Wynwood",
+      en: "Small events in Wynwood: renting just the Pavilion | Club Wynwood",
     },
     description: {
-      es: "Para bautizos, cumpleaños íntimos y reuniones de 50 a 150 invitados se alquila solo el Tiki Hut: ~4.000 ft² techados en Wynwood, sin contratar el jardín entero.",
-      en: "For christenings, intimate birthdays and gatherings of 50 to 150 guests, rent just the Tiki Hut: ~4,000 sq ft under roof in Wynwood, not the whole garden.",
+      es: "Para bautizos, cumpleaños íntimos y reuniones de 50 a 150 invitados se alquila solo el Pabellón: ~4.000 ft² techados en Wynwood, sin contratar el jardín entero.",
+      en: "For christenings, intimate birthdays and gatherings of 50 to 150 guests, rent just the Pavilion: ~4,000 sq ft under roof in Wynwood, not the whole garden.",
     },
     cifras: [
-      { etiqueta: { es: "Solo el Tiki Hut", en: "Tiki Hut only" }, valor: "~4 000 ft²" },
+      { etiqueta: { es: "Solo el Pabellón", en: "Pavilion only" }, valor: "~4 000 ft²" },
       { etiqueta: { es: "Invitados", en: "Guests" }, valor: "50–150" },
       { etiqueta: { es: "Techado", en: "Under roof" }, valor: "100%" },
     ],
     foto: {
       src: "/assets/venue-palapa.webp",
       alt: {
-        es: "Bajo la palapa: techo de paja sobre postes de madera, abierta por los costados",
-        en: "Under the structure: thatch roof on timber posts, open on the sides",
+        es: "Bajo el pabellón: techo de paja sobre postes de madera, abierto por los costados",
+        en: "Under the Pavilion: thatch roof on timber posts, open on the sides",
       },
       pie: {
-        es: "El Tiki Hut se alquila suelto, sin el jardín.",
-        en: "The Tiki Hut books on its own, without the garden.",
+        es: "El Pabellón se alquila suelto, sin el jardín.",
+        en: "The Pavilion books on its own, without the garden.",
       },
     },
     bloques: [
       {
         titulo: { es: "Por qué no alquilarlo todo", en: "Why not take the whole thing" },
         cuerpo: {
-          es: "Un evento de 80 personas en ~22.000 ft² se ve vacío, y además pagas superficie que no usas. Con solo el Tiki Hut el grupo queda reunido bajo techo, la conversación funciona y el presupuesto se va a comida y decoración en vez de a metros cuadrados. Una fiesta de compromiso o una cena de ensayo de ese tamaño entran aquí; si lo que se organiza es el fin de semana de boda entero, con dos noches seguidas, eso está en la página de la cena de ensayo. Si lo que se celebra es la boda misma, con 30 a 80 invitados, tiene página propia: bodas pequeñas de 30 a 80. Vale igual para un Sweet 16 de menos de ~150 invitados; la página de Sweet 16 lo desarrolla con el formato de pie y con DJ. A partir de 150 invitados la cuenta se invierte: un cumpleaños de adulto grande, de noche, es el recinto entero, y eso lo cuenta la página de cumpleaños de adulto. A partir de unos 150 sentados, cuando hacen falta el jardín y la palapa juntos, la comparación con un salón de fiestas tiene su propia página: «Salón de fiestas en Miami, al aire libre».",
-          en: "An 80-person event in ~22,000 sq ft looks empty, and you are paying for surface you do not use. With just the Tiki Hut the group stays together under cover, conversation works, and the budget goes to food and decor instead of square footage. An engagement party or a rehearsal dinner of that size fits here; if you are planning the whole wedding weekend, two nights back to back, that lives on the rehearsal dinner page. If what you're celebrating is the wedding itself, with 30 to 80 guests, it has its own page: small weddings of 30 to 80. The same goes for a Sweet 16 under ~150 guests; the Sweet 16 page covers it, standing format and DJ included. From 150 guests up the arithmetic flips: a big adult birthday at night takes the whole site, and that's what the adult birthday page covers. From around 150 seated, when it takes the garden and the tiki hut together, the comparison with a banquet hall has its own page: “Outdoor party hall rental in Miami”.",
+          es: "Un evento de 80 personas en ~22.000 ft² se ve vacío, y además pagas superficie que no usas. Con solo el Pabellón el grupo queda reunido bajo techo, la conversación funciona y el presupuesto se va a comida y decoración en vez de a metros cuadrados. Una fiesta de compromiso o una cena de ensayo de ese tamaño entran aquí; si lo que se organiza es el fin de semana de boda entero, con dos noches seguidas, eso está en la página de la cena de ensayo. Si lo que se celebra es la boda misma, con 30 a 80 invitados, tiene página propia: bodas pequeñas de 30 a 80. Vale igual para un Sweet 16 de menos de ~150 invitados; la página de Sweet 16 lo desarrolla con el formato de pie y con DJ. A partir de 150 invitados la cuenta se invierte: un cumpleaños de adulto grande, de noche, es el recinto entero, y eso lo cuenta la página de cumpleaños de adulto. A partir de unos 150 sentados, cuando hacen falta el jardín y el pabellón juntos, la comparación con un salón de fiestas tiene su propia página: «Salón de fiestas en Miami, al aire libre».",
+          en: "An 80-person event in ~22,000 sq ft looks empty, and you are paying for surface you do not use. With just the Pavilion the group stays together under cover, conversation works, and the budget goes to food and decor instead of square footage. An engagement party or a rehearsal dinner of that size fits here; if you are planning the whole wedding weekend, two nights back to back, that lives on the rehearsal dinner page. If what you're celebrating is the wedding itself, with 30 to 80 guests, it has its own page: small weddings of 30 to 80. The same goes for a Sweet 16 under ~150 guests; the Sweet 16 page covers it, standing format and DJ included. From 150 guests up the arithmetic flips: a big adult birthday at night takes the whole site, and that's what the adult birthday page covers. From around 150 seated, when it takes the garden and the Pavilion together, the comparison with a banquet hall has its own page: “Outdoor party hall rental in Miami”.",
         },
       },
       {
         titulo: { es: "Techado y abierto a la vez", en: "Covered and open at once" },
         cuerpo: {
-          es: "La palapa tiene techo de paja pero no tiene paredes: está abierta por los cuatro costados. Para un evento de día eso significa sombra sin encierro y sin aire acondicionado, que es exactamente lo que se busca en un bautizo o un almuerzo de cumpleaños a mediodía. Si lo que organizas es un bridal shower o un baby shower, la página de showers cuenta ese montaje de mediodía. Vale igual para una empresa: un equipo de hasta 150 personas cabe bajo el Tiki Hut suelto; si la jornada necesita zonificar el jardín entero, mira la página de offsite de empresa.",
-          en: "The structure has a thatched roof but no walls: it is open on all four sides. For a daytime event that means shade without being shut in and without air conditioning, which is exactly what a midday christening or birthday lunch wants. If what you are hosting is a bridal shower or a baby shower, the showers page covers that midday setup. The same goes for a company: a team of up to 150 fits under the Tiki Hut on its own; if the day needs the whole garden zoned, see the corporate offsite page.",
+          es: "El pabellón tiene techo de paja pero no tiene paredes: está abierto por los cuatro costados. Para un evento de día eso significa sombra sin encierro y sin aire acondicionado, que es exactamente lo que se busca en un bautizo o un almuerzo de cumpleaños a mediodía. Si lo que organizas es un bridal shower o un baby shower, la página de showers cuenta ese montaje de mediodía. Vale igual para una empresa: un equipo de hasta 150 personas cabe bajo el Pabellón suelto; si la jornada necesita zonificar el jardín entero, mira la página de offsite de empresa.",
+          en: "The Pavilion has a thatched roof but no walls: it is open on all four sides. For a daytime event that means shade without being shut in and without air conditioning, which is exactly what a midday christening or birthday lunch wants. If what you are hosting is a bridal shower or a baby shower, the showers page covers that midday setup. The same goes for a company: a team of up to 150 fits under the Pavilion on its own; if the day needs the whole garden zoned, see the corporate offsite page.",
         },
       },
       {
@@ -696,8 +696,8 @@ export const PAGINAS: Pagina[] = [
              fijas donde están, así que no se pueden mover ni sacar del plano.
              Un productor que planifique el montaje creyendo que puede retirarlas
              pierde el día del montaje descubriéndolo. */
-          es: "Las seis cabañas amuebladas están en el jardín, junto a la palapa. Son fijas: van con el inmueble y no se mueven, así que cuentan en el plano de montaje aunque solo alquiles el Tiki Hut. Para un evento con niños o con gente mayor son la zona de descanso que suele faltar.",
-          en: "The six furnished cabanas sit in the garden, next to the structure. They are fixed: they come with the property and do not move, so they count in your layout even if you only book the Tiki Hut. For an event with children or older guests they are the rest area that is usually missing.",
+          es: "Las seis cabañas amuebladas están en el jardín, junto al pabellón. Son fijas: van con el inmueble y no se mueven, así que cuentan en el plano de montaje aunque solo alquiles el Pabellón. Para un evento con niños o con gente mayor son la zona de descanso que suele faltar.",
+          en: "The six furnished cabanas sit in the garden, next to the Pavilion. They are fixed: they come with the property and do not move, so they count in your layout even if you only book the Pavilion. For an event with children or older guests they are the rest area that is usually missing.",
         },
       },
     ],
@@ -756,7 +756,7 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "Diciembre también llueve", en: "December rains too" },
         cuerpo: {
-          es: "La semana del arte cae en temporada seca, pero un aguacero de tarde en Miami no avisa. Los ~4.000 ft² de palapa fija permiten mover la parte crítica bajo techo sin desmontar la instalación ni alquilar carpa a precio de diciembre.",
+          es: "La semana del arte cae en temporada seca, pero un aguacero de tarde en Miami no avisa. Los ~4.000 ft² de pabellón fijo permiten mover la parte crítica bajo techo sin desmontar la instalación ni alquilar carpa a precio de diciembre.",
           en: "Art week falls in the dry season, but an afternoon downpour in Miami gives no warning. The ~4,000 sq ft of permanent structure let you move the critical part under cover without striking the installation or renting a tent at December prices.",
         },
       },
@@ -789,16 +789,16 @@ export const PAGINAS: Pagina[] = [
     ojo: { es: "Uso · fin de año", en: "Use · year-end" },
     h1: { es: "Fiesta de fin de año de empresa", en: "Company holiday party" },
     respuesta: {
-      es: "Una cena de empresa de 100 a 300 personas cabe sentada bajo la palapa techada, con el jardín para el cóctel de llegada y los discursos. Diciembre en Miami se hace al aire libre —es de los mejores meses— y los ~4.000 ft² cubiertos quitan el riesgo de la lluvia sin encerrar a nadie.",
-      en: "A company dinner of 100 to 300 people fits seated under the covered structure, with the garden for the arrival cocktail and the speeches. December in Miami is made for outdoors — it is one of the best months — and the ~4,000 sq ft under roof remove the rain risk without shutting anyone in.",
+      es: "Una cena de empresa de 100 a 300 personas cabe sentada bajo el pabellón techado, con el jardín para el cóctel de llegada y los discursos. Diciembre en Miami se hace al aire libre —es de los mejores meses— y los ~4.000 ft² cubiertos quitan el riesgo de la lluvia sin encerrar a nadie.",
+      en: "A company dinner of 100 to 300 people fits seated under the covered pavilion, with the garden for the arrival cocktail and the speeches. December in Miami is made for outdoors — it is one of the best months — and the ~4,000 sq ft under roof remove the rain risk without shutting anyone in.",
     },
     title: {
       es: "Fiesta de fin de año de empresa en Wynwood, Miami | Club Wynwood",
       en: "Company holiday party venue in Wynwood, Miami | Club Wynwood",
     },
     description: {
-      es: "Venue al aire libre para la fiesta de fin de año de tu empresa en Wynwood: cóctel en el jardín, cena sentada bajo la palapa techada, de 100 a 300 personas.",
-      en: "Open-air venue for your company holiday party in Wynwood: cocktails in the garden, seated dinner under the covered structure, 100 to 300 people.",
+      es: "Venue al aire libre para la fiesta de fin de año de tu empresa en Wynwood: cóctel en el jardín, cena sentada bajo el pabellón techado, de 100 a 300 personas.",
+      en: "Open-air venue for your company holiday party in Wynwood: cocktails in the garden, seated dinner under the covered pavilion, 100 to 300 people.",
     },
     cifras: [
       { etiqueta: { es: "Cena sentada", en: "Seated dinner" }, valor: "100–300" },
@@ -815,16 +815,16 @@ export const PAGINAS: Pagina[] = [
         en: "The site at dusk seen from above: a red carpet along the walk, palms uplit from the trunk and the thatch roof beyond",
       },
       pie: {
-        es: "Fin de año en el recinto: alfombra sobre el paseo, palmeras iluminadas y la palapa al lado. Foto de un evento real.",
-        en: "New Year's Eve on site: carpet along the walk, uplit palms and the structure alongside. A real event.",
+        es: "Fin de año en el recinto: alfombra sobre el paseo, palmeras iluminadas y el pabellón al lado. Foto de un evento real.",
+        en: "New Year's Eve on site: carpet along the walk, uplit palms and the Pavilion alongside. A real event.",
       },
     },
     bloques: [
       {
         titulo: { es: "Llegada fuera, cena dentro", en: "Arrival outside, dinner inside" },
         cuerpo: {
-          es: "El montaje que mejor funciona para una empresa: cóctel de bienvenida y networking en el jardín, con la gente de pie y moviéndose, y después pasar a la mesa bajo la palapa. Los dos espacios comparten el paseo, así que el cambio no rompe el ritmo ni obliga a salir a la calle.",
-          en: "The layout that works best for a company: welcome cocktail and networking in the garden, with people standing and moving, then through to the table under the structure. The two spaces share the walk, so the transition does not break the rhythm or send anyone out to the street.",
+          es: "El montaje que mejor funciona para una empresa: cóctel de bienvenida y networking en el jardín, con la gente de pie y moviéndose, y después pasar a la mesa bajo el pabellón. Los dos espacios comparten el paseo, así que el cambio no rompe el ritmo ni obliga a salir a la calle.",
+          en: "The layout that works best for a company: welcome cocktail and networking in the garden, with people standing and moving, then through to the table under the Pavilion. The two spaces share the walk, so the transition does not break the rhythm or send anyone out to the street.",
         },
       },
       {
@@ -925,8 +925,8 @@ export const PAGINAS: Pagina[] = [
     ojo: { es: "Uso · offsite de empresa", en: "Use · corporate offsite" },
     h1: { es: "Offsite de empresa", en: "Corporate offsites and retreats" },
     respuesta: {
-      es: "Club Wynwood funciona como sede de offsite y retiro de empresa al aire libre en Wynwood, Miami: ~18.000 ft² con pavimento, césped artificial y arena a pocos metros, seis cabañas amuebladas y ~4.000 ft² bajo el Tiki Hut para el almuerzo. No es una sala de reuniones: sin salas, sin AV, sin proyector.",
-      en: "Club Wynwood is an outdoor offsite and corporate retreat venue in Wynwood, Miami: ~18,000 sq ft with paving, artificial turf and sand a few steps apart, six furnished cabanas and ~4,000 sq ft under the Tiki Hut for lunch. It isn't a meeting venue: no breakout rooms, no AV, no projector.",
+      es: "Club Wynwood funciona como sede de offsite y retiro de empresa al aire libre en Wynwood, Miami: ~18.000 ft² con pavimento, césped artificial y arena a pocos metros, seis cabañas amuebladas y ~4.000 ft² bajo el Pabellón para el almuerzo. No es una sala de reuniones: sin salas, sin AV, sin proyector.",
+      en: "Club Wynwood is an outdoor offsite and corporate retreat venue in Wynwood, Miami: ~18,000 sq ft with paving, artificial turf and sand a few steps apart, six furnished cabanas and ~4,000 sq ft under the Pavilion for lunch. It isn't a meeting venue: no breakout rooms, no AV, no projector.",
     },
     title: {
       es: "Offsite de empresa al aire libre en Wynwood | Club Wynwood",
@@ -934,25 +934,25 @@ export const PAGINAS: Pagina[] = [
     },
     description: {
       es: "Offsite de empresa al aire libre en Wynwood, Miami: ~18.000 ft², tres superficies, seis cabañas fijas y ~4.000 ft² techados. Sin salas ni AV: traes tu montaje.",
-      en: "Outdoor corporate offsite and retreat venue in Wynwood, Miami: ~18,000 sq ft, 3 surfaces, 6 cabanas, ~4,000 sq ft under the Tiki Hut. No meeting rooms, no AV.",
+      en: "Outdoor corporate offsite and retreat venue in Wynwood, Miami: ~18,000 sq ft, 3 surfaces, 6 cabanas, ~4,000 sq ft under the Pavilion. No meeting rooms, no AV.",
     },
     cifras: [
       { etiqueta: { es: "Jardín abierto", en: "Open garden" }, valor: { es: "~18.000 ft²", en: "~18,000 sq ft" } },
-      { etiqueta: { es: "Bajo el Tiki Hut", en: "Under the Tiki Hut" }, valor: { es: "~4.000 ft²", en: "~4,000 sq ft" } },
+      { etiqueta: { es: "Bajo el Pabellón", en: "Under the Pavilion" }, valor: { es: "~4.000 ft²", en: "~4,000 sq ft" } },
       { etiqueta: { es: "Cabañas amuebladas", en: "Furnished cabanas" }, valor: { es: "6", en: "6" } },
       { etiqueta: { es: "De pie (recinto completo)", en: "Standing (full buyout)" }, valor: { es: "~600", en: "~600" } },
     ],
     foto: {
       src: "/assets/flyer-cenital.jpg",
-      alt: { es: "Cenital del recinto: la palapa, el área de arena, las cabañas y el paseo pavimentado en un mismo encuadre", en: "Overhead view of the venue: the Tiki Hut, the sand area, the cabanas and the paved walkway in one frame" },
+      alt: { es: "Cenital del recinto: el pabellón, el área de arena, las cabañas y el paseo pavimentado en un mismo encuadre", en: "Overhead view of the venue: the Pavilion, the sand area, the cabanas and the paved walkway in one frame" },
       pie: { es: "Las tres superficies del Jardín —pavimento, césped y arena— a pocos metros unas de otras.", en: "The three surfaces on the grounds — paving, turf and sand — a few steps from one another." },
     },
     bloques: [
       {
         titulo: { es: "Empieza por lo que no hay", en: "Start with what isn't here" },
         cuerpo: {
-          es: "Al aire libre no hay salas de reunión, ni equipo audiovisual, ni proyector, ni climatización; la conectividad se confirma en la visita. Se alquila el recinto vacío: las actividades las trae tu equipo, igual que el catering. Un facilitador, una empresa de dinámicas de grupo o un proveedor de actividades monta aquí con lo suyo, y lo que nadie traiga no está. El exterior —el Jardín y el Tiki Hut— se puede reservar desde el 1 de octubre de 2026. El edificio de 15.961 ft² se alquila aparte desde el 1 de noviembre, y su cocina se suma cuando el catering la necesita. Quien necesita una sala con proyector y aire acondicionado necesita un salón de hotel, no un recinto al aire libre.",
-          en: "Outdoors there are no meeting rooms, no AV, no projector and no climate control; connectivity gets confirmed on the site visit. You rent the venue empty: your team brings the activities the same way it brings catering. A facilitator, a group-activities company or an activity vendor sets up here with their own gear, and whatever nobody brings isn't there. The outdoor venue — the Garden and the Tiki Hut — can be booked from October 1, 2026. The 15,961 sq ft building rents separately from November 1, and its kitchen is added when catering needs it. Anyone who needs a room with a projector and air conditioning needs a hotel ballroom, not an open-air venue.",
+          es: "Al aire libre no hay salas de reunión, ni equipo audiovisual, ni proyector, ni climatización; la conectividad se confirma en la visita. Se alquila el recinto vacío: las actividades las trae tu equipo, igual que el catering. Un facilitador, una empresa de dinámicas de grupo o un proveedor de actividades monta aquí con lo suyo, y lo que nadie traiga no está. El exterior —el Jardín y el Pabellón— se puede reservar desde el 1 de octubre de 2026. El edificio de 15.961 ft² se alquila aparte desde el 1 de noviembre, y su cocina se suma cuando el catering la necesita. Quien necesita una sala con proyector y aire acondicionado necesita un salón de hotel, no un recinto al aire libre.",
+          en: "Outdoors there are no meeting rooms, no AV, no projector and no climate control; connectivity gets confirmed on the site visit. You rent the venue empty: your team brings the activities the same way it brings catering. A facilitator, a group-activities company or an activity vendor sets up here with their own gear, and whatever nobody brings isn't there. The outdoor venue — the Garden and the Pavilion — can be booked from October 1, 2026. The 15,961 sq ft building rents separately from November 1, and its kitchen is added when catering needs it. Anyone who needs a room with a projector and air conditioning needs a hotel ballroom, not an open-air venue.",
         },
       },
       {
@@ -965,8 +965,8 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "A la sombra, no al sol", en: "In the shade, not the sun" },
         cuerpo: {
-          es: "Un día de octubre en Miami se aguanta a la sombra, no al sol, así que la agenda se arma alrededor del Tiki Hut: ~4.000 ft² techados de paja que son el comedor de mediodía, con sombra y sin aire acondicionado, y el único techo del exterior cuando llueve. Para el agua que cae recta basta solo; con viento entra de lado, y un offsite de enero conviene que presupueste cierres laterales. El recinto completo admite ~600 de pie o ~300 sentados; un equipo de 40 u 80 personas usa una fracción, y para ese tamaño suele bastar el Tiki Hut suelto, como en los eventos pequeños. Las sesiones al sol van temprano; el trabajo largo, bajo la paja.",
-          en: "An October day in Miami is bearable in the shade, not in the sun, so the agenda gets built around the Tiki Hut: ~4,000 sq ft of thatched cover that works as the midday dining room — shaded, no air conditioning — and the only roof outdoors when it rains. It handles rain that falls straight down on its own; open on the sides, it lets wind-driven rain in, so a January offsite should budget for sidewalls. A full buyout holds ~600 standing or ~300 seated; a team of 40 or 80 uses a fraction of that, and for a group that size the Tiki Hut on its own is usually the right booking, as with small events. Sun sessions go early; long work goes under the thatch.",
+          es: "Un día de octubre en Miami se aguanta a la sombra, no al sol, así que la agenda se arma alrededor del Pabellón: ~4.000 ft² techados de paja que son el comedor de mediodía, con sombra y sin aire acondicionado, y el único techo del exterior cuando llueve. Para el agua que cae recta basta solo; con viento entra de lado, y un offsite de enero conviene que presupueste cierres laterales. El recinto completo admite ~600 de pie o ~300 sentados; un equipo de 40 u 80 personas usa una fracción, y para ese tamaño suele bastar el Pabellón suelto, como en los eventos pequeños. Las sesiones al sol van temprano; el trabajo largo, bajo la paja.",
+          en: "An October day in Miami is bearable in the shade, not in the sun, so the agenda gets built around the Pavilion: ~4,000 sq ft of thatched cover that works as the midday dining room — shaded, no air conditioning — and the only roof outdoors when it rains. It handles rain that falls straight down on its own; open on the sides, it lets wind-driven rain in, so a January offsite should budget for sidewalls. A full buyout holds ~600 standing or ~300 seated; a team of 40 or 80 uses a fraction of that, and for a group that size the Pavilion on its own is usually the right booking, as with small events. Sun sessions go early; long work goes under the Pavilion.",
         },
       },
       {
@@ -988,8 +988,8 @@ export const PAGINAS: Pagina[] = [
     ojo: { es: "Uso · cumpleaños de adulto", en: "Use · adult birthday" },
     h1: { es: "Cumpleaños de adulto en Wynwood", en: "Adult birthday parties in Wynwood" },
     respuesta: {
-      es: "Para un cumpleaños de 30, 40 o 50 con más de 150 invitados, Club Wynwood se alquila entero: ~22.000 ft² al aire libre en Wynwood, Miami, con ~4.000 ft² bajo la palapa, estacionamiento propio y licencia de licor propia. Por debajo de 150 invitados se alquila solo el Tiki Hut. Se alquila el recinto vacío, no una mesa.",
-      en: "For a 30th, 40th or 50th birthday with more than 150 guests, Club Wynwood rents as a whole: ~22,000 sq ft of open-air space in Wynwood, Miami, with ~4,000 sq ft under the tiki hut, its own parking and its own liquor license. Under 150 guests, you rent just the Tiki Hut. You're renting the empty site, not a table.",
+      es: "Para un cumpleaños de 30, 40 o 50 con más de 150 invitados, Club Wynwood se alquila entero: ~22.000 ft² al aire libre en Wynwood, Miami, con ~4.000 ft² bajo el pabellón, estacionamiento propio y licencia de licor propia. Por debajo de 150 invitados se alquila solo el Pabellón. Se alquila el recinto vacío, no una mesa.",
+      en: "For a 30th, 40th or 50th birthday with more than 150 guests, Club Wynwood rents as a whole: ~22,000 sq ft of open-air space in Wynwood, Miami, with ~4,000 sq ft under the Pavilion, its own parking and its own liquor license. Under 150 guests, you rent just the Pavilion. You're renting the empty site, not a table.",
     },
     title: {
       es: "Fiesta de cumpleaños para adultos en Wynwood | Club Wynwood",
@@ -1007,22 +1007,22 @@ export const PAGINAS: Pagina[] = [
     ],
     foto: {
       src: "/assets/recinto-noche.jpg",
-      alt: { es: "El recinto al anochecer durante una fiesta, visto desde arriba: invitados repartidos por el jardín, el paseo con alfombra roja entre las palmeras iluminadas desde el tronco y el techo de paja de la palapa", en: "The site at dusk during a party, seen from above: guests spread across the garden, the walkway with a red carpet between palms uplit at the base, and the tiki hut's thatched roof" },
+      alt: { es: "El recinto al anochecer durante una fiesta, visto desde arriba: invitados repartidos por el jardín, el paseo con alfombra roja entre las palmeras iluminadas desde el tronco y el techo de paja del pabellón", en: "The site at dusk during a party, seen from above: guests spread across the garden, the walkway with a red carpet between palms uplit at the base, and the Pavilion's thatched roof" },
       pie: { es: "Una fiesta al anochecer en el recinto. Es el fotograma de un evento real, no una recreación: la alfombra roja y el arco de globos los trajo esa producción, no vienen con el recinto.", en: "An evening party on site. A frame from a real event, not a staged shot: the red carpet and the balloon arch were that production's own — they don't come with the site." },
     },
     bloques: [
       {
         titulo: { es: "Un club te vende una mesa; esto es el recinto entero", en: "A club sells you a table; this is the whole site" },
         cuerpo: {
-          es: "Cuando cumples 30, 40 o 50, la opción por defecto es reservar mesa en un club: pagas un mínimo de consumo, te dan una sección acordonada y la fiesta sigue siendo del local. Aquí el trato es el contrario: alquilas el recinto vacío —~22.000 ft² al aire libre, con ~4.000 ft² bajo la palapa— y traes tu música, tu decoración y tu comida. El presupuesto se cotiza por espacio, horas y día, no por lo que se consuma. El corte es el tamaño: a partir de 150 invitados tiene sentido el recinto entero; por debajo, se alquila solo el Tiki Hut, que es lo que explica la página de eventos pequeños.",
-          en: "Turn 30, 40 or 50 and the default is a table at a club: you commit to a minimum spend, you get a roped-off section, and the night still belongs to the venue. This is the opposite deal: you rent the empty site — ~22,000 sq ft outdoors, ~4,000 of them under the tiki hut — and you bring the music, the decor and the food. The quote is based on space, hours and day, not on what gets consumed. The dividing line is headcount: from 150 guests up, the whole site makes sense; below that, you rent just the Tiki Hut, which is what the small-events page covers.",
+          es: "Cuando cumples 30, 40 o 50, la opción por defecto es reservar mesa en un club: pagas un mínimo de consumo, te dan una sección acordonada y la fiesta sigue siendo del local. Aquí el trato es el contrario: alquilas el recinto vacío —~22.000 ft² al aire libre, con ~4.000 ft² bajo el pabellón— y traes tu música, tu decoración y tu comida. El presupuesto se cotiza por espacio, horas y día, no por lo que se consuma. El corte es el tamaño: a partir de 150 invitados tiene sentido el recinto entero; por debajo, se alquila solo el Pabellón, que es lo que explica la página de eventos pequeños.",
+          en: "Turn 30, 40 or 50 and the default is a table at a club: you commit to a minimum spend, you get a roped-off section, and the night still belongs to the venue. This is the opposite deal: you rent the empty site — ~22,000 sq ft outdoors, ~4,000 of them under the Pavilion — and you bring the music, the decor and the food. The quote is based on space, hours and day, not on what gets consumed. The dividing line is headcount: from 150 guests up, the whole site makes sense; below that, you rent just the Pavilion, which is what the small-events page covers.",
         },
       },
       {
         titulo: { es: "150, 300 o 600: cómo se reparte la noche", en: "150, 300 or 600: how the night splits up" },
         cuerpo: {
-          es: "El recinto completo admite ~600 personas de pie o ~300 sentadas; con solo una parte, proporcionalmente menos. Para un cumpleaños de noche el reparto que funciona es cena y pista bajo la palapa y el resto en el jardín: llegada y fotos por el paseo pavimentado entre las dos hileras de palmeras, mesas de picnic fijas y seis cabañas amuebladas del lado de la arena, que sirven de zona de descanso. Los ~4.000 ft² techados son además el plan de lluvia: si cae un aguacero, la pista y la cena ya están bajo cubierta. La palapa está abierta por los cuatro costados; con viento entra agua de lado, así que en invierno conviene presupuestar cierres laterales. El aforo con tu montaje concreto se confirma en la visita.",
-          en: "The whole site takes ~600 standing or ~300 seated; one part alone, proportionally fewer. For a birthday at night the split that works is dinner and dance floor under the tiki hut and everything else in the garden: arrival and photos along the paved walkway between the two rows of palms, fixed picnic tables and six furnished cabanas on the sand side, which work as a rest area. The ~4,000 sq ft under roof are also the rain plan: if a downpour hits, the dance floor and the dinner are already covered. The tiki hut is open on all four sides; in wind the rain comes in sideways, so a winter date should budget for side enclosures. Capacity for your specific layout is confirmed at the visit.",
+          es: "El recinto completo admite ~600 personas de pie o ~300 sentadas; con solo una parte, proporcionalmente menos. Para un cumpleaños de noche el reparto que funciona es cena y pista bajo el pabellón y el resto en el jardín: llegada y fotos por el paseo pavimentado entre las dos hileras de palmeras, mesas de picnic fijas y seis cabañas amuebladas del lado de la arena, que sirven de zona de descanso. Los ~4.000 ft² techados son además el plan de lluvia: si cae un aguacero, la pista y la cena ya están bajo cubierta. El pabellón está abierto por los cuatro costados; con viento entra agua de lado, así que en invierno conviene presupuestar cierres laterales. El aforo con tu montaje concreto se confirma en la visita.",
+          en: "The whole site takes ~600 standing or ~300 seated; one part alone, proportionally fewer. For a birthday at night the split that works is dinner and dance floor under the Pavilion and everything else in the garden: arrival and photos along the paved walkway between the two rows of palms, fixed picnic tables and six furnished cabanas on the sand side, which work as a rest area. The ~4,000 sq ft under roof are also the rain plan: if a downpour hits, the dance floor and the dinner are already covered. The Pavilion is open on all four sides; in wind the rain comes in sideways, so a winter date should budget for side enclosures. Capacity for your specific layout is confirmed at the visit.",
         },
       },
       {
@@ -1051,41 +1051,41 @@ export const PAGINAS: Pagina[] = [
     ojo: { es: "Uso · boda pequeña", en: "Use · small wedding" },
     h1: { es: "Bodas pequeñas", en: "Small weddings" },
     respuesta: {
-      es: "Una boda de 30 a 80 invitados en Wynwood, Miami, se resuelve contratando solo el Tiki Hut: ~4.000 ft² cubiertos que se alquilan sueltos, sin el jardín, con ceremonia, cena y baile bajo la misma paja. El montaje se define con tu plano en la visita. No hay paquete cerrado; hay licencia de licor propia y área donde montar barra.",
-      en: "A wedding of 30 to 80 guests in Wynwood, Miami, needs only the Tiki Hut: ~4,000 sq ft under cover, rented on its own without the Garden, with ceremony, dinner and dancing under one thatched roof. The seated layout is set from your floor plan at the site visit. No set packages; the venue holds its own liquor license.",
+      es: "Una boda de 30 a 80 invitados en Wynwood, Miami, se resuelve contratando solo el Pabellón: ~4.000 ft² cubiertos que se alquilan sueltos, sin el jardín, con ceremonia, cena y baile bajo la misma paja. El montaje se define con tu plano en la visita. No hay paquete cerrado; hay licencia de licor propia y área donde montar barra.",
+      en: "A wedding of 30 to 80 guests in Wynwood, Miami, needs only the Pavilion: ~4,000 sq ft under cover, rented on its own without the Garden, with ceremony, dinner and dancing under one roof. The seated layout is set from your floor plan at the site visit. No set packages; the venue holds its own liquor license.",
     },
     title: {
       es: "Bodas pequeñas de 30 a 80 en Wynwood | Club Wynwood",
       en: "Small wedding venue in Wynwood, Miami | Club Wynwood",
     },
     description: {
-      es: "Bodas pequeñas de 30 a 80 invitados en Wynwood, Miami: el Tiki Hut, ~4.000 ft² techados, se alquila solo; el jardín con palmeras y seis cabañas se suma aparte.",
-      en: "Small and intimate wedding venue in Wynwood, Miami, for 30 to 80 guests: the covered Tiki Hut, ~4,000 sq ft, books on its own; the Garden is added separately.",
+      es: "Bodas pequeñas de 30 a 80 invitados en Wynwood, Miami: el Pabellón, ~4.000 ft² techados, se alquila solo; el jardín con palmeras y seis cabañas se suma aparte.",
+      en: "Small and intimate wedding venue in Wynwood, Miami, for 30 to 80 guests: the covered Pavilion, ~4,000 sq ft, books on its own; the Garden is added separately.",
     },
     cifras: [
-      { etiqueta: { es: "Solo el Tiki Hut", en: "Tiki Hut only" }, valor: { es: "~4.000 ft²", en: "~4,000 sq ft" } },
-      { etiqueta: { es: "Planta de la palapa", en: "Tiki Hut footprint" }, valor: { es: "~54 × 60 ft", en: "~54 × 60 ft" } },
+      { etiqueta: { es: "Solo el Pabellón", en: "Pavilion only" }, valor: { es: "~4.000 ft²", en: "~4,000 sq ft" } },
+      { etiqueta: { es: "Planta del Pabellón", en: "Pavilion footprint" }, valor: { es: "~54 × 60 ft", en: "~54 × 60 ft" } },
       { etiqueta: { es: "El paseo", en: "The walk" }, valor: { es: "~15 × 108 ft", en: "~15 × 108 ft" } },
       { etiqueta: { es: "Al aeropuerto MIA, en coche", en: "To MIA airport, by car" }, valor: { es: "16 min", en: "16 min" } },
     ],
     foto: {
       src: "/assets/flyer-palapa-lounge.jpg",
-      alt: { es: "Bajo la palapa: un montaje lounge con barra y guirnaldas", en: "Under the Tiki Hut: a lounge setup with a bar and string lights" },
-      pie: { es: "Bajo la palapa, montada en lounge: ~4.000 ft² bajo un mismo techo.", en: "Under the Tiki Hut, set up as a lounge: ~4,000 sq ft under one roof." },
+      alt: { es: "Bajo el pabellón: un montaje lounge con barra y guirnaldas", en: "Under the Pavilion: a lounge setup with a bar and string lights" },
+      pie: { es: "Bajo el pabellón, montado en lounge: ~4.000 ft² bajo un mismo techo.", en: "Under the Pavilion, set up as a lounge: ~4,000 sq ft under one roof." },
     },
     bloques: [
       {
         titulo: { es: "Ceremonia, cena y baile bajo un mismo techo", en: "Ceremony, dinner and dancing under one roof" },
         cuerpo: {
-          es: "Para 30 a 80 invitados ese es el formato: ceremonia, cena y baile bajo la misma cubierta, sin sala aparte y sin traslado de invitados entre espacios. Cuántas mesas entran y de qué tamaño se resuelve con tu plano en la visita: no publicamos un aforo bajo la palapa que no esté medido. Lo que no hay son paredes: la palapa está abierta por los cuatro costados, así que no tiene aire acondicionado y con viento la lluvia entra de lado; una fecha de invierno conviene que presupueste cierres laterales como parte del plan de lluvia. Las dimensiones y la estructura están en la página del Tiki Hut. Por encima de 80 invitados el montaje pide el recinto completo: esa es la página de bodas.",
-          en: "At 30 to 80 guests that's the format: ceremony, dinner and dancing under one cover, with no second room and no moving guests between spaces. How many tables fit, and what size, is worked out from your floor plan at the site visit: we don't publish a seated capacity under the Tiki Hut that hasn't been measured. What it doesn't have is walls: it's open on all four sides, so there's no air conditioning, and wind-driven rain blows in sideways; if you're booking a winter date, budget for sidewalls as part of the rain plan. Dimensions and structure are on the Tiki Hut page. Above 80 guests the layout calls for the whole site: that's the weddings page.",
+          es: "Para 30 a 80 invitados ese es el formato: ceremonia, cena y baile bajo la misma cubierta, sin sala aparte y sin traslado de invitados entre espacios. Cuántas mesas entran y de qué tamaño se resuelve con tu plano en la visita: no publicamos un aforo bajo el pabellón que no esté medido. Lo que no hay son paredes: el pabellón está abierto por los cuatro costados, así que no tiene aire acondicionado y con viento la lluvia entra de lado; una fecha de invierno conviene que presupueste cierres laterales como parte del plan de lluvia. Las dimensiones y la estructura están en la página del Pabellón. Por encima de 80 invitados el montaje pide el recinto completo: esa es la página de bodas.",
+          en: "At 30 to 80 guests that's the format: ceremony, dinner and dancing under one cover, with no second room and no moving guests between spaces. How many tables fit, and what size, is worked out from your floor plan at the site visit: we don't publish a seated capacity under the Pavilion that hasn't been measured. What it doesn't have is walls: it's open on all four sides, so there's no air conditioning, and wind-driven rain blows in sideways; if you're booking a winter date, budget for sidewalls as part of the rain plan. Dimensions and structure are on the Pavilion page. Above 80 guests the layout calls for the whole site: that's the weddings page.",
         },
       },
       {
         titulo: { es: "El pasillo mide 15 × 108 ft, y es del Jardín", en: "The aisle is 15 × 108 ft, and it belongs to the Garden" },
         cuerpo: {
-          es: "El paseo pavimentado del recinto mide unos 15 ft de ancho por 108 de largo entre dos hileras de palmeras reales: baja de la puerta del edificio hasta el estacionamiento del sur y pasa por delante de la palapa, que queda a su lado oeste. La medida sale del plano del predio y es aproximada. Es la decisión que separa las dos formas de contratar esta boda. Con solo el Tiki Hut, la ceremonia se celebra dentro de la palapa. Si quieres la entrada sobre el paseo, entre las palmeras, el paseo pertenece al Jardín y hay que sumar el Jardín al contrato: el recinto pasa a ser el completo, y lo describe la página del Jardín.",
-          en: "The site's paved walk runs about 15 ft wide by 108 ft long between two rows of live palms: it comes down from the building door to the south parking and runs past the Tiki Hut, which sits along its west side. The measurement comes from the property's site plan and is approximate. It's the decision that separates the two ways of booking this wedding. With the Tiki Hut alone, the ceremony takes place inside the pavilion. If you want the processional on the walk, between the palms, the walk belongs to the Garden and the Garden has to be added to the contract: you're then booking the whole site, and the Garden page describes it.",
+          es: "El paseo pavimentado del recinto mide unos 15 ft de ancho por 108 de largo entre dos hileras de palmeras reales: baja de la puerta del edificio hasta el estacionamiento del sur y pasa por delante del pabellón, que queda a su lado oeste. La medida sale del plano del predio y es aproximada. Es la decisión que separa las dos formas de contratar esta boda. Con solo el Pabellón, la ceremonia se celebra dentro del pabellón. Si quieres la entrada sobre el paseo, entre las palmeras, el paseo pertenece al Jardín y hay que sumar el Jardín al contrato: el recinto pasa a ser el completo, y lo describe la página del Jardín.",
+          en: "The site's paved walk runs about 15 ft wide by 108 ft long between two rows of live palms: it comes down from the building door to the south parking and runs past the Pavilion, which sits along its west side. The measurement comes from the property's site plan and is approximate. It's the decision that separates the two ways of booking this wedding. With the Pavilion alone, the ceremony takes place inside the pavilion. If you want the processional on the walk, between the palms, the walk belongs to the Garden and the Garden has to be added to the contract: you're then booking the whole site, and the Garden page describes it.",
         },
       },
       {
@@ -1098,8 +1098,8 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "Invitados por una puerta, proveedores por otra", en: "Guests through one gate, vendors through another" },
         cuerpo: {
-          es: "Los invitados entran por NW 21st Ct y la carga por NW 1st Ct: el catering y el sonido no se cruzan con la fila de llegada. Hay estacionamiento en el propio predio; el número de plazas se confirma en la visita. La dirección es 2129 NW 1st Ct, a cuatro minutos a pie de Wynwood Walls y a 16 minutos en coche del aeropuerto MIA, lo que importa cuando media lista de invitados llega de fuera. Las seis cabañas amuebladas están en el jardín, al otro lado del paseo, del lado de la arena: son fijas y cuentan en el plano aunque solo contrates el Tiki Hut, pero usarlas como zona de descanso significa sumar el Jardín. Fechas de exterior: desde el 1 de octubre de 2026.",
-          en: "Guests come in on NW 21st Ct and freight on NW 1st Ct: the caterer and the sound crew don't cross the arrival line. There's parking on the property; the number of spaces is confirmed at the site visit. The address is 2129 NW 1st Ct, a four-minute walk from Wynwood Walls and a 16-minute drive from Miami International (MIA), which matters when half the guest list flies in. The six furnished cabanas sit in the Garden across the walk, on the sand side: they're fixed and count in your layout even if you only book the Tiki Hut, but using them as a lounge area means adding the Garden. The outdoor space is available for events from October 1, 2026.",
+          es: "Los invitados entran por NW 21st Ct y la carga por NW 1st Ct: el catering y el sonido no se cruzan con la fila de llegada. Hay estacionamiento en el propio predio; el número de plazas se confirma en la visita. La dirección es 2129 NW 1st Ct, a cuatro minutos a pie de Wynwood Walls y a 16 minutos en coche del aeropuerto MIA, lo que importa cuando media lista de invitados llega de fuera. Las seis cabañas amuebladas están en el jardín, al otro lado del paseo, del lado de la arena: son fijas y cuentan en el plano aunque solo contrates el Pabellón, pero usarlas como zona de descanso significa sumar el Jardín. Fechas de exterior: desde el 1 de octubre de 2026.",
+          en: "Guests come in on NW 21st Ct and freight on NW 1st Ct: the caterer and the sound crew don't cross the arrival line. There's parking on the property; the number of spaces is confirmed at the site visit. The address is 2129 NW 1st Ct, a four-minute walk from Wynwood Walls and a 16-minute drive from Miami International (MIA), which matters when half the guest list flies in. The six furnished cabanas sit in the Garden across the walk, on the sand side: they're fixed and count in your layout even if you only book the Pavilion, but using them as a lounge area means adding the Garden. The outdoor space is available for events from October 1, 2026.",
         },
       },
     ],
@@ -1114,16 +1114,16 @@ export const PAGINAS: Pagina[] = [
     ojo: { es: "Uso · shower a mediodía", en: "Use · midday bridal & baby showers" },
     h1: { es: "Bridal showers y baby showers", en: "Bridal and baby showers" },
     respuesta: {
-      es: "Club Wynwood alquila el Tiki Hut suelto para bridal showers y baby showers de mediodía en Wynwood, Miami: ~4.000 ft² de techo de paja continuo, abierto por los cuatro costados, para grupos de 50 a 150 invitados a la sombra y sin aire acondicionado. La decoración y el catering los traes tú.",
-      en: "Club Wynwood rents the Tiki Hut on its own for midday bridal showers and baby showers in Wynwood, Miami: ~4,000 sq ft of continuous thatched roof, open on all four sides, for groups of 50 to 150 guests in the shade with no walls around you and no air conditioning. You bring the decor and the caterer.",
+      es: "Club Wynwood alquila el Pabellón suelto para bridal showers y baby showers de mediodía en Wynwood, Miami: ~4.000 ft² de techo de paja continuo, abierto por los cuatro costados, para grupos de 50 a 150 invitados a la sombra y sin aire acondicionado. La decoración y el catering los traes tú.",
+      en: "Club Wynwood rents the Pavilion on its own for midday bridal showers and baby showers in Wynwood, Miami: ~4,000 sq ft of continuous thatched roof, open on all four sides, for groups of 50 to 150 guests in the shade with no walls around you and no air conditioning. You bring the decor and the caterer.",
     },
     title: {
       es: "Bridal shower y baby shower en Wynwood, Miami | Club Wynwood",
       en: "Bridal & baby shower venue in Wynwood, Miami | Club Wynwood",
     },
     description: {
-      es: "Bridal shower o baby shower a mediodía en Wynwood, Miami: el Tiki Hut suelto, ~4.000 ft² de paja abiertos por los cuatro costados, y el catering lo traes tú.",
-      en: "Open-air bridal and baby shower venue in Wynwood, Miami: the Tiki Hut on its own, ~4,000 sq ft of thatched shade open on four sides, and you bring the caterer.",
+      es: "Bridal shower o baby shower a mediodía en Wynwood, Miami: el Pabellón suelto, ~4.000 ft² de paja abiertos por los cuatro costados, y el catering lo traes tú.",
+      en: "Open-air bridal and baby shower venue in Wynwood, Miami: the Pavilion on its own, ~4,000 sq ft of thatched shade open on four sides, and you bring the caterer.",
     },
     cifras: [
       { etiqueta: { es: "Sombra bajo techo", en: "Shaded area" }, valor: { es: "~4.000 ft²", en: "~4,000 sq ft" } },
@@ -1133,22 +1133,22 @@ export const PAGINAS: Pagina[] = [
     ],
     foto: {
       src: "/assets/flyer-palapa-lounge.jpg",
-      alt: { es: "Bajo la palapa: un montaje lounge con barra y guirnaldas entre los postes de madera", en: "Under the thatch: a lounge setup with a bar and string lights among the wood posts" },
-      pie: { es: "Bajo el Tiki Hut, montado en lounge. La sombra ya está; el resto lo pone quien organiza.", en: "Under the Tiki Hut, set up as a lounge. The shade is already there; whoever hosts brings the rest." },
+      alt: { es: "Bajo el pabellón: un montaje lounge con barra y guirnaldas entre los postes de madera", en: "Under the Pavilion: a lounge setup with a bar and string lights among the wood posts" },
+      pie: { es: "Bajo el Pabellón, montado en lounge. La sombra ya está; el resto lo pone quien organiza.", en: "Under the Pavilion, set up as a lounge. The shade is already there; whoever hosts brings the rest." },
     },
     bloques: [
       {
         titulo: { es: "El problema de un bridal shower es la hora", en: "The problem with a bridal shower brunch is the time of day" },
         cuerpo: {
-          es: "Un shower casi nunca es de noche: es un brunch o un almuerzo, entre las once y las tres. Es el peor sol del día en Miami, y por eso la alternativa habitual es un restaurante, que resuelve el sol encerrando a treinta personas en una sala con aire acondicionado. Aquí la palapa hace lo mismo sin cerrar nada: techo de paja a cuatro aguas, ~4.000 ft² de sombra continua, abierta por los cuatro costados. Corre el aire, se oye la conversación y las fotos salen con luz de día, no con luz de techo. La palapa para el sol y la lluvia vertical, pero no tiene cierres laterales: con viento el agua entra de lado, y un shower fuera de la temporada seca conviene que presupueste carpas laterales.",
-          en: "A shower is almost never a night event: it is brunch or lunch, somewhere between eleven and three. That is the worst stretch of sun in the Miami day, which is why the usual answer is a restaurant, and a restaurant handles the sun by shutting thirty people into a room with the air conditioning running. The Tiki Hut does the same job without closing anything: a hipped thatch roof, some 4,000 sq ft of continuous shade, open on all four sides. Air moves, conversation carries, and the photos come out in daylight, not under ceiling lights. The thatch stops sun and vertical rain, but it has no side enclosures: in wind the rain comes in sideways, and a shower outside the dry season should budget for side panels.",
+          es: "Un shower casi nunca es de noche: es un brunch o un almuerzo, entre las once y las tres. Es el peor sol del día en Miami, y por eso la alternativa habitual es un restaurante, que resuelve el sol encerrando a treinta personas en una sala con aire acondicionado. Aquí el pabellón hace lo mismo sin cerrar nada: techo de paja a cuatro aguas, ~4.000 ft² de sombra continua, abierto por los cuatro costados. Corre el aire, se oye la conversación y las fotos salen con luz de día, no con luz de techo. El pabellón para el sol y la lluvia vertical, pero no tiene cierres laterales: con viento el agua entra de lado, y un shower fuera de la temporada seca conviene que presupueste carpas laterales.",
+          en: "A shower is almost never a night event: it is brunch or lunch, somewhere between eleven and three. That is the worst stretch of sun in the Miami day, which is why the usual answer is a restaurant, and a restaurant handles the sun by shutting thirty people into a room with the air conditioning running. The Pavilion does the same job without closing anything: a hipped thatch roof, some 4,000 sq ft of continuous shade, open on all four sides. Air moves, conversation carries, and the photos come out in daylight, not under ceiling lights. The roof stops sun and vertical rain, but it has no side enclosures: in wind the rain comes in sideways, and a shower outside the dry season should budget for side panels.",
         },
       },
       {
         titulo: { es: "Qué hay debajo del techo: nueve postes y césped", en: "What's under the roof: nine posts and turf" },
         cuerpo: {
-          es: "El montaje gira alrededor de tres cosas que ya existen. Los postes: el techo de paja descansa sobre una retícula de nueve postes de madera, a unos 24 ft entre ejes, y la mesa larga, la de postres y el fondo de fotos van entre ellos, no contra una pared. El piso: bajo la palapa es césped artificial; la arena del jardín queda del lado de las cabañas, no aquí. Y el paseo pavimentado entre las dos hileras de palmeras, fondo de fotos sin montar nada, a cuatro minutos a pie de Wynwood Walls. Colgar de la estructura —arcos, guirnaldas, telas— se estudia en la visita técnica: cada carga se revisa punto por punto antes de autorizarla, y no hay límite de carga publicado porque no está levantado.",
-          en: "The layout works around three things that already exist. The posts: the thatch roof rests on a grid of nine wood posts, about 24 ft apart, and the long table, the dessert table and the photo backdrop go between them, not against a wall. The floor: under the Tiki Hut it is artificial turf; the garden's sand is over on the cabanas' side, not here. And the paved walk between the two rows of palms, a photo backdrop before you build a thing, a four-minute walk from Wynwood Walls. Hanging anything from the structure—arches, garlands, fabric—is assessed at the site visit: every hanging load is reviewed point by point before it is signed off, and no load limit is published because it has not been surveyed yet.",
+          es: "El montaje gira alrededor de tres cosas que ya existen. Los postes: el techo de paja descansa sobre una retícula de nueve postes de madera, a unos 24 ft entre ejes, y la mesa larga, la de postres y el fondo de fotos van entre ellos, no contra una pared. El piso: bajo el pabellón es césped artificial; la arena del jardín queda del lado de las cabañas, no aquí. Y el paseo pavimentado entre las dos hileras de palmeras, fondo de fotos sin montar nada, a cuatro minutos a pie de Wynwood Walls. Colgar de la estructura —arcos, guirnaldas, telas— se estudia en la visita técnica: cada carga se revisa punto por punto antes de autorizarla, y no hay límite de carga publicado porque no está levantado.",
+          en: "The layout works around three things that already exist. The posts: the thatch roof rests on a grid of nine wood posts, about 24 ft apart, and the long table, the dessert table and the photo backdrop go between them, not against a wall. The floor: under the Pavilion it is artificial turf; the garden's sand is over on the cabanas' side, not here. And the paved walk between the two rows of palms, a photo backdrop before you build a thing, a four-minute walk from Wynwood Walls. Hanging anything from the Pavilion—arches, garlands, fabric—is assessed at the site visit: every hanging load is reviewed point by point before it is signed off, and no load limit is published because it has not been surveyed yet.",
         },
       },
       {
@@ -1161,8 +1161,8 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "Cuánto recinto hace falta, y qué se mide en la visita", en: "How much of the site you need, and what gets measured at the visit" },
         cuerpo: {
-          es: "Para un shower el Tiki Hut suelto suele bastar; el jardín de ~18.000 ft² se suma solo si hace falta. Hace falta si quieres las cabañas: las seis cabañas amuebladas están en el jardín, no bajo la palapa. Son fijas y van con el inmueble: con el jardín en la reserva no se cobran aparte. Un baby shower funciona igual a esta hora; si tu pregunta es si se puede alquilar solo una parte, o buscas sitio para un bautizo o un cumpleaños, esa respuesta está en Eventos pequeños, y el día grande de la boda, en Bodas. El número de baños y el aforo sentado y de pie con tu montaje no se publican porque no están medidos: se levantan en la visita técnica y se entregan por escrito.",
-          en: "For a shower the Tiki Hut on its own is usually enough; the ~18,000 sq ft garden joins only if needed. You need it if you want the cabanas: the six furnished cabanas sit in the garden, not under the thatch. They are fixed and come with the property: with the garden in the booking, there is no separate charge. A baby shower works the same way at this hour; if your question is whether you can rent just one part, or you need a christening or birthday venue, see Small events; the big day is on Weddings. The number of restrooms and seated and standing capacity for your setup are not published because they are not measured yet: both are measured at the site visit and delivered in writing.",
+          es: "Para un shower el Pabellón suelto suele bastar; el jardín de ~18.000 ft² se suma solo si hace falta. Hace falta si quieres las cabañas: las seis cabañas amuebladas están en el jardín, no bajo el pabellón. Son fijas y van con el inmueble: con el jardín en la reserva no se cobran aparte. Un baby shower funciona igual a esta hora; si tu pregunta es si se puede alquilar solo una parte, o buscas sitio para un bautizo o un cumpleaños, esa respuesta está en Eventos pequeños, y el día grande de la boda, en Bodas. El número de baños y el aforo sentado y de pie con tu montaje no se publican porque no están medidos: se levantan en la visita técnica y se entregan por escrito.",
+          en: "For a shower the Pavilion on its own is usually enough; the ~18,000 sq ft garden joins only if needed. You need it if you want the cabanas: the six furnished cabanas sit in the garden, not under the Pavilion. They are fixed and come with the property: with the garden in the booking, there is no separate charge. A baby shower works the same way at this hour; if your question is whether you can rent just one part, or you need a christening or birthday venue, see Small events; the big day is on Weddings. The number of restrooms and seated and standing capacity for your setup are not published because they are not measured yet: both are measured at the site visit and delivered in writing.",
         },
       },
     ],
@@ -1177,16 +1177,16 @@ export const PAGINAS: Pagina[] = [
     ojo: { es: "Uso · fin de semana de boda", en: "Use · wedding weekend" },
     h1: { es: "Cena de ensayo en Wynwood", en: "Rehearsal dinner venue in Wynwood" },
     respuesta: {
-      es: "Club Wynwood alquila el recinto para la cena de ensayo y el fin de semana de boda en Wynwood, Miami. La cena de la víspera se monta bajo la palapa techada, que es también el plan de lluvia, y el after-party en el jardín: dos espacios contiguos en una sola dirección. No vendemos comida: el catering lo eliges tú.",
-      en: "Club Wynwood rents the venue for the rehearsal dinner and the rest of the wedding weekend in Wynwood, Miami. Friday's dinner goes under the covered Tiki Hut, which doubles as the rain plan, and the after-party in the garden: two adjacent spaces at one address. We do not sell food: you hire your own caterer.",
+      es: "Club Wynwood alquila el recinto para la cena de ensayo y el fin de semana de boda en Wynwood, Miami. La cena de la víspera se monta bajo el pabellón techado, que es también el plan de lluvia, y el after-party en el jardín: dos espacios contiguos en una sola dirección. No vendemos comida: el catering lo eliges tú.",
+      en: "Club Wynwood rents the venue for the rehearsal dinner and the rest of the wedding weekend in Wynwood, Miami. Friday's dinner goes under the covered Pavilion, which doubles as the rain plan, and the after-party in the garden: two adjacent spaces at one address. We do not sell food: you hire your own caterer.",
     },
     title: {
       es: "Cena de ensayo en Wynwood, Miami | Club Wynwood",
       en: "Rehearsal dinner venue in Wynwood, Miami | Club Wynwood",
     },
     description: {
-      es: "Cena de ensayo y fin de semana de boda en Wynwood, Miami: la víspera bajo la palapa techada, el after-party en el jardín. No vendemos comida: tu catering.",
-      en: "Rehearsal dinner venue in Wynwood, Miami: Friday under the covered Tiki Hut, Saturday's after-party in the garden. We do not sell food: you hire your caterer.",
+      es: "Cena de ensayo y fin de semana de boda en Wynwood, Miami: la víspera bajo el pabellón techado, el after-party en el jardín. No vendemos comida: tu catering.",
+      en: "Rehearsal dinner venue in Wynwood, Miami: Friday under the covered Pavilion, Saturday's after-party in the garden. We do not sell food: you hire your caterer.",
     },
     cifras: [
       { etiqueta: { es: "Bajo techo (la cena)", en: "Covered (the dinner)" }, valor: { es: "~4.000 ft²", en: "~4,000 sq ft" } },
@@ -1196,8 +1196,8 @@ export const PAGINAS: Pagina[] = [
     ],
     foto: {
       src: "/assets/flyer-palapa-lounge.jpg",
-      alt: { es: "Bajo la palapa: un montaje lounge con barra y guirnaldas", en: "Under the structure: a lounge setup with a bar and string lights" },
-      pie: { es: "La palapa montada con barra y guirnaldas: el mismo techo que recoge la cena del viernes.", en: "The Tiki Hut set up as a lounge with a bar: the same roof that hosts Friday's dinner." },
+      alt: { es: "Bajo el pabellón: un montaje lounge con barra y guirnaldas", en: "Under the Pavilion: a lounge setup with a bar and string lights" },
+      pie: { es: "El pabellón montado con barra y guirnaldas: el mismo techo que recoge la cena del viernes.", en: "The Pavilion set up as a lounge with a bar: the same roof that hosts Friday's dinner." },
     },
     bloques: [
       {
@@ -1208,10 +1208,10 @@ export const PAGINAS: Pagina[] = [
         },
       },
       {
-        titulo: { es: "Viernes bajo la palapa, sábado en el jardín", en: "Friday under the Tiki Hut, Saturday in the garden" },
+        titulo: { es: "Viernes bajo el pabellón, sábado en el jardín", en: "Friday under the Pavilion, Saturday in the garden" },
         cuerpo: {
-          es: "Los dos espacios están uno al lado del otro, pero no se sienten igual. El Tiki Hut son ~4.000 ft² de paja a cuatro aguas: techo fijo, abierto por los cuatro costados. Para el sol y para la lluvia vertical basta solo; si la fecha es de viento, conviene presupuestar cierres laterales. Con la luz baja funciona como comedor. Una cena de ensayo el viernes bajo la palapa y un after-party el sábado en los ~18.000 ft² del jardín ocurren en la misma dirección sin parecer el mismo evento, con una sola visita técnica y un solo interlocutor. Los dos montajes no ocupan el mismo suelo, aunque comparten el paseo de entrada: el orden y los tiempos entre una noche y otra se planifican en la visita.",
-          en: "The two spaces sit side by side, but they do not feel alike. The Tiki Hut is ~4,000 sq ft under a four-sided thatch roof, open on all four sides. For sun and vertical rain it is enough on its own; on a windy date, budget for side enclosures. With the lighting down it works as a dining room. A Friday rehearsal dinner under the Tiki Hut and a Saturday after-party across the ~18,000 sq ft of garden happen at one address without looking like the same event, with one site visit and one point of contact. The two load-ins do not sit on the same ground, though they share the entrance walk: the order and timing between the two nights are planned at the site visit.",
+          es: "Los dos espacios están uno al lado del otro, pero no se sienten igual. El Pabellón son ~4.000 ft² de paja a cuatro aguas: techo fijo, abierto por los cuatro costados. Para el sol y para la lluvia vertical basta solo; si la fecha es de viento, conviene presupuestar cierres laterales. Con la luz baja funciona como comedor. Una cena de ensayo el viernes bajo el pabellón y un after-party el sábado en los ~18.000 ft² del jardín ocurren en la misma dirección sin parecer el mismo evento, con una sola visita técnica y un solo interlocutor. Los dos montajes no ocupan el mismo suelo, aunque comparten el paseo de entrada: el orden y los tiempos entre una noche y otra se planifican en la visita.",
+          en: "The two spaces sit side by side, but they do not feel alike. The Pavilion is ~4,000 sq ft under a four-sided thatch roof, open on all four sides. For sun and vertical rain it is enough on its own; on a windy date, budget for side enclosures. With the lighting down it works as a dining room. A Friday rehearsal dinner under the Pavilion and a Saturday after-party across the ~18,000 sq ft of garden happen at one address without looking like the same event, with one site visit and one point of contact. The two load-ins do not sit on the same ground, though they share the entrance walk: the order and timing between the two nights are planned at the site visit.",
         },
       },
       {
@@ -1224,8 +1224,8 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "Cocina de apoyo, y la fiesta de compromiso", en: "A support kitchen, and the engagement party" },
         cuerpo: {
-          es: "Al aire libre no hay cocina. El edificio, que se alquila aparte desde el 1 de noviembre de 2026, tiene una cocina de apoyo —isla, nevera de dos puertas, microondas y alacenas—, no una cocina de producción. Si tu catering necesita cocinar en sitio, eso se resuelve con equipo móvil y se define en la visita. Club Wynwood tiene licencia de licor propia, con su propio número, y hay área donde montar la barra; el detalle del servicio de bebidas se cierra en la visita. La fiesta de compromiso es otro calendario: llega meses antes, sin ceremonia ni protocolo, y usa uno solo de los dos espacios y de pie. Si son 50 a 150 invitados, la página de eventos pequeños explica cómo se contrata solo el Tiki Hut.",
-          en: "Outdoors there is no kitchen. The building, rented separately and available from November 1, 2026, has a support kitchen — an island, a two-door fridge, a microwave and cabinets — not a production kitchen. If your caterer needs to cook on site, that is solved with mobile equipment and settled at the site visit. Club Wynwood holds its own liquor license, and there is a dedicated area for the bar setup; beverage service is settled at the visit. An engagement party runs on a different calendar: it comes months earlier, with no ceremony and no timeline, and uses just one of the two spaces, standing. If it is 50 to 150 guests, the small events page explains how to book just the Tiki Hut.",
+          es: "Al aire libre no hay cocina. El edificio, que se alquila aparte desde el 1 de noviembre de 2026, tiene una cocina de apoyo —isla, nevera de dos puertas, microondas y alacenas—, no una cocina de producción. Si tu catering necesita cocinar en sitio, eso se resuelve con equipo móvil y se define en la visita. Club Wynwood tiene licencia de licor propia, con su propio número, y hay área donde montar la barra; el detalle del servicio de bebidas se cierra en la visita. La fiesta de compromiso es otro calendario: llega meses antes, sin ceremonia ni protocolo, y usa uno solo de los dos espacios y de pie. Si son 50 a 150 invitados, la página de eventos pequeños explica cómo se contrata solo el Pabellón.",
+          en: "Outdoors there is no kitchen. The building, rented separately and available from November 1, 2026, has a support kitchen — an island, a two-door fridge, a microwave and cabinets — not a production kitchen. If your caterer needs to cook on site, that is solved with mobile equipment and settled at the site visit. Club Wynwood holds its own liquor license, and there is a dedicated area for the bar setup; beverage service is settled at the visit. An engagement party runs on a different calendar: it comes months earlier, with no ceremony and no timeline, and uses just one of the two spaces, standing. If it is 50 to 150 guests, the small events page explains how to book just the Pavilion.",
         },
       },
     ],
@@ -1240,8 +1240,8 @@ export const PAGINAS: Pagina[] = [
     ojo: { es: "Comparación · salón o jardín", en: "Comparison · ballroom vs. garden" },
     h1: { es: "En vez de un salón", en: "Instead of a banquet hall" },
     respuesta: {
-      es: "Club Wynwood es un recinto de fiestas al aire libre en Wynwood, Miami: ~22.000 ft² con ~4.000 ft² techados bajo palapa, y no un salón cerrado. Frente a un salón cambian tres cosas: la carga entra por una calle distinta de la de los invitados, el catering lo eliges tú y el recinto tiene licencia de licor propia.",
-      en: "Club Wynwood is a ~22,000 sq ft open-air party venue in Wynwood, Miami, with ~4,000 sq ft covered by the tiki hut, not an enclosed banquet hall. Compared with a hall, three things change: freight comes in on a different street from your guests, you choose your own caterer, and the venue holds its own liquor license.",
+      es: "Club Wynwood es un recinto de fiestas al aire libre en Wynwood, Miami: ~22.000 ft² con ~4.000 ft² techados bajo el pabellón, y no un salón cerrado. Frente a un salón cambian tres cosas: la carga entra por una calle distinta de la de los invitados, el catering lo eliges tú y el recinto tiene licencia de licor propia.",
+      en: "Club Wynwood is a ~22,000 sq ft open-air party venue in Wynwood, Miami, with ~4,000 sq ft covered by the Pavilion, not an enclosed banquet hall. Compared with a hall, three things change: freight comes in on a different street from your guests, you choose your own caterer, and the venue holds its own liquor license.",
     },
     title: {
       es: "Salón de fiestas en Miami, al aire libre | Club Wynwood",
@@ -1249,7 +1249,7 @@ export const PAGINAS: Pagina[] = [
     },
     description: {
       es: "¿Buscas un salón de fiestas en Miami? Esto es un recinto al aire libre de ~22.000 ft² en Wynwood, con ~4.000 techados, tu catering y licencia de licor propia.",
-      en: "Looking for a party hall rental in Miami? This is a ~22,000 sq ft open-air venue in Wynwood, ~4,000 under the tiki hut, your caterer and its own liquor license.",
+      en: "Looking for a party hall rental in Miami? This is a ~22,000 sq ft open-air venue in Wynwood, ~4,000 under the Pavilion, your caterer and its own liquor license.",
     },
     cifras: [
       { etiqueta: { es: "Techado", en: "Covered" }, valor: { es: "~4.000 ft²", en: "~4,000 sq ft" } },
@@ -1259,8 +1259,8 @@ export const PAGINAS: Pagina[] = [
     ],
     foto: {
       src: "/assets/flyer-palapa-lounge.jpg",
-      alt: { es: "Bajo la palapa, montada para una fiesta: barra, guirnaldas y techo de paja sobre postes de madera", en: "Under the tiki hut, set up for a party: a bar, string lights and a thatched roof on timber posts" },
-      pie: { es: "Un montaje de fiesta bajo la palapa: lo que en un salón serían moqueta y lámparas, aquí es paja y guirnaldas.", en: "A party setup under the tiki hut: where a hall would have carpet and chandeliers, here it is thatch and string lights." },
+      alt: { es: "Bajo el pabellón, montado para una fiesta: barra, guirnaldas y techo de paja sobre postes de madera", en: "Under the Pavilion, set up for a party: a bar, string lights and a thatched roof on timber posts" },
+      pie: { es: "Un montaje de fiesta bajo el pabellón: lo que en un salón serían moqueta y lámparas, aquí es paja y guirnaldas.", en: "A party setup under the Pavilion: where a hall would have carpet and chandeliers, here it is thatch and string lights." },
     },
     bloques: [
       {
@@ -1273,22 +1273,22 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "Licencia de licor propia, con número propio", en: "Its own liquor license, with its own number" },
         cuerpo: {
-          es: "Es la pregunta que más presupuestos rompe al comparar salones, y conviene hacerla antes de reservar: ¿el sitio tiene licencia de licor propia o depende de un tercero? Club Wynwood tiene licencia de licor de Miami propia, con su propio número, y no todos los venues de la zona la tienen. El número y sus condiciones no se publican: se entregan con la ficha técnica. Hay área donde montar barra bajo la palapa. Con la comida pasa lo mismo que con la barra: no hay proveedor impuesto. Al aire libre no hay cocina, así que el catering monta en el sitio; si necesita cocina, la del edificio se suma al alquiler como adicional desde el 1 de noviembre de 2026.",
-          en: "It is the question that breaks the most budgets when comparing halls, and worth asking before you book: does the venue hold its own liquor license, or does it depend on a third party? Club Wynwood holds its own Miami liquor license, with its own license number, and not every venue in the area does. The number and its conditions are not published: they come with the spec sheet. There is room for a bar setup under the tiki hut. Food works the same way as the bar: there is no exclusive caterer and no preferred-vendor list. Outdoors there is no kitchen, so the caterer sets up on site; if they need one, the building's kitchen is available as an add-on to the rental starting November 1, 2026.",
+          es: "Es la pregunta que más presupuestos rompe al comparar salones, y conviene hacerla antes de reservar: ¿el sitio tiene licencia de licor propia o depende de un tercero? Club Wynwood tiene licencia de licor de Miami propia, con su propio número, y no todos los venues de la zona la tienen. El número y sus condiciones no se publican: se entregan con la ficha técnica. Hay área donde montar barra bajo el pabellón. Con la comida pasa lo mismo que con la barra: no hay proveedor impuesto. Al aire libre no hay cocina, así que el catering monta en el sitio; si necesita cocina, la del edificio se suma al alquiler como adicional desde el 1 de noviembre de 2026.",
+          en: "It is the question that breaks the most budgets when comparing halls, and worth asking before you book: does the venue hold its own liquor license, or does it depend on a third party? Club Wynwood holds its own Miami liquor license, with its own license number, and not every venue in the area does. The number and its conditions are not published: they come with the spec sheet. There is room for a bar setup under the Pavilion. Food works the same way as the bar: there is no exclusive caterer and no preferred-vendor list. Outdoors there is no kitchen, so the caterer sets up on site; if they need one, the building's kitchen is available as an add-on to the rental starting November 1, 2026.",
         },
       },
       {
         titulo: { es: "Para qué fiesta es esta página, y para cuál no", en: "Which party this page is for, and which it is not" },
         cuerpo: {
-          es: "Quien busca un salón de fiestas suele pensar en una fiesta sentada de entre 150 y 300 personas: un cumpleaños redondo, un aniversario, un bautizo grande, una celebración familiar. Esa es la medida de esta página, y aquí se hace con el jardín y la palapa juntos; cuánta gente cabe con tu montaje —mesas, pista, barra— está en la página de aforo. Si la fiesta es de 50 a 150 invitados no hace falta contratar el recinto entero: se alquila solo el Tiki Hut, y eso tiene su propia página, Eventos pequeños. Una quinceañera tiene la suya. Y una activación de marca o una cena de empresa están en corporativo y en fin de año.",
-          en: "Anyone searching for a banquet hall usually has a seated party of 150 to 300 people in mind: a milestone birthday, an anniversary, a large christening, a family celebration. That is the size this page is about, and here it takes the garden and the tiki hut together; how many people fit with your layout — tables, dance floor, bar — lives on the capacity page. If the party is 50 to 150 guests you do not need the whole venue: the Tiki Hut books on its own, and that has its own page, Small events. A quinceañera or a sweet sixteen has its own. And a brand activation or a company dinner lives under corporate and holiday party.",
+          es: "Quien busca un salón de fiestas suele pensar en una fiesta sentada de entre 150 y 300 personas: un cumpleaños redondo, un aniversario, un bautizo grande, una celebración familiar. Esa es la medida de esta página, y aquí se hace con el jardín y el pabellón juntos; cuánta gente cabe con tu montaje —mesas, pista, barra— está en la página de aforo. Si la fiesta es de 50 a 150 invitados no hace falta contratar el recinto entero: se alquila solo el Pabellón, y eso tiene su propia página, Eventos pequeños. Una quinceañera tiene la suya. Y una activación de marca o una cena de empresa están en corporativo y en fin de año.",
+          en: "Anyone searching for a banquet hall usually has a seated party of 150 to 300 people in mind: a milestone birthday, an anniversary, a large christening, a family celebration. That is the size this page is about, and here it takes the garden and the Pavilion together; how many people fit with your layout — tables, dance floor, bar — lives on the capacity page. If the party is 50 to 150 guests you do not need the whole venue: the Pavilion books on its own, and that has its own page, Small events. A quinceañera or a sweet sixteen has its own. And a brand activation or a company dinner lives under corporate and holiday party.",
         },
       },
       {
         titulo: { es: "Cuándo un salón te sirve más", en: "When a banquet hall suits you better" },
         cuerpo: {
-          es: "Si lo que necesitas es aire acondicionado, comida incluida y un precio cerrado por persona, un salón te va a servir mejor que esto. Aquí no hay paredes: la palapa resuelve el sol y la lluvia que cae recta, pero con viento el agua entra de lado, así que conviene presupuestar cierres laterales como plan de lluvia; en invierno, con más razón. Tampoco hay mobiliario de banquete: lo fijo son las palmeras, los setos, las seis cabañas amuebladas y las mesas de picnic; el resto lo traes tú, y no hay moqueta ni lámparas que discutan con tu decoración. Potencia, baños, plazas de estacionamiento, load-in, curfew y límite de decibelios no se publican: se miden en la visita y se confirman por escrito.",
-          en: "If what you need is air conditioning, food included and a flat per-person price, a hall will serve you better than this. There are no walls here: the tiki hut handles sun and rain falling straight down, but in wind the water comes in sideways, so budget for tent sidewalls as your rain plan — in winter all the more so. There is no banquet furniture either: what is fixed are the palms, the hedges, the six furnished cabanas and the picnic tables; everything else you bring, and there is no carpet or chandeliers arguing with your decor. Power, restrooms, parking spaces, load-in, curfew and the decibel limit are not published: they are measured on the site visit and confirmed in writing.",
+          es: "Si lo que necesitas es aire acondicionado, comida incluida y un precio cerrado por persona, un salón te va a servir mejor que esto. Aquí no hay paredes: el pabellón resuelve el sol y la lluvia que cae recta, pero con viento el agua entra de lado, así que conviene presupuestar cierres laterales como plan de lluvia; en invierno, con más razón. Tampoco hay mobiliario de banquete: lo fijo son las palmeras, los setos, las seis cabañas amuebladas y las mesas de picnic; el resto lo traes tú, y no hay moqueta ni lámparas que discutan con tu decoración. Potencia, baños, plazas de estacionamiento, load-in, curfew y límite de decibelios no se publican: se miden en la visita y se confirman por escrito.",
+          en: "If what you need is air conditioning, food included and a flat per-person price, a hall will serve you better than this. There are no walls here: the Pavilion handles sun and rain falling straight down, but in wind the water comes in sideways, so budget for tent sidewalls as your rain plan — in winter all the more so. There is no banquet furniture either: what is fixed are the palms, the hedges, the six furnished cabanas and the picnic tables; everything else you bring, and there is no carpet or chandeliers arguing with your decor. Power, restrooms, parking spaces, load-in, curfew and the decibel limit are not published: they are measured on the site visit and confirmed in writing.",
         },
       },
     ],
@@ -1303,26 +1303,26 @@ export const PAGINAS: Pagina[] = [
     ojo: { es: "Uso · Sweet 16", en: "Use · Sweet 16" },
     h1: { es: "Sweet 16", en: "Sweet 16" },
     respuesta: {
-      es: "Club Wynwood es un venue al aire libre para un Sweet 16 en Wynwood, Miami. Hasta ~150 invitados, se contrata solo el Tiki Hut: ~4.000 ft² bajo una palapa abierta por los cuatro costados. Con más invitados, el recinto completo de ~22.000 ft², hasta ~600 de pie. El espacio llega vacío; DJ, catering y decoración los pones tú.",
-      en: "Club Wynwood is an outdoor Sweet 16 venue in Wynwood, Miami. A sweet sixteen of up to ~150 guests books the Tiki Hut alone: ~4,000 sq ft under a thatched roof open on all four sides. Larger parties take the whole ~22,000 sq ft site, up to ~600 standing. The space comes empty; DJ, catering and decor are your vendors.",
+      es: "Club Wynwood es un venue al aire libre para un Sweet 16 en Wynwood, Miami. Hasta ~150 invitados, se contrata solo el Pabellón: ~4.000 ft² bajo un pabellón abierto por los cuatro costados. Con más invitados, el recinto completo de ~22.000 ft², hasta ~600 de pie. El espacio llega vacío; DJ, catering y decoración los pones tú.",
+      en: "Club Wynwood is an outdoor Sweet 16 venue in Wynwood, Miami. A sweet sixteen of up to ~150 guests books the Pavilion alone: ~4,000 sq ft under a thatched roof open on all four sides. Larger parties take the whole ~22,000 sq ft site, up to ~600 standing. The space comes empty; DJ, catering and decor are your vendors.",
     },
     title: {
       es: "Sweet 16 al aire libre en Wynwood, Miami | Club Wynwood",
       en: "Outdoor Sweet 16 venue in Wynwood, Miami | Club Wynwood",
     },
     description: {
-      es: "Sweet 16 al aire libre en Wynwood, Miami: hasta ~150 invitados, solo el Tiki Hut de ~4.000 ft²; con más, el recinto completo de ~22.000 ft². Llega vacío.",
-      en: "Outdoor Sweet 16 venue in Wynwood, Miami: up to ~150 guests, book just the ~4,000 sq ft Tiki Hut; more than that, the whole ~22,000 sq ft site. Comes empty.",
+      es: "Sweet 16 al aire libre en Wynwood, Miami: hasta ~150 invitados, solo el Pabellón de ~4.000 ft²; con más, el recinto completo de ~22.000 ft². Llega vacío.",
+      en: "Outdoor Sweet 16 venue in Wynwood, Miami: up to ~150 guests, book just the ~4,000 sq ft Pavilion; more than that, the whole ~22,000 sq ft site. Comes empty.",
     },
     cifras: [
-      { etiqueta: { es: "Solo el Tiki Hut", en: "Tiki Hut only" }, valor: { es: "~4.000 ft²", en: "~4,000 sq ft" } },
+      { etiqueta: { es: "Solo el Pabellón", en: "Pavilion only" }, valor: { es: "~4.000 ft²", en: "~4,000 sq ft" } },
       { etiqueta: { es: "Recinto completo", en: "Whole site" }, valor: { es: "~22.000 ft²", en: "~22,000 sq ft" } },
       { etiqueta: { es: "De pie (recinto completo)", en: "Standing (whole site)" }, valor: { es: "~600", en: "~600" } },
       { etiqueta: { es: "Cabañas fijas", en: "Fixed cabanas" }, valor: { es: "6", en: "6" } },
     ],
     foto: {
       src: "/assets/flyer-paseo-puerta.jpg",
-      alt: { es: "El paseo pavimentado entre las dos hileras de palmeras hasta la puerta del edificio, a ras de suelo, con el Tiki Hut a la izquierda y las cabañas a la derecha: el recorrido de entrada de un Sweet 16", en: "The paved walk between two rows of palms up to the building door, shot from ground level, with the Tiki Hut on the left and the cabanas on the right: the grand entrance walk for a Sweet 16" },
+      alt: { es: "El paseo pavimentado entre las dos hileras de palmeras hasta la puerta del edificio, a ras de suelo, con el Pabellón a la izquierda y las cabañas a la derecha: el recorrido de entrada de un Sweet 16", en: "The paved walk between two rows of palms up to the building door, shot from ground level, with the Pavilion on the left and the cabanas on the right: the grand entrance walk for a Sweet 16" },
       pie: { es: "El paseo: 15 × 108 ft entre dos hileras de palmeras, de la puerta del edificio al estacionamiento.", en: "The walk: 15 by 108 ft between two rows of palms, from the building door to the parking lot." },
     },
     bloques: [
@@ -1336,15 +1336,15 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "El número de invitados decide qué parte contratas", en: "The guest count decides what you book" },
         cuerpo: {
-          es: "Un Sweet 16 rara vez son 300 personas, y la lista de invitados es el primer número que decide qué parte del recinto contratas. Hasta unos 150 invitados, solo el Tiki Hut: ~4.000 ft² que se contratan sin el jardín y mantienen la fiesta reunida en vez de repartida por un lote que no puede llenar. Con más, el recinto completo: ~18.000 ft² de jardín más el Tiki Hut, ~22.000 ft² en total, hasta ~600 de pie o ~300 sentados. El Tiki Hut es además el plan de lluvia —techo de paja, abierto por los cuatro costados, cierres laterales para una fecha de invierno con viento— y tiene su propia página. Cuánta gente cabe bajo la palapa con tu montaje concreto se confirma en la visita técnica.",
-          en: "A Sweet 16 is rarely 300 people, and the guest list is the first number that decides which part of the site you book. Up to about 150 guests, the Tiki Hut alone: ~4,000 sq ft that book without the garden and keep the party together instead of scattered across a lot it cannot fill. Above that, the whole site: ~18,000 sq ft of garden plus the Tiki Hut, ~22,000 sq ft in all, up to ~600 standing or ~300 seated. The Tiki Hut is also the rain plan — thatch roof, open on all four sides, sidewalls for a windy winter date — and it has its own page. How many people fit under it with your specific layout is confirmed at the site visit.",
+          es: "Un Sweet 16 rara vez son 300 personas, y la lista de invitados es el primer número que decide qué parte del recinto contratas. Hasta unos 150 invitados, solo el Pabellón: ~4.000 ft² que se contratan sin el jardín y mantienen la fiesta reunida en vez de repartida por un lote que no puede llenar. Con más, el recinto completo: ~18.000 ft² de jardín más el Pabellón, ~22.000 ft² en total, hasta ~600 de pie o ~300 sentados. El Pabellón es además el plan de lluvia —techo de paja, abierto por los cuatro costados, cierres laterales para una fecha de invierno con viento— y tiene su propia página. Cuánta gente cabe bajo el pabellón con tu montaje concreto se confirma en la visita técnica.",
+          en: "A Sweet 16 is rarely 300 people, and the guest list is the first number that decides which part of the site you book. Up to about 150 guests, the Pavilion alone: ~4,000 sq ft that book without the garden and keep the party together instead of scattered across a lot it cannot fill. Above that, the whole site: ~18,000 sq ft of garden plus the Pavilion, ~22,000 sq ft in all, up to ~600 standing or ~300 seated. The Pavilion is also the rain plan — thatch roof, open on all four sides, sidewalls for a windy winter date — and it has its own page. How many people fit under it with your specific layout is confirmed at the site visit.",
         },
       },
       {
         titulo: { es: "De pie y con DJ, no un banquete sentado", en: "Standing, with a DJ — not a seated banquet" },
         cuerpo: {
-          es: "Una quinceañera va sentada —corte de honor, vals, cena— y el sitio tiene una página para eso. Un Sweet 16 va al revés: DJ, pista de baile, photobooth y casi toda la noche de pie. Por eso la cifra que importa aquí es la de pie, no la de sentados. Los postes y cabios de madera del Tiki Hut son de donde cuelgan el sonido y las luces; cualquier carga colgada, y la potencia que pide el DJ, se miden y se aprueban en la visita técnica. El paseo pavimentado entre dos hileras de palmeras es la entrada, y ya está hecha. Todo lo demás —catering, DJ, iluminación, mesas y sillas— lo traen tus proveedores: al aire libre no hay cocina y el espacio llega vacío.",
-          en: "A quinceañera runs seated — a court, a waltz, a dinner — and the site has a page for that. A Sweet 16 runs the other way: a DJ, a dance floor, a photo booth, most of the night on your feet. That is why the figure that matters here is standing, not seated. The Tiki Hut's timber posts and rafters are where sound and lights hang; any hung load, and the DJ's power draw, are measured and approved at the site visit. The paved walk between two rows of palms is the grand entrance, already built. Everything else — catering, DJ, lighting, tables and chairs — comes from your own vendors: there is no kitchen outdoors, and the space comes empty.",
+          es: "Una quinceañera va sentada —corte de honor, vals, cena— y el sitio tiene una página para eso. Un Sweet 16 va al revés: DJ, pista de baile, photobooth y casi toda la noche de pie. Por eso la cifra que importa aquí es la de pie, no la de sentados. Los postes y cabios de madera del Pabellón son de donde cuelgan el sonido y las luces; cualquier carga colgada, y la potencia que pide el DJ, se miden y se aprueban en la visita técnica. El paseo pavimentado entre dos hileras de palmeras es la entrada, y ya está hecha. Todo lo demás —catering, DJ, iluminación, mesas y sillas— lo traen tus proveedores: al aire libre no hay cocina y el espacio llega vacío.",
+          en: "A quinceañera runs seated — a court, a waltz, a dinner — and the site has a page for that. A Sweet 16 runs the other way: a DJ, a dance floor, a photo booth, most of the night on your feet. That is why the figure that matters here is standing, not seated. The Pavilion's timber posts and rafters are where sound and lights hang; any hung load, and the DJ's power draw, are measured and approved at the site visit. The paved walk between two rows of palms is the grand entrance, already built. Everything else — catering, DJ, lighting, tables and chairs — comes from your own vendors: there is no kitchen outdoors, and the space comes empty.",
         },
       },
       {
@@ -1366,8 +1366,8 @@ export const PAGINAS: Pagina[] = [
     ojo: { es: "Uso · desfiles y pasarela", en: "Use · runway and fashion shows" },
     h1: { es: "Desfiles de moda", en: "Runway shows" },
     respuesta: {
-      es: "Club Wynwood alquila un lote al aire libre en Wynwood, Miami, donde un desfile se monta sobre un paseo pavimentado de unos 15 × 108 ft, con la palapa techada de ~4.000 ft² al costado como backstage y carga por puerta propia. No es sede oficial de Miami Swim Week: es donde se produce el show satélite.",
-      en: "Club Wynwood rents an open-air lot in Wynwood, Miami, where a runway show sets up on a paved walkway of about 15 × 108 ft, with the ~4,000 sq ft thatched structure beside it as covered backstage and its own load-in gate. It is not an official Miami Swim Week venue: it is where the satellite show gets produced.",
+      es: "Club Wynwood alquila un lote al aire libre en Wynwood, Miami, donde un desfile se monta sobre un paseo pavimentado de unos 15 × 108 ft, con el pabellón techado de ~4.000 ft² al costado como backstage y carga por puerta propia. No es sede oficial de Miami Swim Week: es donde se produce el show satélite.",
+      en: "Club Wynwood rents an open-air lot in Wynwood, Miami, where a runway show sets up on a paved walkway of about 15 × 108 ft, with the ~4,000 sq ft covered pavilion beside it as covered backstage and its own load-in gate. It is not an official Miami Swim Week venue: it is where the satellite show gets produced.",
     },
     title: {
       es: "Desfiles de moda y satélites de Swim Week | Club Wynwood",
@@ -1399,22 +1399,22 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "Los dos costados no son iguales", en: "The two sides are not the same" },
         cuerpo: {
-          es: "Conviene saberlo antes de dibujar el montaje. Al oeste del paseo hay césped y el apron pavimentado de la fachada, con la palapa detrás: es el costado que admite filas de silla sobre firme. Al este todo es arena, y sobre ella la hilera de seis cabañas amuebladas, que son fijas y cuentan en el plano: sirven de primera fila con sofá, y lo que se siente delante de ellas pide entablado. Cuántas filas admite cada costado se define en la visita. El público entra por el sur, donde desemboca el paseo, así que el remate visual de la pasarela es la fachada del edificio con su puerta y su mural, y las fotos del final del recorrido salen con eso detrás.",
-          en: "Worth knowing before drawing the layout. West of the walkway there is turf and the paved apron along the façade, with the thatched structure behind: that is the side that takes rows of chairs on firm ground. East of it everything is sand, and on it the row of six furnished cabanas, which are fixed and count in the plan: they work as a sofa front row, and anything seated in front of them needs decking. How many rows each side takes is settled at the site visit. Guests come in from the south, where the walkway ends, so the visual end of the runway is the building façade with its door and mural, and the photos at the top of the walk come out with that behind.",
+          es: "Conviene saberlo antes de dibujar el montaje. Al oeste del paseo hay césped y el apron pavimentado de la fachada, con el pabellón detrás: es el costado que admite filas de silla sobre firme. Al este todo es arena, y sobre ella la hilera de seis cabañas amuebladas, que son fijas y cuentan en el plano: sirven de primera fila con sofá, y lo que se siente delante de ellas pide entablado. Cuántas filas admite cada costado se define en la visita. El público entra por el sur, donde desemboca el paseo, así que el remate visual de la pasarela es la fachada del edificio con su puerta y su mural, y las fotos del final del recorrido salen con eso detrás.",
+          en: "Worth knowing before drawing the layout. West of the walkway there is turf and the paved apron along the façade, with the covered pavilion behind: that is the side that takes rows of chairs on firm ground. East of it everything is sand, and on it the row of six furnished cabanas, which are fixed and count in the plan: they work as a sofa front row, and anything seated in front of them needs decking. How many rows each side takes is settled at the site visit. Guests come in from the south, where the walkway ends, so the visual end of the runway is the building façade with its door and mural, and the photos at the top of the walk come out with that behind.",
         },
       },
       {
         titulo: { es: "Backstage a pie de pasarela, carga por otra puerta", en: "Backstage at the runway's edge, load-in through its own gate" },
         cuerpo: {
-          es: "La palapa está al costado del tramo sur de la pasarela, en la esquina suroeste, con la cumbrera paralela al paseo: unos 54 × 60 ft, ~4.000 ft² techados contando aleros, abierta por los cuatro costados. Queda a pie de pasarela, así que sirve de backstage, maquillaje o sala de prensa sin alquilar carpa; el cierre visual para el cambio de vestuario lo trae tu producción, porque no hay paredes. Los accesos son dos y no se cruzan: la carga entra por NW 1st Ct, al oeste, a la franja pavimentada junto a la fachada, a un paso de la palapa; los invitados por NW 21st Ct, al sur. El ancho del portón y la carga admisible de los cabios se miden en la visita.",
-          en: "The thatched structure sits alongside the southern stretch of the runway, in the south-west corner, its ridge parallel to the walkway: about 54 × 60 ft, ~4,000 sq ft covered including eaves, open on all four sides. It is right at the runway edge, so it works as backstage, hair and makeup or a press area without renting a tent; the visual screen for changing is on your production, because there are no walls. There are two entrances and they do not cross: load-in is off NW 1st Ct to the west, onto the paved strip along the façade, a step from the structure; guests come in off NW 21st Ct to the south. Gate width and the rafters' load rating get measured at the site visit.",
+          es: "El pabellón está al costado del tramo sur de la pasarela, en la esquina suroeste, con la cumbrera paralela al paseo: unos 54 × 60 ft, ~4.000 ft² techados contando aleros, abierta por los cuatro costados. Queda a pie de pasarela, así que sirve de backstage, maquillaje o sala de prensa sin alquilar carpa; el cierre visual para el cambio de vestuario lo trae tu producción, porque no hay paredes. Los accesos son dos y no se cruzan: la carga entra por NW 1st Ct, al oeste, a la franja pavimentada junto a la fachada, a un paso del pabellón; los invitados por NW 21st Ct, al sur. El ancho del portón y la carga admisible de los cabios se miden en la visita.",
+          en: "The Pavilion sits alongside the southern stretch of the runway, in the south-west corner, its ridge parallel to the walkway: about 54 × 60 ft, ~4,000 sq ft covered including eaves, open on all four sides. It is right at the runway edge, so it works as backstage, hair and makeup or a press area without renting a tent; the visual screen for changing is on your production, because there are no walls. There are two entrances and they do not cross: load-in is off NW 1st Ct to the west, onto the paved strip along the façade, a step from the Pavilion; guests come in off NW 21st Ct to the south. Gate width and the rafters' load rating get measured at the site visit.",
         },
       },
       {
         titulo: { es: "Luz, lluvia y temporada", en: "Light, rain and the season" },
         cuerpo: {
-          es: "Un desfile aquí se hace al anochecer, y el recinto no tiene iluminación de casa: la luz de pasarela la trae tu producción, y la potencia disponible se confirma en la visita. El techo de paja aguanta la lluvia vertical; con viento el agua entra de lado, así que el plan de lluvia debe presupuestar lonas laterales para la palapa. Aforo sentado y de pie del montaje concreto, curfew, límite de decibelios y número de baños se levantan en la visita y quedan por escrito. Sobre el calendario: el exterior se reserva desde el 1 de octubre de 2026, así que la primera Swim Week vendible es la de 2027; si el show necesita permiso de evento especial de la City of Miami, la conversación útil empieza meses antes.",
-          en: "A show here runs at dusk, and the site has no house lighting: runway lighting is on your production, and the available power, with its amperage, is confirmed at the site visit. The thatched roof handles straight-down rain; in wind it blows in sideways, so the rain plan should budget sidewalls for the structure. Seated and standing capacity for your layout, curfew, the decibel limit and the restroom count are measured at that same visit and put in writing. On the calendar: the outdoor site takes bookings from October 1, 2026, so the first Swim Week on sale is the 2027 edition; if the show needs a City of Miami special-event permit, the useful conversation starts months ahead.",
+          es: "Un desfile aquí se hace al anochecer, y el recinto no tiene iluminación de casa: la luz de pasarela la trae tu producción, y la potencia disponible se confirma en la visita. El techo de paja aguanta la lluvia vertical; con viento el agua entra de lado, así que el plan de lluvia debe presupuestar lonas laterales para el pabellón. Aforo sentado y de pie del montaje concreto, curfew, límite de decibelios y número de baños se levantan en la visita y quedan por escrito. Sobre el calendario: el exterior se reserva desde el 1 de octubre de 2026, así que la primera Swim Week vendible es la de 2027; si el show necesita permiso de evento especial de la City of Miami, la conversación útil empieza meses antes.",
+          en: "A show here runs at dusk, and the site has no house lighting: runway lighting is on your production, and the available power, with its amperage, is confirmed at the site visit. The thatched roof handles straight-down rain; in wind it blows in sideways, so the rain plan should budget sidewalls for the Pavilion. Seated and standing capacity for your layout, curfew, the decibel limit and the restroom count are measured at that same visit and put in writing. On the calendar: the outdoor site takes bookings from October 1, 2026, so the first Swim Week on sale is the 2027 edition; if the show needs a City of Miami special-event permit, the useful conversation starts months ahead.",
         },
       },
     ],
@@ -1449,15 +1449,15 @@ export const FAQ: Array<{ q: Record<Idioma, string>; a: Record<Idioma, string> }
   {
     q: { es: "¿Qué pasa si llueve?", en: "What happens if it rains?" },
     a: {
-      es: "El Tiki Hut es una palapa techada de ~4.000 ft² con techo de paja a cuatro aguas, abierta por los costados. Es cubierta fija: funciona como plan de lluvia sin mover el evento de sede. Para el agua que cae recta basta sola; con viento conviene cerrar los costados.",
-      en: "The Tiki Hut is a ~4,000 sq ft covered structure with a four-hipped thatched roof, open on the sides. It is permanent cover: it works as the rain plan without moving the event. For vertical rain it is enough on its own; with wind you will want the sides closed.",
+      es: "El Pabellón es un espacio techado de ~4.000 ft² con techo de paja a cuatro aguas, abierto por los costados. Es cubierta fija: funciona como plan de lluvia sin mover el evento de sede. Para el agua que cae recta basta solo; con viento conviene cerrar los costados.",
+      en: "The Pavilion is a ~4,000 sq ft covered space with a four-hipped thatched roof, open on the sides. It is permanent cover: it works as the rain plan without moving the event. For vertical rain it is enough on its own; with wind you will want the sides closed.",
     },
   },
   {
     q: { es: "¿Qué incluye el alquiler de Club Wynwood?", en: "What does renting Club Wynwood include?" },
     a: {
-      es: "Se alquila el espacio exterior: el Jardín de ~18.000 ft² y el Tiki Hut techado de ~4.000 ft², por separado o juntos, con las seis cabañas amuebladas y las mesas de picnic que ya están en el jardín. La producción, el catering, el sonido, la iluminación y el mobiliario adicional los aporta tu equipo o tu productora.",
-      en: "You rent the outdoor space: the ~18,000 sq ft Garden and the ~4,000 sq ft covered Tiki Hut, separately or together, with the six furnished cabanas and the picnic tables already in the garden. Production, catering, sound, lighting and extra furniture come from your team or your production company.",
+      es: "Se alquila el espacio exterior: el Jardín de ~18.000 ft² y el Pabellón techado de ~4.000 ft², por separado o juntos, con las seis cabañas amuebladas y las mesas de picnic que ya están en el jardín. La producción, el catering, el sonido, la iluminación y el mobiliario adicional los aporta tu equipo o tu productora.",
+      en: "You rent the outdoor space: the ~18,000 sq ft Garden and the ~4,000 sq ft covered Pavilion, separately or together, with the six furnished cabanas and the picnic tables already in the garden. Production, catering, sound, lighting and extra furniture come from your team or your production company.",
     },
   },
   {
@@ -1470,8 +1470,8 @@ export const FAQ: Array<{ q: Record<Idioma, string>; a: Record<Idioma, string> }
   {
     q: { es: "¿Se pueden alquilar los dos espacios por separado?", en: "Can the two spaces be rented separately?" },
     a: {
-      es: "Sí. El Jardín y el Tiki Hut se alquilan por separado o combinados. Son contiguos y comparten el paseo central, así que juntos funcionan como un solo recinto continuo y no como dos salas.",
-      en: "Yes. The Garden and the Tiki Hut rent separately or combined. They are contiguous and share the central walk, so together they work as one continuous site rather than two rooms.",
+      es: "Sí. El Jardín y el Pabellón se alquilan por separado o combinados. Son contiguos y comparten el paseo central, así que juntos funcionan como un solo recinto continuo y no como dos salas.",
+      en: "Yes. The Garden and the Pavilion rent separately or combined. They are contiguous and share the central walk, so together they work as one continuous site rather than two rooms.",
     },
   },
   {
@@ -1498,8 +1498,8 @@ export const FAQ: Array<{ q: Record<Idioma, string>; a: Record<Idioma, string> }
   {
     q: { es: "¿Desde cuándo se puede reservar?", en: "From when can it be booked?" },
     a: {
-      es: "El exterior —el Jardín y el Tiki Hut— está disponible desde el 1 de octubre de 2026. El edificio, desde el 1 de noviembre de 2026. Miami Art Week (30 de noviembre al 6 de diciembre) tiene fechas abiertas: escríbenos con la tuya.",
-      en: "The outdoors —the Garden and the Tiki Hut— is available from October 1, 2026. The building, from November 1, 2026. Miami Art Week (November 30 to December 6) has open dates: write to us with yours.",
+      es: "El exterior —el Jardín y el Pabellón— está disponible desde el 1 de octubre de 2026. El edificio, desde el 1 de noviembre de 2026. Miami Art Week (30 de noviembre al 6 de diciembre) tiene fechas abiertas: escríbenos con la tuya.",
+      en: "The outdoors —the Garden and the Pavilion— is available from October 1, 2026. The building, from November 1, 2026. Miami Art Week (November 30 to December 6) has open dates: write to us with yours.",
     },
   },
   {

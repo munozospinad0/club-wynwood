@@ -283,8 +283,8 @@
       ],
       "zoom": 1.9,
       "pregunta": {
-        "es": "Plan de lluvia: palapa de 4 000 ft²",
-        "en": "Rain plan: 4,000 sq ft structure"
+        "es": "Plan de lluvia: pabellón de 4 000 ft²",
+        "en": "Rain plan: 4,000 sq ft pavilion"
       },
       "texto": {
         "es": "¿Y si llueve? Para eso está la palapa: cuatro mil pies cuadrados bajo techo de paja, sobre postes de madera y abierta por los cuatro costados. Protege del sol y del agua que cae recta. Lo que no para es el viento con lluvia, así que para un evento de invierno conviene presupuestar carpa lateral. El resto del jardín queda al aire, y en Miami eso decide la fecha más que cualquier otra cosa.",
@@ -464,7 +464,7 @@
               122
             ],
             "zoom": 1.9,
-            "cifra": "rampa · palapa y puerta a un paso"
+            "cifra": "rampa · pabellón y puerta a un paso"
           },
           {
             "frase": "La entrada principal",
@@ -540,7 +540,7 @@
               122
             ],
             "zoom": 1.9,
-            "cifra": "ramp · structure and door a step away"
+            "cifra": "ramp · pavilion and door a step away"
           },
           {
             "frase": "The main entrance",

@@ -21,7 +21,7 @@ const T = {
   es: {
     ojo: "Fotografías · el recinto tal cual",
     titulo: "Trece fotos del predio, sin retoque de montaje.",
-    intro: "Aéreas, el paseo, bajo la palapa, las cabañas y un evento montado de noche. Toca una para verla a su tamaño. Las del flyer comercial son las más nítidas que existen del sitio; la fotografía documental propia sigue pendiente.",
+    intro: "Aéreas, el paseo, bajo el pabellón, las cabañas y un evento montado de noche. Toca una para verla a su tamaño. Las del flyer comercial son las más nítidas que existen del sitio; la fotografía documental propia sigue pendiente.",
     aria: "Galería de fotografías del recinto",
     abrir: "Ver la foto",
     cerrar: "Cerrar",
@@ -32,7 +32,7 @@ const T = {
   en: {
     ojo: "Photographs · the site as it is",
     titulo: "Thirteen photos of the site, no setup retouching.",
-    intro: "Aerials, the walk, under the structure, the cabanas and an event set up at night. Tap one to see it at its size. The ones from the commercial flyer are the sharpest that exist of the site; our own documentary photography is still pending.",
+    intro: "Aerials, the walk, under the Pavilion, the cabanas and an event set up at night. Tap one to see it at its size. The ones from the commercial flyer are the sharpest that exist of the site; our own documentary photography is still pending.",
     aria: "Photo gallery of the site",
     abrir: "View the photo",
     cerrar: "Close",

@@ -13,11 +13,11 @@ import {
  * ─────────────────────────────────────────────────────────────────────────
  *
  * Las dos plantas anteriores se dibujaron de los pies cuadrados declarados: un
- * rectángulo de 240 × 92 con la palapa en un extremo y el paseo cruzando de lado
+ * rectángulo de 240 × 92 con el pabellón en un extremo y el paseo cruzando de lado
  * a lado. Era otro sitio. El flyer de Newmark (LoopNet, «Site Plan & Photos»)
  * trae el plano de verdad, y dice otra cosa: lote de esquina (NW 1st Ct al
  * oeste, NW 21st Ct al sur), el edificio al norte, el paseo bajando de su
- * puerta hacia el sur, la palapa al suroeste, arena con picnic entre las dos,
+ * puerta hacia el sur, el pabellón al suroeste, arena con picnic entre las dos,
  * las pérgolas al este del paseo y estacionamiento propio al este y al sur.
  *
  * La geometría vive en `lib/recinto.geo.ts` y es LA MISMA que usa el dibujo
@@ -129,8 +129,8 @@ export default function LaminaPlanta({ lang }: { lang: Idioma }) {
           <figure style={{ margin: 0 }}>
             <svg viewBox={`0 0 ${VB.w.toFixed(0)} ${VB.h.toFixed(0)}`} role="img"
                  aria-label={es
-                   ? "Planta del recinto, norte arriba. Lote de esquina entre NW 1st Court al oeste y NW 21st Court al sur, de unos 131 por 258 pies. El edificio del operador ocupa el norte; de su puerta baja hacia el sur un paseo pavimentado de unos 108 pies con palmeras a los dos lados. Al oeste del paseo, en la esquina suroeste, la palapa techada de 54 por 60 pies sobre césped, con un apron pavimentado y una franja de césped entre ella y el edificio. Al este del paseo, junto a la puerta, un área de arena con mesas de picnic; después, seis cabañas en hilera y, más allá, el estacionamiento. Dos filas de estacionamiento con calle de maniobra cierran el sur, sobre NW 21st Court, por donde entra la producción."
-                   : "Site plan, north up. Corner lot between NW 1st Court to the west and NW 21st Court to the south, about 131 by 258 feet. The operator's building takes the north; from its door a paved walk of about 108 feet runs south with palms on both sides. West of the walk, in the south-west corner, the 54 by 60 foot thatched structure on turf, with a paved apron and a strip of turf between it and the building. East of the walk, by the door, a sand area with picnic tables; then six cabanas in a row and, beyond them, parking. Two rows of parking with a drive aisle close the south on NW 21st Court, where production comes in."}
+                   ? "Planta del recinto, norte arriba. Lote de esquina entre NW 1st Court al oeste y NW 21st Court al sur, de unos 131 por 258 pies. El edificio del operador ocupa el norte; de su puerta baja hacia el sur un paseo pavimentado de unos 108 pies con palmeras a los dos lados. Al oeste del paseo, en la esquina suroeste, el pabellón techado de 54 por 60 pies sobre césped, con un apron pavimentado y una franja de césped entre ella y el edificio. Al este del paseo, junto a la puerta, un área de arena con mesas de picnic; después, seis cabañas en hilera y, más allá, el estacionamiento. Dos filas de estacionamiento con calle de maniobra cierran el sur, sobre NW 21st Court, por donde entra la producción."
+                   : "Site plan, north up. Corner lot between NW 1st Court to the west and NW 21st Court to the south, about 131 by 258 feet. The operator's building takes the north; from its door a paved walk of about 108 feet runs south with palms on both sides. West of the walk, in the south-west corner, the 54 by 60 foot covered pavilion on turf, with a paved apron and a strip of turf between it and the building. East of the walk, by the door, a sand area with picnic tables; then six cabanas in a row and, beyond them, parking. Two rows of parking with a drive aisle close the south on NW 21st Court, where production comes in."}
                  style={{ width: "100%", height: "auto", maxHeight: "80vh", display: "block" }}>
 
               <defs>
@@ -218,7 +218,7 @@ export default function LaminaPlanta({ lang }: { lang: Idioma }) {
                 </g>
               ))}
 
-              {/* ---------- la palapa: en tinta, porque tener techo es EL dato ---------- */}
+              {/* ---------- el pabellón: en tinta, porque tener techo es EL dato ---------- */}
               <rect x={fx(PALAPA.x) + 3} y={fy(PALAPA.y) + 3} width={PALAPA.dx * U} height={PALAPA.dy * U} fill={TINTA} opacity="0.1" />
               <rect x={fx(PALAPA.x)} y={fy(PALAPA.y)} width={PALAPA.dx * U} height={PALAPA.dy * U} fill="#5c5445" stroke={TINTA} strokeWidth="1.4" />
               {/* Sin limatesas: sobre un cuadrado son una X, y el ojo lee «anulado» antes que «techo».
@@ -301,7 +301,7 @@ export default function LaminaPlanta({ lang }: { lang: Idioma }) {
                     txt={es ? "EDIFICIO" : "BUILDING"}
                     sub={es ? "DEL OPERADOR · 2 NIVELES · SE ALQUILA APARTE" : "OPERATOR'S · 2 LEVELS · LEASED SEPARATELY"} />
               <Zona x={fx(PALAPA.x + PALAPA.dx / 2)} y={fy(PALAPA.y + PALAPA.dy / 2) - 1}
-                    txt="TIKI HUT" sub={es ? "TECHADO · ~4 000 ft²" : "ROOFED · ~4,000 sq ft"} claro />
+                    txt={es ? "PABELLÓN" : "PAVILION"} sub={es ? "TECHADO · ~4 000 ft²" : "ROOFED · ~4,000 sq ft"} claro />
               <Zona x={fx(ARENA.x + ARENA.dx / 2)} y={fy(ARENA.y + 8)}
                     txt={es ? "ARENA · PICNIC" : "SAND · PICNIC"} />
               {/* el jardín, en vertical sobre el seto de NW 1st Ct: el césped está lleno de mesas y el apron, del camión */}
@@ -344,7 +344,7 @@ export default function LaminaPlanta({ lang }: { lang: Idioma }) {
                     : "○ 24 tables of 10 and one 60-seat banquet table on the walk = the ~300 seated, at the same scale as the site · 40 ft truck coming in from NW 21st Ct."}
               </span>
               <br />
-              {es ? "El jardín: ~18 000 ft² al aire libre · la palapa: ~4 000 ft² techados." : "The garden: ~18,000 sq ft open air · the structure: ~4,000 sq ft roofed."}
+              {es ? "El jardín: ~18 000 ft² al aire libre · el pabellón: ~4 000 ft² techados." : "The garden: ~18,000 sq ft open air · the Pavilion: ~4,000 sq ft roofed."}
             </figcaption>
           </figure>
 
@@ -363,8 +363,8 @@ export default function LaminaPlanta({ lang }: { lang: Idioma }) {
               {
                 p: es ? "¿Y si llueve?" : "What if it rains?",
                 r: es
-                  ? "La palapa cubre ~4 000 ft² con techo de paja. Está abierta por los cuatro costados: protege del sol y del agua que cae recta, no del viento con lluvia. Para un evento de invierno conviene carpa lateral."
-                  : "The structure covers ~4,000 sq ft under thatch. It is open on all four sides: it stops sun and vertical rain, not wind-driven rain. A winter event should budget for side tenting.",
+                  ? "El pabellón cubre ~4 000 ft² con techo de paja. Está abierto por los cuatro costados: protege del sol y del agua que cae recta, no del viento con lluvia. Para un evento de invierno conviene carpa lateral."
+                  : "The Pavilion covers ~4,000 sq ft under a thatch roof. It is open on all four sides: it stops sun and vertical rain, not wind-driven rain. A winter event should budget for side tenting.",
               },
               {
                 p: es ? "¿Por dónde entra la producción?" : "How does production get in?",
@@ -375,8 +375,8 @@ export default function LaminaPlanta({ lang }: { lang: Idioma }) {
               {
                 p: es ? "¿Y el edificio?" : "What about the building?",
                 r: es
-                  ? "Se alquila aparte, como zona 02: abajo, un salón a doble altura con cocina y baños; arriba, un altillo con cuatro salas privadas. Lo que aquí se ofrece es el recinto exterior: el jardín, la palapa, las cabañas y el estacionamiento propio."
-                  : "Rented separately, as zone 02: downstairs, a double-height hall with a kitchen and restrooms; upstairs, a mezzanine with four private rooms. What is offered here is the outdoor site: the garden, the thatched structure, the cabanas and the on-site parking.",
+                  ? "Se alquila aparte, como zona 02: abajo, un salón a doble altura con cocina y baños; arriba, un altillo con cuatro salas privadas. Lo que aquí se ofrece es el recinto exterior: el jardín, el pabellón, las cabañas y el estacionamiento propio."
+                  : "Rented separately, as zone 02: downstairs, a double-height hall with a kitchen and restrooms; upstairs, a mezzanine with four private rooms. What is offered here is the outdoor site: the garden, the covered pavilion, the cabanas and the on-site parking.",
               },
               {
                 p: es ? "¿Qué NO hay al aire libre?" : "What is NOT outdoors?",

@@ -37,6 +37,19 @@ const nextConfig: NextConfig = {
      */
     qualities: [70, 75, 78],
   },
+  /**
+   * La página del espacio techado se llamaba /tiki-hut. Daniel, 22-sep: fuera
+   * «palapa» y «Tiki Hut», ahora es «el Pabellón». La dirección vieja la tienen
+   * Google, los enlaces de sitio de Google Ads y quien la haya guardado: redirige
+   * permanente (308) para no perder a nadie ni lo indexado.
+   */
+  async redirects() {
+    return [
+      { source: "/es/tiki-hut", destination: "/es/el-pabellon", permanent: true },
+      { source: "/en/tiki-hut", destination: "/en/the-pavilion", permanent: true },
+      { source: "/tiki-hut", destination: "/es/el-pabellon", permanent: true },
+    ];
+  },
 };
 
 export default nextConfig;

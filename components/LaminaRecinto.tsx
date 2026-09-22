@@ -22,19 +22,19 @@ import { fotoOptimizada } from "@/lib/recorrido";
  *
  * Daniel encontró el flyer de Newmark en LoopNet con el PLANO DEL SITIO. Con él
  * se rehizo la geometría (`lib/recinto.geo.ts`): edificio al norte, paseo que
- * baja de su puerta hacia el sur, palapa al suroeste junto a NW 1st Ct, área de
- * arena con picnic entre palapa y edificio, las pérgolas al este del paseo,
+ * baja de su puerta hacia el sur, pabellón al suroeste junto a NW 1st Ct, área de
+ * arena con picnic entre pabellón y edificio, las pérgolas al este del paseo,
  * estacionamiento al este y al sur. El lote es de esquina, no una franja.
  *
  * Y se cambió la PROYECCIÓN (`lib/perspectiva.ts`): en vez de isométrica, una
  * cámara en perspectiva puesta donde estuvo el dron de la foto de portada, al
  * sur y elevada, mirando al edificio. Daniel: «trabaja en la perspectiva que sí
  * parezca real». Ahora lo lejano es más pequeño, el paseo se aleja hacia la
- * puerta y la palapa queda a la izquierda como en las fotos.
+ * puerta y el pabellón queda a la izquierda como en las fotos.
  *
  * Consecuencias en el código:
  *   · El orden de pintado importa: lo lejano primero. Los objetos sueltos
- *     (palmeras, pérgolas, la palapa, mesas de picnic, coches) se ordenan por
+ *     (palmeras, pérgolas, el pabellón, mesas de picnic, coches) se ordenan por
  *     profundidad real antes de pintarse.
  *   · Cada objeto se dibuja a la escala de su punto (`g.escala`): una palmera
  *     al fondo mide la mitad que una delante.
@@ -285,7 +285,7 @@ function Palapa({ g, mesasN }: { g: GeoPerspectiva; mesasN: number }) {
     { pts: [C, D, R2, R2], tono: "#bfa878", n: 9, centro: [cx, y + dy * 0.8] },
   ];
   const caras = carasBase.sort((m, n) => g.profundidad(n.centro[0], n.centro[1], 20) - g.profundidad(m.centro[0], m.centro[1], 20));
-  // Los aleros que miran a la cámara (más cerca que el centro de la palapa): ahí van el fleco y las goteras.
+  // Los aleros que miran a la cámara (más cerca que el centro del pabellón): ahí van el fleco y las goteras.
   type Alero = { q: Pt; r: Pt; lado: "n" | "s" | "e" | "o" };
   const alerosBase: Alero[] = [
     { q: [x, y + dy], r: [x + dx, y + dy], lado: "s" }, { q: [x + dx, y + dy], r: [x + dx, y], lado: "e" },
@@ -698,7 +698,7 @@ function Noche({ g }: { g: GeoPerspectiva }) {
    * es la arista `E.y` y la pantalla va al fondo (`E.y + E.dy`). Desde la
    * cámara del sur se ve por detrás, como en la típica foto de concierto desde
    * atrás del escenario: los haces barren hacia el público, que está en el paseo
-   * y bajo la palapa, de cara a nosotros.
+   * y bajo el pabellón, de cara a nosotros.
    */
   const E = ESCENARIO;
   const cxE = E.x + E.dx / 2;
@@ -727,13 +727,13 @@ function Noche({ g }: { g: GeoPerspectiva }) {
   const hilosPalapa: Array<[Pt, Pt]> = [0, 1, 2, 3, 4].map((k) => [p(PALAPA.x + 3, PALAPA.y + 3 + k * ((PALAPA.dy - 6) / 4), 9.6), p(PALAPA.x + PALAPA.dx - 3, PALAPA.y + 3 + k * ((PALAPA.dy - 6) / 4), 9.6)]);
   const bombillasPalapa: Pt[] = hilosPalapa.flatMap(([a, b]) => Array.from({ length: 11 }, (_, k) => lerp(a, b, (k + 0.5) / 11)));
   const perimetro = PALAPA_POSTES.filter(([px, py]) => px === PALAPA.x + 3 || px === PALAPA.x + PALAPA.dx - 3 || py === PALAPA.y + 3 || py === PALAPA.y + PALAPA.dy - 3);
-  // De noche la palapa es el volumen más cálido del predio: paja iluminada por dentro, postes en luz, suelo encendido y un lounge de mesas altas debajo (en la mitad norte; la mitad sur, de cara al escenario, es público).
+  // De noche el pabellón es el volumen más cálido del predio: paja iluminada por dentro, postes en luz, suelo encendido y un lounge de mesas altas debajo (en la mitad norte; la mitad sur, de cara al escenario, es público).
   const pcx = PALAPA.x + PALAPA.dx / 2, pcy = PALAPA.y + PALAPA.dy / 2;
   const PA = p(PALAPA.x, PALAPA.y, PALAPA_ALERO), PB = p(PALAPA.x + PALAPA.dx, PALAPA.y, PALAPA_ALERO), PC = p(PALAPA.x + PALAPA.dx, PALAPA.y + PALAPA.dy, PALAPA_ALERO), PD = p(PALAPA.x, PALAPA.y + PALAPA.dy, PALAPA_ALERO);
   const PR1 = p(pcx, pcy - PALAPA_CUMBRERA / 2, PALAPA_CUMBRE), PR2 = p(pcx, pcy + PALAPA_CUMBRERA / 2, PALAPA_CUMBRE);
   const techoNoche: Pt[][] = [[PA, PB, PR1, PR1], [PD, PA, PR1, PR2], [PB, PC, PR2, PR1], [PC, PD, PR2, PR2]];
   const lounge: Pt[] = [[PALAPA.x + 12, PALAPA.y + 8], [PALAPA.x + 24, PALAPA.y + 6], [PALAPA.x + 36, PALAPA.y + 10], [PALAPA.x + 14, PALAPA.y + 20], [PALAPA.x + 28, PALAPA.y + 22], [PALAPA.x + 40, PALAPA.y + 19]];
-  // El público de noche: sobre el paseo y en la mitad sur de la palapa, de cara al escenario del sur.
+  // El público de noche: sobre el paseo y en la mitad sur del pabellón, de cara al escenario del sur.
   const publicoNoche: Pt[] = [...MULTITUD_PASEO, ...MULTITUD_PALAPA.filter(([, py]) => py > PALAPA.y + PALAPA.dy * 0.5)];
   // Luces del inmueble que también se encienden de noche: la puerta de vidrio, sus dos apliques y la lámpara de cada cabaña.
   const puertaNoche = poly(p(PUERTA.x, EDIF.dy, 0), p(PUERTA.x + PUERTA.dx, EDIF.dy, 0), p(PUERTA.x + PUERTA.dx, EDIF.dy, PUERTA.h), p(PUERTA.x, EDIF.dy, PUERTA.h));
@@ -753,7 +753,7 @@ function Noche({ g }: { g: GeoPerspectiva }) {
         {pozos.map(([px, py, r], i) => <Elipse key={i} g={g} x={px} y={py} r={r} className="noche-pozo" style={cssVars({ "--i": i })} fill={OCRE} opacity="0.07" />)}
       </g>
       <g className="capa capa-publico">
-        {/* público del césped, de frente a la pantalla (bajo la palapa va el lounge): siluetas verticales en tono
+        {/* público del césped, de frente a la pantalla (bajo el pabellón va el lounge): siluetas verticales en tono
             medio con la cabeza en luz, raleadas con ruido para romper las columnas de la retícula, y más luz junto
             a la tarima y en el centro. La opacidad va en los hijos: el grupo lo gobierna lam-aparece-persona. */}
         {publicoNoche.map(([x, y], k) => {
@@ -1077,32 +1077,32 @@ function Interior({ g }: { g: GeoPerspectiva }) {
 const T = {
   es: {
     ojo: "Plano del recinto · vista desde el sur",
-    titulo: "~18 000 ft² al aire libre con palapa techada de ~4 000 ft².",
+    titulo: "~18 000 ft² al aire libre con pabellón techado de ~4 000 ft².",
     intro: "El recinto exterior visto desde el sur, como en la foto aérea, a partir del plano del sitio y las fotografías. Selecciona una zona para ver su ficha, o activa una capa de montaje: plan de lluvia, aforo sentado, load-in o montaje nocturno.",
-    aria: "Perspectiva del recinto desde el sur: el edificio de dos niveles al fondo con su puerta, el paseo pavimentado bajando hacia la cámara, la palapa de paja a la izquierda en la esquina suroeste sobre césped, con una franja de césped y un apron pavimentado entre ella y el edificio, el área de arena con mesas de picnic a la derecha de la puerta, seis cabañas-pérgola a la derecha del paseo, palmeras, setos, estacionamiento al este y dos filas de estacionamiento al sur.",
+    aria: "Perspectiva del recinto desde el sur: el edificio de dos niveles al fondo con su puerta, el paseo pavimentado bajando hacia la cámara, el pabellón de paja a la izquierda en la esquina suroeste sobre césped, con una franja de césped y un apron pavimentado entre ella y el edificio, el área de arena con mesas de picnic a la derecha de la puerta, seis cabañas-pérgola a la derecha del paseo, palmeras, setos, estacionamiento al este y dos filas de estacionamiento al sur.",
     modos: { todo: "Vista general", lluvia: "Plan de lluvia", mesas: "Aforo sentado · 300", camion: "Load-in · camión 40 ft", noche: "Montaje nocturno" } as Partial<Record<Modo, string>>,
     vistaOjo: "Punto de vista",
     vistas: { sur: "Desde el sur", oeste: "Desde el oeste", norte: "Desde el norte", este: "Desde el este", aerea: "Aérea" } as Record<Vista, string>,
     explica: {
       todo: "Lo techado va en tinta y lo abierto en claro. El paseo baja de la puerta del edificio hacia el estacionamiento sur y es por donde entra todo. Fuera de los setos, la calle.",
-      lluvia: "La palapa cubre ~4 000 ft² con techo de paja, abierta por los cuatro costados: para el sol y el agua que cae recta. Lo demás queda al aire, y para un evento de invierno conviene carpa lateral.",
+      lluvia: "El pabellón cubre ~4 000 ft² con techo de paja, abierto por los cuatro costados: para el sol y el agua que cae recta. Lo demás queda al aire, y para un evento de invierno conviene carpa lateral.",
       carpa: "Con viento la lluvia entra de lado. Para un evento de invierno se cierran los costados con carpa lateral, que trae tu proveedor: aquí va dibujada a trazos.",
-      mesas: "Veinticuatro mesas redondas de diez (dieciséis bajo la palapa, ocho en el césped) y una mesa imperial de sesenta a lo largo del paseo, a escala. Son los ~300 sentados verificados, con pasillo de servicio entre mesas.",
-      gente: "Seiscientas personas de pie, a ocho pies cuadrados cada una, bajo la palapa, en el césped y sobre el paseo. Es el aforo verificado, dibujado.",
-      camion: "La carga entra aparte de los invitados: por NW 1st Ct, al oeste, a la franja pavimentada junto al edificio, continua y a nivel. Un camión de 40 ft descarga a un paso de la palapa y de la puerta sin pisar césped. La entrada principal, por el estacionamiento sur y el paseo, queda para la gente.",
-      noche: "Un montaje posible, de noche: escenario con pantalla y truss sobre el estacionamiento sur, mirando al paseo y a la palapa, torre de sonido a cada lado, tu barra bajo la palapa, público de pie y guirnaldas entre las palmeras. Todo lo encendido lo trae tu equipo; la luz colgada se aprueba en la visita.",
-      barra: "Bajo la palapa, del lado del paseo, hay sitio para montar barra. La barra la trae tu equipo: aquí va dibujada a trazos, donde suele ir.",
+      mesas: "Veinticuatro mesas redondas de diez (dieciséis bajo el pabellón, ocho en el césped) y una mesa imperial de sesenta a lo largo del paseo, a escala. Son los ~300 sentados verificados, con pasillo de servicio entre mesas.",
+      gente: "Seiscientas personas de pie, a ocho pies cuadrados cada una, bajo el pabellón, en el césped y sobre el paseo. Es el aforo verificado, dibujado.",
+      camion: "La carga entra aparte de los invitados: por NW 1st Ct, al oeste, a la franja pavimentada junto al edificio, continua y a nivel. Un camión de 40 ft descarga a un paso del pabellón y de la puerta sin pisar césped. La entrada principal, por el estacionamiento sur y el paseo, queda para la gente.",
+      noche: "Un montaje posible, de noche: escenario con pantalla y truss sobre el estacionamiento sur, mirando al paseo y al pabellón, torre de sonido a cada lado, tu barra bajo el pabellón, público de pie y guirnaldas entre las palmeras. Todo lo encendido lo trae tu equipo; la luz colgada se aprueba en la visita.",
+      barra: "Bajo el pabellón, del lado del paseo, hay sitio para montar barra. La barra la trae tu equipo: aquí va dibujada a trazos, donde suele ir.",
     } as Record<Modo, string>,
     zonas: {
       jardin: {
         nombre: "El Jardín", dato: "~18 000 ft² · al aire libre",
-        lee: "Césped artificial del lado de la palapa y arena del lado de las cabañas, un área de arena con mesas de picnic bajo sombrillas junto a la puerta, palmeras reales y setos perimetrales.",
-        sirve: "Es el volumen del recinto: recepción de pie, cena larga a lo largo del paseo o escenario sobre el estacionamiento sur con público en el paseo y bajo la palapa. El paseo lo parte en dos, y esa geometría manda en cualquier montaje.",
+        lee: "Césped artificial del lado del pabellón y arena del lado de las cabañas, un área de arena con mesas de picnic bajo sombrillas junto a la puerta, palmeras reales y setos perimetrales.",
+        sirve: "Es el volumen del recinto: recepción de pie, cena larga a lo largo del paseo o escenario sobre el estacionamiento sur con público en el paseo y bajo el pabellón. El paseo lo parte en dos, y esa geometría manda en cualquier montaje.",
         ojo: "Al aire libre y sin cerramiento. El césped es artificial, así que no se embarra; para cargas puntuales hay que repartir apoyo.",
       },
       tiki: {
-        nombre: "El Tiki Hut", dato: "~4 000 ft² · techado",
-        lee: "Palapa de paja a cuatro aguas de unos 54 por 60 pies sobre postes de madera, en la esquina suroeste junto a NW 1st Ct y con el estacionamiento sur delante, abierta por los cuatro costados. Es el plan de lluvia.",
+        nombre: "El Pabellón", dato: "~4 000 ft² · techado",
+        lee: "Pabellón con techo de paja a cuatro aguas de unos 54 por 60 pies sobre postes de madera, en la esquina suroeste junto a NW 1st Ct y con el estacionamiento sur delante, abierta por los cuatro costados. Es el plan de lluvia.",
         sirve: "La sombra permanente del recinto. Caben dieciséis mesas de diez, la barra del cliente del lado del paseo, o un escenario pequeño.",
         ojo: "Para el agua que cae recta basta sola; con viento conviene cerrar los costados. La luz libre entre postes se levanta en la visita.",
       },
@@ -1135,31 +1135,31 @@ const T = {
   },
   en: {
     ojo: "Site plan · view from the south",
-    titulo: "~18,000 sq ft outdoors with a ~4,000 sq ft thatched structure.",
+    titulo: "~18,000 sq ft outdoors with a ~4,000 sq ft covered pavilion.",
     intro: "The outdoor site seen from the south, as in the aerial photograph, from the site plan and the photographs. Select a zone to see its data, or turn on a layout layer: rain plan, seated capacity, load-in or night setup.",
-    aria: "Perspective of the site from the south: the two-level building at the far end with its door, the paved walk coming down towards the camera, the thatched structure on the left in the south-west corner on turf, with a strip of turf and a paved apron between it and the building, the sand area with picnic tables to the right of the door, six pergola cabanas on the right of the walk, palms, hedges, parking to the east and two rows of parking to the south.",
+    aria: "Perspective of the site from the south: the two-level building at the far end with its door, the paved walk coming down towards the camera, the covered pavilion on the left in the south-west corner on turf, with a strip of turf and a paved apron between it and the building, the sand area with picnic tables to the right of the door, six pergola cabanas on the right of the walk, palms, hedges, parking to the east and two rows of parking to the south.",
     modos: { todo: "Overview", lluvia: "Rain plan", mesas: "Seated capacity · 300", camion: "Load-in · 40 ft truck", noche: "Night setup" } as Partial<Record<Modo, string>>,
     vistaOjo: "Point of view",
     vistas: { sur: "From the south", oeste: "From the west", norte: "From the north", este: "From the east", aerea: "Aerial" } as Record<Vista, string>,
     explica: {
       todo: "Roofed volumes are drawn in ink, open ground in light tone. The walk runs from the building door down to the south parking, and it is how everything gets in. Beyond the hedges, the street.",
-      lluvia: "The structure covers ~4,000 sq ft under thatch, open on all four sides: it stops sun and vertical rain. The rest stays open-air, and a winter event should budget for side tenting.",
+      lluvia: "The Pavilion covers ~4,000 sq ft under a thatch roof, open on all four sides: it stops sun and vertical rain. The rest stays open-air, and a winter event should budget for side tenting.",
       carpa: "With wind, rain comes in sideways. A winter event closes the sides with side tenting, which your supplier brings: here it is drawn dashed.",
-      mesas: "Twenty-four round tables of ten (sixteen under the structure, eight on the turf) and one sixty-seat banquet table along the walk, to scale. These are the verified ~300 seated, with service aisles between tables.",
-      gente: "Six hundred people standing, at eight square feet each, under the structure, on the turf and along the walk. That is the verified capacity, drawn.",
-      camion: "Freight comes in apart from the guests: from NW 1st Ct, on the west, onto the paved strip beside the building, continuous and level. A 40 ft truck unloads a step from the structure and the door without crossing turf. The main entrance, through the south parking and the walk, stays for people.",
-      noche: "One possible setup, at night: a stage with screen and truss on the south parking, facing the walk and the structure, a sound tower on each side, your bar under the structure, a standing crowd and string lights between the palms. Everything lit is brought by your team; hung lighting is approved at the visit.",
-      barra: "Under the structure, on the walk side, there is room to set up a bar. The bar comes with your team: here it is drawn dashed, where it usually goes.",
+      mesas: "Twenty-four round tables of ten (sixteen under the Pavilion, eight on the turf) and one sixty-seat banquet table along the walk, to scale. These are the verified ~300 seated, with service aisles between tables.",
+      gente: "Six hundred people standing, at eight square feet each, under the Pavilion, on the turf and along the walk. That is the verified capacity, drawn.",
+      camion: "Freight comes in apart from the guests: from NW 1st Ct, on the west, onto the paved strip beside the building, continuous and level. A 40 ft truck unloads a step from the Pavilion and the door without crossing turf. The main entrance, through the south parking and the walk, stays for people.",
+      noche: "One possible setup, at night: a stage with screen and truss on the south parking, facing the walk and the Pavilion, a sound tower on each side, your bar under the Pavilion, a standing crowd and string lights between the palms. Everything lit is brought by your team; hung lighting is approved at the visit.",
+      barra: "Under the Pavilion, on the walk side, there is room to set up a bar. The bar comes with your team: here it is drawn dashed, where it usually goes.",
     } as Record<Modo, string>,
     zonas: {
       jardin: {
         nombre: "The Garden", dato: "~18,000 sq ft · open air",
-        lee: "Artificial turf on the structure's side and sand on the cabanas' side, a sand area with picnic tables under umbrellas by the door, real palms and perimeter hedges.",
-        sirve: "This is the volume of the site: standing reception, a long dinner along the walk, or a stage on the south parking with a crowd on the walk and under the structure. The walk splits it in two, and that geometry drives any layout.",
+        lee: "Artificial turf on the Pavilion's side and sand on the cabanas' side, a sand area with picnic tables under umbrellas by the door, real palms and perimeter hedges.",
+        sirve: "This is the volume of the site: standing reception, a long dinner along the walk, or a stage on the south parking with a crowd on the walk and under the Pavilion. The walk splits it in two, and that geometry drives any layout.",
         ojo: "Open air, no enclosure. The turf is artificial, so it will not turn to mud; point loads need spreading.",
       },
       tiki: {
-        nombre: "The Tiki Hut", dato: "~4,000 sq ft · covered",
+        nombre: "The Pavilion", dato: "~4,000 sq ft · covered",
         lee: "A four-hip thatch roof of about 54 by 60 feet on timber posts, in the south-west corner by NW 1st Ct with the south parking in front, open on all four sides. It is the rain plan.",
         sirve: "The site's permanent shade. It takes sixteen tables of ten, the client's bar on the walk side, or a small stage.",
         ojo: "For vertical rain it is enough on its own; with wind you will want the sides closed. Clear span between posts is surveyed at the visit.",
@@ -1224,7 +1224,7 @@ const Dibujo = memo(function Dibujo({ lang, zona, aforo, vista, alEntrar, alSali
 
   const azar = lcg(20260902);
   const GOTAS = Array.from({ length: 360 }, () => ({ x: vb.x + azar() * vb.w, y: vb.y + azar() * vb.h, t: -(azar() * 1.1).toFixed(2) }));
-  // ondas de impacto en el paseo y el césped (nunca bajo la palapa) y charcos en el paseo
+  // ondas de impacto en el paseo y el césped (nunca bajo el pabellón) y charcos en el paseo
   const ONDAS: Array<[number, number]> = [
     ...Array.from({ length: 8 }, (_, i): [number, number] => [PASEO.x + 3 + (i * 5) % 11, PASEO.y0 + 24 + i * 12]),
     ...Array.from({ length: 6 }, (_, i): [number, number] => [PASEO.x + PASEO.dx + 3 + (i % 2) * 2.5, 138 + i * 12]),
@@ -1270,7 +1270,7 @@ const Dibujo = memo(function Dibujo({ lang, zona, aforo, vista, alEntrar, alSali
   // La calle de maniobra: una raya central discontinua, como en el plano.
   const calleS = [p(PARKING_S.x + 2, PARKING_S.y + PARKING_S.fila + PARKING_S.calle / 2, 0.02), p(PARKING_S.x + PARKING_S.dx - 2, PARKING_S.y + PARKING_S.fila + PARKING_S.calle / 2, 0.02)];
 
-  // Los cuatro costados abiertos de la palapa: flechas hacia fuera.
+  // Los cuatro costados abiertos del pabellón: flechas hacia fuera.
   const cP: Pt = [PALAPA.x + PALAPA.dx / 2, PALAPA.y + PALAPA.dy / 2];
   const lados: Array<[Pt, Pt]> = [
     [p(cP[0], PALAPA.y, 5), p(cP[0], PALAPA.y - 8, 5)],

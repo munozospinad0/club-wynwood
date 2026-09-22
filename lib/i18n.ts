@@ -75,7 +75,9 @@ export const INDEXABLE = Boolean(process.env.NEXT_PUBLIC_BASE_URL);
 export const RUTAS = {
   home: { es: "", en: "" },
   jardin: { es: "el-jardin", en: "the-garden" },
-  tikiHut: { es: "tiki-hut", en: "tiki-hut" },
+  /* Antes /tiki-hut (Daniel, 22-sep: fuera «palapa» y «Tiki Hut»). La vieja
+     redirige con 308 desde next.config.ts. La clave interna sigue siendo tikiHut. */
+  tikiHut: { es: "el-pabellon", en: "the-pavilion" },
   bodas: { es: "bodas", en: "weddings" },
   corporativo: { es: "eventos-corporativos", en: "corporate-events" },
   produccion: { es: "produccion-y-rodajes", en: "film-and-production" },

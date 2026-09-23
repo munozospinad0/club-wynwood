@@ -1,4 +1,3 @@
 User-agent: *
 Allow: /
-
-Sitemap: https://munozospinad0.github.io/club-wynwood/sitemap.xml
+Sitemap: https://clubwynwood.com/sitemap.xml

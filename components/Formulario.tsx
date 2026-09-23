@@ -483,11 +483,16 @@ export default function Formulario({ lang, idPrefijo, invitadosInicial }: { lang
         <input id={ide("cw-web")} name="trampa" type="text" tabIndex={-1} autoComplete="off" />
       </div>
 
-      {/* ── 1. cómo te contestamos ─────────────────────────────────────── */}
-      <Bloque
-        titulo={es ? "Cómo te contestamos" : "How we reach you"}
-        nota={es ? "Con el punto naranja son los dos que hacen falta." : "The two with an orange dot are the ones we need."}
-      />
+      {/* ── CINCO CAMPOS A LA VISTA (23-sep) ─────────────────────────────────
+          Daniel: «haz el form más fácil, con menos datos». 59 visitas pagadas,
+          un solo form_start. Quedan los dos que hacen falta para contestar
+          (nombre y correo), el teléfono que abre el WhatsApp al terminar, y las
+          dos señales que más pesan en la cualificación: cuánta gente y cuándo.
+          Tipo de evento y mensaje pasan al bloque plegado con los otros cuatro:
+          no puntúan, y el equipo los pregunta en la primera respuesta. */}
+      <p style={{ ...pista, margin: 0 }}>
+        {es ? "Solo hacen falta los dos del punto naranja." : "Only the two with an orange dot are required."}
+      </p>
       <div style={rejilla}>
         <div>
           <label style={etiqueta} htmlFor={ide("nombre")}>{es ? "Nombre" : "Name"}<Falta /></label>
@@ -516,29 +521,14 @@ export default function Formulario({ lang, idPrefijo, invitadosInicial }: { lang
           </div>
           <p style={pista}>
             {es
-              ? "Si lo dejas, al enviar te abrimos WhatsApp con tu solicitud ya escrita."
-              : "Leave it and we open WhatsApp for you, with your request already written."}
+              ? "Opcional. Si lo dejas, al enviar te abrimos WhatsApp con tu solicitud ya escrita."
+              : "Optional. Leave it and we open WhatsApp for you, with your request already written."}
           </p>
-        </div>
-      </div>
-
-      {/* ── 2. el evento ────────────────────────────────────────────────── */}
-      <Bloque titulo={es ? "Tu evento" : "Your event"} />
-      <div style={rejilla}>
-        <div>
-          <label style={etiqueta} htmlFor={ide("tipo")}>{es ? "Qué vas a hacer" : "What you are planning"}</label>
-          <select style={campo} id={ide("tipo")} name="tipo" defaultValue="">
-            <option value="">{es ? "Elige una opción" : "Pick one"}</option>
-            {TIPOS.map((t) => (
-              <option key={t.valor} value={t.valor}>{es ? t.es : t.en}</option>
-            ))}
-          </select>
         </div>
         <div>
           <label style={etiqueta} htmlFor={ide("invitados")}>{es ? "Cuánta gente" : "How many people"}</label>
           <input ref={invitadosRef} style={campo} id={ide("invitados")} name="invitados"
-                 inputMode="numeric" placeholder="120" />
-          <p style={pista}>{es ? "Un número aproximado sirve." : "A rough number is enough."}</p>
+                 inputMode="numeric" placeholder={es ? "Aprox. 120" : "About 120"} />
         </div>
         <div>
           <label style={etiqueta} htmlFor={ide("fecha")}>{es ? "Fecha" : "Date"}</label>
@@ -547,14 +537,9 @@ export default function Formulario({ lang, idPrefijo, invitadosInicial }: { lang
             {es ? "Si todavía no la tienes, déjala en blanco." : "Leave it blank if you don't have one yet."}
           </p>
         </div>
-        <div>
-          <label style={etiqueta} htmlFor={ide("mensaje")}>{es ? "Algo que debamos saber" : "Anything we should know"}</label>
-          <textarea style={{ ...campo, minHeight: 92, resize: "vertical" }} id={ide("mensaje")} name="mensaje"
-                    placeholder={es ? "Cena sentada, música hasta tarde, hace falta carpa…" : "Seated dinner, late music, we'd need a tent…"} />
-        </div>
       </div>
 
-      {/* ── 3. lo que afina la propuesta, plegado ───────────────────────── */}
+      {/* ── lo demás, plegado ──────────────────────────────────────────── */}
       {!detalles ? (
         <div style={{ borderTop: "1px solid var(--regla)", paddingTop: 14 }}>
           <button
@@ -572,12 +557,12 @@ export default function Formulario({ lang, idPrefijo, invitadosInicial }: { lang
               font: "inherit", fontSize: 15, color: "var(--tinta-2)", textAlign: "left",
             }}
           >
-            {es ? "Añadir cuatro datos más (opcional)" : "Add four more details (optional)"}
+            {es ? "Contar más del evento (opcional)" : "Tell us more about the event (optional)"}
           </button>
           <p style={pista}>
             {es
-              ? "Con ellos te contestamos con números y montaje. Sin ellos, con disponibilidad."
-              : "With them we reply with numbers and a layout. Without them, with availability."}
+              ? "Con más datos te contestamos con números y montaje. Sin ellos, con disponibilidad."
+              : "With more detail we reply with numbers and a layout. Without it, with availability."}
           </p>
         </div>
       ) : (
@@ -587,6 +572,15 @@ export default function Formulario({ lang, idPrefijo, invitadosInicial }: { lang
             nota={es ? "Todo esto es opcional y nada de esto descarta a nadie." : "All optional, and none of it rules anyone out."}
           />
           <div style={rejilla}>
+            <div>
+              <label style={etiqueta} htmlFor={ide("tipo")}>{es ? "Qué vas a hacer" : "What you are planning"}</label>
+              <select style={campo} id={ide("tipo")} name="tipo" defaultValue="">
+                <option value="">{es ? "Elige una opción" : "Pick one"}</option>
+                {TIPOS.map((t) => (
+                  <option key={t.valor} value={t.valor}>{es ? t.es : t.en}</option>
+                ))}
+              </select>
+            </div>
             <div>
               <label style={etiqueta} htmlFor={ide("empresa")}>{es ? "Empresa o productora" : "Company"}</label>
               <input style={campo} id={ide("empresa")} name="empresa" autoComplete="organization" />
@@ -623,6 +617,11 @@ export default function Formulario({ lang, idPrefijo, invitadosInicial }: { lang
                   ? "Es solo para saber qué proponerte. No publicamos tarifas porque cada montaje es distinto."
                   : "Only so we know what to propose. We don't publish rates because every setup differs."}
               </p>
+            </div>
+            <div style={{ gridColumn: "1 / -1" }}>
+              <label style={etiqueta} htmlFor={ide("mensaje")}>{es ? "Algo que debamos saber" : "Anything we should know"}</label>
+              <textarea style={{ ...campo, minHeight: 92, resize: "vertical" }} id={ide("mensaje")} name="mensaje"
+                        placeholder={es ? "Cena sentada, música hasta tarde, hace falta carpa…" : "Seated dinner, late music, we'd need a tent…"} />
             </div>
           </div>
         </>

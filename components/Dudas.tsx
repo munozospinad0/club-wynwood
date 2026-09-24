@@ -32,8 +32,29 @@ import { RUTAS, type Idioma } from "@/lib/i18n";
  * Perplexity puedan contestar «¿qué pasa si llueve en Club Wynwood?» con
  * nuestras palabras.
  */
+/**
+ * 24-sep: trece preguntas abiertas eran tres pantallas y media de móvil justo
+ * antes del formulario. Las seis primeras (precio, aforo, lluvia, qué incluye,
+ * catering y barra, por separado) siguen abiertas; el resto va en un <details>,
+ * que queda en el HTML servido, así que los buscadores de IA lo siguen citando.
+ */
+const ABIERTAS = 6;
+
 export default function Dudas({ lang }: { lang: Idioma }) {
   const es = lang === "es";
+  const Pregunta = ({ f }: { f: (typeof FAQ)[number] }) => (
+    <div style={{ padding: "20px 0 22px", borderBottom: "1px solid var(--regla)" }}>
+      <dt style={{ font: "600 17px/1.35 var(--display), Georgia, serif", color: "var(--tinta)", letterSpacing: "-.005em", paddingBottom: 9 }}>
+        {f.q[lang]}
+      </dt>
+      <dd style={{ margin: 0, fontSize: 14, lineHeight: 1.68, color: "var(--texto)", maxWidth: "52ch" }}>
+        {f.a[lang]}
+      </dd>
+    </div>
+  );
+  const rejilla: React.CSSProperties = {
+    margin: 0, display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))", columnGap: 52,
+  };
 
   return (
     <section
@@ -58,44 +79,19 @@ export default function Dudas({ lang }: { lang: Idioma }) {
 
         {/* Dos columnas en pantalla ancha, una en móvil. Las respuestas son
             cortas, así que abiertas no cansan y se barren con la vista. */}
-        <dl
-          style={{
-            margin: 0,
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))",
-            columnGap: 52,
-            borderTop: "1px solid var(--regla)",
-          }}
-        >
-          {FAQ.map((f) => (
-            <div
-              key={f.q.es}
-              style={{ padding: "20px 0 22px", borderBottom: "1px solid var(--regla)" }}
-            >
-              <dt
-                style={{
-                  font: "600 17px/1.35 var(--display), Georgia, serif",
-                  color: "var(--tinta)",
-                  letterSpacing: "-.005em",
-                  paddingBottom: 9,
-                }}
-              >
-                {f.q[lang]}
-              </dt>
-              <dd
-                style={{
-                  margin: 0,
-                  fontSize: 14,
-                  lineHeight: 1.68,
-                  color: "var(--texto)",
-                  maxWidth: "52ch",
-                }}
-              >
-                {f.a[lang]}
-              </dd>
-            </div>
-          ))}
+        <dl style={{ ...rejilla, borderTop: "1px solid var(--regla)" }}>
+          {FAQ.slice(0, ABIERTAS).map((f) => <Pregunta key={f.q.es} f={f} />)}
         </dl>
+        {FAQ.length > ABIERTAS && (
+          <details style={{ marginTop: 22 }}>
+            <summary style={{ cursor: "pointer", fontFamily: "var(--mono)", fontSize: 11, letterSpacing: ".18em", textTransform: "uppercase", color: "var(--tinta)", padding: "12px 0" }}>
+              {es ? `Más preguntas (${FAQ.length - ABIERTAS})` : `More questions (${FAQ.length - ABIERTAS})`}
+            </summary>
+            <dl style={rejilla}>
+              {FAQ.slice(ABIERTAS).map((f) => <Pregunta key={f.q.es} f={f} />)}
+            </dl>
+          </details>
+        )}
 
         <a
           href={`/${lang}/${RUTAS.faq[lang]}`}

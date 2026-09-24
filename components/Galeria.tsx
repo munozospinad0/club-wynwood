@@ -44,9 +44,17 @@ const T = {
   },
 } as const;
 
+/**
+ * Cuántas se ven de entrada. 24-sep: las 21 ocupaban tres pantallas de móvil entre
+ * el recorrido y el formulario. Las demás siguen en el HTML (atributo `hidden`),
+ * así que no se pierden para buscadores ni para el visor, que recorre las 21.
+ */
+const VISIBLES = 6;
+
 export default function Galeria({ lang }: { lang: Idioma }) {
   const t = T[lang];
   const [abierta, setAbierta] = useState<number | null>(null);
+  const [todas, setTodas] = useState(false);
   const dialogo = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
@@ -75,7 +83,7 @@ export default function Galeria({ lang }: { lang: Idioma }) {
 
         <ul className="gal">
           {GALERIA.map((f, i) => (
-            <li key={f.id} className="gal-item">
+            <li key={f.id} className="gal-item" hidden={!todas && i >= VISIBLES}>
               <button type="button" className="gal-boton" onClick={() => abrir(i)} aria-label={`${t.abrir}: ${f.alt[lang]}`}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={optimizada(f.src, ANCHO.miniatura)} width={f.w} height={f.h} alt={f.alt[lang]} loading="lazy" decoding="async" />
@@ -87,6 +95,11 @@ export default function Galeria({ lang }: { lang: Idioma }) {
             </li>
           ))}
         </ul>
+        {!todas && GALERIA.length > VISIBLES && (
+          <button type="button" className="rec-boton rec-boton-plano" style={{ marginTop: 22 }} onClick={() => setTodas(true)}>
+            {lang === "es" ? `Ver las ${GALERIA.length} fotos` : `See all ${GALERIA.length} photos`}
+          </button>
+        )}
 
         <dialog
           ref={dialogo}

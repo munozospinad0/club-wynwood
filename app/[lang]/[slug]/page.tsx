@@ -169,6 +169,12 @@ export default async function PaginaInterior(
         <h1 style={{ maxWidth: "16ch", marginBottom: 28 }}>{p.h1[lang]}</h1>
         {/* Bloque de respuesta citable: 40-60 palabras, conclusión primero. */}
         <p className="respuesta" style={{ fontSize: 18 }}>{p.respuesta[lang]}</p>
+        {/* 24-sep: la primera solicitud real entró por una página así
+            (/en/company-holiday-party) y tuvo que bajar cuatro pantallas para
+            encontrar dónde pedir fecha. El botón va donde ya decidió leer. */}
+        <a href="#disponibilidad" className="boton" style={{ marginTop: 8 }}>
+          {es ? "Consultar mi fecha" : "Check my date"} <span aria-hidden>→</span>
+        </a>
       </header>
 
       {/* ─── EL ORDEN DE UNA INTERIOR ───────────────────────────────────────

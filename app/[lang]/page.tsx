@@ -226,9 +226,17 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       <Cifras lang={lang} />
       {/* Las dos láminas técnicas, para quien ya está montando. El dibujo que
           explica el terreno está arriba, debajo de la portada. */}
-      <Laminas lang={lang}
-               planta={<LaminaPlanta lang={lang} />}
-               edificio={<LaminaEdificio lang={lang} />} />
+      {/* 24-sep: plegadas. Eran dos pantallas y media de móvil que solo usa quien
+          ya está montando; siguen en el HTML y a un toque. Las cifras y la ficha
+          técnica, que sí lee todo el mundo, quedan abiertas. */}
+      <details className="laminas-plegadas" style={{ borderBottom: "1px solid var(--regla)" }}>
+        <summary className="reja" style={{ cursor: "pointer", paddingBlock: 26, fontFamily: "var(--mono)", fontSize: 11, letterSpacing: ".18em", textTransform: "uppercase", color: "var(--tinta)" }}>
+          {es ? "Ver los planos: planta a escala y edificio" : "See the plans: scale site plan and building"} <span aria-hidden>↓</span>
+        </summary>
+        <Laminas lang={lang}
+                 planta={<LaminaPlanta lang={lang} />}
+                 edificio={<LaminaEdificio lang={lang} />} />
+      </details>
 {/* ---------------- FICHA TÉCNICA ---------------- */}
       <section id="ficha" style={{ background: "var(--tinta)", color: "var(--papel-3)" }}>
         <div className="reja" style={{ paddingBlock: 80 }}>

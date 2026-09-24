@@ -195,13 +195,13 @@ export default function LaminaEdificio({ lang }: { lang: Idioma }) {
   const ejesY: number[] = []; for (let y = 0; y <= FONDO; y += 30) ejesY.push(y);
 
   return (
-    <section id="interior" aria-label={es ? "Lámina 05 — el edificio" : "Plate 05 — the building"}
+    <section id="interior" aria-label={es ? "Lámina 05 — el edificio" : "Drawing 05 — the building"}
              style={{ background: "transparent" }}>
       <div className="reja" style={{ paddingBlock: "34px 60px" }}>
         <div style={{ display: "flex", justifyContent: "space-between", gap: 24, flexWrap: "wrap",
                       paddingBottom: 14, borderBottom: "1px solid var(--regla)" }}>
           <div className="ojo" style={{ color: "var(--tinta-2)" }}>
-            {es ? "Lámina 05 — El edificio" : "Plate 05 — The building"}
+            {es ? "Lámina 05 — El edificio" : "Drawing 05 — The building"}
           </div>
           <div className="ojo">
             {es ? "Proyección isométrica · 1 ft ≈ 1.79 u · esquema volumétrico"
@@ -213,7 +213,7 @@ export default function LaminaEdificio({ lang }: { lang: Idioma }) {
              gridTemplateColumns: "minmax(0,210px) minmax(0,1fr)", gap: 36, paddingTop: 28 }}>
 
           <aside>
-            <div className="ojo" style={{ paddingBottom: 12 }}>{es ? "Lectura" : "Readout"}</div>
+            <div className="ojo" style={{ paddingBottom: 12 }}>{es ? "Lectura" : "Key figures"}</div>
             {[
               [es ? "Altura libre máx." : "Max clear height", `${H2} ft`],
               [es ? "Altura en planta" : "Ground-floor height", `${H1} ft`],
@@ -247,7 +247,7 @@ export default function LaminaEdificio({ lang }: { lang: Idioma }) {
             <figcaption className="ojo" style={{ paddingTop: 16, lineHeight: 1.75, maxWidth: "74ch" }}>
               {es
                 ? "Esquema volumétrico aproximado — no es un plano a escala. Las superficies y las alturas salen del plano de 2016 del inmueble; la fachada y el fondo son aproximados y se levantan en la visita técnica. Lo que hoy hay montado en la planta baja pertenece al operador y no forma parte del alquiler."
-                : "Approximate volumetric diagram — not to scale. Areas and heights come from the building's 2016 plan; frontage and depth are approximate and are surveyed at the technical visit. Whatever is installed on the ground floor today belongs to the operator and is not part of the rental."}
+                : "Approximate 3D diagram, not to scale. Areas and heights come from the building's 2016 plans; the frontage and depth are approximate and are measured at the site visit. Anything installed on the ground floor today belongs to the current operator and isn't part of the rental."}
             </figcaption>
           </figure>
         </div>

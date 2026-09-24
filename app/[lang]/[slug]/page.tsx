@@ -105,7 +105,7 @@ export default async function PaginaInterior(
         <div className="reja" style={{ paddingBlock: "56px 40px" }}>
           <Migas lang={lang} nombre={es ? "Preguntas frecuentes" : "FAQ"} />
           <h1 style={{ maxWidth: "14ch", marginTop: 24 }}>
-            {es ? "Preguntas frecuentes" : "Frequently asked"}
+            {es ? "Preguntas frecuentes" : "Frequently asked questions"}
           </h1>
         </div>
         <section>
@@ -237,13 +237,13 @@ export default async function PaginaInterior(
         <section style={{ borderBottom: "1px solid var(--regla)" }}>
           <div className="reja" style={{ paddingBlock: "56px" }}>
             <div className="ojo" style={{ paddingBottom: 16 }}>
-              {es ? "Calcula tu espacio" : "Work out your space"}
+              {es ? "Calcula tu espacio" : "Calculate your space"}
             </div>
             <Calculadora lang={lang} />
             <p style={{ margin: "16px 0 0", fontSize: 13, color: "var(--texto)", maxWidth: "62ch" }}>
               {es
                 ? "Los ratios son estándares de planificación de eventos, y el resultado nunca supera el aforo declarado del inmueble: si la aritmética da más de lo que el venue admite, la calculadora lo dice."
-                : "The ratios are standard event-planning figures, and the result never exceeds the venue's stated capacity: if the arithmetic allows more than the site takes, the calculator says so."}
+                : "The ratios are standard event-planning figures, and the result never goes above the venue's stated capacity: if the math allows more guests than the venue holds, the calculator tells you."}
             </p>
           </div>
         </section>
@@ -291,12 +291,12 @@ function Entorno({ lang }: { lang: Idioma }) {
         <h2 style={{ fontSize: 19, fontFamily: "var(--cuerpo)", fontWeight: 600, letterSpacing: "-.01em", marginBottom: 8, maxWidth: "34ch" }}>
           {es
             ? "Quién vive y quién gasta alrededor del predio."
-            : "Who lives and who spends around the site."}
+            : "Who lives and spends money around the venue."}
         </h2>
         <p style={{ margin: "0 0 28px", fontSize: 15, lineHeight: 1.68, color: "#4a4335", maxWidth: "62ch" }}>
           {es
             ? "Wynwood no es solo un barrio de murales: es un distrito de bares, galerías y tiendas con público propio todo el año. Estas son las cifras del área inmediata, las mismas con las que se comercializa el inmueble."
-            : "Wynwood is not only a mural district: it is a neighbourhood of bars, galleries and shops with its own year-round crowd. These are the figures for the immediate area, the same ones the property is marketed with."}
+            : "Wynwood isn't just a mural district: it's a neighborhood of bars, galleries and shops with its own year-round crowd. These are the figures for the immediate area, the same ones used to market the property."}
         </p>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(190px,1fr))", gap: "26px 32px" }}>
           {ENTORNO.datos.map((d) => (
@@ -309,7 +309,7 @@ function Entorno({ lang }: { lang: Idioma }) {
           ))}
         </div>
         <p style={{ margin: "28px 0 0", fontSize: 13, color: "var(--texto)" }}>
-          {es ? "Fuente: " : "Source: "}{ENTORNO.fuente}.
+          {es ? "Fuente: " : "Source: "}{es ? ENTORNO.fuente : ENTORNO.fuenteEn}.
         </p>
       </div>
     </section>

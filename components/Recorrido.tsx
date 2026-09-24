@@ -11,7 +11,7 @@ import {
   fotoOptimizada,
   oraciones,
   rutaAudio,
-  textoVisible,
+  transcripcion,
   tiempoDeFrase,
   type FotoRecorrido,
   type Hito,
@@ -120,10 +120,10 @@ const T = {
     },
   },
   en: {
-    ojo: "Narrated technical tour",
-    titulo: "The site, explained in 3 minutes",
+    ojo: "Narrated tour",
+    titulo: "The venue in 3 minutes",
     intro:
-      "Eight chapters over the plan: area, capacity, rain plan, load-in, infrastructure, sample setup, terms and next step. With voice, captions and photographs of the site.",
+      "Eight short chapters over the site plan: size, capacity, rain plan, load-in, what's included, a sample setup, pricing and next steps. Narrated, with captions and photos of the venue.",
     reproducir: "Start the tour",
     pausar: "Pause",
     seguir: "Resume",
@@ -132,30 +132,30 @@ const T = {
     anterior: "Previous",
     capitulo: "Chapter",
     de: "of",
-    sinVoz: "No audio: the chapter is read and the plan animates all the same.",
+    sinVoz: "No audio? The captions and the animated plan work without it.",
     transcripcion: "Full tour transcript",
     capitulos: "chapters",
     minutos: "min",
     musica: "Music",
     texto: "Transcript",
     idioma: "Language",
-    volverCapitulos: "Back to the chapters",
-    teclas: "Space pauses · arrows change chapter · Esc closes",
+    volverCapitulos: "Back to chapters",
+    teclas: "Space to pause · arrow keys to change chapters · Esc to close",
     ojoCierre: "Request availability",
     tituloCierre: "Spec sheet and availability",
     introCierre:
       "Give us the date and estimated headcount. We reply with real availability, terms and the full spec sheet within 24 business hours.",
     aforoOjo: "Capacity simulator",
     aforoInvitados: "Guests",
-    sentados: "Banquet · seated",
-    pie: "Cocktail · standing",
+    sentados: "Seated dinner",
+    pie: "Standing cocktail",
     consultar: (n: number) => `Request availability · ${n} guests`,
     calcular: "Capacity and area calculator",
     cabe: {
-      sentados: (n: number, mesas: number) => `It fits. ${n} guests in banquet layout are ${mesas} tables of 10 in the Garden, with service aisles between tables.`,
-      pie: (n: number, pct: number) => `It fits. ${n} guests standing take ~${pct}% of the Garden; the rest stays for stage, bar and circulation.`,
-      noSentados: "It does not fit as a banquet: verified seated capacity is ~300. In cocktail format, up to 600.",
-      noPie: "Above the verified capacity of ~600 standing. We would rather say so before the site visit.",
+      sentados: (n: number, mesas: number) => `It fits. ${n} guests at a seated dinner means ${mesas} tables of 10 in the Garden, with service aisles between them.`,
+      pie: (n: number, pct: number) => `It fits. ${n} guests standing use about ${pct}% of the Garden, leaving room for a stage, a bar and space to move around.`,
+      noSentados: "That won't fit seated: the verified seated capacity is ~300. Standing, cocktail-style, up to 600.",
+      noPie: "That's above the verified capacity of ~600 standing. We'd rather tell you now than at the site visit.",
     },
     tarjeta: {
       nombre: "Club Wynwood",
@@ -347,7 +347,10 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
     const reales = manifiesto ? manifiesto.duraciones?.[lang] : undefined;
     const total = reales && reales.length === CAPITULOS.length
       ? reales.reduce((s: number, d: number) => s + d, 0)
-      : CAPITULOS.reduce((s, c) => s + c.texto[lang].length / 14, 0);
+      // Sin el manifiesto (el primer pintado, lo que leen los buscadores) se estima.
+      // A 14 caracteres por segundo el inglés daba «4 min» y el audio real dura
+      // 3,3; la voz de Brian va a ~16. El español da 3 con cualquiera de los dos.
+      : CAPITULOS.reduce((s, c) => s + c.texto[lang].length / 16, 0);
     return Math.max(1, Math.round(total / 60));
   }, [manifiesto, lang]);
 
@@ -1088,7 +1091,7 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
             {CAPITULOS.map((c, i) => (
               <div key={c.id} className="rec-transcripcion-cap">
                 <h3><span className="rec-cap-n">{nn(i)}</span> {c.pregunta[lang]}</h3>
-                <p>{textoVisible(c.texto[lang])}</p>
+                <p>{transcripcion(c, lang)}</p>
               </div>
             ))}
           </details>

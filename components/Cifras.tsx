@@ -116,13 +116,13 @@ const CELDAS: Celda[] = [
     etiqueta: { es: "Superficie total", en: "Total area" },
     valor: "~22 000 ft²", sub: "2 045 m²",
     glifo: <Plano techado={false} />,
-    lectura: { es: "Todo el exterior; el edificio, en claro, no", en: "The whole outdoor site; the building, in grey, is not" },
+    lectura: { es: "Todo el exterior; el edificio, en claro, no", en: "The whole outdoor venue (the building, in gray, is separate)" },
   },
   {
     etiqueta: { es: "Techado", en: "Covered" },
     valor: "~4 000 ft²", sub: "372 m²",
     glifo: <Plano techado />,
-    lectura: { es: "Una esquina, no la mitad", en: "One corner, not half" },
+    lectura: { es: "Una esquina, no la mitad", en: "The Pavilion, in one corner" },
   },
   {
     etiqueta: { es: "De pie", en: "Standing" },
@@ -134,7 +134,7 @@ const CELDAS: Celda[] = [
     etiqueta: { es: "Sentados", en: "Seated" },
     valor: "~300",
     glifo: <Puntos total={300} destacado={false} />,
-    lectura: { es: "La mitad que de pie", en: "Half of standing" },
+    lectura: { es: "La mitad que de pie", en: "Half the standing capacity" },
   },
   {
     // La cifra y el glifo salen de la geometría del dibujo. Estaban escritos a
@@ -142,13 +142,17 @@ const CELDAS: Celda[] = [
     etiqueta: { es: "Cabañas", en: "Cabanas" },
     valor: String(CABANAS.n), sub: "",
     glifo: <Cabanas n={CABANAS.n} />,
-    lectura: { es: "Amuebladas, ya en el jardín", en: "Furnished, already in the garden" },
+    lectura: { es: "Amuebladas, ya en el jardín", en: "Furnished, already in the Garden" },
   },
 ];
 
+/** «~22 000 ft²» → «~22,000 sq ft»: en la página inglesa, con el formato de EE. UU. */
+const aIngles = (s: string) => s.replace(/(\d) (\d{3})/g, "$1,$2").replace(" ft²", " sq ft");
+
 export default function Cifras({ lang }: { lang: Idioma }) {
+  const es = lang === "es";
   return (
-    <section aria-label={lang === "es" ? "Las cifras del recinto" : "The site in figures"}
+    <section aria-label={es ? "Las cifras del recinto" : "The venue in figures"}
              style={{ borderBottom: "1px solid var(--regla)", background: "var(--papel-2)" }}>
       <div style={{ display: "flex", flexWrap: "wrap" }}>
         {CELDAS.map((c) => (
@@ -169,8 +173,8 @@ export default function Cifras({ lang }: { lang: Idioma }) {
 
             <div>
               <div style={{ fontFamily: "var(--display)", fontWeight: 600, fontSize: 30,
-                            lineHeight: 1, letterSpacing: "-.02em" }}>{c.valor}</div>
-              {c.sub && <div style={{ fontSize: 12, color: "var(--texto)", paddingTop: 5 }}>{c.sub}</div>}
+                            lineHeight: 1, letterSpacing: "-.02em" }}>{es ? c.valor : aIngles(c.valor)}</div>
+              {c.sub && <div style={{ fontSize: 12, color: "var(--texto)", paddingTop: 5 }}>{es ? c.sub : aIngles(c.sub)}</div>}
               {c.lectura && (
                 <div style={{ fontSize: 11.5, color: "var(--texto-3)", paddingTop: 6, lineHeight: 1.4 }}>
                   {c.lectura[lang]}

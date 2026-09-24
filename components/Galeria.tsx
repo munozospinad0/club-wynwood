@@ -20,8 +20,10 @@ import { ev } from "@/lib/medicion";
 const T = {
   es: {
     ojo: "Fotografías · el recinto tal cual",
-    titulo: "Trece fotos del predio, sin retoque de montaje.",
-    intro: "Aéreas, el paseo, bajo el pabellón, las cabañas y un evento montado de noche. Toca una para verla a su tamaño. Las del flyer comercial son las más nítidas que existen del sitio; la fotografía documental propia sigue pendiente.",
+    // 24-sep: decía «Trece fotos» con veintiuna en la retícula, y publicaba la
+    // nota interna de que faltaba la fotografía propia. Sin número, no se desfasa.
+    titulo: "Fotos del predio, sin retoque de montaje.",
+    intro: "Aéreas, el paseo, bajo el pabellón, las cabañas y un evento montado de noche. Toca una para verla a su tamaño.",
     aria: "Galería de fotografías del recinto",
     abrir: "Ver la foto",
     cerrar: "Cerrar",
@@ -30,11 +32,11 @@ const T = {
     fuente: "Fuente",
   },
   en: {
-    ojo: "Photographs · the site as it is",
-    titulo: "Thirteen photos of the site, no setup retouching.",
-    intro: "Aerials, the walk, under the Pavilion, the cabanas and an event set up at night. Tap one to see it at its size. The ones from the commercial flyer are the sharpest that exist of the site; our own documentary photography is still pending.",
-    aria: "Photo gallery of the site",
-    abrir: "View the photo",
+    ojo: "Photos · the venue as it is",
+    titulo: "Photos of the venue, with no retouching.",
+    intro: "Aerial shots, the walkway, the Pavilion, the cabanas and an event set up at night. Tap any photo to see it full size.",
+    aria: "Photo gallery of the venue",
+    abrir: "View photo",
     cerrar: "Close",
     anterior: "Previous",
     siguiente: "Next",

@@ -116,10 +116,10 @@ export default function LaminaPlanta({ lang }: { lang: Idioma }) {
         <div style={{ display: "flex", justifyContent: "space-between", gap: 24, flexWrap: "wrap",
                       paddingBottom: 14, borderBottom: "1px solid var(--regla)" }}>
           <div className="ojo" style={{ color: "var(--tinta-2)" }}>
-            {es ? "Planta — el recinto visto desde arriba" : "Plan — the site seen from above"}
+            {es ? "Planta — el recinto visto desde arriba" : "Plan — the venue from above"}
           </div>
           <div className="ojo">
-            {es ? "Norte arriba · según el plano del sitio · lo techado, en tinta" : "North up · from the site plan · what has a roof, in ink"}
+            {es ? "Norte arriba · según el plano del sitio · lo techado, en tinta" : "North at top · based on the site plan · covered areas shown dark"}
           </div>
         </div>
 
@@ -129,8 +129,8 @@ export default function LaminaPlanta({ lang }: { lang: Idioma }) {
           <figure style={{ margin: 0 }}>
             <svg viewBox={`0 0 ${VB.w.toFixed(0)} ${VB.h.toFixed(0)}`} role="img"
                  aria-label={es
-                   ? "Planta del recinto, norte arriba. Lote de esquina entre NW 1st Court al oeste y NW 21st Court al sur, de unos 131 por 258 pies. El edificio del operador ocupa el norte; de su puerta baja hacia el sur un paseo pavimentado de unos 108 pies con palmeras a los dos lados. Al oeste del paseo, en la esquina suroeste, el pabellón techado de 54 por 60 pies sobre césped, con un apron pavimentado y una franja de césped entre ella y el edificio. Al este del paseo, junto a la puerta, un área de arena con mesas de picnic; después, seis cabañas en hilera y, más allá, el estacionamiento. Dos filas de estacionamiento con calle de maniobra cierran el sur, sobre NW 21st Court, por donde entra la producción."
-                   : "Site plan, north up. Corner lot between NW 1st Court to the west and NW 21st Court to the south, about 131 by 258 feet. The operator's building takes the north; from its door a paved walk of about 108 feet runs south with palms on both sides. West of the walk, in the south-west corner, the 54 by 60 foot covered pavilion on turf, with a paved apron and a strip of turf between it and the building. East of the walk, by the door, a sand area with picnic tables; then six cabanas in a row and, beyond them, parking. Two rows of parking with a drive aisle close the south on NW 21st Court, where production comes in."}
+                   ? "Planta del recinto, norte arriba. Lote de esquina entre NW 1st Court al oeste y NW 21st Court al sur, de unos 131 por 258 pies. El edificio del operador ocupa el norte; de su puerta baja hacia el sur un paseo pavimentado de unos 108 pies con palmeras a los dos lados. Al oeste del paseo, en la esquina suroeste, el pabellón techado de 54 por 60 pies sobre césped, con un apron pavimentado y una franja de césped entre ella y el edificio. Al este del paseo, junto a la puerta, un área de arena con mesas de picnic; después, seis cabañas en hilera y, más allá, el estacionamiento. Dos filas de estacionamiento con calle de maniobra cierran el sur, sobre NW 21st Court, por donde entran los invitados; la producción entra por NW 1st Court."
+                   : "Site plan, north at top. A corner lot between NW 1st Court to the west and NW 21st Court to the south, about 131 by 258 feet. The building sits at the north end; from its door, a paved walkway of about 108 feet runs south with palms on both sides. West of the walkway, in the southwest corner, is the 54 by 60 foot covered Pavilion on turf, with a paved area and a strip of turf between it and the building. East of the walkway, by the door, is a sand area with picnic tables, then six cabanas in a row and, beyond them, parking. Two rows of parking with a drive aisle close off the south side on NW 21st Court, where guests come in; vendors load in from NW 1st Court."}
                  style={{ width: "100%", height: "auto", maxHeight: "80vh", display: "block" }}>
 
               <defs>
@@ -340,11 +340,11 @@ export default function LaminaPlanta({ lang }: { lang: Idioma }) {
                 no dentro del SVG: se lee en el móvil y no pisa ninguna mesa. */}
             <figcaption className="ojo" style={{ paddingTop: 12, lineHeight: 1.7, maxWidth: "62ch" }}>
               <span style={{ color: OCRE }}>
-                {es ? "○ 24 mesas de 10 y una imperial de 60 sobre el paseo = los ~300 sentados, a la misma escala que el recinto · camión de 40 ft entrando por NW 21st Ct."
-                    : "○ 24 tables of 10 and one 60-seat banquet table on the walk = the ~300 seated, at the same scale as the site · 40 ft truck coming in from NW 21st Ct."}
+                {es ? "○ 24 mesas de 10 y una imperial de 60 sobre el paseo = los ~300 sentados, a la misma escala que el recinto · camión de 40 ft entrando por NW 1st Ct."
+                    : "○ 24 tables of 10 plus one 60-seat banquet table on the walkway = ~300 seated, drawn to scale · 40 ft truck coming in from NW 1st Ct."}
               </span>
               <br />
-              {es ? "El jardín: ~18 000 ft² al aire libre · el pabellón: ~4 000 ft² techados." : "The garden: ~18,000 sq ft open air · the Pavilion: ~4,000 sq ft roofed."}
+              {es ? "El jardín: ~18 000 ft² al aire libre · el pabellón: ~4 000 ft² techados." : "The Garden: ~18,000 sq ft open air · the Pavilion: ~4,000 sq ft covered."}
             </figcaption>
           </figure>
 
@@ -358,31 +358,31 @@ export default function LaminaPlanta({ lang }: { lang: Idioma }) {
                 p: es ? "¿Cabe mi evento?" : "Will my event fit?",
                 r: es
                   ? "Hasta ~600 personas de pie o ~300 sentadas en el recinto exterior completo. Por encima de eso no entra, y lo decimos antes de la visita para no hacerte perder el viaje."
-                  : "Up to ~600 standing or ~300 seated across the whole outdoor site. Above that it does not fit, and we say so before the visit rather than waste your trip.",
+                  : "Up to ~600 standing or ~300 seated using the whole outdoor venue. If your event is bigger than that, we'll tell you up front instead of wasting your trip.",
               },
               {
                 p: es ? "¿Y si llueve?" : "What if it rains?",
                 r: es
                   ? "El pabellón cubre ~4 000 ft² con techo de paja. Está abierto por los cuatro costados: protege del sol y del agua que cae recta, no del viento con lluvia. Para un evento de invierno conviene carpa lateral."
-                  : "The Pavilion covers ~4,000 sq ft under a thatch roof. It is open on all four sides: it stops sun and vertical rain, not wind-driven rain. A winter event should budget for side tenting.",
+                  : "The Pavilion covers ~4,000 sq ft under a thatched roof. It's open on all four sides: it keeps out the sun and straight-down rain, but not wind-driven rain. For a winter event, budget for side walls.",
               },
               {
                 p: es ? "¿Por dónde entra la producción?" : "How does production get in?",
                 r: es
-                  ? "Por NW 21st Ct, al estacionamiento sur, y de ahí al paseo pavimentado que sube recto hasta la puerta del edificio: unos 105 ft continuos y a nivel. Un camión de 40 ft llega hasta el fondo sin pisar césped."
-                  : "From NW 21st Ct into the south parking lot, then onto the paved walk that runs straight up to the building door: about 105 ft, continuous and level. A 40 ft truck reaches the far end without crossing turf.",
+                  ? "Por el portón de carga de NW 1st Ct, a la franja pavimentada junto al edificio, a un paso del pabellón. Un camión de 40 ft descarga ahí sin pisar césped, y los invitados entran aparte, por NW 21st Ct."
+                  : "Through the freight gate on NW 1st Ct, onto the paved strip along the building, a few steps from the Pavilion. A 40 ft truck unloads there without crossing the turf, and guests come in separately on NW 21st Ct.",
               },
               {
                 p: es ? "¿Y el edificio?" : "What about the building?",
                 r: es
                   ? "Se alquila aparte, como zona 02: abajo, un salón a doble altura con cocina y baños; arriba, un altillo con cuatro salas privadas. Lo que aquí se ofrece es el recinto exterior: el jardín, el pabellón, las cabañas y el estacionamiento propio."
-                  : "Rented separately, as zone 02: downstairs, a double-height hall with a kitchen and restrooms; upstairs, a mezzanine with four private rooms. What is offered here is the outdoor site: the garden, the covered pavilion, the cabanas and the on-site parking.",
+                  : "It's rented separately (zone 02): downstairs, a double-height hall with a kitchen and restrooms; upstairs, a mezzanine with four private rooms. This plan shows the outdoor venue: the Garden, the covered Pavilion, the cabanas and the on-site parking.",
               },
               {
-                p: es ? "¿Qué NO hay al aire libre?" : "What is NOT outdoors?",
+                p: es ? "¿Qué NO hay al aire libre?" : "What isn't included outdoors?",
                 r: es
                   ? "Cocina: el catering monta en el sitio, o usa la del edificio si lo alquilas también. Tampoco hay cerramiento perimetral fijo ni climatización: es un recinto al aire libre, y en Miami eso decide la fecha más que ninguna otra cosa."
-                  : "A kitchen: catering sets up on site, or uses the building's kitchen if you rent it as well. No fixed perimeter enclosure and no climate control either: this is an open-air site, and in Miami that drives the date more than anything else.",
+                  : "A kitchen: your caterer sets up on site, or uses the building's kitchen if you rent the building too. There are also no walls and no climate control: this is an open-air venue, and in Miami that affects your date more than anything else.",
               },
             ].map(({ p, r }) => (
               <div key={p} style={{ padding: "18px 20px 20px 0", borderBottom: "1px solid var(--regla)" }}>
@@ -396,7 +396,7 @@ export default function LaminaPlanta({ lang }: { lang: Idioma }) {
         <p className="ojo" style={{ paddingTop: 18, lineHeight: 1.75, maxWidth: "78ch" }}>
           {es
             ? "Según el plano del sitio del propietario; medidas aproximadas, se confirman en la visita técnica."
-            : "From the owner's site plan; approximate dimensions, confirmed at the technical visit."}
+            : "Based on the owner's site plan. Dimensions are approximate and confirmed at the site visit."}
         </p>
       </div>
     </section>

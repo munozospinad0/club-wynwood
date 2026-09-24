@@ -89,7 +89,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           <p className="respuesta" style={{ marginTop: 0, marginBottom: 26, color: "var(--texto)", maxWidth: "46ch" }}>
             {es
               ? "Club Wynwood son ~22.000 ft² de exterior en el Wynwood Arts District de Miami, con un pabellón techado de ~4.000 ft² que cubre el evento si llueve, estacionamiento propio y licencia de licor propia. Tú traes la producción; nosotros entregamos el espacio. Disponible desde el 1 de octubre; el edificio, desde el 1 de noviembre."
-              : "Club Wynwood is ~22,000 sq ft of outdoor space in Miami's Wynwood Arts District, with a ~4,000 sq ft covered pavilion for when it rains, its own parking and its own liquor license. You bring the production; we hand over the space. Available from October 1; the building, from November 1."}
+              : "Club Wynwood is ~22,000 sq ft of outdoor event space in Miami's Wynwood Arts District, with a ~4,000 sq ft covered pavilion for rainy days, on-site parking and its own liquor license. You bring the production; we provide the space. The outdoor venue is available from October 1, and the building from November 1."}
           </p>
 
           {/* Las dos cosas que se pueden hacer, en la portada: pedir fecha o
@@ -108,7 +108,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             src="/assets/aerea-predio.jpg"
             alt={es
               ? "Vista aérea del predio: el pabellón techado, el paseo central y el jardín"
-              : "Aerial view of the site: the covered pavilion, the central walk and the garden"}
+              : "Aerial view of the venue: the covered Pavilion, the central walkway and the Garden"}
             fill
             priority
             sizes="(max-width: 880px) 100vw, 46vw"
@@ -123,7 +123,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           >
             {es
               ? "El predio completo · el edificio del fondo no es parte"
-              : "The whole site · the background building is not part of it"}
+              : "The whole venue · the building in the back is rented separately"}
           </figcaption>
         </figure>
       </header>
@@ -185,7 +185,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             <p className="respuesta" style={{ color: "var(--texto)" }}>
               {es
                 ? "El predio está en el Wynwood Arts District, a una cuadra de los murales y a tres minutos del acceso a la I-95."
-                : "The site sits in the Wynwood Arts District, one block from the murals and three minutes from the I-95 access."}
+                : "The venue is in the Wynwood Arts District, one block from the murals and three minutes from I-95."}
             </p>
             <a className="boton" style={{ marginTop: 8 }} href={`https://maps.google.com/?q=${encodeURIComponent(`${VENUE.direccion.calle}, ${VENUE.direccion.ciudad}, ${VENUE.direccion.region} ${VENUE.direccion.cp}`)}`} target="_blank" rel="noopener noreferrer">
               {es ? "Cómo llegar" : "Directions"} →
@@ -211,12 +211,12 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       <section style={{ borderTop: "1px solid var(--regla)", background: "var(--papel-3)" }}>
         <div className="reja" style={{ paddingBlock: 52 }}>
           <div className="ojo" style={{ paddingBottom: 14 }}>
-            {es ? "A partir de aquí, la documentación" : "From here on, the documentation"}
+            {es ? "A partir de aquí, la documentación" : "Technical details"}
           </div>
           <p style={{ margin: 0, maxWidth: "62ch", fontSize: 15, lineHeight: 1.7, color: "var(--texto)" }}>
             {es
               ? "Las medidas, la planta a escala, el edificio y la ficha técnica. Va abajo a propósito: si todavía estás decidiendo si el sitio te sirve, lo de arriba ya lo contesta. Esto es para cuando te toca montar el evento."
-              : "Measurements, the plan to scale, the building and the spec sheet. It sits down here on purpose: if you are still deciding whether the place works for you, everything above already answers that. This is for when you have to build the event."}
+              : "Measurements, the scale plan, the building and the spec sheet. Everything above tells you whether the venue works for you; this section is for when you're planning the build."}
           </p>
         </div>
       </section>
@@ -235,12 +235,14 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           <div className="ojo" style={{ marginBottom: 24 }}>{es ? "Ficha técnica" : "Spec sheet"}</div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))", gap: 44, marginBottom: 48 }}>
             <h2 style={{ color: "var(--papel-3)" }}>
-              {es ? <>Las medidas del sitio.</> : <>The site&rsquo;s measurements.</>}
+              {es ? <>Las medidas del sitio.</> : <>The venue&rsquo;s measurements.</>}
             </h2>
             <p className="respuesta" style={{ color: "var(--texto)", margin: 0 }}>
+              {/* 24-sep: decía que la licencia de licor y la entrada de carga estaban
+                  «sin medir», dos líneas debajo de donde figuran como verificadas. */}
               {es
-                ? "Estas son las medidas y los aforos del sitio. Lo que todavía no está medido —la potencia, por dónde se entra a descargar, el parking, los baños, la licencia de licor y hasta qué hora se puede— lo revisamos juntos cuando vengas a verlo, y te lo mandamos por escrito."
-                : "These are the site's measurements and capacities. What is not measured yet —power, where you load in, parking, restrooms, the liquor licence and how late you can run— we go through together when you come to see it, and you get it in writing."}
+                ? "Estas son las medidas y los aforos del sitio. Lo que todavía no está medido —la potencia, el ancho del portón, los puestos de estacionamiento, los baños y hasta qué hora y con cuánto volumen se puede— lo revisamos juntos cuando vengas a verlo, y te lo mandamos por escrito."
+                : "These are the venue's measurements and capacities. What we haven't measured yet — power, gate width, parking spaces, restrooms, and how late and how loud you can go — we go through together at the site visit, and you get it in writing."}
             </p>
           </div>
 
@@ -253,11 +255,11 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
               </div>
             ))}
             <div style={{ display: "grid", gridTemplateColumns: "112px minmax(0,1fr) minmax(0,1fr)", gap: 24, padding: "17px 0", borderBottom: "1px solid var(--regla-osc)", alignItems: "baseline" }}>
-              <div className="ojo">○ {es ? "En visita" : "At visit"}</div>
-              <dt style={{ fontSize: 15 }}>{es ? "Ficha de infraestructura" : "Infrastructure sheet"}</dt>
+              <div className="ojo">○ {es ? "En visita" : "At site visit"}</div>
+              <dt style={{ fontSize: 15 }}>{es ? "Ficha de infraestructura" : "Infrastructure details"}</dt>
               <dd style={{ margin: 0, fontSize: 13, lineHeight: 1.55, color: "var(--texto)" }}>
                 {enVisita.map((f) => (es ? f.es : f.en)).join(" · ")}.{" "}
-                {es ? "Se levanta contigo en sitio y se entrega por escrito." : "Surveyed with you on site and delivered in writing."}
+                {es ? "Se levanta contigo en sitio y se entrega por escrito." : "Measured with you on site and confirmed in writing."}
               </dd>
             </div>
           </dl>
@@ -278,18 +280,10 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           <p className="respuesta" style={{ color: "var(--texto)", marginBottom: 36 }}>
             {es
               ? "Con el tipo de evento, la fecha y el número de invitados respondemos con disponibilidad real y condiciones. Si necesitas ver el espacio, coordinamos la visita y levantamos la ficha técnica contigo."
-              : "With the event type, date and guest count we come back with real availability and terms. If you need to see the space, we schedule the visit and survey the spec sheet with you."}
+              : "Send us your event type, date and guest count, and we'll reply with real availability and terms. If you want to see the venue, we'll schedule a site visit and go through the spec sheet with you."}
           </p>
-          {/**
-            * Doce campos a la vista parecen doce campos obligatorios, y ahí es
-            * donde alguien cierra la pestaña. Solo hacen falta dos. Decirlo
-            * cuesta una línea y cambia lo que el formulario aparenta ser.
-            */}
-          <p className="ojo" style={{ color: "var(--texto-3)", marginBottom: 28 }}>
-            {es
-              ? "Solo el nombre y el correo son obligatorios. Lo demás nos deja responderte con cifras en vez de con un «depende»."
-              : "Only name and email are required. The rest lets us answer with numbers instead of «it depends»."}
-          </p>
+          {/* El aviso de «solo nombre y correo» lo pone el propio formulario desde
+              el 23-sep; aquí salía repetido, una línea encima del otro. */}
           <Formulario lang={lang} />
         </div>
       </section>

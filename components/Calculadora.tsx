@@ -39,7 +39,7 @@ const TECHO: Record<Formato, number> = { coctel: 600, banquete: 300, ceremonia: 
 const ESPACIOS = [
   { id: "tiki", sqft: 4000, es: "El Pabellón", en: "The Pavilion", techado: true },
   { id: "jardin", sqft: 18000, es: "El Jardín", en: "The Garden", techado: false },
-  { id: "todo", sqft: 22000, es: "El recinto completo", en: "The whole site", techado: false },
+  { id: "todo", sqft: 22000, es: "El recinto completo", en: "The whole venue", techado: false },
 ];
 
 export default function Calculadora({ lang }: { lang: Idioma }) {
@@ -106,7 +106,7 @@ export default function Calculadora({ lang }: { lang: Idioma }) {
         </div>
         <div style={{ fontFamily: "var(--display)", fontWeight: 600, fontSize: 42,
                       lineHeight: 1, letterSpacing: "-.02em", paddingBottom: 6 }}>
-          {necesita.toLocaleString(es ? "es-ES" : "en-US")} ft²
+          {necesita.toLocaleString(es ? "es-ES" : "en-US")} {es ? "ft²" : "sq ft"}
         </div>
         <p style={{ margin: "0 0 22px", fontSize: 13.5, color: "var(--texto)" }}>
           {es
@@ -133,7 +133,7 @@ export default function Calculadora({ lang }: { lang: Idioma }) {
                                  color: o.cabe ? "var(--tinta)" : "var(--texto-3)" }}>
                     {o.cabe ? "✓ " : "· "}{es ? e.es : e.en}
                     <span style={{ color: "var(--texto)", fontSize: 13 }}>
-                      {" "}— {e.sqft.toLocaleString(es ? "es-ES" : "en-US")} ft²
+                      {" "}— {e.sqft.toLocaleString(es ? "es-ES" : "en-US")} {es ? "ft²" : "sq ft"}
                     </span>
                   </span>
                   <span style={{ fontSize: 13, color: "var(--texto)", whiteSpace: "nowrap" }}>
@@ -153,7 +153,7 @@ export default function Calculadora({ lang }: { lang: Idioma }) {
                 {" "}
                 {es
                   ? "El aforo exacto con tu plano se confirma en la visita técnica."
-                  : "Exact capacity with your floor plan is confirmed at the technical visit."}
+                  : "The exact capacity for your floor plan is confirmed at the site visit."}
               </p>
             )}
           </div>

@@ -40,8 +40,8 @@ export interface FotoGaleria {
 }
 
 const FLYER = { es: "flyer comercial del predio, 2026", en: "the property's commercial flyer, 2026" };
-const DRON = { es: "fotografía aérea del predio", en: "aerial photograph of the site" };
-const SITIO = { es: "fotografía del sitio", en: "site photograph" };
+const DRON = { es: "fotografía aérea del predio", en: "aerial photograph of the venue" };
+const SITIO = { es: "fotografía del sitio", en: "photograph of the venue" };
 const CALLE = { es: "fotografía del inmueble desde la calle, 2026", en: "photograph of the building from the street, 2026" };
 /**
  * Material de la ficha comercial del inmueble (Newmark, 2026). Se cita la
@@ -62,15 +62,15 @@ export const GALERIA: FotoGaleria[] = [
     alt: { es: "El edificio desde NW 1st Ct: nave de dos niveles, portón de carga abierto y el mural en la esquina",
            en: "The building from NW 1st Ct: a two-level warehouse, the freight gate open and the mural on the corner" } },
   { id: "aerea", src: "/assets/aerea-predio.jpg", w: 1024, h: 683, fuente: DRON,
-    alt: { es: "El predio desde el aire: el pabellón, el paseo entre las palmeras y el jardín", en: "The site from the air: the Pavilion, the walk between the palms and the garden" } },
+    alt: { es: "El predio desde el aire: el pabellón, el paseo entre las palmeras y el jardín", en: "The venue from the air: the Pavilion, the walkway between the palms and the Garden" } },
   { id: "cenital", src: "/assets/flyer-cenital.jpg", w: 935, h: 506, fuente: FLYER,
-    alt: { es: "Cenital: el pabellón, el área de arena con sombrillas, las pérgolas y el paseo", en: "Overhead: the Pavilion, the sand area with umbrellas, the pergolas and the walk" } },
+    alt: { es: "Cenital: el pabellón, el área de arena con sombrillas, las pérgolas y el paseo", en: "From directly above: the Pavilion, the sand area with umbrellas, the pergolas and the walkway" } },
   { id: "aerea-palapa", src: "/assets/flyer-aerea-palapa.jpg", w: 930, h: 1108, fuente: FLYER,
     alt: { es: "El pabellón y las dos hileras de palmeras desde el aire", en: "The covered pavilion and the two rows of palms from the air" } },
   { id: "paseo-puerta", src: "/assets/venue-exterior.webp", w: 1280, h: 853, fuente: SITIO,
-    alt: { es: "El paseo pavimentado entre las palmeras, con el pabellón a la izquierda y las pérgolas a la derecha", en: "The paved walk between the palms, with the Pavilion on the left and the pergolas on the right" } },
+    alt: { es: "El paseo pavimentado entre las palmeras, con el pabellón a la izquierda y las pérgolas a la derecha", en: "The paved walkway between the palms, with the Pavilion on the left and the pergolas on the right" } },
   { id: "puerta", src: "/assets/flyer-paseo-puerta.jpg", w: 1110, h: 806, fuente: FLYER,
-    alt: { es: "El paseo hasta la puerta del edificio, a ras de suelo", en: "The walk up to the building door, at ground level" } },
+    alt: { es: "El paseo hasta la puerta del edificio, a ras de suelo", en: "The walkway up to the building door, at ground level" } },
   { id: "palmeras", src: "/assets/palmeras-aerea.jpg", w: 736, h: 682, fuente: DRON,
     alt: { es: "Las dos hileras de palmeras reales sobre el césped y el pabellón", en: "The two rows of real palms over the turf and the Pavilion" } },
   { id: "paseo", src: "/assets/paseo-palmeras.jpg", w: 1280, h: 400, fuente: SITIO,
@@ -92,7 +92,7 @@ export const GALERIA: FotoGaleria[] = [
     alt: { es: "Bajo el pabellón, montado: truss, altavoces y luces colgados de los cabios",
            en: "Under the Pavilion, rigged: truss, speakers and lights hung from the rafters" } },
   { id: "noche", src: "/assets/recinto-noche.jpg", w: 1920, h: 1080, fuente: SITIO,
-    alt: { es: "El recinto al anochecer durante un evento, visto desde arriba", en: "The site at dusk during an event, seen from above" } },
+    alt: { es: "El recinto al anochecer durante un evento, visto desde arriba", en: "The venue at dusk during an event, seen from above" } },
 
   /**
    * EL EDIFICIO. Llegaron el 9-sep-2026 en el paquete que recopiló el material

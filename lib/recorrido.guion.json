@@ -12,7 +12,7 @@
       "zoom": 1,
       "pregunta": {
         "es": "El recinto",
-        "en": "The site"
+        "en": "The venue"
       },
       "texto": {
         "es": "Bienvenido a Club Wynwood. Lo que ves es el recinto desde el aire: unos dieciocho mil pies cuadrados al aire libre, con césped, dos hileras de palmeras reales y setos alrededor. Junto al paseo, la palapa techada. Y de la calle al edificio, un paseo pavimentado por donde entra todo. Se alquila solo el exterior: tú traes la producción, nosotros entregamos el espacio.",
@@ -175,6 +175,9 @@
             "cifra": "outdoors only"
           }
         ]
+      },
+      "leido": {
+        "en": "Welcome to Club Wynwood. This is the venue from the air: about eighteen thousand square feet outdoors, with turf, two rows of real palms and hedges all around. Next to the walkway is the covered Pavilion, and a paved walkway runs from the street to the building. You rent only the outdoor space: you bring the production, and we provide the venue."
       }
     },
     {
@@ -271,6 +274,9 @@
             ]
           }
         ]
+      },
+      "leido": {
+        "en": "Will your event fit? Up to six hundred people standing — this is what that looks like, to scale, in the Garden. Or about three hundred seated: here are twenty-four round tables of ten and one sixty-seat banquet table along the walkway, drawn to the same scale, with room to walk between them. If your event is bigger than that, it won't fit, and we'd rather tell you before the site visit."
       }
     },
     {
@@ -284,7 +290,7 @@
       "zoom": 1.9,
       "pregunta": {
         "es": "Plan de lluvia: pabellón de 4 000 ft²",
-        "en": "Rain plan: 4,000 sq ft pavilion"
+        "en": "Rain plan: the 4,000 sq ft Pavilion"
       },
       "texto": {
         "es": "¿Y si llueve? Para eso está la palapa: cuatro mil pies cuadrados bajo techo de paja, sobre postes de madera y abierta por los cuatro costados. Protege del sol y del agua que cae recta. Lo que no para es el viento con lluvia, así que para un evento de invierno conviene presupuestar carpa lateral. El resto del jardín queda al aire, y en Miami eso decide la fecha más que cualquier otra cosa.",
@@ -399,6 +405,9 @@
             "cifra": null
           }
         ]
+      },
+      "leido": {
+        "en": "What if it rains? That's what the Pavilion is for: four thousand square feet under a thatched roof on timber posts, open on all four sides. It keeps out the sun and rain that falls straight down, but not wind-driven rain, so for a winter event, budget for side walls. The rest of the Garden is open-air, and in Miami that affects your date more than anything else."
       }
     },
     {
@@ -575,7 +584,10 @@
           }
         ]
       },
-      "vista": "oeste"
+      "vista": "oeste",
+      "leido": {
+        "en": "How does your production get in? Vendors have their own entrance, separate from the main one: from NW 1st Ct onto the flat paved strip along the building. A forty-foot truck unloads a few steps from the Pavilion and the door without touching the turf. The main entrance, through the parking lot and the walkway, is kept for your guests. The exact gate width, the available power and the other measurements are checked with you at the site visit and confirmed in writing."
+      }
     },
     {
       "id": "que-hay",
@@ -591,7 +603,7 @@
       ],
       "pregunta": {
         "es": "Infraestructura incluida",
-        "en": "Included infrastructure"
+        "en": "What's included"
       },
       "texto": {
         "es": "¿Qué hay, y qué no? Hay seis cabañas amuebladas en hilera, mesas de picnic fijas y un área donde montar barra, con licencia de licor propia. El edificio del fondo, donde termina el paseo, tiene dos niveles: abajo, un salón a doble altura con cocina y baños; arriba, un altillo con cuatro salas privadas. Se alquila aparte, como evento o como oficina, con su propia lámina, y resuelve camerinos, cocina de catering o plan B bajo techo. Al aire libre no hay cocina, ni cerramiento fijo, ni climatización: el catering monta en el sitio. Producción, sonido, iluminación y mobiliario los trae tu equipo, y esa libertad es justamente la propuesta.",
@@ -820,6 +832,9 @@
             "cifra": null
           }
         ]
+      },
+      "leido": {
+        "en": "What's here, and what isn't? Six furnished cabanas in a row, fixed picnic tables and an area to set up a bar, under the venue's own liquor license. The building at the end of the walkway has two levels: downstairs, a double-height hall with a kitchen and restrooms; upstairs, a mezzanine with four private rooms. It's rented separately, for events or as an office, and can serve as green rooms, a catering kitchen or an indoor backup plan. Outdoors there's no kitchen, no walls and no climate control: your caterer sets up on site. Production, sound, lighting and furniture come with your team — and that freedom is the whole point."
       }
     },
     {
@@ -833,7 +848,7 @@
       "zoom": 1.1,
       "pregunta": {
         "es": "Montaje tipo, nocturno",
-        "en": "Sample setup, at night"
+        "en": "A sample night setup"
       },
       "texto": {
         "es": "¿Cómo se ve montado? Así, por ejemplo, de noche: el escenario sobre el estacionamiento, de frente al paseo, tu barra bajo la palapa, el público en el césped y luz de ambiente entre las palmeras. Todo lo que ves encendido lo monta tu equipo. Lo que no se ve, el piso firme, la sombra y el paseo por donde entró todo, ya estaba.",
@@ -996,6 +1011,9 @@
             "zoom": 1.1
           }
         ]
+      },
+      "leido": {
+        "en": "What does it look like set up? Here's one example, at night: a stage in the parking lot facing the walkway, your bar under the thatched roof, the crowd on the turf and string lights between the palms. Everything you see lit up is brought in by your team. What you don't see — the firm ground, the shade and the walkway — was already here."
       }
     },
     {
@@ -1006,7 +1024,7 @@
       "zoom": 1,
       "pregunta": {
         "es": "Tarifas y condiciones",
-        "en": "Rates and terms"
+        "en": "Pricing and terms"
       },
       "texto": {
         "es": "¿Cuánto cuesta? No publicamos tarifas, y no es por esconderlas: el paquete se arma contra tu evento, según la fecha, el espacio que uses y el montaje. Cuéntanos qué tienes en mente y respondemos con disponibilidad real y condiciones, por escrito.",
@@ -1123,6 +1141,9 @@
             "modo": "todo"
           }
         ]
+      },
+      "leido": {
+        "en": "How much does it cost? We don't publish rates, and not because we're hiding them: the price is built around your event — the date, the space you use and your setup. Tell us what you have in mind, and we'll reply in writing with real availability and terms."
       }
     },
     {
@@ -1202,6 +1223,9 @@
             ]
           }
         ]
+      },
+      "leido": {
+        "en": "What's next? The outdoor venue is available from October first, and the building from November first. If the venue works for you, request availability with your date and guest count. We reply within twenty-four business hours, and if you'd like to see it in person, we'll schedule a site visit and go through the spec sheet with you. Thanks for taking the tour."
       }
     }
   ]

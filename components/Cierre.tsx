@@ -49,7 +49,7 @@ export default function Cierre({ lang, tema }: { lang: Idioma; tema?: string }) 
         <p className="respuesta" style={{ color: "var(--texto)", marginBottom: 34, maxWidth: "54ch" }}>
           {es
             ? "Con la fecha y el número de invitados te respondemos con disponibilidad real y presupuesto en 24 horas hábiles. Sin visita previa y sin compromiso."
-            : "With the date and the guest count we come back with real availability and a quote within 24 business hours. No site visit and no commitment."}
+            : "Send us your date and guest count, and we'll reply with real availability and a quote within 24 business hours. No site visit required, no commitment."}
         </p>
 
         <Formulario lang={lang} />

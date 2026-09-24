@@ -921,7 +921,7 @@ function Cota({ g, a, b, texto, lado = 1, clase = "", t = 0.5 }: { g: GeoPerspec
  * lib/edificio.ts). Daniel, 7-sep: «detalla dentro del edificio también;
  * dentro del edificio sí hay cocina y demás».
  */
-function Edificio({ g }: { g: GeoPerspectiva }) {
+function Edificio({ g, lang = "es" }: { g: GeoPerspectiva; lang?: Idioma }) {
   const { p } = g;
   const X0 = EDIF.x, XC = EDIF.x + EDIF.corte, X1 = EDIF.x + EDIF.dx, Y1 = EDIF.dy;
   const H1 = EDIF.h1, H2 = EDIF.h2;
@@ -971,7 +971,7 @@ function Edificio({ g }: { g: GeoPerspectiva }) {
       {veEste && <path className="rl tz edif-borde" pathLength={1} d={caraX(X1, H1)} fill="#e4ded1" stroke={GRIS} strokeWidth="0.8" />}
       {veNorte && <path className="rl tz edif-borde" pathLength={1} d={caraNorte(X0, XC, H2)} fill="#ece7db" stroke={GRIS} strokeWidth="0.8" />}
       {veNorte && <path className="rl tz edif-borde" pathLength={1} d={caraNorte(XC, X1, H1)} fill="#ece7db" stroke={GRIS} strokeWidth="0.8" />}
-      {veSur && <Interior g={g} />}
+      {veSur && <Interior g={g} lang={lang} />}
       {veSur && <path className="rl tz edif-sur edif-borde" pathLength={1} d={cara(X0, XC, H2)} fill="#ece7db" stroke={GRIS} strokeWidth="0.8" />}
       {veSur && <path className="rl tz edif-sur edif-borde" pathLength={1} d={cara(XC, X1, H1)} fill="#ece7db" stroke={GRIS} strokeWidth="0.8" />}
       {veSur && mural.map((m, i) => <path key={i} className="rl edif-sur" d={m.d} fill={m.fill} opacity={m.op} />)}
@@ -999,7 +999,18 @@ function Edificio({ g }: { g: GeoPerspectiva }) {
   );
 }
 
-function Interior({ g }: { g: GeoPerspectiva }) {
+/**
+ * Los rótulos del corte van por idioma. Estaban fijos en español y la versión
+ * inglesa enseñaba «SALÓN · DOBLE ALTURA», «COCINA», «BAÑOS» (Joa, 24-sep: «en
+ * inglés no se entiende»).
+ */
+const ROTULOS_INTERIOR: Record<Idioma, [string, string, string, string]> = {
+  es: ["SALÓN · DOBLE ALTURA", "COCINA", "BAÑOS", "ALTILLO · 4 SALAS"],
+  en: ["HALL · DOUBLE HEIGHT", "KITCHEN", "RESTROOMS", "MEZZANINE · 4 ROOMS"],
+};
+
+function Interior({ g, lang = "es" }: { g: GeoPerspectiva; lang?: Idioma }) {
+  const [rSalon, rCocina, rBanos, rAltillo] = ROTULOS_INTERIOR[lang];
   const { p } = g;
   const X0 = EDIF.x, X1 = EDIF.x + EDIF.corte, Y1 = EDIF.dy;
   const XK0 = EDIF.x + EDIF.corte, XK1 = EDIF.x + EDIF.dx;
@@ -1058,10 +1069,10 @@ function Interior({ g }: { g: GeoPerspectiva }) {
       <path d={g.techo(PUERTA.x, Y1 - 34, PUERTA.dx, 34, 0.12)} fill={PAPEL} stroke="#cfc7b6" strokeWidth="0.4" />
       {[1, 2, 3].map((k) => { const q0 = p(PUERTA.x, Y1 - 34 + k * 8, 0.13), q1 = p(PUERTA.x + PUERTA.dx, Y1 - 34 + k * 8, 0.13); return <line key={k} x1={q0[0]} y1={q0[1]} x2={q1[0]} y2={q1[1]} stroke="#cfc7b6" strokeWidth="0.35" />; })}
       {[
-        { t: "SALÓN · DOBLE ALTURA", q: p(X0 + 30, 88, 0.2) },
-        { t: "COCINA", q: p(XK0 + 30, 18, 0.2) },
-        { t: "BAÑOS", q: p(X0 + 7, 70, 9.3) },
-        { t: "ALTILLO · 4 SALAS", q: p(X0 + 30, 44, 12.3) },
+        { t: rSalon, q: p(X0 + 30, 88, 0.2) },
+        { t: rCocina, q: p(XK0 + 30, 18, 0.2) },
+        { t: rBanos, q: p(X0 + 7, 70, 9.3) },
+        { t: rAltillo, q: p(X0 + 30, 44, 12.3) },
       ].map((r) => <text key={r.t} className="int-rotulo" x={r.q[0].toFixed(1)} y={r.q[1].toFixed(1)} fill={GRIS} fontFamily="ui-monospace,monospace" fontSize="5.6" letterSpacing="1.2" textAnchor="middle">{r.t}</text>)}
       <g className="int-pieza" style={cssVars({ "--i": 13 })}>
         <Persona g={g} x={X0 + 36} y={90} clase="" opacidad={0.65} />
@@ -1136,60 +1147,60 @@ const T = {
   en: {
     ojo: "Site plan · view from the south",
     titulo: "~18,000 sq ft outdoors with a ~4,000 sq ft covered pavilion.",
-    intro: "The outdoor site seen from the south, as in the aerial photograph, from the site plan and the photographs. Select a zone to see its data, or turn on a layout layer: rain plan, seated capacity, load-in or night setup.",
-    aria: "Perspective of the site from the south: the two-level building at the far end with its door, the paved walk coming down towards the camera, the covered pavilion on the left in the south-west corner on turf, with a strip of turf and a paved apron between it and the building, the sand area with picnic tables to the right of the door, six pergola cabanas on the right of the walk, palms, hedges, parking to the east and two rows of parking to the south.",
+    intro: "The outdoor venue seen from the south, drawn from the site plan and photos. Tap a zone to see its details, or switch on a layout: rain plan, seated capacity, load-in or night setup.",
+    aria: "Perspective view of the venue from the south: the two-level building at the far end with its door, the paved walkway running toward the viewer, the covered Pavilion on the left in the southwest corner on turf, with a strip of turf and a paved area between it and the building, the sand area with picnic tables to the right of the door, six pergola cabanas to the right of the walkway, palms, hedges, parking to the east and two rows of parking to the south.",
     modos: { todo: "Overview", lluvia: "Rain plan", mesas: "Seated capacity · 300", camion: "Load-in · 40 ft truck", noche: "Night setup" } as Partial<Record<Modo, string>>,
-    vistaOjo: "Point of view",
+    vistaOjo: "Viewpoint",
     vistas: { sur: "From the south", oeste: "From the west", norte: "From the north", este: "From the east", aerea: "Aerial" } as Record<Vista, string>,
     explica: {
-      todo: "Roofed volumes are drawn in ink, open ground in light tone. The walk runs from the building door down to the south parking, and it is how everything gets in. Beyond the hedges, the street.",
-      lluvia: "The Pavilion covers ~4,000 sq ft under a thatch roof, open on all four sides: it stops sun and vertical rain. The rest stays open-air, and a winter event should budget for side tenting.",
-      carpa: "With wind, rain comes in sideways. A winter event closes the sides with side tenting, which your supplier brings: here it is drawn dashed.",
-      mesas: "Twenty-four round tables of ten (sixteen under the Pavilion, eight on the turf) and one sixty-seat banquet table along the walk, to scale. These are the verified ~300 seated, with service aisles between tables.",
-      gente: "Six hundred people standing, at eight square feet each, under the Pavilion, on the turf and along the walk. That is the verified capacity, drawn.",
-      camion: "Freight comes in apart from the guests: from NW 1st Ct, on the west, onto the paved strip beside the building, continuous and level. A 40 ft truck unloads a step from the Pavilion and the door without crossing turf. The main entrance, through the south parking and the walk, stays for people.",
-      noche: "One possible setup, at night: a stage with screen and truss on the south parking, facing the walk and the Pavilion, a sound tower on each side, your bar under the Pavilion, a standing crowd and string lights between the palms. Everything lit is brought by your team; hung lighting is approved at the visit.",
-      barra: "Under the Pavilion, on the walk side, there is room to set up a bar. The bar comes with your team: here it is drawn dashed, where it usually goes.",
+      todo: "Covered areas are drawn dark; open ground is drawn light. The paved walkway runs from the building door down to the south parking lot, and the street is beyond the hedges.",
+      lluvia: "The Pavilion covers ~4,000 sq ft under a thatched roof, open on all four sides: it keeps out the sun and straight-down rain. Everything else is open-air, so a winter event should budget for side walls.",
+      carpa: "In windy weather, rain blows in from the side. For a winter event, your tent vendor can close the sides with side walls, shown here as dashed lines.",
+      mesas: "Twenty-four round tables of ten (sixteen under the Pavilion, eight on the turf) and one 60-seat banquet table along the walkway, drawn to scale. That's the verified ~300 seated, with service aisles between the tables.",
+      gente: "Six hundred people standing, at eight square feet each, under the Pavilion, on the turf and along the walkway. That's the verified capacity, drawn to scale.",
+      camion: "Vendors come in separately from guests: through NW 1st Ct, on the west side, onto the flat paved strip along the building. A 40 ft truck unloads a few steps from the Pavilion and the door without crossing the turf. The main entrance, through the south parking lot and the walkway, is kept for guests.",
+      noche: "One possible night setup: a stage with a screen and truss in the south parking lot, facing the walkway and the Pavilion, a sound tower on each side, your bar under the Pavilion, a standing crowd and string lights between the palms. Everything lit up is brought in by your team; anything hung from the structure is approved at the site visit.",
+      barra: "There's room to set up a bar under the Pavilion, on the walkway side. Your team brings the bar; it's shown here as dashed lines, where it usually goes.",
     } as Record<Modo, string>,
     zonas: {
       jardin: {
         nombre: "The Garden", dato: "~18,000 sq ft · open air",
-        lee: "Artificial turf on the Pavilion's side and sand on the cabanas' side, a sand area with picnic tables under umbrellas by the door, real palms and perimeter hedges.",
-        sirve: "This is the volume of the site: standing reception, a long dinner along the walk, or a stage on the south parking with a crowd on the walk and under the Pavilion. The walk splits it in two, and that geometry drives any layout.",
-        ojo: "Open air, no enclosure. The turf is artificial, so it will not turn to mud; point loads need spreading.",
+        lee: "Artificial turf on the Pavilion side and sand on the cabana side, a sandy area with picnic tables and umbrellas by the door, real palms and hedges all around.",
+        sirve: "This is most of the venue: room for a standing reception, a long dinner along the walkway, or a stage in the south parking lot with the crowd on the walkway and under the Pavilion. The walkway splits the Garden in two, and every layout starts from that.",
+        ojo: "Open air, no walls. The turf is artificial, so it won't turn to mud, but heavy equipment needs floor protection to spread the load.",
       },
       tiki: {
         nombre: "The Pavilion", dato: "~4,000 sq ft · covered",
-        lee: "A four-hip thatch roof of about 54 by 60 feet on timber posts, in the south-west corner by NW 1st Ct with the south parking in front, open on all four sides. It is the rain plan.",
-        sirve: "The site's permanent shade. It takes sixteen tables of ten, the client's bar on the walk side, or a small stage.",
-        ojo: "For vertical rain it is enough on its own; with wind you will want the sides closed. Clear span between posts is surveyed at the visit.",
+        lee: "A thatched hip roof of about 54 by 60 ft on timber posts, open on all four sides, in the southwest corner by NW 1st Ct, with the south parking lot in front. It's the rain plan.",
+        sirve: "The venue's permanent shade. It fits sixteen tables of ten, your bar on the walkway side, or a small stage.",
+        ojo: "It handles straight-down rain on its own; on a windy day, you'll want to add side walls. The clear distance between posts is measured at the site visit.",
       },
       cabanas: {
-        nombre: "six cabanas", dato: "furnished pergolas · in a row",
-        lee: "Open pergolas of posts and white slats, with a sofa, in a row east of the walk between the palms.",
-        sirve: "Green room, coat check, VIP lounge or a quiet corner, without building anything.",
-        ojo: "They come with the site: they cannot be moved or taken out of the layout.",
+        nombre: "Six cabanas", dato: "furnished pergolas · in a row",
+        lee: "Open pergolas with white posts and slats, each with a sofa, in a row east of the walkway between the palms.",
+        sirve: "A green room, coat check, VIP lounge or quiet corner, with nothing to build.",
+        ojo: "They come with the property: they can't be moved or removed from the layout.",
       },
       acceso: {
         nombre: "Access", dato: "corner of NW 1st Ct · NW 21st Ct",
-        lee: "Corner lot with two entrances: the main one, on NW 21st Ct, for guests (parking and the walk); the freight one, on NW 1st Ct, onto the paved strip beside the building, continuous and level.",
-        sirve: "Everything comes in through the freight entrance: truck, catering, rigging and stage, without crossing the guests or the turf. On-site parking to the east and south.",
-        ojo: "Exact gate width and available power are surveyed with you at the visit and delivered in writing.",
+        lee: "A corner lot with two entrances: the main entrance on NW 21st Ct for guests (parking and the walkway), and the freight entrance on NW 1st Ct, onto the flat paved strip along the building.",
+        sirve: "Everything comes in through the freight entrance — trucks, catering, rigging and stage — without crossing paths with guests or driving over the turf. On-site parking to the east and south.",
+        ojo: "The exact gate width and available power are measured with you at the site visit and confirmed in writing.",
       },
       edificio: {
         nombre: "The building", dato: "zone 02 · 2 levels · kitchen and restrooms",
-        lee: "It closes the north of the site: the walk ends at its door. Downstairs, a double-height hall with a kitchen and restrooms; upstairs, a mezzanine with four private rooms. Rented separately, with its own plate.",
-        sirve: "It is zone 02 and goes separately. With the garden, it covers what the outdoors lacks: a catering kitchen, green rooms, restrooms and a plan B under a roof.",
-        ojo: "The shell is handed over with its kitchen and restrooms. Whatever is installed inside today belongs to the building's operator and is not part of the rental.",
+        lee: "It sits at the north end of the venue, where the walkway ends at its door. Downstairs, a double-height hall with a kitchen and restrooms; upstairs, a mezzanine with four private rooms. Rented separately, with its own drawing below.",
+        sirve: "It's zone 02 and is rented separately. Together with the Garden, it covers what the outdoor space lacks: a catering kitchen, green rooms, restrooms and an indoor backup plan.",
+        ojo: "You get the empty building with its kitchen and restrooms. Anything installed inside today belongs to the current operator and isn't part of the rental.",
       },
     } as Record<Zona, { nombre: string; dato: string; lee: string; sirve: string; ojo: string }>,
-    cajetin: ["Club Wynwood", "The site · zone 01", "View from the south · not to scale"],
+    cajetin: ["Club Wynwood", "Outdoor venue · zone 01", "View from the south · not to scale"],
     vistaCajetin: { sur: "View from the south · not to scale", norte: "View from the north · not to scale", este: "View from the east · not to scale", oeste: "View from the west · not to scale", aerea: "Aerial view · not to scale" } as Record<Vista, string>,
     escala: "50 ft",
     calleO: "NW 1ST CT",
     calleS: "NW 21ST CT",
     parking: "P",
-    nota: "Drawn from the owner's published site plan, not to fine scale; dimensions are confirmed at the technical visit. The night setup is an example: everything lit is brought by the client.",
+    nota: "Drawn from the owner's site plan; not exactly to scale. Dimensions are confirmed at the site visit. The night setup is just an example: everything lit up is brought in by the client.",
   },
 } as const;
 
@@ -1285,7 +1296,7 @@ const Dibujo = memo(function Dibujo({ lang, zona, aforo, vista, alEntrar, alSali
     // el edificio entra en el orden de profundidad como todo lo demás: desde el sur es lo más lejano, desde el norte lo más cercano
     { prof: g.profundidad(EDIF.x + EDIF.dx / 2, EDIF.y + EDIF.dy / 2, 6), el: (
       <g key="edificio" className={zClase("edificio")} {...zProps("edificio")} style={cssVars({ "--d": ".3s" })}>
-        <Edificio g={g} />
+        <Edificio g={g} lang={lang} />
       </g>
     ) },
     ...PALMERAS_O.map(([x, y], i) => ({ prof: g.profundidad(x, y), el: <Palma key={`po${i}`} g={g} x={x} y={y} i={i} alto={PALMERA_ALTO} /> })),

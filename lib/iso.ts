@@ -21,10 +21,10 @@ export const K = 0.866;              // cos(30°)
 export type Giro = 0 | 1 | 2 | 3;    // 0°, 90°, 180°, 270°
 
 export const VISTAS: Array<{ giro: Giro; es: string; en: string }> = [
-  { giro: 0, es: "Noreste", en: "North-east" },
-  { giro: 1, es: "Sureste", en: "South-east" },
-  { giro: 2, es: "Suroeste", en: "South-west" },
-  { giro: 3, es: "Noroeste", en: "North-west" },
+  { giro: 0, es: "Noreste", en: "Northeast" },
+  { giro: 1, es: "Sureste", en: "Southeast" },
+  { giro: 2, es: "Suroeste", en: "Southwest" },
+  { giro: 3, es: "Noroeste", en: "Northwest" },
 ];
 
 export interface Geo {

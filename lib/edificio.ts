@@ -92,13 +92,13 @@ export const CLAVES = [
     valor: "22 ft",
     nota: {
       es: "En la zona a doble altura. Es el dato que una productora pregunta antes que ninguno.",
-      en: "In the double-height zone. The figure a production company asks for before any other.",
+      en: "In the double-height area. It's the first number a production company asks for.",
     },
   },
   {
     etiqueta: { es: "Altura en planta", en: "Ground-floor height" },
     valor: "12 ft",
-    nota: { es: "En el resto del nivel 01.", en: "Across the rest of level 01." },
+    nota: { es: "En el resto del nivel 01.", en: "On the rest of level 01." },
   },
   /**
    * ⚠️ DECÍA «COCINA COMERCIAL CON CAMPANA DE EXTRACCIÓN · 580 ft²», Y NINGUNA
@@ -124,7 +124,7 @@ export const CLAVES = [
     valor: "—",
     nota: {
       es: "Equipada, en el nivel 01. Se suma al alquiler cuando el catering la necesita. Superficie por confirmar.",
-      en: "Equipped, on level 01. It is added to the rental when catering needs it. Area to be confirmed.",
+      en: "Equipped, on level 01. It can be added to the rental if your caterer needs it. Size to be confirmed.",
     },
   },
   {

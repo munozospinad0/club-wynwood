@@ -199,7 +199,7 @@ export default async function Landing({ params }: { params: Promise<{ lang: stri
              del resto. */
           { src: "/assets/flyer-cenital.jpg", w: 935, h: 506,
             es: "Desde arriba: el pabellón en el centro, las palmeras y las pérgolas alrededor, y el estacionamiento propio al fondo",
-            en: "From above: the Pavilion at the centre, palms and pergolas around it, and the on-site parking behind" },
+            en: "From above: the Pavilion at the center, with palms and pergolas around it and the on-site parking behind" },
           { src: "/assets/cabanas-fila.jpg", w: 930, h: 614,
             es: "La hilera de cabañas: pérgolas blancas, cortinas y sofás contra el muro verde",
             en: "The cabana row: white pergolas, curtains and sofas against the green wall" },
@@ -281,7 +281,7 @@ export default async function Landing({ params }: { params: Promise<{ lang: stri
             <p className="ojo">{t.form.ojo}</p>
             <h2>{t.form.titulo}</h2>
             <p className="lp-lead">{t.form.intro}</p>
-            <p className="ojo lp-nota">{t.form.soloDos}</p>
+            {/* «Solo nombre y correo»: lo dice el propio formulario desde el 23-sep; aquí salía repetido. */}
             {/* Sin teléfono ni correo debajo (Daniel, 11-sep-2026: «no les
                 pongas la posibilidad de pasar sin llenar el formulario»).
                 Al enviarlo, el propio formulario lleva a WhatsApp. */}
@@ -295,7 +295,7 @@ export default async function Landing({ params }: { params: Promise<{ lang: stri
                 ? [
                     es
                       ? { titulo: "Sigues por WhatsApp", cuerpo: "Al enviar se abre WhatsApp con tu solicitud ya escrita, para hablar con una persona del equipo." }
-                      : { titulo: "You continue on WhatsApp", cuerpo: "When you send it, WhatsApp opens with your request already written, to talk to a person on the team." },
+                      : { titulo: "You continue on WhatsApp", cuerpo: "WhatsApp opens with your request already written, so you can talk to someone on our team." },
                     ...t.despues.pasos,
                   ]
                 : t.despues.pasos
@@ -398,44 +398,44 @@ const TEXTO = {
   },
   en: {
     ojo: "Open-air event garden · Wynwood, Miami",
-    h1: "See the site in three minutes, then ask for your date.",
-    lead: "You rent the space, not a closed package. You bring production, catering and crew; we hand over the garden, the covered pavilion and the parking.",
+    h1: "See the venue in three minutes, then check your date.",
+    lead: "You rent the space, not a package. You bring the production, catering and crew; we provide the Garden, the covered Pavilion and on-site parking.",
     cta2: "Request availability",
-    usosTitulo: "Two uses, and one add-on.",
-    pieFoto: "Under the Pavilion, with a real setup: truss, lights and sound hang from the roof. All of it is brought in by the event's production.",
+    usosTitulo: "Two ways to use it, plus one add-on.",
+    pieFoto: "Under the Pavilion with a real event setup: truss, lights and sound hung from the roof, all brought in by the event's production team.",
     honesto: {
-      titulo: "What is rented and what is not. No surprises at the visit.",
+      titulo: "What's included and what isn't. No surprises at the site visit.",
       siOjo: "Included",
       si: [
-        "The open-air garden and the covered pavilion, together or separately.",
-        "The furnished cabanas and the picnic tables, already in the garden.",
-        "An area where a bar can be set up, with its own liquor license.",
+        "The open-air Garden and the covered Pavilion, together or separately.",
+        "The furnished cabanas and the picnic tables, already in the Garden.",
+        "An area to set up a bar, and the venue's own liquor license.",
         "On-site parking and a separate freight gate.",
       ],
       noOjo: "Your team brings",
       no: [
         "Production, sound, lighting and furniture.",
         "Catering and service staff.",
-        "There is no kitchen and no climate control outdoors: catering sets up on site.",
-        "The Pavilion has no side enclosures: it handles sun and vertical rain, but in wind the rain comes in sideways.",
+        "There's no kitchen or climate control outdoors: your caterer sets up on site.",
+        "The Pavilion has no walls: it handles sun and straight-down rain, but wind can blow rain in.",
       ],
-      pie: "That freedom is the offer, not a gap: it is what makes the event yours and not the venue's.",
+      pie: "That freedom is the point: it makes the event yours, not the venue's.",
     },
     form: {
       ojo: "Request availability",
       titulo: "Tell us about your event.",
-      intro: "With the event type, date and guest count we come back with real availability and terms. If you need to see the space, we schedule the visit.",
+      intro: "Send us your event type, date and guest count, and we'll reply with real availability and terms. If you want to see the venue, we'll schedule a site visit.",
       soloDos: "Only name and email are required.",
     },
     despues: {
-      ojo: "What happens when you send it",
+      ojo: "What happens next",
       pasos: [
         { titulo: "We reply within 24 business hours",
-          cuerpo: "With the date free or not, the terms, and which areas fit what you want to build. No commitment." },
-        { titulo: "If it fits, a technical visit",
-          cuerpo: "We walk the site and hand over in writing what a build needs to know: power, freight-gate width, restrooms and capacity for your own layout." },
-        { titulo: "We do not publish rates, and there is a reason",
-          cuerpo: "The price depends on the date, the hours and whether you take the garden, the Pavilion or everything. A number on the site would be wrong for almost every event." },
+          cuerpo: "We'll tell you whether your date is available, the terms, and which spaces fit what you want to build. No commitment." },
+        { titulo: "If it's a fit, a site visit",
+          cuerpo: "We walk the venue with you and send you in writing what your production needs to know: power, freight gate width, restrooms and capacity for your layout." },
+        { titulo: "Why we don't publish rates",
+          cuerpo: "The price depends on the date, the hours and whether you book the Garden, the Pavilion or both. A single number on the website would be wrong for almost every event." },
       ],
     },
   },

@@ -35,12 +35,12 @@ export default function ParaQuien({ lang }: { lang: Idioma }) {
           <p style={{ margin: "0 0 18px", fontSize: 15, lineHeight: 1.65, color: "var(--texto)", maxWidth: "46ch" }}>
             {es
               ? "A tres cuadras de Mana Wynwood, donde van Red Dot y Spectrum, y a cuatro minutos a pie de Wynwood Walls. Lote abierto con pabellón techado, estacionamiento propio y licencia de licor propia: el formato de las fiestas y activaciones de la semana."
-              : "Three blocks from Mana Wynwood, home to Red Dot and Spectrum, and a four-minute walk from Wynwood Walls. An open lot with a covered pavilion, its own parking and its own liquor license: the format of the week's parties and activations."}
+              : "Three blocks from Mana Wynwood, home to Red Dot and Spectrum, and a four-minute walk from Wynwood Walls. An open-air lot with a covered pavilion, on-site parking and its own liquor license: exactly the format of Art Week parties and activations."}
           </p>
           <p style={{ margin: "0 0 22px", fontSize: 13.5, lineHeight: 1.6, color: "var(--texto)", maxWidth: "46ch" }}>
             {es
               ? "El permiso de evento especial de la City of Miami para esa semana cierra el 11 de octubre: si tu activación lo necesita, la conversación útil es ahora."
-              : "The City of Miami special-event permit for that week closes on October 11: if your activation needs one, the useful conversation is now."}
+              : "The City of Miami's special-event permit deadline for that week is October 11. If your activation needs a permit, now is the time to talk."}
           </p>
           <a href="#disponibilidad" className="boton">
             {es ? "Pedir fechas de Art Week" : "Ask for Art Week dates"} <span aria-hidden>→</span>
@@ -52,7 +52,7 @@ export default function ParaQuien({ lang }: { lang: Idioma }) {
           <div className="ojo" style={{ marginBottom: 16 }}>{es ? "Disponibilidad y usos" : "Availability and uses"}</div>
           <dl style={{ margin: "0 0 26px" }}>
             {[
-              { k: es ? "Exterior: jardín y Pabellón" : "Outdoors: garden and Pavilion", v: es ? `desde el ${DISPONIBILIDAD.exterior.es}` : `from ${DISPONIBILIDAD.exterior.en}` },
+              { k: es ? "Exterior: jardín y Pabellón" : "Outdoors: the Garden and the Pavilion", v: es ? `desde el ${DISPONIBILIDAD.exterior.es}` : `from ${DISPONIBILIDAD.exterior.en}` },
               { k: es ? "Edificio · 2 niveles" : "Building · 2 levels", v: es ? `desde el ${DISPONIBILIDAD.edificio.es}` : `from ${DISPONIBILIDAD.edificio.en}` },
             ].map((f) => (
               <div key={f.k} style={{ display: "flex", justifyContent: "space-between", gap: 20, padding: "11px 0", borderBottom: "1px solid var(--regla)" }}>
@@ -73,7 +73,7 @@ export default function ParaQuien({ lang }: { lang: Idioma }) {
 
         {/* ── Para quién ── */}
         <div style={{ gridColumn: "1 / -1" }}>
-          <div className="ojo" style={{ marginBottom: 14 }}>{es ? "Para quién" : "Who it is for"}</div>
+          <div className="ojo" style={{ marginBottom: 14 }}>{es ? "Para quién" : "Who it's for"}</div>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
             {PARA_QUIEN.map((p) => <span key={p.en} style={etiqueta}>{es ? p.es : p.en}</span>)}
           </div>

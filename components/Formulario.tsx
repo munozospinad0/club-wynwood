@@ -106,7 +106,7 @@ const TIPOS = [
   { valor: "Activación de marca", es: "Activación de marca", en: "Brand activation" },
   { valor: "Corporativo", es: "Corporativo", en: "Corporate" },
   { valor: "Fiesta privada", es: "Fiesta privada", en: "Private party" },
-  { valor: "Rodaje / producción", es: "Rodaje / producción", en: "Shoot / production" },
+  { valor: "Rodaje / producción", es: "Rodaje / producción", en: "Film or photo shoot" },
   { valor: "Otro", es: "Otro", en: "Other" },
 ];
 
@@ -147,7 +147,7 @@ const TIPO_EN_FRASE: Record<string, { es: string; en: string }> = {
   "Activación de marca": { es: "una activación de marca", en: "a brand activation" },
   "Corporativo": { es: "un evento corporativo", en: "a corporate event" },
   "Fiesta privada": { es: "una fiesta privada", en: "a private party" },
-  "Rodaje / producción": { es: "un rodaje o producción", en: "a shoot or production" },
+  "Rodaje / producción": { es: "un rodaje o producción", en: "a film or photo shoot" },
   "Otro": { es: "un evento", en: "an event" },
 };
 
@@ -218,14 +218,14 @@ function Enviado({ es, pedido }: { es: boolean; pedido: Pedido | null }) {
       <p className="respuesta">
         {es
           ? "Recibido. Respondemos en 24 h hábiles con disponibilidad, condiciones y la ficha técnica completa."
-          : "Received. We reply within 24 business hours with availability, terms and the full spec sheet."}
+          : "Got it. We'll reply within 24 business hours with availability, terms and the full spec sheet."}
       </p>
       {enlace && (
         <>
           <p className="enviado-sigue">
             {es
               ? "Si quieres adelantar, sigue por WhatsApp: tu solicitud ya va escrita."
-              : "If you want to move faster, continue on WhatsApp: your request is already written."}
+              : "Want a faster answer? Continue on WhatsApp — your request is already written."}
           </p>
           <a
             className="boton boton--wa"
@@ -479,7 +479,7 @@ export default function Formulario({ lang, idPrefijo, invitadosInicial }: { lang
           ya lo detectan— sino posición fuera de pantalla, y queda excluida de
           la navegación por teclado y de los lectores de pantalla. */}
       <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", top: 0, width: 1, height: 1, overflow: "hidden" }}>
-        <label htmlFor={ide("cw-web")}>No rellenar</label>
+        <label htmlFor={ide("cw-web")}>{es ? "No rellenar" : "Leave this field empty"}</label>
         <input id={ide("cw-web")} name="trampa" type="text" tabIndex={-1} autoComplete="off" />
       </div>
 
@@ -491,7 +491,7 @@ export default function Formulario({ lang, idPrefijo, invitadosInicial }: { lang
           Tipo de evento y mensaje pasan al bloque plegado con los otros cuatro:
           no puntúan, y el equipo los pregunta en la primera respuesta. */}
       <p style={{ ...pista, margin: 0 }}>
-        {es ? "Solo hacen falta los dos del punto naranja." : "Only the two with an orange dot are required."}
+        {es ? "Solo el nombre y el correo son obligatorios." : "Only name and email are required."}
       </p>
       <div style={rejilla}>
         <div>
@@ -526,12 +526,12 @@ export default function Formulario({ lang, idPrefijo, invitadosInicial }: { lang
           </p>
         </div>
         <div>
-          <label style={etiqueta} htmlFor={ide("invitados")}>{es ? "Cuánta gente" : "How many people"}</label>
+          <label style={etiqueta} htmlFor={ide("invitados")}>{es ? "Cuánta gente" : "Number of guests"}</label>
           <input ref={invitadosRef} style={campo} id={ide("invitados")} name="invitados"
                  inputMode="numeric" placeholder={es ? "Aprox. 120" : "About 120"} />
         </div>
         <div>
-          <label style={etiqueta} htmlFor={ide("fecha")}>{es ? "Fecha" : "Date"}</label>
+          <label style={etiqueta} htmlFor={ide("fecha")}>{es ? "Fecha" : "Event date"}</label>
           <input style={campo} id={ide("fecha")} name="fecha" type="date" />
           <p style={pista}>
             {es ? "Si todavía no la tienes, déjala en blanco." : "Leave it blank if you don't have one yet."}
@@ -562,18 +562,18 @@ export default function Formulario({ lang, idPrefijo, invitadosInicial }: { lang
           <p style={pista}>
             {es
               ? "Con más datos te contestamos con números y montaje. Sin ellos, con disponibilidad."
-              : "With more detail we reply with numbers and a layout. Without it, with availability."}
+              : "Add more details and we'll reply with numbers and a suggested layout; without them, we'll reply with availability."}
           </p>
         </div>
       ) : (
         <>
           <Bloque
             titulo={es ? "Para ajustar la propuesta" : "To tailor the quote"}
-            nota={es ? "Todo esto es opcional y nada de esto descarta a nadie." : "All optional, and none of it rules anyone out."}
+            nota={es ? "Todo esto es opcional y nada de esto descarta a nadie." : "All optional — none of it rules you out."}
           />
           <div style={rejilla}>
             <div>
-              <label style={etiqueta} htmlFor={ide("tipo")}>{es ? "Qué vas a hacer" : "What you are planning"}</label>
+              <label style={etiqueta} htmlFor={ide("tipo")}>{es ? "Qué vas a hacer" : "Type of event"}</label>
               <select style={campo} id={ide("tipo")} name="tipo" defaultValue="">
                 <option value="">{es ? "Elige una opción" : "Pick one"}</option>
                 {TIPOS.map((t) => (
@@ -586,25 +586,25 @@ export default function Formulario({ lang, idPrefijo, invitadosInicial }: { lang
               <input style={campo} id={ide("empresa")} name="empresa" autoComplete="organization" />
             </div>
             <div>
-              <label style={etiqueta} htmlFor={ide("ciudad")}>{es ? "Desde dónde escribes" : "Where you are writing from"}</label>
+              <label style={etiqueta} htmlFor={ide("ciudad")}>{es ? "Desde dónde escribes" : "Where you're based"}</label>
               <input style={campo} id={ide("ciudad")} name="ciudad" autoComplete="address-level2" placeholder="Miami" />
             </div>
             <div>
-              <label style={etiqueta} htmlFor={ide("produccion")}>{es ? "Quién lo monta" : "Who sets it up"}</label>
+              <label style={etiqueta} htmlFor={ide("produccion")}>{es ? "Quién lo monta" : "Who's producing it"}</label>
               <select style={campo} id={ide("produccion")} name="produccion" defaultValue="">
                 <option value="">{es ? "Elige una opción" : "Pick one"}</option>
-                <option value="productora">{es ? "Trabajo con una productora" : "I work with a production company"}</option>
-                <option value="equipo">{es ? "Lo produce mi equipo" : "My team produces it"}</option>
+                <option value="productora">{es ? "Trabajo con una productora" : "A production company"}</option>
+                <option value="equipo">{es ? "Lo produce mi equipo" : "My own team"}</option>
                 <option value="sin-resolver">{es ? "Todavía no lo tengo resuelto" : "Not decided yet"}</option>
               </select>
               <p style={pista}>
                 {es
                   ? "Aquí se alquila el espacio: la producción la traes tú. Si no la tienes, te pasamos proveedores."
-                  : "Here you rent the space and bring the production. If you have none, we can point you to vendors."}
+                  : "You rent the space and bring your own production. If you don't have a team, we can recommend vendors."}
               </p>
             </div>
             <div>
-              <label style={etiqueta} htmlFor={ide("presupuesto")}>{es ? "Presupuesto en mente" : "Budget in mind"}</label>
+              <label style={etiqueta} htmlFor={ide("presupuesto")}>{es ? "Presupuesto en mente" : "Budget"}</label>
               <select style={campo} id={ide("presupuesto")} name="presupuesto" defaultValue="">
                 <option value="">{es ? "Elige una opción" : "Pick one"}</option>
                 <option value="sin-definir">{es ? "Todavía no lo sé" : "I don't know yet"}</option>
@@ -615,7 +615,7 @@ export default function Formulario({ lang, idPrefijo, invitadosInicial }: { lang
               <p style={pista}>
                 {es
                   ? "Es solo para saber qué proponerte. No publicamos tarifas porque cada montaje es distinto."
-                  : "Only so we know what to propose. We don't publish rates because every setup differs."}
+                  : "Just so we know what to suggest. We don't publish rates because every setup is different."}
               </p>
             </div>
             <div style={{ gridColumn: "1 / -1" }}>
@@ -637,7 +637,7 @@ export default function Formulario({ lang, idPrefijo, invitadosInicial }: { lang
         <p role="alert" style={{ margin: 0, fontSize: 14, lineHeight: 1.55, color: "var(--ocre)" }}>
           {es
             ? "No se pudo enviar ahora mismo. Lo reintentamos solos, pero si prefieres no esperar: "
-            : "It could not be sent right now. We keep retrying, but if you would rather not wait: "}
+            : "We couldn't send it right now. We'll keep trying, but if you'd rather not wait: "}
           {/* `contact_click` es micro-conversión: sirve para MIRAR, nunca para
               optimizar. Y aquí tiene un valor extra que no tiene en el pie de
               página: un clic en el correo desde ESTE punto significa que el
@@ -660,7 +660,7 @@ export default function Formulario({ lang, idPrefijo, invitadosInicial }: { lang
       <p style={{ margin: 0, fontSize: 13, color: "var(--texto)" }}>
         {es
           ? "Te llega disponibilidad y presupuesto en 24 h hábiles. Sin visita previa y sin compromiso."
-          : "You get availability and a quote within 24 business hours. No site visit and no commitment."}
+          : "You'll get availability and a quote within 24 business hours. No site visit required, no commitment."}
       </p>
     </form>
   );

@@ -43,14 +43,14 @@ export default function Laminas({
   ];
 
   return (
-    <section aria-label={es ? "Láminas técnicas" : "Technical plates"}
+    <section aria-label={es ? "Láminas técnicas" : "Technical drawings"}
              style={{ background: "#eae4da", borderBottom: "1px solid var(--regla)" }}>
       <div className="reja" style={{ paddingTop: 54 }}>
         <div className="ojo" style={{ paddingBottom: 20 }}>
-          {es ? "Las láminas técnicas" : "The technical plates"}
+          {es ? "Las láminas técnicas" : "Technical drawings"}
         </div>
         <div role="tablist"
-             aria-label={es ? "Láminas" : "Plates"}
+             aria-label={es ? "Láminas" : "Drawings"}
              style={{ display: "flex", gap: 0, flexWrap: "wrap",
                       borderBottom: "1px solid var(--regla)" }}>
           {ZONAS.map((z) => {

@@ -46,7 +46,7 @@ export async function generateMetadata(
     // uno corto. Se comprueba con `.qa/meta-largas.mjs`.
     description: es
       ? "Venue al aire libre en Wynwood, Miami: ~22.000 ft² entre jardín y pabellón techado, ~600 de pie. Tú traes la producción; nosotros el espacio."
-      : "Open-air venue in Wynwood, Miami: ~22,000 sq ft of garden and covered pavilion, ~600 standing. You bring the production; we hand over the space.",
+      : "Open-air event venue in Wynwood, Miami: ~22,000 sq ft of garden and covered pavilion, with room for ~600 standing. You bring the production; we provide the space.",
     alternates: alternativas("home", lang),
     // Cerrado mientras esto viva en Vercel: robots.txt solo frena el rastreo,
     // no la indexación de una URL que alguien enlace. La meta sí. Se necesitan
@@ -175,9 +175,9 @@ export default async function Layout(
    */
   const nombre = (clave: ClaveRuta) => PAGINAS.find((p) => p.clave === clave)?.h1[lang] ?? clave;
   const GRUPOS: Array<{ titulo: string; claves: ClaveRuta[] }> = [
-    { titulo: es ? "Qué se alquila" : "What is rented", claves: ["jardin", "tikiHut", "aforos"] },
-    { titulo: es ? "Para qué" : "What for", claves: ["bodas", "quinces", "graduaciones", "corporativo", "finDeAno", "artbasel", "popups", "produccion", "pequenos", "offsite"] },
-    { titulo: es ? "Cómo funciona" : "How it works", claves: ["guia", "barrio", "salonVsJardin", "faq"] },
+    { titulo: es ? "Qué se alquila" : "The spaces", claves: ["jardin", "tikiHut", "aforos"] },
+    { titulo: es ? "Para qué" : "Events", claves: ["bodas", "quinces", "graduaciones", "corporativo", "finDeAno", "artbasel", "popups", "produccion", "pequenos", "offsite"] },
+    { titulo: es ? "Cómo funciona" : "Planning", claves: ["guia", "barrio", "salonVsJardin", "faq"] },
   ];
 
   return (
@@ -278,7 +278,7 @@ export default async function Layout(
                   {es ? VENUE.descriptorEs : VENUE.descriptorEn}.{" "}
                   {es
                     ? "Se alquila el exterior: jardín y estructura techada. Tú traes la producción."
-                    : "The exterior is what's rented: garden and covered pavilion. You bring the production."}
+                    : "You rent the outdoor space — the Garden and the covered Pavilion — and bring your own production."}
                 </p>
                 <p style={{ margin: "16px 0 0", fontSize: 14, lineHeight: 1.7 }}>
                   {VENUE.direccion.calle}<br />

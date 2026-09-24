@@ -42,18 +42,18 @@ export default function Dudas({ lang }: { lang: Idioma }) {
     >
       <div className="reja" style={{ paddingBlock: 74 }}>
         <div className="ojo" style={{ paddingBottom: 16 }}>
-          {es ? "Antes de escribir" : "Before you write"}
+          {es ? "Antes de escribir" : "Before you ask"}
         </div>
 
         <h2 id="dudas-titulo" style={{ marginBottom: 12, maxWidth: "20ch" }}>
-          {es ? "Lo que casi todos preguntan." : "What almost everyone asks."}
+          {es ? "Lo que casi todos preguntan." : "The questions everyone asks."}
         </h2>
 
         <p style={{ margin: "0 0 42px", maxWidth: "56ch", fontSize: 15,
                     lineHeight: 1.7, color: "var(--texto)" }}>
           {es
             ? "Están contestadas aquí para que no tengas que escribir para averiguarlo. Si lo tuyo no está, va en el formulario y te lo respondemos con la disponibilidad."
-            : "Answered here so you do not have to write in order to find out. If yours is not here, put it in the form and we answer it along with availability."}
+            : "Answered here so you don't have to write in. If your question isn't here, add it to the form and we'll answer it along with availability."}
         </p>
 
         {/* Dos columnas en pantalla ancha, una en móvil. Las respuestas son
@@ -109,7 +109,7 @@ export default function Dudas({ lang }: { lang: Idioma }) {
             color: "var(--ocre)",
           }}
         >
-          {es ? "Todas las preguntas" : "All the questions"} →
+          {es ? "Todas las preguntas" : "See all questions"} →
         </a>
       </div>
     </section>

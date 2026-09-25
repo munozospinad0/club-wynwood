@@ -473,7 +473,10 @@ export default function Formulario({ lang, idPrefijo, invitadosInicial }: { lang
   }
 
   return (
-    <form onSubmit={enviar} onFocusCapture={alEmpezar} style={{ display: "grid", gap: 18, maxWidth: 620 }}>
+    // form_start al primer dato ESCRITO o elegido, no al primer foco. 24-sep: con
+    // el foco contaba 217 inicios en 251 visitas del recorrido, porque la barra
+    // fija pone el cursor en «Nombre» al llevarte al formulario: medía clics.
+    <form onSubmit={enviar} onInputCapture={alEmpezar} style={{ display: "grid", gap: 18, maxWidth: 620 }}>
       {/* LA TRAMPA. Invisible para una persona, irresistible para un robot que
           rellena todo lo que encuentra. No lleva `display:none` —algunos robots
           ya lo detectan— sino posición fuera de pantalla, y queda excluida de

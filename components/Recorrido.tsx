@@ -1208,7 +1208,7 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
                 {t.texto}
               </button>
               {!ultimo && !verFormulario && (
-                <button type="button" className="cine-cta" onClick={() => { setVerFormulario(true); ev("form_start", { desde: "recorrido" }); }}>
+                <button type="button" className="cine-cta" onClick={() => setVerFormulario(true)}>{/* el form_start lo cuenta el formulario al escribir, no este clic */}
                   {t.ojoCierre} →
                 </button>
               )}

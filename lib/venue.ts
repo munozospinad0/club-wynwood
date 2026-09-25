@@ -50,7 +50,7 @@ export const VENUE = {
    * pidió que nadie pueda saltarse el formulario para escribir por WhatsApp.
    * Con la cadena vacía, el formulario termina en «Recibido» y no abre nada.
    */
-  whatsapp: "+13059707486" as string,
+  whatsapp: "+17864171564" as string,
   /**
    * ⚠️ Este horario es el del OPERADOR (FunDimension / Playa Wynwood) como local
    * de público, no el nuestro. NO publicarlo como `openingHours` del venue: el

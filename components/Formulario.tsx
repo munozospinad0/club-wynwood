@@ -302,7 +302,6 @@ export default function Formulario({ lang, idPrefijo, invitadosInicial }: { lang
    * —tres de las cuatro señales— siguen a la vista, porque además son las
    * preguntas que la persona esperaba que le hicieran.
    */
-  const [detalles, setDetalles] = useState(false);
   const empezado = useRef(false);
   const pintado = useRef(Date.now());
   const invitadosRef = useRef<HTMLInputElement>(null);
@@ -486,16 +485,18 @@ export default function Formulario({ lang, idPrefijo, invitadosInicial }: { lang
         <input id={ide("cw-web")} name="trampa" type="text" tabIndex={-1} autoComplete="off" />
       </div>
 
-      {/* ── CINCO CAMPOS A LA VISTA (23-sep) ─────────────────────────────────
-          Daniel: «haz el form más fácil, con menos datos». 59 visitas pagadas,
-          un solo form_start. Quedan los dos que hacen falta para contestar
-          (nombre y correo), el teléfono que abre el WhatsApp al terminar, y las
-          dos señales que más pesan en la cualificación: cuánta gente y cuándo.
-          Tipo de evento y mensaje pasan al bloque plegado con los otros cuatro:
-          no puntúan, y el equipo los pregunta en la primera respuesta. */}
-      <p style={{ ...pista, margin: 0 }}>
-        {es ? "Solo el nombre y el correo son obligatorios." : "Only name and email are required."}
-      </p>
+      {/* ── TODO A LA VISTA OTRA VEZ (28-sep) ────────────────────────────────
+          Del 23 al 28-sep el formulario enseñó cinco campos y plegó el resto
+          («haz el form más fácil»). La primera solicitud de Google Ads entró
+          así: sin tipo de evento, sin producción, sin presupuesto, y el CRM la
+          puntuó «no encaja» a ciegas. Daniel: «mejor no, que se llene con los
+          datos como el primer lead». Vuelven todos, y los que alimentan la
+          cualificación pasan a obligatorios; cada desplegable tiene su «todavía
+          no lo sé», así que nadie se queda sin poder enviar. */}
+      <Bloque
+        titulo={es ? "Cómo te contestamos" : "How we reach you"}
+        nota={es ? "Los del punto naranja son obligatorios." : "Fields with an orange dot are required."}
+      />
       <div style={rejilla}>
         <div>
           <label style={etiqueta} htmlFor={ide("nombre")}>{es ? "Nombre" : "Name"}<Falta /></label>
@@ -528,10 +529,30 @@ export default function Formulario({ lang, idPrefijo, invitadosInicial }: { lang
               : "Optional. Leave it and we open WhatsApp for you, with your request already written."}
           </p>
         </div>
+      </div>
+
+      {/* ── el evento ─────────────────────────────────────────────────────── */}
+      <Bloque
+        titulo={es ? "Tu evento" : "Your event"}
+        nota={es
+          ? "Con esto te contestamos con números y montaje, no solo con disponibilidad. Nada de esto descarta a nadie."
+          : "This lets us reply with numbers and a layout, not just availability. None of it rules you out."}
+      />
+      <div style={rejilla}>
         <div>
-          <label style={etiqueta} htmlFor={ide("invitados")}>{es ? "Cuánta gente" : "Number of guests"}</label>
-          <input ref={invitadosRef} style={campo} id={ide("invitados")} name="invitados"
+          <label style={etiqueta} htmlFor={ide("tipo")}>{es ? "Qué vas a hacer" : "Type of event"}<Falta /></label>
+          <select style={campo} id={ide("tipo")} name="tipo" defaultValue="" required>
+            <option value="">{es ? "Elige una opción" : "Pick one"}</option>
+            {TIPOS.map((t) => (
+              <option key={t.valor} value={t.valor}>{es ? t.es : t.en}</option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label style={etiqueta} htmlFor={ide("invitados")}>{es ? "Cuánta gente" : "Number of guests"}<Falta /></label>
+          <input ref={invitadosRef} style={campo} id={ide("invitados")} name="invitados" required
                  inputMode="numeric" placeholder={es ? "Aprox. 120" : "About 120"} />
+          <p style={pista}>{es ? "Un número aproximado sirve." : "A rough number is enough."}</p>
         </div>
         <div>
           <label style={etiqueta} htmlFor={ide("fecha")}>{es ? "Fecha" : "Event date"}</label>
@@ -540,95 +561,49 @@ export default function Formulario({ lang, idPrefijo, invitadosInicial }: { lang
             {es ? "Si todavía no la tienes, déjala en blanco." : "Leave it blank if you don't have one yet."}
           </p>
         </div>
-      </div>
-
-      {/* ── lo demás, plegado ──────────────────────────────────────────── */}
-      {!detalles ? (
-        <div style={{ borderTop: "1px solid var(--regla)", paddingTop: 14 }}>
-          <button
-            type="button"
-            onClick={() => {
-              // Sin evento propio al abrir: los nombres son un contrato con GTM
-              // (`lib/medicion.ts`) y uno inventado se pierde sin avisar.
-              // `form_start` ya cuenta a quien toca el formulario.
-              setDetalles(true);
-              alEmpezar();
-            }}
-            style={{
-              minHeight: 48, width: "100%", padding: "12px 16px", cursor: "pointer",
-              border: "1px dashed var(--regla)", background: "transparent",
-              font: "inherit", fontSize: 15, color: "var(--tinta-2)", textAlign: "left",
-            }}
-          >
-            {es ? "Contar más del evento (opcional)" : "Tell us more about the event (optional)"}
-          </button>
+        <div>
+          <label style={etiqueta} htmlFor={ide("produccion")}>{es ? "Quién lo monta" : "Who's producing it"}<Falta /></label>
+          <select style={campo} id={ide("produccion")} name="produccion" defaultValue="" required>
+            <option value="">{es ? "Elige una opción" : "Pick one"}</option>
+            <option value="productora">{es ? "Trabajo con una productora" : "A production company"}</option>
+            <option value="equipo">{es ? "Lo produce mi equipo" : "My own team"}</option>
+            <option value="sin-resolver">{es ? "Todavía no lo tengo resuelto" : "Not decided yet"}</option>
+          </select>
           <p style={pista}>
             {es
-              ? "Con más datos te contestamos con números y montaje. Sin ellos, con disponibilidad."
-              : "Add more details and we'll reply with numbers and a suggested layout; without them, we'll reply with availability."}
+              ? "Aquí se alquila el espacio: la producción la traes tú. Si no la tienes, te pasamos proveedores."
+              : "You rent the space and bring your own production. If you don't have a team, we can recommend vendors."}
           </p>
         </div>
-      ) : (
-        <>
-          <Bloque
-            titulo={es ? "Para ajustar la propuesta" : "To tailor the quote"}
-            nota={es ? "Todo esto es opcional y nada de esto descarta a nadie." : "All optional — none of it rules you out."}
-          />
-          <div style={rejilla}>
-            <div>
-              <label style={etiqueta} htmlFor={ide("tipo")}>{es ? "Qué vas a hacer" : "Type of event"}</label>
-              <select style={campo} id={ide("tipo")} name="tipo" defaultValue="">
-                <option value="">{es ? "Elige una opción" : "Pick one"}</option>
-                {TIPOS.map((t) => (
-                  <option key={t.valor} value={t.valor}>{es ? t.es : t.en}</option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label style={etiqueta} htmlFor={ide("empresa")}>{es ? "Empresa o productora" : "Company"}</label>
-              <input style={campo} id={ide("empresa")} name="empresa" autoComplete="organization" />
-            </div>
-            <div>
-              <label style={etiqueta} htmlFor={ide("ciudad")}>{es ? "Desde dónde escribes" : "Where you're based"}</label>
-              <input style={campo} id={ide("ciudad")} name="ciudad" autoComplete="address-level2" placeholder="Miami" />
-            </div>
-            <div>
-              <label style={etiqueta} htmlFor={ide("produccion")}>{es ? "Quién lo monta" : "Who's producing it"}</label>
-              <select style={campo} id={ide("produccion")} name="produccion" defaultValue="">
-                <option value="">{es ? "Elige una opción" : "Pick one"}</option>
-                <option value="productora">{es ? "Trabajo con una productora" : "A production company"}</option>
-                <option value="equipo">{es ? "Lo produce mi equipo" : "My own team"}</option>
-                <option value="sin-resolver">{es ? "Todavía no lo tengo resuelto" : "Not decided yet"}</option>
-              </select>
-              <p style={pista}>
-                {es
-                  ? "Aquí se alquila el espacio: la producción la traes tú. Si no la tienes, te pasamos proveedores."
-                  : "You rent the space and bring your own production. If you don't have a team, we can recommend vendors."}
-              </p>
-            </div>
-            <div>
-              <label style={etiqueta} htmlFor={ide("presupuesto")}>{es ? "Presupuesto en mente" : "Budget"}</label>
-              <select style={campo} id={ide("presupuesto")} name="presupuesto" defaultValue="">
-                <option value="">{es ? "Elige una opción" : "Pick one"}</option>
-                <option value="sin-definir">{es ? "Todavía no lo sé" : "I don't know yet"}</option>
-                <option value="bajo">{es ? "Menos de 6 000 USD" : "Under 6,000 USD"}</option>
-                <option value="medio">6 000 – 15 000 USD</option>
-                <option value="alto">{es ? "Más de 15 000 USD" : "Over 15,000 USD"}</option>
-              </select>
-              <p style={pista}>
-                {es
-                  ? "Es solo para saber qué proponerte. No publicamos tarifas porque cada montaje es distinto."
-                  : "Just so we know what to suggest. We don't publish rates because every setup is different."}
-              </p>
-            </div>
-            <div style={{ gridColumn: "1 / -1" }}>
-              <label style={etiqueta} htmlFor={ide("mensaje")}>{es ? "Algo que debamos saber" : "Anything we should know"}</label>
-              <textarea style={{ ...campo, minHeight: 92, resize: "vertical" }} id={ide("mensaje")} name="mensaje"
-                        placeholder={es ? "Cena sentada, música hasta tarde, hace falta carpa…" : "Seated dinner, late music, we'd need a tent…"} />
-            </div>
-          </div>
-        </>
-      )}
+        <div>
+          <label style={etiqueta} htmlFor={ide("presupuesto")}>{es ? "Presupuesto en mente" : "Budget"}<Falta /></label>
+          <select style={campo} id={ide("presupuesto")} name="presupuesto" defaultValue="" required>
+            <option value="">{es ? "Elige una opción" : "Pick one"}</option>
+            <option value="sin-definir">{es ? "Todavía no lo sé" : "I don't know yet"}</option>
+            <option value="bajo">{es ? "Menos de 6 000 USD" : "Under 6,000 USD"}</option>
+            <option value="medio">6 000 – 15 000 USD</option>
+            <option value="alto">{es ? "Más de 15 000 USD" : "Over 15,000 USD"}</option>
+          </select>
+          <p style={pista}>
+            {es
+              ? "Es solo para saber qué proponerte. No publicamos tarifas porque cada montaje es distinto."
+              : "Just so we know what to suggest. We don't publish rates because every setup is different."}
+          </p>
+        </div>
+        <div>
+          <label style={etiqueta} htmlFor={ide("empresa")}>{es ? "Empresa o productora" : "Company"}</label>
+          <input style={campo} id={ide("empresa")} name="empresa" autoComplete="organization" />
+        </div>
+        <div>
+          <label style={etiqueta} htmlFor={ide("ciudad")}>{es ? "Desde dónde escribes" : "Where you're based"}</label>
+          <input style={campo} id={ide("ciudad")} name="ciudad" autoComplete="address-level2" placeholder="Miami" />
+        </div>
+        <div style={{ gridColumn: "1 / -1" }}>
+          <label style={etiqueta} htmlFor={ide("mensaje")}>{es ? "Algo que debamos saber" : "Anything we should know"}</label>
+          <textarea style={{ ...campo, minHeight: 92, resize: "vertical" }} id={ide("mensaje")} name="mensaje"
+                    placeholder={es ? "Cena sentada, música hasta tarde, hace falta carpa…" : "Seated dinner, late music, we'd need a tent…"} />
+        </div>
+      </div>
 
       <button className="boton" type="submit" disabled={estado === "enviando"}>
         {estado === "enviando"

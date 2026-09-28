@@ -136,6 +136,10 @@ interface Pedido {
   tipo: string;
   fecha: string;
   invitados: string;
+  /** Los 6 últimos caracteres del id de la solicitud en el CRM. Con ellos el
+   *  asistente de WhatsApp la encuentra aunque escriba desde otro número
+   *  (26-sep: Lauren dejó un teléfono y escribió desde otro). */
+  ref: string;
 }
 
 /**
@@ -167,6 +171,7 @@ function mensajeWhatsApp(es: boolean, p: Pedido | null): string {
       fecha ? ` el ${fecha}` : "",
       personas ? `, unas ${personas} personas` : "",
       ".",
+      p?.ref ? ` (Ref. ${p.ref})` : "",
     ].join("");
   }
   return [
@@ -175,6 +180,7 @@ function mensajeWhatsApp(es: boolean, p: Pedido | null): string {
     fecha ? ` on ${fecha}` : "",
     personas ? `, about ${personas} guests` : "",
     ".",
+    p?.ref ? ` (Ref. ${p.ref})` : "",
   ].join("");
 }
 
@@ -417,7 +423,7 @@ export default function Formulario({ lang, idPrefijo, invitadosInicial }: { lang
     // descartó el envío, y celebrarlo sería mentirle a la persona y contarle a
     // GA4 un lead que no existe. Ver el comentario de `Respuesta.id`.
     if (r?.id) {
-      setPedido({ nombre: d.nombre || "", tipo: d.tipo || "", fecha: d.fecha || "", invitados: d.invitados || "" });
+      setPedido({ nombre: d.nombre || "", tipo: d.tipo || "", fecha: d.fecha || "", invitados: d.invitados || "", ref: String(r.id).slice(-6).toUpperCase() });
       setEstado("ok");
       // Todo envío cuenta como generate_lead, pero SOLO el calificado es
       // conversión primaria. Contar todo entrena a las plataformas a traer

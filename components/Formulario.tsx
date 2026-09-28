@@ -515,7 +515,7 @@ export default function Formulario({ lang, idPrefijo, invitadosInicial }: { lang
                  placeholder="tu@correo.com" />
         </div>
         <div style={{ gridColumn: "1 / -1" }}>
-          <label style={etiqueta} htmlFor={ide("telefono")}>{es ? "Teléfono" : "Phone"}</label>
+          <label style={etiqueta} htmlFor={ide("telefono")}>{es ? "Teléfono (WhatsApp)" : "Phone (WhatsApp)"}<Falta /></label>
           <div style={{ display: "flex", gap: 8 }}>
             <select
               style={{ ...campo, width: "auto", flex: "0 0 auto" }}
@@ -526,13 +526,15 @@ export default function Formulario({ lang, idPrefijo, invitadosInicial }: { lang
                 <option key={p.cc + p.iso} value={p.cc}>{es ? p.es : p.en}</option>
               ))}
             </select>
-            <input style={campo} id={ide("telefono")} name="telefono" type="tel" inputMode="tel"
-                   autoComplete="tel-national" placeholder="305 970 7486" />
+            <input style={campo} id={ide("telefono")} name="telefono" type="tel" inputMode="tel" required
+                   minLength={7} autoComplete="tel-national" placeholder="305 970 7486" />
           </div>
           <p style={pista}>
+            {/* Obligatorio desde el 28-sep: la confirmación y la respuesta van por
+                WhatsApp (plantilla del CRM). Sin número, la solicitud solo llega por correo. */}
             {es
-              ? "Opcional. Si lo dejas, al enviar te abrimos WhatsApp con tu solicitud ya escrita."
-              : "Optional. Leave it and we open WhatsApp for you, with your request already written."}
+              ? "Por aquí te llega la confirmación y te contesta el equipo. No lo usamos para nada más."
+              : "We'll send your confirmation and the team's reply here. We don't use it for anything else."}
           </p>
         </div>
       </div>

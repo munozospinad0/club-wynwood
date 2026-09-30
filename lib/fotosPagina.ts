@@ -140,6 +140,32 @@ export function fotosDeBloques(
   return out;
 }
 
+/**
+ * PREGUNTAS FRECUENTES: una foto al lado de las respuestas que se entienden mejor viéndolas. Solo fotos del
+ * lugar vacío o de su arquitectura —ningún montaje de otra producción—: junto a «¿qué incluye?» una foto de
+ * un lounge montado prometería el lounge. Precio, horario, licencia y fechas van sin foto: no hay nada que
+ * enseñar y forzarla sería decoración.
+ */
+const PREGUNTAS: Array<[RegExp, Uso]> = [
+  [/cuánta gente/i, "cenital"],
+  [/llueve/i, "aerea-palapa"],
+  [/qué incluye/i, "cabanas-fila"],
+  [/catering/i, "edificio-cocina"],
+  [/por separado/i, "palmeras"],
+  [/potencia|parking|baños/i, "edificio-calle"],
+  [/oficina/i, "edificio-salon"],
+  [/dónde queda/i, "contexto"],
+];
+export const HEROE_FAQ: Uso = "puerta";
+
+export function fotoDePregunta(preguntaEs: string, lang: Idioma): FotoPagina | null {
+  const id = PREGUNTAS.find(([re]) => re.test(preguntaEs))?.[1];
+  return id ? aFoto(porId.get(id)!, lang) : null;
+}
+export function fotoFaq(lang: Idioma): FotoPagina {
+  return aFoto(porId.get(HEROE_FAQ)!, lang);
+}
+
 /** La foto que acompaña al entorno en cifras: el predio sobre la manzana, o la primera que no salga ya en la página. */
 export function fotoEntorno(usadas: Iterable<string | undefined>, lang: Idioma): FotoPagina {
   const ya = new Set(usadas);

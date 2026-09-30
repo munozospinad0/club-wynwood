@@ -11,7 +11,7 @@ import { ENTORNO } from "@/lib/venue";
 import { grafo, breadcrumb, faqPage, localBusiness, eventVenue, webPage } from "@/lib/schema";
 import Calculadora from "@/components/Calculadora";
 import Residencia from "@/components/Residencia";
-import { heroeDe, fotosDeBloques, fotoEntorno, miniaturaDe, type FotoPagina } from "@/lib/fotosPagina";
+import { heroeDe, fotosDeBloques, fotoEntorno, miniaturaDe, fotoDePregunta, fotoFaq, type FotoPagina } from "@/lib/fotosPagina";
 import "@/app/interior.css";
 
 /**
@@ -93,6 +93,7 @@ export default async function PaginaInterior(
   // ---------------------------------------------------------------- FAQ
   if (clave === "faq") {
     const preguntas = FAQ.map((f) => ({ q: f.q[lang], a: f.a[lang] }));
+    const heroeFaq = fotoFaq(lang);
     // El negocio y el venue van en cada página del venue, no en el layout: así
     // la de residencia permanente, que es otro negocio, no los hereda.
     const ld = grafo(
@@ -105,22 +106,63 @@ export default async function PaginaInterior(
     return (
       <>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
-        <div className="reja" style={{ paddingBlock: "56px 40px" }}>
+        <div className="reja" style={{ paddingBlock: "56px 0" }}>
           <Migas lang={lang} nombre={es ? "Preguntas frecuentes" : "FAQ"} />
-          <h1 style={{ maxWidth: "14ch", marginTop: 24 }}>
-            {es ? "Preguntas frecuentes" : "Frequently asked questions"}
-          </h1>
         </div>
-        <section>
-          <div className="reja" style={{ paddingBottom: 80 }}>
-            {FAQ.map((f, i) => (
-              <div key={i} style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(0,1.35fr)", gap: 44, padding: "32px 0", borderBottom: "1px solid var(--regla)" }}>
-                <h2 style={{ fontSize: 19, fontFamily: "var(--cuerpo)", fontWeight: 600, letterSpacing: "-.01em" }}>
-                  {f.q[lang]}
-                </h2>
-                <p style={{ margin: 0, fontSize: 15, color: "#4a4335" }}>{f.a[lang]}</p>
-              </div>
-            ))}
+        {/* 29-sep: era la única página del sitio sin una sola imagen. Misma cabecera que las interiores,
+            y al lado de cada respuesta que se entiende mejor viéndola, la foto de eso (lib/fotosPagina.ts). */}
+        <div className="reja int-cabeza faq-cabeza">
+          <div>
+            <h1>{es ? "Preguntas frecuentes" : "Frequently asked questions"}</h1>
+            <p className="respuesta" style={{ fontSize: 18 }}>
+              {es
+                ? "Lo que más se pregunta sobre el lugar, respondido con lo que sabemos hoy. Lo que todavía no está medido lo dice así, y se revisa contigo en la visita."
+                : "The questions we hear most, answered with what we know today. Anything not yet measured says so, and is reviewed with you at the site visit."}
+            </p>
+            <a href="#disponibilidad" className="boton" style={{ marginTop: 8 }}>
+              {es ? "Consultar mi fecha" : "Check my date"} <span aria-hidden>→</span>
+            </a>
+          </div>
+          <figure className="int-heroe">
+            <div className="int-marco">
+              <Image
+                src={heroeFaq.src}
+                alt={heroeFaq.alt}
+                fill
+                quality={70}
+                loading="eager"
+                sizes="(min-width: 1280px) 670px, (min-width: 900px) 52vw, 100vw"
+                style={{ objectFit: "cover", objectPosition: heroeFaq.encuadre }}
+              />
+            </div>
+            <figcaption className="int-pie">{heroeFaq.pie}</figcaption>
+          </figure>
+        </div>
+        <section style={{ borderTop: "1px solid var(--regla)" }}>
+          <div className="reja faq-lista">
+            {FAQ.map((f, i) => {
+              const foto = fotoDePregunta(f.q.es, lang);
+              return (
+                <div key={i} className="faq-fila">
+                  <h2>{f.q[lang]}</h2>
+                  <p>{f.a[lang]}</p>
+                  {foto && (
+                    <figure className="faq-foto">
+                      <div className="int-marco int-marco--tarjeta">
+                        <Image
+                          src={foto.src}
+                          alt={foto.alt}
+                          fill
+                          quality={70}
+                          sizes="220px"
+                          style={{ objectFit: "cover", objectPosition: foto.encuadre }}
+                        />
+                      </div>
+                    </figure>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </section>
         {/* El cierre también aquí. Preguntas frecuentes está en el feed de

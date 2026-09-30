@@ -133,6 +133,37 @@
   .int-entorno { grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: 56px; align-items: start; }
 }
 
+/* ── preguntas frecuentes: pregunta · respuesta · foto (la foto solo en pantallas anchas) ── */
+.faq-lista { padding-bottom: 80px; }
+.faq-fila {
+  display: grid;
+  gap: 12px;
+  padding: 32px 0;
+  border-bottom: 1px solid var(--regla);
+}
+.faq-fila h2 {
+  font-family: var(--cuerpo);
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -.01em;
+  line-height: 1.3;
+}
+.faq-fila p { margin: 0; font-size: 15px; line-height: 1.66; color: #4a4335; max-width: 62ch; }
+.faq-foto { display: none; margin: 0; }
+/* En el teléfono la introducción de la FAQ es corta y la foto pasaba a ser lo más grande de la pantalla:
+   2,8-3,0 s de LCP (4G lento, CPU 4x) en una página que también recibe clics de anuncios. Ahí se lee. */
+@media (max-width: 899px) {
+  .faq-cabeza .int-heroe { display: none; }
+}
+@media (min-width: 900px) {
+  .faq-fila {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr) 220px;
+    gap: 44px;
+    align-items: start;
+  }
+  .faq-foto { display: block; }
+}
+
 /* ── relacionado: tarjetas con foto ── */
 .int-seguir {
   display: grid;

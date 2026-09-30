@@ -126,11 +126,20 @@ const META_DOMINIO = (process.env.NEXT_PUBLIC_META_DOMAIN_VERIFICATION ?? "").tr
 // («Axes can only be defined for variable fonts when the weight property is
 // nonexistent or set to variable»). Al omitirlo se sirve el archivo variable
 // entero, que es lo que hace falta para poder mover SOFT y WONK.
+/*
+ * PRECARGA SOLO LA FUENTE DEL CUERPO (29-sep). El párrafo de respuesta de cada página interior es lo
+ * último grande que pinta el móvil (el LCP), y va en Geist (29 KB). Fraunces variable con SOFT, WONK y
+ * opsz pesa 120 KB y solo la usan los titulares; precargada, competía por la misma conexión y retrasaba
+ * al párrafo. Google califica la «experiencia en la página» de los anuncios por debajo del promedio en
+ * 42 de 43 palabras. Sin precarga, los titulares entran con su respaldo ajustado y cambian a Fraunces al
+ * llegar (display: swap, sin salto de maqueta por el ajuste de métricas de next/font).
+ */
 const fraunces = Fraunces({
   subsets: ["latin"],
   axes: ["SOFT", "WONK", "opsz"],
   variable: "--f-display",
   display: "swap",
+  preload: false,
 });
 
 const geist = Geist({
@@ -143,6 +152,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
   variable: "--f-mono",
   display: "swap",
+  preload: false,
 });
 
 const NAV = [

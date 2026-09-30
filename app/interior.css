@@ -1,0 +1,165 @@
+/*
+ * LAS PÁGINAS INTERIORES (29-sep-2026). Daniel: «no tienen nada visual, son solo texto vacío».
+ *
+ * Mismo sistema que el resto del sitio —papel, tinta, ocre, esquinas rectas, reglas de 1 px, sin
+ * sombras—, pero el texto ya no va solo: la foto principal sube al lado del titular y los primeros
+ * bloques van en filas foto + texto, alternando el lado. Todo lo que no cabe en una fila queda
+ * debajo en dos columnas, como antes.
+ */
+
+/* ── marco de foto: la proporción se reserva antes de que llegue la imagen (sin saltos) ── */
+.int-marco {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  background: var(--papel-3);
+}
+.int-marco img { filter: saturate(.94) contrast(1.04); }
+.int-marco--cuadro { aspect-ratio: 1 / 1; }
+.int-marco--tarjeta { aspect-ratio: 4 / 3; }
+
+.int-pie {
+  padding-top: 12px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--texto);
+  max-width: 60ch;
+}
+
+/* ── cabecera: titular y respuesta; la foto al lado en pantallas anchas ── */
+.int-cabeza {
+  display: grid;
+  gap: 36px;
+  padding-block: 28px 64px;
+}
+.int-cabeza h1 { max-width: 15ch; margin-bottom: 26px; }
+.int-heroe { margin: 0; }
+
+@media (max-width: 899px) {
+  /* En el teléfono la foto va a sangre justo DESPUÉS del botón, no antes del titular como en la portada.
+     Medido el 29-sep (4G lento, CPU 4x): con la foto primero pasaba a ser lo más grande de la pantalla y
+     lo último en pintarse —6,1 s en /en/corporate-events contra 1,5 s del texto—. A estas páginas llegan
+     los anuncios y Google puntúa esa espera; así asoma en la primera pantalla sin retrasarla. */
+  .int-cabeza { gap: 28px; padding-block: 20px 56px; }
+  .int-heroe { margin-inline: -32px; }
+  .int-heroe .int-pie { padding-inline: 32px; }
+}
+@media (min-width: 900px) {
+  .int-cabeza {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: 56px;
+    align-items: end;
+    padding-block: 28px 80px;
+  }
+  .int-cabeza h1 { font-size: clamp(44px, 4.6vw, 74px); }
+  .int-heroe .int-marco { aspect-ratio: 5 / 4; }
+}
+
+/* ── filas foto + texto ── */
+/* Solo arriba: abajo la cierra la barra de cifras, que ya lleva su regla. */
+.int-bloques { border-top: 1px solid var(--regla); }
+.int-fila {
+  display: grid;
+  gap: 22px;
+  padding-block: 44px;
+}
+.int-fila + .int-fila { border-top: 1px solid var(--regla); }
+.int-fila-foto { margin: 0; }
+.int-fila-texto h2 {
+  font-size: clamp(27px, 2.5vw, 38px);
+  line-height: 1.06;
+  margin-bottom: 16px;
+  max-width: 20ch;
+}
+.int-fila-texto p {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.7;
+  color: #4a4335;
+  max-width: 56ch;
+}
+@media (min-width: 900px) {
+  .int-fila {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: 56px;
+    align-items: center;
+    padding-block: 64px;
+  }
+  /* Una sí y una no, la foto cambia de lado: la página se lee como un pliego, no como una lista. */
+  .int-fila:nth-child(even) { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
+  .int-fila:nth-child(even) .int-fila-foto { order: 2; }
+}
+
+/* ── lo que no lleva foto: dos columnas, como antes ── */
+.int-resto {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 40px 44px;
+  padding-block: 56px 64px;
+  border-top: 1px solid var(--regla);
+}
+.int-resto h3 {
+  font-family: var(--cuerpo);
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -.01em;
+  line-height: 1.3;
+  margin-bottom: 12px;
+}
+/* Si sobra un solo bloque ocupa la fila entera: el ancho de lectura lo pone el texto, no la rejilla. */
+.int-resto p { margin: 0; font-size: 15px; line-height: 1.68; color: #4a4335; max-width: 68ch; }
+
+/* ── el entorno: el predio sobre la manzana, al lado de sus cifras ── */
+.int-entorno {
+  display: grid;
+  gap: 36px;
+  padding-block: 66px;
+}
+.int-entorno-foto { margin: 0; }
+.int-entorno-cifras {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px 20px;
+}
+@media (min-width: 640px) {
+  .int-entorno-cifras { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 26px 32px; }
+}
+
+/* La barra de cifras: en el teléfono «~22,000 sq ft» a 34 px se partía en dos líneas. */
+@media (max-width: 639px) {
+  .int-cifra { font-size: 27px !important; }
+}
+@media (min-width: 900px) {
+  .int-entorno { grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: 56px; align-items: start; }
+}
+
+/* ── relacionado: tarjetas con foto ── */
+.int-seguir {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px 16px;
+}
+@media (min-width: 900px) {
+  .int-seguir { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 36px 24px; }
+}
+.int-tarjeta { display: block; color: var(--tinta); text-decoration: none; }
+.int-tarjeta .int-marco { margin-bottom: 12px; }
+.int-tarjeta img { transition: transform .6s var(--ease-out); }
+.int-tarjeta-t { display: block; font-size: 15px; line-height: 1.4; text-wrap: balance; }
+.int-tarjeta:focus-visible { outline: 2px solid var(--ocre); outline-offset: 4px; }
+@media (hover: hover) and (pointer: fine) {
+  .int-tarjeta:hover img { transform: scale(1.03); }
+  .int-tarjeta:hover .int-tarjeta-t { text-decoration: underline; text-decoration-color: var(--ocre); text-underline-offset: 4px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .int-tarjeta img { transition: none; }
+}
+.int-faq {
+  display: inline-block;
+  margin-top: 32px;
+  padding: 12px 0;
+  font-size: 15px;
+  color: var(--tinta);
+  text-decoration: none;
+  border-bottom: 1px solid var(--regla);
+}

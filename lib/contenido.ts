@@ -68,8 +68,8 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "Qué hay en el suelo", en: "What's on the ground" },
         cuerpo: {
-          es: "Paseo pavimentado central de la puerta al estacionamiento, con césped artificial a un lado y arena al otro. Setos perimetrales cierran el recinto y mesas de picnic fijas completan el mobiliario existente. Es superficie firme: no hay que resolver piso antes de montar. El paseo mide unos 15 ft de ancho por 108 de largo, según el plano del predio; medida aproximada hasta contrastarla con el levantamiento. Tres superficies a pocos metros es también lo que aprovecha un offsite de empresa para zonificar sin mover mobiliario.",
-          en: "A paved walkway runs down the middle, from the building door to the parking lot, with artificial turf on one side and sand on the other. Hedges enclose the property, and fixed picnic tables are already in place. The ground is firm, so there's no flooring to install before you build. According to the site plan, the walkway is about 15 ft wide and 108 ft long (to be confirmed against the survey). Three different surfaces a few steps apart also let a corporate offsite set up separate zones without moving any furniture.",
+          es: "Paseo pavimentado central de la puerta al estacionamiento, con césped artificial a un lado y arena al otro. Setos perimetrales cierran el recinto y mesas de picnic fijas completan el mobiliario existente. El paseo es pavimento firme; lo que vaya sobre la arena se revisa contigo en la visita. El paseo mide unos 15 ft de ancho por 108 de largo, según el plano del predio; medida aproximada hasta contrastarla con el levantamiento. Tres superficies a pocos metros es también lo que aprovecha un offsite de empresa para zonificar sin mover mobiliario.",
+          en: "A paved walkway runs down the middle, from the building door to the parking lot, with artificial turf on one side and sand on the other. Hedges enclose the property, and fixed picnic tables are already in place. The walkway is firm paving; anything going on the sand is reviewed with you at the site visit. According to the site plan, the walkway is about 15 ft wide and 108 ft long (to be confirmed against the survey). Three different surfaces a few steps apart also let a corporate offsite set up separate zones without moving any furniture.",
         },
       },
       {
@@ -132,8 +132,8 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "Abierta por los costados", en: "Open on all sides" },
         cuerpo: {
-          es: "No es una sala: no hay cerramiento. Eso mantiene la ventilación y la continuidad visual con el Jardín, y es la razón por la que el recinto se lee como un solo espacio y no como dos. Se contrata suelto, sin el jardín: para un evento pequeño o un Sweet 16 de menos de ~150 invitados suele ser la medida justa.",
-          en: "It isn't a room: there are no walls. That keeps the air moving and the view open to the Garden, which is why the whole property feels like one space rather than two. You can book it on its own, without the Garden; for a small event or a Sweet 16 with fewer than ~150 guests, it's usually the right size.",
+          es: "No es una sala: no hay cerramiento. Eso mantiene la ventilación y la continuidad visual con el Jardín, y es la razón por la que el recinto se lee como un solo espacio y no como dos. Se contrata suelto, sin el jardín: para un evento pequeño o un Sweet 16 de menos de ~150 invitados suele ser la medida justa, según el montaje; se confirma en la visita.",
+          en: "It isn't a room: there are no walls. That keeps the air moving and the view open to the Garden, which is why the whole property feels like one space rather than two. You can book it on its own, without the Garden; for a small event or a Sweet 16 with fewer than ~150 guests, it's usually the right size, according to the layout; confirmed at the site visit.",
         },
       },
       {
@@ -196,8 +196,8 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "Wynwood como fondo", en: "Wynwood as the backdrop" },
         cuerpo: {
-          es: "2129 NW 1st Ct, a cuatro minutos a pie de Wynwood Walls. Las palmeras, la paja y los murales del barrio son el fondo real de las fotos, no un set.",
-          en: "2129 NW 1st Ct, a four-minute walk from Wynwood Walls. The palms, the thatched roof and the neighborhood murals are a real backdrop for your photos, not a set.",
+          es: "2129 NW 1st Ct, a cuatro minutos a pie de Wynwood Walls. Las palmeras, la paja y el mural de la fachada del edificio son el fondo real de las fotos, no un set.",
+          en: "2129 NW 1st Ct, a four-minute walk from Wynwood Walls. The palms, the thatched roof and the mural on the building's façade are a real backdrop for your photos, not a set.",
         },
       },
     ],
@@ -239,22 +239,22 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "Un lienzo, no un salón", en: "A canvas, not a ballroom" },
         cuerpo: {
-          es: "La razón por la que una marca elige este recinto es que no tiene estética propia que imponer. Superficie firme, límites claros y cero ambigüedad sobre qué está incluido. Si la activación es un desfile o una presentación de colección, la pasarela sobre el paseo tiene página propia: Desfiles de moda. Esta página es para marcas y empresas; si lo que buscas es un salón de fiestas para una celebración familiar, la comparación salón/jardín está en «Salón de fiestas en Miami, al aire libre».",
-          en: "Brands choose this venue because it has no look of its own to impose: firm ground, clear boundaries and no doubt about what's included. If your activation is a runway show or a collection launch, see Runway shows — the walkway doubles as a runway. This page is for brands and companies; if you're looking for a party hall for a family celebration, see “Outdoor party hall rental in Miami,” which compares a hall with this garden.",
+          es: "La razón por la que una marca elige este recinto es que no tiene estética propia que imponer. Superficie firme, límites claros y lo que incluye el alquiler explicado en las preguntas frecuentes. Si la activación es un desfile o una presentación de colección, la pasarela sobre el paseo tiene página propia: Desfiles de moda. Esta página es para marcas y empresas; si lo que buscas es un salón de fiestas para una celebración familiar, la comparación salón/jardín está en «Salón de fiestas en Miami, al aire libre».",
+          en: "Brands choose this venue because it has no look of its own to impose: firm ground, clear boundaries and what's included spelled out in the FAQ. If your activation is a runway show or a collection launch, see Runway shows — the walkway doubles as a runway. This page is for brands and companies; if you're looking for a party hall for a family celebration, see “Outdoor party hall rental in Miami,” which compares a hall with this garden.",
         },
       },
       {
         titulo: { es: "El barrio hace parte del brief", en: "The neighborhood is part of the brief" },
         cuerpo: {
-          es: "Wynwood es contexto real, no una línea de marketing: el barrio de Art Basel, a una cuadra de los murales y a tres minutos del acceso a la I-95.",
-          en: "Wynwood is real context, not a marketing line: it's the Art Basel neighborhood, one block from the murals and three minutes from I-95.",
+          es: "Wynwood es contexto real, no una línea de marketing: el barrio de Miami Art Week, a cuatro minutos a pie de Wynwood Walls y a tres del acceso a la I-95.",
+          en: "Wynwood is real context, not a marketing line: it's the heart of Miami Art Week, a four-minute walk from Wynwood Walls and three minutes from I-95.",
         },
       },
       {
         titulo: { es: "Lo que decide un productor", en: "What producers need to know" },
         cuerpo: {
-          es: "Potencia, load-in, ancho de portón, parking, curfew y límite de dB se levantan contigo en la visita técnica y se entregan por escrito. Preferimos eso a publicar cifras que luego no se sostengan. Si lo que traes no es una marca ni un lanzamiento sino tu propio equipo —un retiro, una jornada de trabajo fuera de la oficina—, esa es otra página: offsite de empresa.",
-          en: "Power, load-in, gate width, parking, curfew and decibel limit are checked with you at the site visit and confirmed in writing. We'd rather do that than publish figures that might not hold up. If you're not bringing a brand or a launch but your own team — a retreat or a day away from the office — see Corporate offsites.",
+          es: "Potencia, load-in, ancho de portón, parking, curfew y límite de dB se revisan contigo en la visita técnica. Preferimos eso a publicar cifras que luego no se sostengan. Si lo que traes no es una marca ni un lanzamiento sino tu propio equipo —un retiro, una jornada de trabajo fuera de la oficina—, esa es otra página: offsite de empresa.",
+          en: "Power, load-in, gate width, parking, curfew and decibel limit are reviewed with you at the site visit. We'd rather do that than publish figures that might not hold up. If you're not bringing a brand or a launch but your own team — a retreat or a day away from the office — see Corporate offsites.",
         },
       },
     ],
@@ -303,15 +303,15 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "Sombra sin carpa", en: "Shade without a tent" },
         cuerpo: {
-          es: "El pabellón da ~4.000 ft² de sombra continua: sirve de base, de comedor o de cobertura si cambia el clima, sin sumar estructura al presupuesto.",
-          en: "The Pavilion gives you ~4,000 sq ft of continuous shade for base camp, crew meals or cover if the weather turns, with no tent to add to the budget.",
+          es: "El pabellón da ~4.000 ft² de sombra continua: sirve de base, de comedor o de cobertura si cambia el clima; con viento, conviene sumar cierres laterales al presupuesto.",
+          en: "The Pavilion gives you ~4,000 sq ft of continuous shade for base camp, crew meals or cover if the weather turns; on a windy day, budget for side walls.",
         },
       },
       {
         titulo: { es: "Permisos y horarios", en: "Permits and hours" },
         cuerpo: {
-          es: "Curfew, límite de dB, parking de unidad y ancho de portón para carga se confirman en la visita técnica y quedan por escrito antes de firmar.",
-          en: "Curfew, decibel limit, parking for your trucks and gate width for load-in are confirmed at the site visit and put in writing before you sign.",
+          es: "Curfew, límite de dB, parking de unidad y ancho de portón para carga se revisan contigo en la visita técnica, antes de firmar.",
+          en: "Curfew, decibel limit, parking for your trucks and gate width for load-in are reviewed with you at the site visit, before you sign.",
         },
       },
     ],
@@ -335,8 +335,8 @@ export const PAGINAS: Pagina[] = [
     },
     cifras: [
       { etiqueta: { es: "Preguntas", en: "Questions" }, valor: "6" },
-      { etiqueta: { es: "Se responden en", en: "Answered in" }, valor: { es: "1 visita", en: "1 site visit" } },
-      { etiqueta: { es: "Por escrito", en: "In writing" }, valor: { es: "Sí", en: "Yes" } },
+      { etiqueta: { es: "Publicadas aquí", en: "Answered here" }, valor: { es: "3 de 6", en: "3 of 6" } },
+      { etiqueta: { es: "El resto", en: "The rest" }, valor: { es: "En la visita", en: "Site visit" } },
     ],
     foto: {
       src: "/assets/aerea-predio.jpg",
@@ -395,8 +395,8 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "Cómo respondemos nosotros", en: "How we answer" },
         cuerpo: {
-          es: "Las dos primeras están publicadas en este sitio con sus cifras. Las cuatro siguientes —potencia, load-in, curfew y barra— se revisan contigo el día de la visita y te las mandamos por escrito. No las publicamos porque no las hemos medido nosotros, y preferimos eso a poner un número que luego no se sostenga.",
-          en: "The first two answers are published on this site with their numbers. The other four — power, load-in, curfew and bar — are reviewed with you at the site visit and sent to you in writing. We don't publish them yet because we haven't measured them ourselves, and we'd rather do that than post a number that might not hold up.",
+          es: "Las dos primeras están publicadas en este sitio con sus cifras, y la sexta también: el recinto tiene licencia de licor propia y la barra la opera tu equipo. Potencia, load-in y curfew no están medidos todavía: el equipo los revisa contigo en la visita, y preferimos eso a poner un número que luego no se sostenga.",
+          en: "The first two answers are published on this site with their numbers, and so is the sixth: the venue holds its own liquor license and your team runs the bar. Power, load-in and curfew haven't been measured yet: our team goes through them with you at the site visit, and we'd rather do that than post a number that might not hold up.",
         },
       },
     ],
@@ -411,7 +411,7 @@ export const PAGINAS: Pagina[] = [
       en: "The venue holds up to ~300 seated guests, with the grand entrance and the waltz in the Garden and dinner and dancing under the ~4,000 sq ft covered Pavilion. That covered space is also your rain plan, so the date doesn't depend on Miami weather.",
     },
     title: {
-      es: "Salón para quinceañeras en Wynwood, Miami — hasta 300 invitados | Club Wynwood",
+      es: "Lugar para quinceañeras al aire libre en Wynwood, Miami — hasta 300 invitados | Club Wynwood",
       en: "Quinceañera venue in Wynwood, Miami — up to 300 guests | Club Wynwood",
     },
     description: {
@@ -445,8 +445,8 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "Cena y baile bajo techo", en: "Dinner and dancing under cover" },
         cuerpo: {
-          es: "El pabellón de ~4.000 ft² cubre la parte sentada del evento. Eso resuelve dos cosas a la vez: la lluvia y el sol de Miami a las cinco de la tarde. Las seis cabañas amuebladas del jardín funcionan como zonas de descanso para los invitados mayores. Si la fiesta es un Sweet 16 —de pie, con DJ y sin vals— y son menos de ~150 invitados, la página de Sweet 16 explica cuándo basta con el Pabellón solo.",
-          en: "The ~4,000 sq ft Pavilion covers the seated part of the event, which solves two problems at once: rain and the late-afternoon Miami sun. The six furnished cabanas in the Garden give older guests a place to rest. If the party is a Sweet 16 — standing, with a DJ and no waltz — with fewer than ~150 guests, the Sweet 16 page explains when the Pavilion alone is enough.",
+          es: "El pabellón de ~4.000 ft² cubre la parte sentada del evento. Eso resuelve dos cosas a la vez: la lluvia y el sol de Miami a las cinco de la tarde. Las seis cabañas amuebladas del jardín funcionan como zonas de descanso para los invitados mayores. Si la fiesta es un Sweet 16 —de pie, con DJ y sin vals— y son menos de ~150 invitados (según el montaje; se confirma en la visita), la página de Sweet 16 explica cuándo basta con el Pabellón solo.",
+          en: "The ~4,000 sq ft Pavilion covers the seated part of the event, which solves two problems at once: rain and the late-afternoon Miami sun. The six furnished cabanas in the Garden give older guests a place to rest. If the party is a Sweet 16 — standing, with a DJ and no waltz — with fewer than ~150 guests (according to the layout; confirmed at the site visit), the Sweet 16 page explains when the Pavilion alone is enough.",
         },
       },
       {
@@ -509,8 +509,8 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "Lo que falta medir", en: "What still needs measuring" },
         cuerpo: {
-          es: "El aforo por montaje —el tuyo, con tu plano— se levanta en la visita técnica junto con la potencia, el load-in, el parking y el curfew, y se entrega por escrito. Las cifras de esta página son aproximaciones del propietario, no medición topográfica, y están marcadas con «~» en toda la ficha.",
-          en: "Capacity for your layout — with your own floor plan — is confirmed at the site visit, along with power, load-in, parking and curfew, and sent to you in writing. The figures on this page are the owner's estimates, not measurements, which is why they carry a “~” throughout the spec sheet.",
+          es: "El aforo por montaje —el tuyo, con tu plano— se revisa en la visita técnica junto con la potencia, el load-in, el parking y el curfew. Las cifras de esta página son aproximaciones del propietario, no medición topográfica, y están marcadas con «~» en toda la ficha.",
+          en: "Capacity for your layout — with your own floor plan — is reviewed at the site visit, along with power, load-in, parking and curfew. The figures on this page are the owner's estimates, not measurements, which is why they carry a “~” throughout the spec sheet.",
         },
       },
     ],
@@ -521,15 +521,15 @@ export const PAGINAS: Pagina[] = [
     ojo: { es: "Uso · pop-up", en: "Use · pop-up" },
     h1: { es: "Pop-ups y mercados", en: "Pop-ups and markets" },
     respuesta: {
-      es: "Un pop-up en Wynwood necesita tres cosas: superficie firme donde montar módulos, público que ya esté paseando por el barrio, y una cubierta para que el sábado no dependa del cielo. Aquí son ~22.000 ft² con paseo pavimentado de extremo a extremo y ~4.000 ft² techados, a una cuadra de los murales.",
-      en: "A pop-up in Wynwood needs three things: firm ground to build on, foot traffic that's already in the neighborhood, and cover so a rainy Saturday doesn't sink the day. Here you get ~22,000 sq ft with a paved walkway running end to end and ~4,000 sq ft under a roof, one block from the murals.",
+      es: "Un pop-up en Wynwood necesita tres cosas: superficie firme donde montar módulos, público que ya esté paseando por el barrio, y una cubierta para que el sábado no dependa del cielo. Aquí son ~22.000 ft² con paseo pavimentado de extremo a extremo y ~4.000 ft² techados, a cuatro minutos a pie de Wynwood Walls.",
+      en: "A pop-up in Wynwood needs three things: firm ground to build on, foot traffic that's already in the neighborhood, and cover so a rainy Saturday doesn't sink the day. Here you get ~22,000 sq ft with a paved walkway running end to end and ~4,000 sq ft under a roof, a four-minute walk from Wynwood Walls.",
     },
     title: {
       es: "Espacio para pop-ups y mercados en Wynwood, Miami | Club Wynwood",
       en: "Pop-up and market space in Wynwood, Miami | Club Wynwood",
     },
     description: {
-      es: "Recinto al aire libre para pop-ups y mercados en Wynwood: ~22.000 ft², paseo pavimentado para montar módulos y ~4.000 ft² techados. Junto a Wynwood Walls.",
+      es: "Recinto al aire libre para pop-ups y mercados en Wynwood: ~22.000 ft², paseo pavimentado para montar módulos y ~4.000 ft² techados. A 4 min a pie de Wynwood Walls.",
       en: "Open-air space for pop-ups and markets in Wynwood: ~22,000 sq ft, a paved walkway to line with vendor booths, and ~4,000 sq ft under a roof. A four-minute walk from Wynwood Walls.",
     },
     cifras: [
@@ -556,29 +556,29 @@ export const PAGINAS: Pagina[] = [
              redacción anterior al 7-sep: a un lado hay césped y al otro arena,
              y para un mercado la diferencia importa —un módulo con patas no se
              planta igual sobre arena—. */
-          es: "Un mercado se ordena a lo largo de un recorrido, y aquí ya existe: pavimento continuo de la puerta al estacionamiento, con césped a un lado y arena al otro para los módulos. No hay que resolver piso ni trazar circulación desde cero, y eso son horas de montaje que no pagas.",
-          en: "A market is laid out along a path, and here the path already exists: continuous paving from the door to the parking lot, with turf on one side and sand on the other for vendor booths. There's no flooring to install and no traffic flow to design from scratch, which means fewer load-in hours to pay for.",
+          es: "Un mercado se ordena a lo largo de un recorrido, y aquí ya existe: pavimento continuo de la puerta al estacionamiento, con césped a un lado y arena al otro para los módulos. La circulación ya está trazada sobre el paseo; lo que vaya sobre la arena se revisa contigo en la visita.",
+          en: "A market is laid out along a path, and here the path already exists: continuous paving from the door to the parking lot, with turf on one side and sand on the other for vendor booths. The traffic flow is already laid out along the walkway; anything going on the sand is reviewed with you at the site visit.",
         },
       },
       {
         titulo: { es: "El público ya está en la calle", en: "The audience is already outside" },
         cuerpo: {
-          es: "2129 NW 1st Ct está a cuatro minutos a pie de Wynwood Walls. La diferencia entre un pop-up en un polígono y uno aquí es que en Wynwood la gente ya salió a caminar el barrio: el tráfico peatonal del fin de semana no hay que comprarlo con pauta.",
-          en: "2129 NW 1st Ct is a four-minute walk from Wynwood Walls. The difference between a pop-up in an industrial park and one here is that people in Wynwood are already out walking: you don't have to buy weekend foot traffic with ads.",
+          es: "2129 NW 1st Ct está a cuatro minutos a pie de Wynwood Walls. La diferencia entre un pop-up en un polígono y uno aquí es que en Wynwood la gente ya sale a caminar el barrio los fines de semana.",
+          en: "2129 NW 1st Ct is a four-minute walk from Wynwood Walls. The difference between a pop-up in an industrial park and one here is that people in Wynwood are already out walking the neighborhood on weekends.",
         },
       },
       {
         titulo: { es: "El sábado no depende del cielo", en: "Saturday doesn't depend on the weather" },
         cuerpo: {
-          es: "Un mercado se cae con la lluvia y no se reprograma: los expositores ya vinieron. Los ~4.000 ft² de pabellón fijo permiten concentrar los módulos bajo techo si cambia el tiempo, sin carpas de última hora ni devolver el día.",
-          en: "A market can't survive a downpour, and it can't be rescheduled: the vendors have already shown up. The ~4,000 sq ft permanent roof lets you move booths under cover if the weather turns, with no last-minute tents and no refunds.",
+          es: "Un mercado se cae con la lluvia y no se reprograma: los expositores ya vinieron. Los ~4.000 ft² de pabellón fijo permiten concentrar los módulos bajo techo si cambia el tiempo, sin cancelar el día; con viento, conviene prever cierres laterales.",
+          en: "A market can't survive a downpour, and it can't be rescheduled: the vendors have already shown up. The ~4,000 sq ft permanent roof lets you move booths under cover if the weather turns, without canceling the day; on a windy day, plan for side walls.",
         },
       },
       {
         titulo: { es: "Lo que hay que preguntar antes", en: "What to ask in advance" },
         cuerpo: {
-          es: "Para un mercado con muchos expositores importan tres datos que se levantan en la visita: la potencia disponible y cómo se reparte, el ancho de portón para la carga de todos, y el horario de descarga. Te los damos por escrito antes de firmar.",
-          en: "For a market with many vendors, three numbers matter, and all three are checked at the site visit: how much power is available and how it can be split, the gate width for everyone's load-in, and the unloading hours. You get them in writing before you sign.",
+          es: "Para un mercado con muchos expositores importan tres datos que se levantan en la visita: la potencia disponible y cómo se reparte, el ancho de portón para la carga de todos, y el horario de descarga. El equipo los revisa contigo antes de firmar.",
+          en: "For a market with many vendors, three numbers matter, and all three are checked at the site visit: how much power is available and how it can be split, the gate width for everyone's load-in, and the unloading hours. Our team goes through them with you before you sign.",
         },
       },
     ],
@@ -646,8 +646,8 @@ export const PAGINAS: Pagina[] = [
     ojo: { es: "Uso · evento pequeño", en: "Use · small event" },
     h1: { es: "Eventos pequeños", en: "Small events" },
     respuesta: {
-      es: "Sí se puede alquilar solo una parte. El Pabellón son ~4.000 ft² techados que se contratan sueltos, sin el jardín, y esa es la medida que encaja con un bautizo, un cumpleaños íntimo o una comida de familia de 50 a 150 invitados. Contratar los ~22.000 ft² completos para eso no tiene sentido y no lo recomendamos.",
-      en: "Yes, you can rent just one part. The Pavilion — ~4,000 sq ft under a roof — can be booked on its own, without the Garden, and it's the right size for a christening, an intimate birthday or a family lunch of 50 to 150 guests. Renting the full ~22,000 sq ft for that makes no sense, and we don't recommend it.",
+      es: "Sí se puede alquilar solo una parte. El Pabellón son ~4.000 ft² techados que se contratan sueltos, sin el jardín, y esa es la medida que encaja con un bautizo, un cumpleaños íntimo o una comida de familia de 50 a 150 invitados, según el montaje; se confirma en la visita. Contratar los ~22.000 ft² completos para eso no tiene sentido y no lo recomendamos.",
+      en: "Yes, you can rent just one part. The Pavilion — ~4,000 sq ft under a roof — can be booked on its own, without the Garden, and it's the right size for a christening, an intimate birthday or a family lunch of 50 to 150 guests, according to the layout; confirmed at the site visit. Renting the full ~22,000 sq ft for that makes no sense, and we don't recommend it.",
     },
     title: {
       es: "Eventos pequeños en Wynwood: alquilar solo el Pabellón | Club Wynwood",
@@ -696,8 +696,8 @@ export const PAGINAS: Pagina[] = [
              fijas donde están, así que no se pueden mover ni sacar del plano.
              Un productor que planifique el montaje creyendo que puede retirarlas
              pierde el día del montaje descubriéndolo. */
-          es: "Las seis cabañas amuebladas están en el jardín, junto al pabellón. Son fijas: van con el inmueble y no se mueven, así que cuentan en el plano de montaje aunque solo alquiles el Pabellón. Para un evento con niños o con gente mayor son la zona de descanso que suele faltar.",
-          en: "The six furnished cabanas sit in the Garden, a few steps from the Pavilion. They're fixed and come with the property. If you add the Garden to your booking, they become the lounge area that events with children or older guests usually lack.",
+          es: "Las seis cabañas amuebladas están en el jardín, al otro lado del paseo. Son fijas: van con el inmueble y no se mueven, así que cuentan en el plano de montaje aunque solo alquiles el Pabellón. Si sumas el Jardín a la reserva, son la zona de descanso que suele faltar en un evento con niños o con gente mayor.",
+          en: "The six furnished cabanas sit in the Garden, across the walkway from the Pavilion. They're fixed and come with the property. If you add the Garden to your booking, they become the lounge area that events with children or older guests usually lack.",
         },
       },
     ],
@@ -708,16 +708,16 @@ export const PAGINAS: Pagina[] = [
     ojo: { es: "Temporada · diciembre", en: "Season · December" },
     h1: { es: "Art Basel y Miami Art Week", en: "Art Basel and Miami Art Week" },
     respuesta: {
-      es: "Miami Art Week 2026 va del 30 de noviembre al 6 de diciembre, y este recinto tiene fechas abiertas. Está dentro del Arts District, a tres cuadras de Mana Wynwood —donde se montan Red Dot y Spectrum— y a cuatro minutos a pie de Wynwood Walls. Son ~22.000 ft² al aire libre con ~4.000 techados, aforo de ~600 de pie, estacionamiento propio y licencia de licor propia.",
-      en: "Miami Art Week 2026 runs from November 30 to December 6, and we have open dates. The venue is inside the Arts District, three blocks from Mana Wynwood (home to Red Dot and Spectrum) and a four-minute walk from Wynwood Walls: ~22,000 sq ft outdoors, ~4,000 of them covered, room for ~600 standing, on-site parking and its own liquor license.",
+      es: "Miami Art Week 2026 va del 30 de noviembre al 6 de diciembre, y este recinto está dentro del Arts District, a tres cuadras de Mana Wynwood —donde se montan Red Dot y Spectrum— y a cuatro minutos a pie de Wynwood Walls. Son ~22.000 ft² al aire libre con ~4.000 techados, aforo de ~600 de pie, estacionamiento propio y licencia de licor propia.",
+      en: "Miami Art Week 2026 runs from November 30 to December 6, and this venue is inside the Arts District, three blocks from Mana Wynwood (home to Red Dot and Spectrum) and a four-minute walk from Wynwood Walls: ~22,000 sq ft outdoors, ~4,000 of them covered, room for ~600 standing, on-site parking and its own liquor license.",
     },
     title: {
-      es: "Venue para Miami Art Week 2026 en Wynwood · fechas abiertas | Club Wynwood",
-      en: "Miami Art Week 2026 venue in Wynwood · open dates | Club Wynwood",
+      es: "Venue para Miami Art Week 2026 en Wynwood, Miami | Club Wynwood",
+      en: "Miami Art Week 2026 venue in Wynwood, Miami | Club Wynwood",
     },
     description: {
-      es: "Recinto al aire libre de ~22.000 ft² en Wynwood con fechas abiertas para Miami Art Week 2026, del 30 de noviembre al 6 de diciembre. A tres cuadras de Mana.",
-      en: "A ~22,000 sq ft open-air site in Wynwood with open dates for Miami Art Week 2026, November 30 to December 6. Three blocks from Mana Wynwood.",
+      es: "Recinto al aire libre de ~22.000 ft² en Wynwood para Miami Art Week 2026, del 30 de noviembre al 6 de diciembre. A tres cuadras de Mana.",
+      en: "A ~22,000 sq ft open-air site in Wynwood for Miami Art Week 2026, November 30 to December 6. Three blocks from Mana Wynwood.",
     },
     cifras: [
       { etiqueta: { es: "Miami Art Week 2026", en: "Miami Art Week 2026" }, valor: { es: "30 nov – 6 dic", en: "Nov 30 – Dec 6" } },
@@ -764,18 +764,18 @@ export const PAGINAS: Pagina[] = [
         titulo: { es: "Las ferias que traen al público están al lado", en: "The fairs that draw the crowds are next door" },
         cuerpo: {
           es: "Red Dot y Spectrum se montan en Mana Wynwood, a tres cuadras, del 2 al 6 de diciembre; NADA ocupa Ice Palace, en el borde del barrio, del 1 al 5. Eso significa que el coleccionista y el galerista que salen de la feria ya están caminando por aquí. Las fiestas y activaciones que funcionaron en el barrio el año pasado fueron justo de este formato: lote abierto, DJ, barra y montaje propio.",
-          en: "Red Dot and Spectrum set up at Mana Wynwood, three blocks away, from December 2 to 6, and NADA is at Ice Palace, on the edge of the neighborhood, from December 1 to 5. So the collectors and gallerists leaving the fairs are already on this street. The parties and activations that worked here last year used exactly this format: an open lot, a DJ, a bar and your own build.",
+          en: "Red Dot and Spectrum set up at Mana Wynwood, three blocks away, from December 2 to 6, and NADA is at Ice Palace, on the edge of the neighborhood, from December 1 to 5. So the collectors and gallerists leaving the fairs are already walking the neighborhood. The parties and activations that worked in the neighborhood last year used exactly this format: an open lot, a DJ, a bar and your own build.",
         },
       },
       {
-        titulo: { es: "Del 30 de noviembre al 6 de diciembre, con fechas abiertas", en: "November 30 to December 6, with open dates" },
+        titulo: { es: "Del 30 de noviembre al 6 de diciembre", en: "November 30 to December 6" },
         cuerpo: {
-          es: "Miami Art Week 2026 va del 30 de noviembre al 6 de diciembre, con Art Basel Miami Beach del 4 al 6. Es la semana más disputada del año en el barrio y todavía quedan fechas. Hay un plazo que sí manda: la City of Miami cierra las solicitudes de permiso de evento especial para esa semana el 11 de octubre, así que si tu activación necesita permiso, la conversación útil es ahora. Escríbenos con la fecha y el aforo y te decimos disponibilidad real. Si lo tuyo es la otra semana grande del año, un desfile satélite de Miami Swim Week, tiene página propia: Desfiles de moda.",
-          en: "Miami Art Week 2026 runs from November 30 to December 6, with Art Basel Miami Beach from December 4 to 6. It's the busiest week of the year in this neighborhood, and we still have dates. One deadline matters: the City of Miami closes special-event permit applications for that week on October 11, so if your activation needs a permit, now is the time to talk. Send us your date and guest count and we'll reply with real availability. Planning a Miami Swim Week satellite show instead? See Runway shows.",
+          es: "Miami Art Week 2026 va del 30 de noviembre al 6 de diciembre, con Art Basel Miami Beach del 4 al 6. Es la semana más disputada del año en el barrio. Si tu activación necesita permiso de evento especial de la City of Miami, conviene empezar pronto: el equipo lo revisa contigo. Escríbenos con la fecha y el aforo y te decimos disponibilidad real. Si lo tuyo es la otra semana grande del año, un desfile satélite de Miami Swim Week, tiene página propia: Desfiles de moda.",
+          en: "Miami Art Week 2026 runs from November 30 to December 6, with Art Basel Miami Beach from December 4 to 6. It's the busiest week of the year in this neighborhood. If your activation needs a City of Miami special-event permit, it's best to start early: our team will go through it with you. Send us your date and guest count and we'll reply with real availability. Planning a Miami Swim Week satellite show instead? See Runway shows.",
         },
       },
       {
-        titulo: { es: "Barra propia, estacionamiento propio", en: "A liquor license and on-site parking" },
+        titulo: { es: "Licencia de licor propia, estacionamiento propio", en: "A liquor license and on-site parking" },
         cuerpo: {
           es: "El recinto tiene licencia de licor propia, con su número de licencia, cosa que no todos los espacios de la zona pueden decir, y hay área donde montar barra. Y hay estacionamiento en el propio predio, al este y al sur, que en esa semana y en este barrio deja de ser un detalle. La carga entra por su propia puerta, aparte de la de los invitados.",
           en: "The venue holds its own liquor license — not every space in the area can say that — and there's an area to set up a bar. There's also on-site parking to the east and south, which during Art Week in this neighborhood is no small detail. Freight comes in through its own gate, separate from the guest entrance.",
@@ -789,7 +789,7 @@ export const PAGINAS: Pagina[] = [
     ojo: { es: "Uso · fin de año", en: "Use · holiday party" },
     h1: { es: "Fiesta de fin de año de empresa", en: "Company holiday party" },
     respuesta: {
-      es: "Una cena de empresa de 100 a 300 personas cabe sentada bajo el pabellón techado, con el jardín para el cóctel de llegada y los discursos. Diciembre en Miami se hace al aire libre —es de los mejores meses— y los ~4.000 ft² cubiertos quitan el riesgo de la lluvia sin encerrar a nadie.",
+      es: "Una fiesta de empresa de 100 a 300 personas: cóctel de llegada y discursos en el jardín, y cena bajo el pabellón techado. El aforo sentado con tu montaje se confirma en la visita. Diciembre en Miami se hace al aire libre —es de los mejores meses— y los ~4.000 ft² cubiertos quitan el riesgo de la lluvia sin encerrar a nadie.",
       en: "A holiday party for 100 to 300 people: welcome cocktails and speeches in the Garden, and dinner under the covered Pavilion. Seated capacity for your layout is confirmed at the site visit. December is one of the best months to be outdoors in Miami, and the ~4,000 sq ft roof takes away the rain risk without shutting anyone indoors.",
     },
     title: {
@@ -797,11 +797,11 @@ export const PAGINAS: Pagina[] = [
       en: "Company holiday party venue in Wynwood, Miami | Club Wynwood",
     },
     description: {
-      es: "Venue al aire libre para la fiesta de fin de año de tu empresa en Wynwood: cóctel en el jardín, cena sentada bajo el pabellón techado, de 100 a 300 personas.",
-      en: "Open-air venue for your company holiday party in Wynwood: cocktails in the garden, seated dinner under the covered pavilion, 100 to 300 people.",
+      es: "Venue al aire libre para la fiesta de fin de año de tu empresa en Wynwood: cóctel en el jardín y cena bajo el pabellón techado; hasta ~300 sentados en el recinto completo.",
+      en: "Open-air venue for your company holiday party in Wynwood: cocktails in the garden and dinner under the covered pavilion; up to ~300 seated using the whole venue.",
     },
     cifras: [
-      { etiqueta: { es: "Cena sentada", en: "Seated dinner" }, valor: "100–300" },
+      { etiqueta: { es: "Sentados (recinto completo)", en: "Seated (whole venue)" }, valor: "~300" },
       { etiqueta: { es: "Cóctel de pie", en: "Standing cocktail" }, valor: "~600" },
       { etiqueta: { es: "Bajo techo", en: "Covered" }, valor: { es: "~4 000 ft²", en: "~4,000 sq ft" } },
     ],
@@ -815,8 +815,8 @@ export const PAGINAS: Pagina[] = [
         en: "The site at dusk seen from above: a red carpet along the walk, palms uplit from the trunk and the thatch roof beyond",
       },
       pie: {
-        es: "Fin de año en el recinto: alfombra sobre el paseo, palmeras iluminadas y el pabellón al lado. Foto de un evento real.",
-        en: "New Year's Eve on site: a carpet down the walkway, uplit palms and the Pavilion alongside. A real event, not a rendering.",
+        es: "Una fiesta al anochecer en el recinto: la alfombra y la iluminación las trajo esa producción, no vienen con el recinto. Foto de un evento real.",
+        en: "An evening party on site: the carpet and the lighting came with that production and aren't part of the rental. A real event, not a rendering.",
       },
     },
     bloques: [
@@ -830,22 +830,22 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "Diciembre en Miami se hace fuera", en: "December in Miami happens outdoors" },
         cuerpo: {
-          es: "Es de los mejores meses del año aquí, y una fiesta de empresa al aire libre en diciembre se recuerda distinto que un salón de hotel. El riesgo es el aguacero de tarde, y eso lo resuelven los ~4.000 ft² de cubierta fija: no hay que decidir nada con dos semanas de antelación mirando el parte.",
-          en: "It's one of the best months of the year here, and an outdoor company party in December is remembered in a way a hotel ballroom never is. The only risk is an afternoon downpour, and the ~4,000 sq ft permanent roof takes care of it: no decisions two weeks out while watching the forecast.",
+          es: "Es de los mejores meses del año aquí, y una fiesta de empresa al aire libre en diciembre se recuerda distinto que un salón de hotel. El riesgo es el aguacero de tarde: los ~4.000 ft² de cubierta fija paran la lluvia vertical, y con viento conviene presupuestar cierres laterales.",
+          en: "It's one of the best months of the year here, and an outdoor company party in December is remembered in a way a hotel ballroom never is. The main risk is an afternoon downpour: the ~4,000 sq ft permanent roof handles straight-down rain, and on a windy day you should budget for side walls.",
         },
       },
       {
         titulo: { es: "Sin proveedor impuesto", en: "No required vendors" },
         cuerpo: {
-          es: "Los hoteles suelen atar el catering y la barra a su cocina, y ahí es donde se va el presupuesto de una cena de empresa. Aquí se alquila el espacio: eliges proveedor, menú y barra, y el ahorro se nota justo en la partida más grande. Y si lo que estás comparando es un salón de fiestas y no un hotel, la página «Salón de fiestas en Miami, al aire libre» hace esa comparación punto por punto.",
-          en: "Hotels usually tie catering and bar service to their own kitchen, and that's where a company dinner's budget goes. Here you rent the space and choose your caterer, menu and bar, so you save on the biggest line item. If you're comparing us with a banquet hall rather than a hotel, see “Outdoor party hall rental in Miami” for a point-by-point comparison.",
+          es: "Los hoteles suelen atar el catering y la barra a su cocina, y ahí es donde se va el presupuesto de una cena de empresa. Aquí se alquila el espacio: eliges proveedor, menú y barra, y decides tú cuánto se va en la partida más grande. Y si lo que estás comparando es un salón de fiestas y no un hotel, la página «Salón de fiestas en Miami, al aire libre» hace esa comparación punto por punto.",
+          en: "Hotels usually tie catering and bar service to their own kitchen, and that's where a company dinner's budget goes. Here you rent the space and choose your caterer, menu and bar, so you decide what goes into the biggest line item. If you're comparing us with a banquet hall rather than a hotel, see “Outdoor party hall rental in Miami” for a point-by-point comparison.",
         },
       },
       {
-        titulo: { es: "Las fechas de diciembre vuelan", en: "December dates go fast" },
+        titulo: { es: "Diciembre coincide con Art Week", en: "December overlaps with Art Week" },
         cuerpo: {
-          es: "Las dos primeras semanas de diciembre son las más pedidas del año, y coinciden además con Art Week. Si la fecha es esa, conviene cerrarla con meses de margen: escríbenos con el número de asistentes y te decimos qué hay libre. Y si lo que se celebra no es la empresa sino un cumpleaños de 30, 40 o 50 con más de 150 invitados, para eso está la página de cumpleaños de adulto.",
-          en: "The first two weeks of December are the most requested of the year, and they overlap with Art Week. If that's your date, book it months ahead: send us your guest count and we'll tell you what's available. If you're celebrating a 30th, 40th or 50th birthday with more than 150 guests rather than a company party, see Adult birthday parties.",
+          es: "Las dos primeras semanas de diciembre coinciden con Art Week. Si la fecha es esa, conviene escribir con tiempo: mándanos el número de asistentes y el equipo revisa qué hay libre. Y si lo que se celebra no es la empresa sino un cumpleaños de 30, 40 o 50 con más de 150 invitados, para eso está la página de cumpleaños de adulto.",
+          en: "The first two weeks of December overlap with Art Week. If that's your date, reach out early: send us your guest count and our team will check what's available. If you're celebrating a 30th, 40th or 50th birthday with more than 150 guests rather than a company party, see Adult birthday parties.",
         },
       },
     ],
@@ -875,20 +875,20 @@ export const PAGINAS: Pagina[] = [
     foto: {
       src: "/assets/venue-exterior.webp",
       alt: {
-        es: "El recinto con los murales del barrio al fondo",
-        en: "The venue with the neighborhood murals behind it",
+        es: "El paseo entre palmeras hacia el edificio, con el mural de su fachada al fondo",
+        en: "The walkway between the palms toward the building, with the mural on its façade in the background",
       },
       pie: {
-        es: "Los murales del barrio, al fondo del recinto.",
-        en: "The neighborhood murals, behind the venue.",
+        es: "El paseo y el mural de la fachada del edificio; Wynwood Walls queda a 4 min a pie.",
+        en: "The walkway and the mural on the building's façade; Wynwood Walls is a 4-minute walk away.",
       },
     },
     bloques: [
       {
         titulo: { es: "Se recorre a pie", en: "It's walkable" },
         cuerpo: {
-          es: "Wynwood es de los pocos sitios de Miami donde la gente camina. Para un evento eso cambia dos cosas: los invitados pueden llegar antes o quedarse después sin depender del coche, y una activación abierta al público recibe gente que ya estaba en la calle.",
-          en: "Wynwood is one of the few places in Miami where people walk. For an event, that changes two things: guests can arrive early or stay late without depending on a car, and an event that's open to the public gets people who are already out on the street.",
+          es: "Wynwood es de los pocos sitios de Miami donde la gente camina. Para un evento eso cambia dos cosas: los invitados pueden llegar antes o quedarse después sin depender del coche, y una activación abierta al público puede atraer a gente que ya está paseando el barrio.",
+          en: "Wynwood is one of the few places in Miami where people walk. For an event, that changes two things: guests can arrive early or stay late without depending on a car, and an event that's open to the public can draw people who are already out on the street.",
         },
       },
       {
@@ -901,8 +901,8 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "El fondo ya existe", en: "The backdrop already exists" },
         cuerpo: {
-          es: "Los murales del Arts District son el escenario que ningún salón puede construir, y no cuestan producción. Para una boda, una quinceañera o un rodaje, eso son fotos con lugar reconocible en vez de fotos con pared.",
-          en: "The Arts District murals are a set no ballroom can build, and they cost nothing to produce. For a wedding, a quinceañera or a shoot, that means photos in a place people recognize instead of photos against a wall.",
+          es: "Los murales del Arts District son el escenario que ningún salón puede construir, y quedan a pocos minutos a pie. Para una boda, una quinceañera o un rodaje, eso son fotos en un lugar reconocible, fuera del recinto, en vez de fotos con pared.",
+          en: "The Arts District murals are a set no ballroom can build, and they're a short walk away. For a wedding, a quinceañera or a shoot, that means photos in a place people recognize, just outside the venue, instead of photos against a wall.",
         },
       },
       {
@@ -972,8 +972,8 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "El montaje que nadie ve", en: "A load-in nobody sees" },
         cuerpo: {
-          es: "Hay dos entradas y no se cruzan: la carga entra por NW 1st Ct y los invitados por NW 21st Ct. Para un offsite eso pesa más de lo que parece. El proveedor de la actividad descarga, arma y prueba por su puerta mientras el equipo llega por la otra, y la primera impresión del día no es un camión abierto ni cajas a medio sacar. Hay estacionamiento propio en el predio, así que quien viene en coche no busca sitio en la calle. Lo que todavía no publicamos —potencia y amperaje, ancho del portón de carga, número de baños, plazas de estacionamiento y curfew— lo recorremos contigo en la visita y te lo confirmamos por escrito.",
-          en: "There are two entrances, and they never cross: freight comes in on NW 1st Ct and guests on NW 21st Ct. For an offsite, that matters more than it sounds. The activity vendor unloads, sets up and tests through one gate while your team walks in through the other, so the day doesn't start with an open truck or half-unpacked crates. There's also on-site parking, so nobody driving in has to hunt for a spot on the street. What we don't publish yet — electrical service and amperage, freight gate width, number of restrooms, parking spaces and curfew — we check with you at the site visit and confirm in writing.",
+          es: "Hay dos entradas y no se cruzan: la carga entra por NW 1st Ct y los invitados por NW 21st Ct. Para un offsite eso pesa más de lo que parece. El proveedor de la actividad descarga, arma y prueba por su puerta mientras el equipo llega por la otra, y la primera impresión del día no es un camión abierto ni cajas a medio sacar. Hay estacionamiento propio en el predio, así que quien viene en coche no busca sitio en la calle. Lo que todavía no publicamos —potencia y amperaje, ancho del portón de carga, número de baños, plazas de estacionamiento y curfew— lo revisa el equipo contigo en la visita.",
+          en: "There are two entrances, and they never cross: freight comes in on NW 1st Ct and guests on NW 21st Ct. For an offsite, that matters more than it sounds. The activity vendor unloads, sets up and tests through one gate while your team walks in through the other, so the day doesn't start with an open truck or half-unpacked crates. There's also on-site parking, so nobody driving in has to hunt for a spot on the street. What we don't publish yet — electrical service and amperage, freight gate width, number of restrooms, parking spaces and curfew — we go through with you at the site visit.",
         },
       },
     ],
@@ -988,8 +988,8 @@ export const PAGINAS: Pagina[] = [
     ojo: { es: "Uso · cumpleaños de adulto", en: "Use · adult birthday" },
     h1: { es: "Cumpleaños de adulto en Wynwood", en: "Adult birthday parties in Wynwood" },
     respuesta: {
-      es: "Para un cumpleaños de 30, 40 o 50 con más de 150 invitados, Club Wynwood se alquila entero: ~22.000 ft² al aire libre en Wynwood, Miami, con ~4.000 ft² bajo el pabellón, estacionamiento propio y licencia de licor propia. Por debajo de 150 invitados se alquila solo el Pabellón. Se alquila el recinto vacío, no una mesa.",
-      en: "For a 30th, 40th or 50th birthday with more than 150 guests, you rent all of Club Wynwood: ~22,000 sq ft of open-air space in Wynwood, Miami, with ~4,000 sq ft under the Pavilion, on-site parking and its own liquor license. With fewer than 150 guests, you rent just the Pavilion. Either way, you rent the empty venue, not a table.",
+      es: "Para un cumpleaños de 30, 40 o 50 con más de 150 invitados, Club Wynwood se alquila entero: ~22.000 ft² al aire libre en Wynwood, Miami, con ~4.000 ft² bajo el pabellón, estacionamiento propio y licencia de licor propia. Por debajo de 150 invitados —según el montaje; se confirma en la visita— se alquila solo el Pabellón. Se alquila el recinto vacío, no una mesa.",
+      en: "For a 30th, 40th or 50th birthday with more than 150 guests, you rent all of Club Wynwood: ~22,000 sq ft of open-air space in Wynwood, Miami, with ~4,000 sq ft under the Pavilion, on-site parking and its own liquor license. With fewer than 150 guests (according to the layout; confirmed at the site visit), you rent just the Pavilion. Either way, you rent the empty venue, not a table.",
     },
     title: {
       es: "Fiesta de cumpleaños para adultos en Wynwood | Club Wynwood",
@@ -1014,8 +1014,8 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "Un club te vende una mesa; esto es el recinto entero", en: "A club sells you a table; here you get the whole venue" },
         cuerpo: {
-          es: "Cuando cumples 30, 40 o 50, la opción por defecto es reservar mesa en un club: pagas un mínimo de consumo, te dan una sección acordonada y la fiesta sigue siendo del local. Aquí el trato es el contrario: alquilas el recinto vacío —~22.000 ft² al aire libre, con ~4.000 ft² bajo el pabellón— y traes tu música, tu decoración y tu comida. El presupuesto se cotiza por espacio, horas y día, no por lo que se consuma. El corte es el tamaño: a partir de 150 invitados tiene sentido el recinto entero; por debajo, se alquila solo el Pabellón, que es lo que explica la página de eventos pequeños.",
-          en: "When you turn 30, 40 or 50, the usual choice is a table at a club: you commit to a minimum spend, you get a roped-off section, and the night still belongs to the club. This is the opposite: you rent the empty venue — ~22,000 sq ft outdoors, ~4,000 of them under the Pavilion — and bring your own music, decor and food. The price is based on space, hours and date, not on how much gets consumed. The dividing line is the guest count: from 150 guests up, the whole venue makes sense; below that, you rent just the Pavilion (see Small events).",
+          es: "Cuando cumples 30, 40 o 50, la opción por defecto es reservar mesa en un club: pagas un mínimo de consumo, te dan una sección acordonada y la fiesta sigue siendo del local. Aquí el trato es el contrario: alquilas el recinto vacío —~22.000 ft² al aire libre, con ~4.000 ft² bajo el pabellón— y traes tu música, tu decoración y tu comida. El presupuesto depende del espacio, las horas y el día. El corte es el tamaño: a partir de 150 invitados tiene sentido el recinto entero; por debajo, se alquila solo el Pabellón, que es lo que explica la página de eventos pequeños.",
+          en: "When you turn 30, 40 or 50, the usual choice is a table at a club: you commit to a minimum spend, you get a roped-off section, and the night still belongs to the club. This is the opposite: you rent the empty venue — ~22,000 sq ft outdoors, ~4,000 of them under the Pavilion — and bring your own music, decor and food. The price depends on the space, the hours and the date. The dividing line is the guest count: from 150 guests up, the whole venue makes sense; below that, you rent just the Pavilion (see Small events).",
         },
       },
       {
@@ -1028,15 +1028,15 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "Licencia de licor propia y un área donde montar la barra", en: "Its own liquor license, and an area to set up a bar" },
         cuerpo: {
-          es: "El recinto tiene licencia de licor propia, con su propio número, cosa que no todos los espacios de la zona pueden decir. Hay área donde montar barra; dónde queda dentro de tu montaje se define en la visita. Quién la opera, qué se sirve y en qué condiciones se cierra por escrito con la ficha técnica, que es donde van el número de licencia y sus condiciones: nada se improvisa la noche del evento. No hay proveedor impuesto ni comisión por traer el tuyo, y el alquiler se cotiza por espacio, horas y día, no por consumo. Si el plan es barra libre o coctelería, dilo en el primer correo: condiciona dónde va la barra, el hielo y la carga.",
-          en: "The venue holds its own liquor license, with its own license number — not every space in Wynwood can say that. There's an area to set up a bar; exactly where it goes in your layout is decided at the site visit. Who runs it, what's served and on what terms are put in writing with the spec sheet, along with the license number and its conditions, so nothing is improvised on the night. There's no required vendor and no fee for bringing your own, and the rental is priced on space, hours and date, not on consumption. If you're planning an open bar or a cocktail menu, mention it in your first message: it determines where the bar, the ice and the load-in go.",
+          es: "El recinto tiene licencia de licor propia, con su propio número, cosa que no todos los espacios de la zona pueden decir. Hay área donde montar barra; dónde queda dentro de tu montaje se define en la visita. La barra la opera tu equipo o tu proveedor; qué se sirve y en qué condiciones lo revisa el equipo contigo antes de firmar, para que nada se improvise la noche del evento. No hay proveedor de barra impuesto, y el alquiler depende del espacio, las horas y el día. Si el plan es barra libre o coctelería, dilo en el primer correo: condiciona dónde va la barra, el hielo y la carga.",
+          en: "The venue holds its own liquor license, with its own license number — not every space in Wynwood can say that. There's an area to set up a bar; exactly where it goes in your layout is decided at the site visit. Your team or your vendor runs the bar; what's served and on what terms is reviewed with you before you sign, so nothing is improvised on the night. There's no required bar vendor, and the rental depends on the space, the hours and the date. If you're planning an open bar or a cocktail menu, mention it in your first message: it determines where the bar, the ice and the load-in go.",
         },
       },
       {
         titulo: { es: "Dos puertas, y hasta qué hora", en: "Two gates, and how late you can go" },
         cuerpo: {
-          es: "Los invitados entran por NW 21st Ct y la carga —proveedores, hielo, sonido— por NW 1st Ct, con su propia puerta: la reposición de hielo y la descarga del DJ no cruzan la fiesta. Los setos perimetrales cierran el jardín por la calle y hay estacionamiento en el propio predio, al este y al sur. El recinto se alquila por franja, con fecha y hora; qué queda cerrado, desde qué hora y con qué control de acceso se fija por escrito en la visita técnica. Ahí mismo se cierran el horario tope y el límite de decibelios, porque Wynwood tiene vecinos: no publicamos una cifra porque depende del evento. Si el plan es DJ hasta tarde, dilo en el primer correo.",
-          en: "Guests come in through NW 21st Ct, and load-in — vendors, ice, sound equipment — uses a separate service gate on NW 1st Ct, so ice runs and the DJ's load-in never cut through the party. Hedges separate the Garden from the street, and there's parking on the property, to the east and south. You rent the venue for a specific date and time slot; which areas are closed off, from when, and how access is controlled are agreed in writing at the site visit. The curfew and the decibel limit are set there too, because Wynwood has residential neighbors: we don't publish a number because it depends on the event. If you're planning for the DJ to play late, mention it in your first message.",
+          es: "Los invitados entran por NW 21st Ct y la carga —proveedores, hielo, sonido— por NW 1st Ct, con su propia puerta: la reposición de hielo y la descarga del DJ no cruzan la fiesta. Los setos perimetrales cierran el jardín por la calle y hay estacionamiento en el propio predio, al este y al sur. El recinto se alquila por franja, con fecha y hora; qué queda cerrado, desde qué hora y con qué control de acceso se revisa contigo en la visita técnica, igual que el horario tope y el límite de decibelios: Wynwood tiene vecinos y esas cifras todavía no están confirmadas. Si el plan es DJ hasta tarde, dilo en el primer correo.",
+          en: "Guests come in through NW 21st Ct, and load-in — vendors, ice, sound equipment — uses a separate service gate on NW 1st Ct, so ice runs and the DJ's load-in never cut through the party. Hedges separate the Garden from the street, and there's parking on the property, to the east and south. You rent the venue for a specific date and time slot; which areas are closed off, from when, and how access is controlled are reviewed with you at the site visit, along with the curfew and the decibel limit: Wynwood has residential neighbors, and those numbers aren't confirmed yet. If you're planning for the DJ to play late, mention it in your first message.",
         },
       },
     ],
@@ -1077,8 +1077,8 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "Ceremonia, cena y baile bajo un mismo techo", en: "Ceremony, dinner and dancing under one roof" },
         cuerpo: {
-          es: "Para 30 a 80 invitados ese es el formato: ceremonia, cena y baile bajo la misma cubierta, sin sala aparte y sin traslado de invitados entre espacios. Cuántas mesas entran y de qué tamaño se resuelve con tu plano en la visita: no publicamos un aforo bajo el pabellón que no esté medido. Lo que no hay son paredes: el pabellón está abierto por los cuatro costados, así que no tiene aire acondicionado y con viento la lluvia entra de lado; una fecha de invierno conviene que presupueste cierres laterales como parte del plan de lluvia. Las dimensiones y la estructura están en la página del Pabellón. Por encima de 80 invitados el montaje pide el recinto completo: esa es la página de bodas.",
-          en: "With 30 to 80 guests, this is the format: ceremony, dinner and dancing under one roof, with no second room and no moving guests from space to space. How many tables fit, and what size, is worked out from your floor plan at the site visit — we don't publish a seated capacity for the Pavilion that we haven't measured. What it doesn't have is walls: it's open on all four sides, so there's no air conditioning, and wind can blow rain in. For a winter date, budget for side walls as part of your rain plan. Dimensions and details are on the Pavilion page. Above 80 guests, you'll want the whole venue: see Weddings.",
+          es: "Para 30 a 80 invitados ese es el formato: ceremonia, cena y baile bajo la misma cubierta, sin sala aparte y sin traslado de invitados entre espacios. Cuántas mesas entran y de qué tamaño se resuelve con tu plano en la visita: las cifras de aforo bajo el pabellón son estimaciones según el montaje, no una medición. Lo que no hay son paredes: el pabellón está abierto por los cuatro costados, así que no tiene aire acondicionado y con viento la lluvia entra de lado; una fecha de invierno conviene que presupueste cierres laterales como parte del plan de lluvia. Las dimensiones y la estructura están en la página del Pabellón. Por encima de 80 invitados el montaje pide el recinto completo: esa es la página de bodas.",
+          en: "With 30 to 80 guests, this is the format: ceremony, dinner and dancing under one roof, with no second room and no moving guests from space to space. How many tables fit, and what size, is worked out from your floor plan at the site visit — any Pavilion capacity on this site is an estimate based on the layout, not a measurement. What it doesn't have is walls: it's open on all four sides, so there's no air conditioning, and wind can blow rain in. For a winter date, budget for side walls as part of your rain plan. Dimensions and details are on the Pavilion page. Above 80 guests, you'll want the whole venue: see Weddings.",
         },
       },
       {
@@ -1091,8 +1091,8 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "Sin paquete cerrado", en: "No set package" },
         cuerpo: {
-          es: "No hay paquete cerrado. Contratas el espacio y traes a tus proveedores: catering, sonido, iluminación, mobiliario y montaje. El recinto tiene licencia de licor propia, con su propio número, y hay área donde montar barra; el número de licencia y sus condiciones se entregan con la ficha técnica. Es lo contrario del paquete de boda pequeña de un hotel, y corta en los dos sentidos: aquí no viene nada resuelto. Si nadie contrata catering, no hay comida, y al aire libre no hay cocina: la del edificio, disponible desde el 1 de noviembre de 2026, se suma al alquiler cuando el catering la necesita. Para 30 a 80 invitados eso da control total sobre el menú y la estética, y toda la responsabilidad.",
-          en: "There's no set package. You book the space and bring your own vendors: caterer, sound, lighting, rentals and load-in crew. The venue holds its own liquor license, and there's an area to set up a bar; the license number and its conditions come with the spec sheet. It's the opposite of a hotel's small-wedding package, and that cuts both ways: nothing is handled for you. If nobody books a caterer, there's no food, and there's no kitchen outdoors — the building's kitchen, available from November 1, 2026, can be added to the rental if your caterer needs it. For 30 to 80 guests, you get full control of the menu and the look, and full responsibility with it.",
+          es: "No hay paquete cerrado. Contratas el espacio y traes a tus proveedores: catering, sonido, iluminación, mobiliario y montaje. El recinto tiene licencia de licor propia, con su propio número, y hay área donde montar barra, que opera tu equipo; sus condiciones las revisa el equipo contigo. Es lo contrario del paquete de boda pequeña de un hotel, y corta en los dos sentidos: aquí no viene nada resuelto. Si nadie contrata catering, no hay comida, y al aire libre no hay cocina: la del edificio, disponible desde el 1 de noviembre de 2026, se suma al alquiler cuando el catering la necesita. Para 30 a 80 invitados eso da control total sobre el menú y la estética, y toda la responsabilidad.",
+          en: "There's no set package. You book the space and bring your own vendors: caterer, sound, lighting, rentals and load-in crew. The venue holds its own liquor license, and there's an area to set up a bar, run by your team; our team goes through the bar terms with you. It's the opposite of a hotel's small-wedding package, and that cuts both ways: nothing is handled for you. If nobody books a caterer, there's no food, and there's no kitchen outdoors — the building's kitchen, available from November 1, 2026, can be added to the rental if your caterer needs it. For 30 to 80 guests, you get full control of the menu and the look, and full responsibility with it.",
         },
       },
       {
@@ -1114,8 +1114,8 @@ export const PAGINAS: Pagina[] = [
     ojo: { es: "Uso · shower a mediodía", en: "Use · bridal and baby showers" },
     h1: { es: "Bridal showers y baby showers", en: "Bridal and baby showers" },
     respuesta: {
-      es: "Club Wynwood alquila el Pabellón suelto para bridal showers y baby showers de mediodía en Wynwood, Miami: ~4.000 ft² de techo de paja continuo, abierto por los cuatro costados, para grupos de 50 a 150 invitados a la sombra y sin aire acondicionado. La decoración y el catering los traes tú.",
-      en: "You can rent the Pavilion on its own for a midday bridal or baby shower in Wynwood, Miami: ~4,000 sq ft under a continuous thatched roof, open on all four sides, for 50 to 150 guests in the shade — no walls around you and no air conditioning. You bring the decor and the caterer.",
+      es: "Club Wynwood alquila el Pabellón suelto para bridal showers y baby showers de mediodía en Wynwood, Miami: ~4.000 ft² de techo de paja continuo, abierto por los cuatro costados, para grupos de 50 a 150 invitados (según el montaje; se confirma en la visita), a la sombra y sin aire acondicionado. La decoración y el catering los traes tú.",
+      en: "You can rent the Pavilion on its own for a midday bridal or baby shower in Wynwood, Miami: ~4,000 sq ft under a continuous thatched roof, open on all four sides, for 50 to 150 guests (according to the layout; confirmed at the site visit), in the shade — no walls around you and no air conditioning. You bring the decor and the caterer.",
     },
     title: {
       es: "Bridal shower y baby shower en Wynwood, Miami | Club Wynwood",
@@ -1154,15 +1154,15 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "Brunch sin cocina al aire libre, y la pregunta de las mimosas", en: "Brunch without an outdoor kitchen, and the mimosa question" },
         cuerpo: {
-          es: "Al aire libre no hay cocina: el catering del brunch monta en el sitio, y si necesita cocina, la del edificio es un adicional que se suma al alquiler desde el 1 de noviembre de 2026. No hay catering obligatorio ni lista de proveedores preferidos, y no cobramos comisión por traer el tuyo; en un shower, donde la cuenta suele repartirse entre varias personas, esa partida pesa más que el precio del espacio. La otra pregunta de todo shower es la mesa de mimosas. El recinto tiene licencia de licor propia, con su propio número, y hay área donde montar barra; las condiciones bajo las que se sirve alcohol en un evento privado se entregan por escrito con la ficha técnica, antes de firmar.",
-          en: "There's no kitchen outdoors: the brunch caterer sets up on site, and if they need a kitchen, the building's kitchen can be added to the rental from November 1, 2026. There's no required caterer, no preferred-vendor list, and we take no commission on yours; at a shower, where the bill is usually split among several people, that makes more difference to the total than the rental does. The other question at every shower is the mimosa bar. The venue holds its own liquor license, and there's an area to set up a bar; the conditions for serving alcohol at a private event come in writing with the spec sheet, before you sign.",
+          es: "Al aire libre no hay cocina: el catering del brunch monta en el sitio, y si necesita cocina, la del edificio es un adicional que se suma al alquiler desde el 1 de noviembre de 2026. No hay catering obligatorio ni lista de proveedores preferidos; en un shower, donde la cuenta suele repartirse entre varias personas, esa partida pesa más que el precio del espacio. La otra pregunta de todo shower es la mesa de mimosas. El recinto tiene licencia de licor propia, con su propio número, y hay área donde montar barra; las condiciones bajo las que se sirve alcohol en un evento privado las revisa el equipo contigo antes de firmar.",
+          en: "There's no kitchen outdoors: the brunch caterer sets up on site, and if they need a kitchen, the building's kitchen can be added to the rental from November 1, 2026. There's no required caterer and no preferred-vendor list; at a shower, where the bill is usually split among several people, that makes more difference to the total than the rental does. The other question at every shower is the mimosa bar. The venue holds its own liquor license, and there's an area to set up a bar; our team goes through the conditions for serving alcohol at a private event with you before you sign.",
         },
       },
       {
         titulo: { es: "Cuánto recinto hace falta, y qué se mide en la visita", en: "How much of the venue you need, and what gets measured at the visit" },
         cuerpo: {
-          es: "Para un shower el Pabellón suelto suele bastar; el jardín de ~18.000 ft² se suma solo si hace falta. Hace falta si quieres las cabañas: las seis cabañas amuebladas están en el jardín, no bajo el pabellón. Son fijas y van con el inmueble: con el jardín en la reserva no se cobran aparte. Un baby shower funciona igual a esta hora; si tu pregunta es si se puede alquilar solo una parte, o buscas sitio para un bautizo o un cumpleaños, esa respuesta está en Eventos pequeños, y el día grande de la boda, en Bodas. El número de baños y el aforo sentado y de pie con tu montaje no se publican porque no están medidos: se levantan en la visita técnica y se entregan por escrito.",
-          en: "For a shower, the Pavilion on its own is usually enough; add the ~18,000 sq ft Garden only if you need it — for example, if you want the cabanas. The six furnished cabanas are in the Garden, not under the Pavilion; they're fixed and come with the property, so if the Garden is in your booking there's no extra charge for them. A baby shower works the same way at this time of day. If you just want to know whether you can rent one space, or you need a venue for a christening or a birthday, see Small events; for the wedding itself, see Weddings. We don't publish the number of restrooms or the seated and standing capacity for your setup because they haven't been measured yet: both are measured at the site visit and confirmed in writing.",
+          es: "Para un shower el Pabellón suelto suele bastar; el jardín de ~18.000 ft² se suma solo si hace falta. Hace falta si quieres las cabañas: las seis cabañas amuebladas están en el jardín, no bajo el pabellón. Son fijas y van con el inmueble: forman parte del jardín. Un baby shower funciona igual a esta hora; si tu pregunta es si se puede alquilar solo una parte, o buscas sitio para un bautizo o un cumpleaños, esa respuesta está en Eventos pequeños, y el día grande de la boda, en Bodas. El número de baños y el aforo sentado y de pie con tu montaje no se publican porque no están medidos: se revisan en la visita técnica.",
+          en: "For a shower, the Pavilion on its own is usually enough; add the ~18,000 sq ft Garden only if you need it — for example, if you want the cabanas. The six furnished cabanas are in the Garden, not under the Pavilion; they're fixed, come with the property and are part of the Garden. A baby shower works the same way at this time of day. If you just want to know whether you can rent one space, or you need a venue for a christening or a birthday, see Small events; for the wedding itself, see Weddings. We don't publish the number of restrooms or the seated and standing capacity for your setup because they haven't been measured yet: both are reviewed at the site visit.",
         },
       },
     ],
@@ -1210,8 +1210,8 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "Viernes bajo el pabellón, sábado en el jardín", en: "Friday under the Pavilion, Saturday in the garden" },
         cuerpo: {
-          es: "Los dos espacios están uno al lado del otro, pero no se sienten igual. El Pabellón son ~4.000 ft² de paja a cuatro aguas: techo fijo, abierto por los cuatro costados. Para el sol y para la lluvia vertical basta solo; si la fecha es de viento, conviene presupuestar cierres laterales. Con la luz baja funciona como comedor. Una cena de ensayo el viernes bajo el pabellón y un after-party el sábado en los ~18.000 ft² del jardín ocurren en la misma dirección sin parecer el mismo evento, con una sola visita técnica y un solo interlocutor. Los dos montajes no ocupan el mismo suelo, aunque comparten el paseo de entrada: el orden y los tiempos entre una noche y otra se planifican en la visita.",
-          en: "The two spaces are side by side, but they feel very different. The Pavilion is ~4,000 sq ft under a thatched hip roof, open on all four sides; it handles sun and straight-down rain on its own, and on a windy date you should budget for side walls. With the lights down low, it works as a dining room. A Friday rehearsal dinner under the Pavilion and a Saturday after-party across the ~18,000 sq ft Garden happen at the same address without feeling like the same event, with one site visit and one point of contact. The two setups use different spaces but share the entrance walkway, so the order and timing of the two nights are planned at the site visit.",
+          es: "Los dos espacios están uno al lado del otro, pero no se sienten igual. El Pabellón son ~4.000 ft² de paja a cuatro aguas: techo fijo, abierto por los cuatro costados. Para el sol y para la lluvia vertical basta solo; si la fecha es de viento, conviene presupuestar cierres laterales. Con la luz baja funciona como comedor. Una cena de ensayo el viernes bajo el pabellón y un after-party el sábado en los ~18.000 ft² del jardín ocurren en la misma dirección sin parecer el mismo evento, con una sola visita técnica para los dos montajes. Los dos montajes no ocupan el mismo suelo, aunque comparten el paseo de entrada: el orden y los tiempos entre una noche y otra se planifican en la visita.",
+          en: "The two spaces are side by side, but they feel very different. The Pavilion is ~4,000 sq ft under a thatched hip roof, open on all four sides; it handles sun and straight-down rain on its own, and on a windy date you should budget for side walls. With the lights down low, it works as a dining room. A Friday rehearsal dinner under the Pavilion and a Saturday after-party across the ~18,000 sq ft Garden happen at the same address without feeling like the same event, with one site visit for both setups. The two setups use different spaces but share the entrance walkway, so the order and timing of the two nights are planned at the site visit.",
         },
       },
       {
@@ -1224,8 +1224,8 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "Cocina de apoyo, y la fiesta de compromiso", en: "A backup kitchen, and the engagement party" },
         cuerpo: {
-          es: "Al aire libre no hay cocina. El edificio, que se alquila aparte desde el 1 de noviembre de 2026, tiene una cocina de apoyo —isla, nevera de dos puertas, microondas y alacenas—, no una cocina de producción. Si tu catering necesita cocinar en sitio, eso se resuelve con equipo móvil y se define en la visita. Club Wynwood tiene licencia de licor propia, con su propio número, y hay área donde montar la barra; el detalle del servicio de bebidas se cierra en la visita. La fiesta de compromiso es otro calendario: llega meses antes, sin ceremonia ni protocolo, y usa uno solo de los dos espacios y de pie. Si son 50 a 150 invitados, la página de eventos pequeños explica cómo se contrata solo el Pabellón.",
-          en: "There's no kitchen outdoors. The building — rented separately and available from November 1, 2026 — has a small kitchen (an island, a two-door fridge, a microwave and cabinets), not a commercial kitchen. If your caterer needs to cook on site, that's handled with mobile equipment and agreed at the site visit. Club Wynwood holds its own liquor license, and there's an area to set up a bar; bar service is agreed at the site visit. An engagement party follows a different calendar: it happens months earlier, has no ceremony or timeline, and uses only one of the two spaces, standing. For 50 to 150 guests, see Small events to book just the Pavilion.",
+          es: "Al aire libre no hay cocina. El edificio, que se alquila aparte desde el 1 de noviembre de 2026, tiene una cocina de apoyo —isla, nevera de dos puertas, microondas y alacenas—, no una cocina de producción. Si tu catering necesita cocinar en sitio, eso se resuelve con equipo móvil y se define en la visita. Club Wynwood tiene licencia de licor propia, con su propio número, y hay área donde montar la barra; el detalle del servicio de bebidas se cierra en la visita. La fiesta de compromiso es otro calendario: llega meses antes, sin ceremonia ni protocolo, y usa uno solo de los dos espacios y de pie. Si son 50 a 150 invitados (según el montaje; se confirma en la visita), la página de eventos pequeños explica cómo se contrata solo el Pabellón.",
+          en: "There's no kitchen outdoors. The building — rented separately and available from November 1, 2026 — has a small kitchen (an island, a two-door fridge, a microwave and cabinets), not a commercial kitchen. If your caterer needs to cook on site, that's handled with mobile equipment and agreed at the site visit. Club Wynwood holds its own liquor license, and there's an area to set up a bar; bar service is agreed at the site visit. An engagement party follows a different calendar: it happens months earlier, has no ceremony or timeline, and uses only one of the two spaces, standing. For 50 to 150 guests (according to the layout; confirmed at the site visit), see Small events to book just the Pavilion.",
         },
       },
     ],
@@ -1273,22 +1273,22 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "Licencia de licor propia, con número propio", en: "Its own liquor license" },
         cuerpo: {
-          es: "Es la pregunta que más presupuestos rompe al comparar salones, y conviene hacerla antes de reservar: ¿el sitio tiene licencia de licor propia o depende de un tercero? Club Wynwood tiene licencia de licor de Miami propia, con su propio número, y no todos los venues de la zona la tienen. El número y sus condiciones no se publican: se entregan con la ficha técnica. Hay área donde montar barra bajo el pabellón. Con la comida pasa lo mismo que con la barra: no hay proveedor impuesto. Al aire libre no hay cocina, así que el catering monta en el sitio; si necesita cocina, la del edificio se suma al alquiler como adicional desde el 1 de noviembre de 2026.",
-          en: "This is the question that breaks the most budgets when you compare halls, so ask it before you book: does the venue hold its own liquor license, or does it depend on a third party? Club Wynwood holds its own Miami liquor license, which not every venue in the area can say. The license number and its conditions aren't published; they come with the spec sheet. There's room to set up a bar under the Pavilion. Food works the same way: there's no exclusive caterer and no preferred-vendor list. There's no kitchen outdoors, so the caterer sets up on site; if they need a kitchen, the building's kitchen can be added to the rental from November 1, 2026.",
+          es: "Es la pregunta que más presupuestos rompe al comparar salones, y conviene hacerla antes de reservar: ¿el sitio tiene licencia de licor propia o depende de un tercero? Club Wynwood tiene licencia de licor de Miami propia, con su propio número, y no todos los venues de la zona la tienen. El número no se publica; las condiciones de la barra las revisa el equipo contigo. Hay área donde montar barra; dónde va se define en la visita. Con la comida pasa lo mismo que con la barra: no hay proveedor impuesto. Al aire libre no hay cocina, así que el catering monta en el sitio; si necesita cocina, la del edificio se suma al alquiler como adicional desde el 1 de noviembre de 2026.",
+          en: "This is the question that breaks the most budgets when you compare halls, so ask it before you book: does the venue hold its own liquor license, or does it depend on a third party? Club Wynwood holds its own Miami liquor license, which not every venue in the area can say. The license number isn't published; our team goes through the bar terms with you. There's room to set up a bar; where it goes is decided at the site visit. Food works the same way: there's no exclusive caterer and no preferred-vendor list. There's no kitchen outdoors, so the caterer sets up on site; if they need a kitchen, the building's kitchen can be added to the rental from November 1, 2026.",
         },
       },
       {
         titulo: { es: "Para qué fiesta es esta página, y para cuál no", en: "Who this page is for, and who it isn't" },
         cuerpo: {
-          es: "Quien busca un salón de fiestas suele pensar en una fiesta sentada de entre 150 y 300 personas: un cumpleaños redondo, un aniversario, un bautizo grande, una celebración familiar. Esa es la medida de esta página, y aquí se hace con el jardín y el pabellón juntos; cuánta gente cabe con tu montaje —mesas, pista, barra— está en la página de aforo. Si la fiesta es de 50 a 150 invitados no hace falta contratar el recinto entero: se alquila solo el Pabellón, y eso tiene su propia página, Eventos pequeños. Una quinceañera tiene la suya. Y una activación de marca o una cena de empresa están en corporativo y en fin de año.",
-          en: "If you're searching for a banquet hall, you probably have a seated party of 150 to 300 people in mind: a milestone birthday, an anniversary, a large christening, a family celebration. That's the size this page is about, and here it takes the Garden and the Pavilion together; how many people fit with your layout — tables, dance floor, bar — is on the Capacity page. For 50 to 150 guests you don't need the whole venue: the Pavilion can be booked on its own (see Small events). Quinceañeras and Sweet 16s have their own pages, and brand activations and company dinners are under Corporate and Holiday party.",
+          es: "Quien busca un salón de fiestas suele pensar en una fiesta sentada de entre 150 y 300 personas: un cumpleaños redondo, un aniversario, un bautizo grande, una celebración familiar. Esa es la medida de esta página, y aquí se hace con el jardín y el pabellón juntos; cuánta gente cabe con tu montaje —mesas, pista, barra— está en la página de aforo. Si la fiesta es de 50 a 150 invitados (según el montaje; se confirma en la visita) no hace falta contratar el recinto entero: se alquila solo el Pabellón, y eso tiene su propia página, Eventos pequeños. Una quinceañera tiene la suya. Y una activación de marca o una cena de empresa están en corporativo y en fin de año.",
+          en: "If you're searching for a banquet hall, you probably have a seated party of 150 to 300 people in mind: a milestone birthday, an anniversary, a large christening, a family celebration. That's the size this page is about, and here it takes the Garden and the Pavilion together; how many people fit with your layout — tables, dance floor, bar — is on the Capacity page. For 50 to 150 guests (according to the layout; confirmed at the site visit) you don't need the whole venue: the Pavilion can be booked on its own (see Small events). Quinceañeras and Sweet 16s have their own pages, and brand activations and company dinners are under Corporate and Holiday party.",
         },
       },
       {
         titulo: { es: "Cuándo un salón te sirve más", en: "When a banquet hall is the better choice" },
         cuerpo: {
-          es: "Si lo que necesitas es aire acondicionado, comida incluida y un precio cerrado por persona, un salón te va a servir mejor que esto. Aquí no hay paredes: el pabellón resuelve el sol y la lluvia que cae recta, pero con viento el agua entra de lado, así que conviene presupuestar cierres laterales como plan de lluvia; en invierno, con más razón. Tampoco hay mobiliario de banquete: lo fijo son las palmeras, los setos, las seis cabañas amuebladas y las mesas de picnic; el resto lo traes tú, y no hay moqueta ni lámparas que discutan con tu decoración. Potencia, baños, plazas de estacionamiento, load-in, curfew y límite de decibelios no se publican: se miden en la visita y se confirman por escrito.",
-          en: "If you need air conditioning, food included and a flat price per person, a banquet hall will suit you better. There are no walls here: the Pavilion handles sun and straight-down rain, but wind can blow rain in, so budget for tent side walls as part of your rain plan — especially in winter. There's no banquet furniture either: the fixed pieces are the palms, the hedges, the six furnished cabanas and the picnic tables. Everything else you bring, and there's no carpet or chandeliers competing with your decor. Power, restrooms, parking spaces, load-in, curfew and the decibel limit aren't published: they're measured at the site visit and confirmed in writing.",
+          es: "Si lo que necesitas es aire acondicionado, comida incluida y un precio cerrado por persona, un salón te va a servir mejor que esto. Aquí no hay paredes: el pabellón resuelve el sol y la lluvia que cae recta, pero con viento el agua entra de lado, así que conviene presupuestar cierres laterales como plan de lluvia; en invierno, con más razón. Tampoco hay mobiliario de banquete: lo fijo son las palmeras, los setos, las seis cabañas amuebladas y las mesas de picnic; el resto lo traes tú, y no hay moqueta ni lámparas que discutan con tu decoración. Potencia, baños, plazas de estacionamiento, load-in, curfew y límite de decibelios no se publican: se revisan contigo en la visita.",
+          en: "If you need air conditioning, food included and a flat price per person, a banquet hall will suit you better. There are no walls here: the Pavilion handles sun and straight-down rain, but wind can blow rain in, so budget for tent side walls as part of your rain plan — especially in winter. There's no banquet furniture either: the fixed pieces are the palms, the hedges, the six furnished cabanas and the picnic tables. Everything else you bring, and there's no carpet or chandeliers competing with your decor. Power, restrooms, parking spaces, load-in, curfew and the decibel limit aren't published: they're reviewed with you at the site visit.",
         },
       },
     ],
@@ -1303,8 +1303,8 @@ export const PAGINAS: Pagina[] = [
     ojo: { es: "Uso · Sweet 16", en: "Use · Sweet 16" },
     h1: { es: "Sweet 16", en: "Sweet 16" },
     respuesta: {
-      es: "Club Wynwood es un venue al aire libre para un Sweet 16 en Wynwood, Miami. Hasta ~150 invitados, se contrata solo el Pabellón: ~4.000 ft² bajo un pabellón abierto por los cuatro costados. Con más invitados, el recinto completo de ~22.000 ft², hasta ~600 de pie. El espacio llega vacío; DJ, catering y decoración los pones tú.",
-      en: "Club Wynwood is an outdoor Sweet 16 venue in Wynwood, Miami. For up to ~150 guests, book just the Pavilion: ~4,000 sq ft under a thatched roof, open on all four sides. Bigger parties take the whole ~22,000 sq ft venue, up to ~600 standing. The space comes empty: the DJ, catering and decor come from your own vendors.",
+      es: "Club Wynwood es un venue al aire libre para un Sweet 16 en Wynwood, Miami. Hasta ~150 invitados (según el montaje; se confirma en la visita), se contrata solo el Pabellón: ~4.000 ft² bajo un pabellón abierto por los cuatro costados. Con más invitados, el recinto completo de ~22.000 ft², hasta ~600 de pie. El espacio llega vacío; DJ, catering y decoración los pones tú.",
+      en: "Club Wynwood is an outdoor Sweet 16 venue in Wynwood, Miami. For up to ~150 guests (according to the layout; confirmed at the site visit), book just the Pavilion: ~4,000 sq ft under a thatched roof, open on all four sides. Bigger parties take the whole ~22,000 sq ft venue, up to ~600 standing. The space comes empty: the DJ, catering and decor come from your own vendors.",
     },
     title: {
       es: "Sweet 16 al aire libre en Wynwood, Miami | Club Wynwood",
@@ -1329,8 +1329,8 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "Lo que preguntan los padres", en: "What the parents ask" },
         cuerpo: {
-          es: "Los padres traen otra lista. El predio es un lote privado con setos perimetrales, no un parque ni una calle. Tiene estacionamiento propio, y las dos entradas están separadas: los invitados llegan por NW 21st Ct y la carga entra por NW 1st Ct, así que los camiones del montaje no pasan por la entrada de la fiesta. Cómo se controla el acceso el día del evento —y si hace falta personal de seguridad— se define contigo en la visita técnica. Cuatro datos no se publican porque todavía no están medidos: cuántas plazas tiene el estacionamiento, cuántos baños hay, el límite de dB y la hora de cierre. Los cuatro salen de la visita técnica y se entregan por escrito.",
-          en: "Parents come with a different list of questions. The venue is a private lot enclosed by hedges — not a park, not a street. It has its own parking, and the two entrances are separate: guests come in on NW 21st Ct and vendors on NW 1st Ct, so vendor trucks don't use the guest entrance. How access is controlled on the day, and whether you need security staff, is agreed with you at the site visit. Four things we don't publish because they haven't been measured yet: the number of parking spaces, the number of restrooms, the decibel limit and the curfew. All four come out of the site visit, in writing.",
+          es: "Los padres traen otra lista. El predio es un lote privado con setos perimetrales, no un parque ni una calle. Tiene estacionamiento propio, y las dos entradas están separadas: los invitados llegan por NW 21st Ct y la carga entra por NW 1st Ct, así que los camiones del montaje no pasan por la entrada de la fiesta. Cómo se controla el acceso el día del evento —y si hace falta personal de seguridad— se define contigo en la visita técnica. Cuatro datos no se publican porque todavía no están medidos: cuántas plazas tiene el estacionamiento, cuántos baños hay, el límite de dB y la hora de cierre. Los cuatro se revisan contigo en la visita técnica.",
+          en: "Parents come with a different list of questions. The venue is a private lot enclosed by hedges — not a park, not a street. It has its own parking, and the two entrances are separate: guests come in on NW 21st Ct and vendors on NW 1st Ct, so vendor trucks don't use the guest entrance. How access is controlled on the day, and whether you need security staff, is agreed with you at the site visit. Four things we don't publish because they haven't been measured yet: the number of parking spaces, the number of restrooms, the decibel limit and the curfew. All four are reviewed with you at the site visit.",
         },
       },
       {
@@ -1343,15 +1343,15 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "De pie y con DJ, no un banquete sentado", en: "Standing, with a DJ — not a seated banquet" },
         cuerpo: {
-          es: "Una quinceañera va sentada —corte de honor, vals, cena— y el sitio tiene una página para eso. Un Sweet 16 va al revés: DJ, pista de baile, photobooth y casi toda la noche de pie. Por eso la cifra que importa aquí es la de pie, no la de sentados. Los postes y cabios de madera del Pabellón son de donde cuelgan el sonido y las luces; cualquier carga colgada, y la potencia que pide el DJ, se miden y se aprueban en la visita técnica. El paseo pavimentado entre dos hileras de palmeras es la entrada, y ya está hecha. Todo lo demás —catering, DJ, iluminación, mesas y sillas— lo traen tus proveedores: al aire libre no hay cocina y el espacio llega vacío.",
-          en: "A quinceañera is a seated event — a court, a waltz, a dinner — and it has its own page. A Sweet 16 is the opposite: a DJ, a dance floor, a photo booth, and most of the night on your feet. That's why the number that matters here is standing capacity, not seated. Sound and lights can hang from the Pavilion's timber posts and rafters; any hanging load, and the DJ's power needs, are measured and approved at the site visit. The paved walkway between the two rows of palms is a ready-made grand entrance. Everything else — catering, DJ, lighting, tables and chairs — comes from your own vendors: there's no kitchen outdoors, and the space comes empty.",
+          es: "Una quinceañera va sentada —corte de honor, vals, cena— y el sitio tiene una página para eso. Un Sweet 16 va al revés: DJ, pista de baile, photobooth y casi toda la noche de pie. Por eso la cifra que importa aquí es la de pie, no la de sentados. Si quieres colgar sonido o luces de los postes y cabios de madera del Pabellón, cada carga, y la potencia que pide el DJ, se revisan en la visita técnica. El paseo pavimentado entre dos hileras de palmeras es la entrada, y ya está hecha. Todo lo demás —catering, DJ, iluminación, mesas y sillas— lo traen tus proveedores: al aire libre no hay cocina y el espacio llega vacío.",
+          en: "A quinceañera is a seated event — a court, a waltz, a dinner — and it has its own page. A Sweet 16 is the opposite: a DJ, a dance floor, a photo booth, and most of the night on your feet. That's why the number that matters here is standing capacity, not seated. If you want to hang sound or lights from the Pavilion's timber posts and rafters, each load, and the DJ's power needs, are reviewed at the site visit. The paved walkway between the two rows of palms is a ready-made grand entrance. Everything else — catering, DJ, lighting, tables and chairs — comes from your own vendors: there's no kitchen outdoors, and the space comes empty.",
         },
       },
       {
         titulo: { es: "La licencia de licor en una fiesta de menores", en: "The liquor license at a party for minors" },
         cuerpo: {
-          es: "El recinto tiene licencia de licor propia y un área donde montar barra. En un Sweet 16 eso plantea la pregunta antes de que nadie la haga: la homenajeada tiene dieciséis y la mayoría de los invitados es menor de 21. Cómo funciona una barra en una fiesta de menores —si la hay para los adultos, quién sirve y en qué condiciones, o si el evento va sin alcohol— no se publica aquí como política: se define con la familia en la visita técnica y queda por escrito, igual que la hora de cierre. Mientras tanto, dos hechos se sostienen: la licencia existe, y el sitio para la barra también. Lo que ninguna página puede decidir por ti se resuelve en persona, antes de confirmar la fecha.",
-          en: "The venue has its own liquor license and an area where a bar can be set up. At a Sweet 16, that raises a question before anyone asks it: the guest of honor is sixteen, and most guests are under 21. How a bar works at a party for minors — whether there's one for the adults, who serves and under what conditions, or whether the event is alcohol-free — isn't published here as a policy: it's agreed with the family at the site visit and put in writing, just like the curfew. Two things are certain: the license exists, and so does the space for a bar. Anything a web page can't decide for you is settled in person, before the date is confirmed.",
+          es: "El recinto tiene licencia de licor propia y un área donde montar barra. En un Sweet 16 eso plantea la pregunta antes de que nadie la haga: la homenajeada tiene dieciséis y la mayoría de los invitados es menor de 21. Cómo funciona una barra en una fiesta de menores —si la hay para los adultos, quién sirve y en qué condiciones, o si el evento va sin alcohol— no se publica aquí como política: se revisa con la familia en la visita técnica, igual que la hora de cierre. Mientras tanto, dos hechos se sostienen: la licencia existe, y el sitio para la barra también. Lo que ninguna página puede decidir por ti se resuelve en persona, antes de confirmar la fecha.",
+          en: "The venue has its own liquor license and an area where a bar can be set up. At a Sweet 16, that raises a question before anyone asks it: the guest of honor is sixteen, and most guests are under 21. How a bar works at a party for minors — whether there's one for the adults, who serves and under what conditions, or whether the event is alcohol-free — isn't published here as a policy: it's reviewed with the family at the site visit, just like the curfew. Two things are certain: the license exists, and so does the space for a bar. Anything a web page can't decide for you is settled in person, before the date is confirmed.",
         },
       },
     ],
@@ -1413,8 +1413,8 @@ export const PAGINAS: Pagina[] = [
       {
         titulo: { es: "Luz, lluvia y temporada", en: "Light, rain and timing" },
         cuerpo: {
-          es: "Un desfile aquí se hace al anochecer, y el recinto no tiene iluminación de casa: la luz de pasarela la trae tu producción, y la potencia disponible se confirma en la visita. El techo de paja aguanta la lluvia vertical; con viento el agua entra de lado, así que el plan de lluvia debe presupuestar lonas laterales para el pabellón. Aforo sentado y de pie del montaje concreto, curfew, límite de decibelios y número de baños se levantan en la visita y quedan por escrito. Sobre el calendario: el exterior se reserva desde el 1 de octubre de 2026, así que la primera Swim Week vendible es la de 2027; si el show necesita permiso de evento especial de la City of Miami, la conversación útil empieza meses antes.",
-          en: "A show here runs at dusk, and the venue has no house lighting: runway lighting is up to your production, and the available power, with its amperage, is confirmed at the site visit. The thatched roof handles straight-down rain, but wind can blow rain in, so your rain plan should include side walls for the Pavilion. Seated and standing capacity for your layout, curfew, decibel limit and number of restrooms are measured at the same visit and put in writing. On timing: the outdoor venue takes bookings from October 1, 2026, so the first Swim Week available is the 2027 edition. If your show needs a City of Miami special-event permit, start the conversation months ahead.",
+          es: "Un desfile aquí se hace al anochecer, y el recinto no tiene iluminación de casa: la luz de pasarela la trae tu producción, y la potencia disponible se confirma en la visita. El techo de paja aguanta la lluvia vertical; con viento el agua entra de lado, así que el plan de lluvia debe presupuestar lonas laterales para el pabellón. Aforo sentado y de pie del montaje concreto, curfew, límite de decibelios y número de baños se revisan en la misma visita. Sobre el calendario: el exterior se reserva desde el 1 de octubre de 2026, así que la primera Swim Week vendible es la de 2027; si el show necesita permiso de evento especial de la City of Miami, la conversación útil empieza meses antes.",
+          en: "A show here runs at dusk, and the venue has no house lighting: runway lighting is up to your production, and the available power, with its amperage, is confirmed at the site visit. The thatched roof handles straight-down rain, but wind can blow rain in, so your rain plan should include side walls for the Pavilion. Seated and standing capacity for your layout, curfew, decibel limit and number of restrooms are reviewed at the same visit. On timing: the outdoor venue takes bookings from October 1, 2026, so the first Swim Week available is the 2027 edition. If your show needs a City of Miami special-event permit, start the conversation months ahead.",
         },
       },
     ],
@@ -1435,8 +1435,8 @@ export const FAQ: Array<{ q: Record<Idioma, string>; a: Record<Idioma, string> }
     // para saber si seguir o no.
     q: { es: "¿Cuánto cuesta? ¿Publican tarifas?", en: "How much does it cost? Do you publish your rates?" },
     a: {
-      es: "No hay tarifa publicada: depende del espacio que uses, las horas, el día y si necesitas montar la víspera. Mándanos la fecha y el número de invitados y te llega el presupuesto con la disponibilidad en 24 horas hábiles, sin compromiso.",
-      en: "We don't publish a rate: the price depends on the space you use, the hours, the day, and whether you need to set up the day before. Send us your date and guest count, and you'll get a quote with availability within 24 business hours, with no commitment.",
+      es: "No hay tarifa publicada: depende del espacio que uses, las horas, el día y si necesitas montar la víspera. Mándanos la fecha y el número de invitados: el equipo lo revisa y te escribe con presupuesto y disponibilidad, sin compromiso.",
+      en: "We don't publish a rate: the price depends on the space you use, the hours, the day, and whether you need to set up the day before. Send us your date and guest count: our team reviews it and gets back to you with a quote and availability, with no commitment.",
     },
   },
   {
@@ -1456,15 +1456,15 @@ export const FAQ: Array<{ q: Record<Idioma, string>; a: Record<Idioma, string> }
   {
     q: { es: "¿Qué incluye el alquiler de Club Wynwood?", en: "What's included when I rent Club Wynwood?" },
     a: {
-      es: "Se alquila el espacio exterior: el Jardín de ~18.000 ft² y el Pabellón techado de ~4.000 ft², por separado o juntos, con las seis cabañas amuebladas y las mesas de picnic que ya están en el jardín. La producción, el catering, el sonido, la iluminación y el mobiliario adicional los aporta tu equipo o tu productora.",
-      en: "You rent the outdoor space: the ~18,000 sq ft Garden and the ~4,000 sq ft covered Pavilion, separately or together, with the six furnished cabanas and the picnic tables that are already in the Garden. Production, catering, sound, lighting and any extra furniture come from your team or your production company.",
+      es: "Se alquila el espacio exterior: el Jardín de ~18.000 ft² y el Pabellón techado de ~4.000 ft², por separado o juntos. Con el Jardín van las seis cabañas amuebladas y las mesas de picnic que ya están en él. La producción, el catering, el sonido, la iluminación y el mobiliario adicional los aporta tu equipo o tu productora.",
+      en: "You rent the outdoor space: the ~18,000 sq ft Garden and the ~4,000 sq ft covered Pavilion, separately or together. The Garden comes with the six furnished cabanas and the picnic tables already in it. Production, catering, sound, lighting and any extra furniture come from your team or your production company.",
     },
   },
   {
     q: { es: "¿Puedo traer mi propio catering y mi propia barra?", en: "Can I bring my own caterer and bar?" },
     a: {
-      es: "Sí. No hay proveedor impuesto ni comisión por traer el tuyo. Al aire libre no hay cocina: el catering monta en el sitio, o usa la cocina del edificio si lo alquilas también. Hay área donde montar barra.",
-      en: "Yes. There's no required vendor and no fee for bringing your own. There's no kitchen outdoors: the caterer sets up on site, or uses the building's kitchen if you rent the building too. There's an area to set up a bar.",
+      es: "Sí. No hay proveedor impuesto: traes tu catering y tu equipo de barra. Al aire libre no hay cocina: el catering monta en el sitio, o usa la cocina del edificio si lo alquilas también. Hay área donde montar barra.",
+      en: "Yes. There's no required vendor: you bring your own caterer and bar team. There's no kitchen outdoors: the caterer sets up on site, or uses the building's kitchen if you rent the building too. There's an area to set up a bar.",
     },
   },
   {
@@ -1477,29 +1477,29 @@ export const FAQ: Array<{ q: Record<Idioma, string>; a: Record<Idioma, string> }
   {
     q: { es: "¿Hasta qué hora se puede, y con cuánto volumen?", en: "How late can we go, and how loud?" },
     a: {
-      es: "El horario límite y el tope de decibelios dependen de la ordenanza de la zona y de la licencia del sitio: se confirman por escrito en la visita técnica. Si tu evento depende de terminar tarde, dilo en la solicitud y lo resolvemos antes de que vengas.",
-      en: "The curfew and the decibel limit depend on city rules and the venue's license; both are confirmed in writing at the site visit. If your event depends on running late, tell us when you inquire and we'll sort it out before you visit.",
+      es: "El horario límite y el tope de decibelios dependen de la ordenanza de la zona y de la licencia del sitio: se revisan en la visita técnica. Si tu evento depende de terminar tarde, dilo en la solicitud para que el equipo lo revise desde el principio.",
+      en: "The curfew and the decibel limit depend on city rules and the venue's license; both are reviewed at the site visit. If your event depends on running late, tell us when you inquire so our team can look into it from the start.",
     },
   },
   {
     q: { es: "¿Hay potencia, parking y baños?", en: "Are there power, parking and restrooms?" },
     a: {
-      es: "Sí, y su detalle exacto —amperaje y fase, plazas de parking, número de baños, ancho del portón de carga, curfew y límite de dB— se levanta contigo en la visita técnica y se entrega por escrito. No lo publicamos porque no lo hemos medido nosotros.",
-      en: "Yes. The exact details — amperage and phase, number of parking spaces, number of restrooms, freight gate width, curfew and decibel limit — are checked with you at the site visit and confirmed in writing. We don't publish them because we haven't measured them ourselves yet.",
+      es: "Hay estacionamiento propio. El detalle —amperaje y fase, plazas de parking, número de baños, ancho del portón de carga, curfew y límite de dB— se revisa contigo en la visita técnica: no lo publicamos porque no lo hemos medido nosotros.",
+      en: "There's on-site parking. The details — amperage and phase, number of parking spaces, number of restrooms, freight gate width, curfew and decibel limit — are reviewed with you at the site visit: we don't publish them because we haven't measured them ourselves yet.",
     },
   },
   {
     q: { es: "¿Tiene licencia de licor?", en: "Does it have a liquor license?" },
     a: {
-      es: "Sí. El recinto tiene licencia de licor de Miami propia, con su propio número de licencia, cosa que no todos los venues de la zona pueden decir. Hay área donde montar barra; el número de licencia y sus condiciones se entregan con la ficha técnica.",
-      en: "Yes. The venue holds its own Miami liquor license, which not every venue in the area can say. There's an area to set up a bar; the license number and its conditions come with the spec sheet.",
+      es: "Sí. El recinto tiene licencia de licor de Miami propia, con su propio número de licencia, cosa que no todos los venues de la zona pueden decir. Hay área donde montar barra, que opera tu equipo; las condiciones las revisa el equipo contigo.",
+      en: "Yes. The venue holds its own Miami liquor license, which not every venue in the area can say. There's an area to set up a bar, run by your team; our team goes through the terms with you.",
     },
   },
   {
     q: { es: "¿Desde cuándo se puede reservar?", en: "When can I book it?" },
     a: {
-      es: "El exterior —el Jardín y el Pabellón— está disponible desde el 1 de octubre de 2026. El edificio, desde el 1 de noviembre de 2026. Miami Art Week (30 de noviembre al 6 de diciembre) tiene fechas abiertas: escríbenos con la tuya.",
-      en: "The outdoor venue — the Garden and the Pavilion — is available from October 1, 2026, and the building from November 1, 2026. Miami Art Week (November 30 to December 6) still has open dates: send us yours.",
+      es: "El exterior —el Jardín y el Pabellón— está disponible desde el 1 de octubre de 2026. El edificio, desde el 1 de noviembre de 2026. Para Miami Art Week (30 de noviembre al 6 de diciembre), escríbenos con tu fecha y el equipo revisa la disponibilidad.",
+      en: "The outdoor venue — the Garden and the Pavilion — is available from October 1, 2026, and the building from November 1, 2026. For Miami Art Week (November 30 to December 6), send us your date and our team will check availability.",
     },
   },
   {

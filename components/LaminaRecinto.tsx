@@ -1127,7 +1127,7 @@ const T = {
         nombre: "Acceso", dato: "esquina NW 1st Ct · NW 21st Ct",
         lee: "Lote de esquina con dos entradas: la principal, por NW 21st Ct, para invitados (estacionamiento y paseo); la de carga, por NW 1st Ct, a la franja pavimentada junto al edificio, continua y a nivel.",
         sirve: "Por la entrada de carga entra todo: camión, catering, estructura y escenario, sin cruzarse con los invitados ni pisar césped. Estacionamiento en el propio predio, al este y al sur.",
-        ojo: "El ancho exacto del portón y la potencia eléctrica disponible se levantan contigo en la visita y se entregan por escrito.",
+        ojo: "El ancho exacto del portón y la potencia eléctrica disponible se revisan contigo en la visita.",
       },
       edificio: {
         nombre: "El edificio", dato: "zona 02 · 2 niveles · cocina y baños",
@@ -1185,7 +1185,7 @@ const T = {
         nombre: "Access", dato: "corner of NW 1st Ct · NW 21st Ct",
         lee: "A corner lot with two entrances: the main entrance on NW 21st Ct for guests (parking and the walkway), and the freight entrance on NW 1st Ct, onto the flat paved strip along the building.",
         sirve: "Everything comes in through the freight entrance — trucks, catering, rigging and stage — without crossing paths with guests or driving over the turf. On-site parking to the east and south.",
-        ojo: "The exact gate width and available power are measured with you at the site visit and confirmed in writing.",
+        ojo: "The exact gate width and available power are reviewed with you at the site visit.",
       },
       edificio: {
         nombre: "The building", dato: "zone 02 · 2 levels · kitchen and restrooms",

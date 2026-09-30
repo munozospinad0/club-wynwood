@@ -223,15 +223,15 @@ function Enviado({ es, pedido }: { es: boolean; pedido: Pedido | null }) {
     <div className="enviado" role="status">
       <p className="respuesta">
         {es
-          ? "Recibido. Respondemos en 24 h hábiles con disponibilidad, condiciones y la ficha técnica completa."
-          : "Got it. We'll reply within 24 business hours with availability, terms and the full spec sheet."}
+          ? "Recibido. El equipo revisa tu solicitud y te escribe con la disponibilidad y las condiciones."
+          : "Got it. Our team will review your request and get back to you with availability and terms."}
       </p>
       {enlace && (
         <>
           <p className="enviado-sigue">
             {es
-              ? "Si quieres adelantar, sigue por WhatsApp: tu solicitud ya va escrita."
-              : "Want a faster answer? Continue on WhatsApp — your request is already written."}
+              ? "Si quieres, sigue por WhatsApp: tu solicitud ya va escrita."
+              : "Want to keep going? Continue on WhatsApp — your request is already written."}
           </p>
           <a
             className="boton boton--wa"
@@ -533,8 +533,8 @@ export default function Formulario({ lang, idPrefijo, invitadosInicial }: { lang
             {/* Obligatorio desde el 28-sep: la confirmación y la respuesta van por
                 WhatsApp (plantilla del CRM). Sin número, la solicitud solo llega por correo. */}
             {es
-              ? "Por aquí te llega la confirmación y te contesta el equipo. No lo usamos para nada más."
-              : "We'll send your confirmation and the team's reply here. We don't use it for anything else."}
+              ? "Lo usamos para contestarte sobre tu solicitud. No lo usamos para nada más."
+              : "We use it to reply about your request. We don't use it for anything else."}
           </p>
         </div>
       </div>
@@ -543,8 +543,8 @@ export default function Formulario({ lang, idPrefijo, invitadosInicial }: { lang
       <Bloque
         titulo={es ? "Tu evento" : "Your event"}
         nota={es
-          ? "Con esto te contestamos con números y montaje, no solo con disponibilidad. Nada de esto descarta a nadie."
-          : "This lets us reply with numbers and a layout, not just availability. None of it rules you out."}
+          ? "Con esto el equipo revisa tu evento con más detalle. Nada de esto descarta a nadie."
+          : "This helps our team look at your event in more detail. None of it rules you out."}
       />
       <div style={rejilla}>
         <div>
@@ -579,8 +579,8 @@ export default function Formulario({ lang, idPrefijo, invitadosInicial }: { lang
           </select>
           <p style={pista}>
             {es
-              ? "Aquí se alquila el espacio: la producción la traes tú. Si no la tienes, te pasamos proveedores."
-              : "You rent the space and bring your own production. If you don't have a team, we can recommend vendors."}
+              ? "Aquí se alquila el espacio: la producción la traes tú. Si aún no la tienes, dilo y el equipo lo revisa contigo."
+              : "You rent the space and bring your own production. If you don't have a team yet, let us know and we'll talk it through."}
           </p>
         </div>
         <div>
@@ -622,8 +622,8 @@ export default function Formulario({ lang, idPrefijo, invitadosInicial }: { lang
       {estado === "error" && (
         <p role="alert" style={{ margin: 0, fontSize: 14, lineHeight: 1.55, color: "var(--ocre)" }}>
           {es
-            ? "No se pudo enviar ahora mismo. Lo reintentamos solos, pero si prefieres no esperar: "
-            : "We couldn't send it right now. We'll keep trying, but if you'd rather not wait: "}
+            ? "No se pudo enviar ahora mismo. Si vuelves a abrir la página lo reintentamos; si prefieres no esperar: "
+            : "We couldn't send it right now. We'll retry the next time you open the site; if you'd rather not wait: "}
           {/* `contact_click` es micro-conversión: sirve para MIRAR, nunca para
               optimizar. Y aquí tiene un valor extra que no tiene en el pie de
               página: un clic en el correo desde ESTE punto significa que el
@@ -645,8 +645,8 @@ export default function Formulario({ lang, idPrefijo, invitadosInicial }: { lang
           a qué se compromete: nada. */}
       <p style={{ margin: 0, fontSize: 13, color: "var(--texto)" }}>
         {es
-          ? "Te llega disponibilidad y presupuesto en 24 h hábiles. Sin visita previa y sin compromiso."
-          : "You'll get availability and a quote within 24 business hours. No site visit required, no commitment."}
+          ? "El equipo revisa tu solicitud y te escribe con disponibilidad y presupuesto. Sin compromiso."
+          : "Our team reviews your request and gets back to you with availability and a quote. No commitment."}
       </p>
     </form>
   );

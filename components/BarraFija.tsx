@@ -113,7 +113,7 @@ export default function BarraFija({ lang }: { lang: Idioma }) {
         {es ? "Consultar mi fecha" : "Check my date"}
       </a>
       <p className="barra-fija__nota">
-        {es ? "Respuesta en un día hábil" : "Answer within one business day"}
+        {es ? "Sin compromiso" : "No commitment"}
       </p>
     </div>
   );

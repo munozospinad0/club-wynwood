@@ -95,7 +95,7 @@ export function GET() {
       "  forman parte del alquiler y no se pueden ofrecer.",
     ]),
 
-    bloque("Se levanta en la visita técnica y se entrega por escrito", [
+    bloque("Se revisa en la visita técnica", [
       ...enVisita.map((f) => `- ${f.es}`),
       "",
       "No se publican porque no los hemos medido nosotros.",
@@ -122,7 +122,7 @@ export function GET() {
 
     bloque("Páginas", paginas),
 
-    `## Contacto\nFormulario en ${BASE}/es · respuesta en 24 h hábiles.\n`,
+    `## Contacto\nFormulario en ${BASE}/es · el equipo revisa cada solicitud y responde.\n`,
   ].join("\n");
 
   return new Response(cuerpo, {

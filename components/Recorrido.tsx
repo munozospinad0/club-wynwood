@@ -100,7 +100,7 @@ const T = {
     ojoCierre: "Solicitar disponibilidad",
     tituloCierre: "Ficha técnica y disponibilidad",
     introCierre:
-      "Indica fecha y aforo estimado. Respondemos con disponibilidad real, condiciones y la ficha técnica completa en 24 horas hábiles.",
+      "Indica fecha y aforo estimado. El equipo revisa tu solicitud y te escribe con disponibilidad y condiciones.",
     aforoOjo: "Simulador de aforo",
     aforoInvitados: "Asistentes",
     sentados: "Banquete · sentados",
@@ -144,7 +144,7 @@ const T = {
     ojoCierre: "Request availability",
     tituloCierre: "Spec sheet and availability",
     introCierre:
-      "Give us the date and estimated headcount. We reply with real availability, terms and the full spec sheet within 24 business hours.",
+      "Give us the date and estimated headcount. Our team reviews your request and gets back to you with availability and terms.",
     aforoOjo: "Capacity simulator",
     aforoInvitados: "Guests",
     sentados: "Seated dinner",

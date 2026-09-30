@@ -88,7 +88,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           {/* Bloque de respuesta: primera frase = conclusión. */}
           <p className="respuesta" style={{ marginTop: 0, marginBottom: 26, color: "var(--texto)", maxWidth: "46ch" }}>
             {es
-              ? "Club Wynwood son ~22.000 ft² de exterior en el Wynwood Arts District de Miami, con un pabellón techado de ~4.000 ft² que cubre el evento si llueve, estacionamiento propio y licencia de licor propia. Tú traes la producción; nosotros entregamos el espacio. Disponible desde el 1 de octubre; el edificio, desde el 1 de noviembre."
+              ? "Club Wynwood son ~22.000 ft² de exterior en el Wynwood Arts District de Miami, con un pabellón techado de ~4.000 ft² como plan de lluvia, estacionamiento propio y licencia de licor propia. Tú traes la producción; nosotros entregamos el espacio. Disponible desde el 1 de octubre; el edificio, desde el 1 de noviembre."
               : "Club Wynwood is ~22,000 sq ft of outdoor event space in Miami's Wynwood Arts District, with a ~4,000 sq ft covered pavilion for rainy days, on-site parking and its own liquor license. You bring the production; we provide the space. The outdoor venue is available from October 1, and the building from November 1."}
           </p>
 
@@ -122,7 +122,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             }}
           >
             {es
-              ? "El predio completo · el edificio del fondo no es parte"
+              ? "El predio completo · el edificio del fondo se alquila aparte"
               : "The whole venue · the building in the back is rented separately"}
           </figcaption>
         </figure>
@@ -184,8 +184,8 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             <h2 style={{ marginBottom: 16 }}>{VENUE.direccion.calle}</h2>
             <p className="respuesta" style={{ color: "var(--texto)" }}>
               {es
-                ? "El predio está en el Wynwood Arts District, a una cuadra de los murales y a tres minutos del acceso a la I-95."
-                : "The venue is in the Wynwood Arts District, one block from the murals and three minutes from I-95."}
+                ? "El predio está en el Wynwood Arts District, a cuatro minutos a pie de Wynwood Walls y a tres del acceso a la I-95."
+                : "The venue is in the Wynwood Arts District, a four-minute walk from Wynwood Walls and three minutes from I-95."}
             </p>
             <a className="boton" style={{ marginTop: 8 }} href={`https://maps.google.com/?q=${encodeURIComponent(`${VENUE.direccion.calle}, ${VENUE.direccion.ciudad}, ${VENUE.direccion.region} ${VENUE.direccion.cp}`)}`} target="_blank" rel="noopener noreferrer">
               {es ? "Cómo llegar" : "Directions"} →
@@ -249,8 +249,8 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
               {/* 24-sep: decía que la licencia de licor y la entrada de carga estaban
                   «sin medir», dos líneas debajo de donde figuran como verificadas. */}
               {es
-                ? "Estas son las medidas y los aforos del sitio. Lo que todavía no está medido —la potencia, el ancho del portón, los puestos de estacionamiento, los baños y hasta qué hora y con cuánto volumen se puede— lo revisamos juntos cuando vengas a verlo, y te lo mandamos por escrito."
-                : "These are the venue's measurements and capacities. What we haven't measured yet — power, gate width, parking spaces, restrooms, and how late and how loud you can go — we go through together at the site visit, and you get it in writing."}
+                ? "Estas son las medidas y los aforos del sitio. Lo que todavía no está medido —la potencia, el ancho del portón, los puestos de estacionamiento, los baños y hasta qué hora y con cuánto volumen se puede— lo revisa el equipo contigo cuando vengas a verlo."
+                : "These are the venue's measurements and capacities. What we haven't measured yet — power, gate width, parking spaces, restrooms, and how late and how loud you can go — our team goes through with you at the site visit."}
             </p>
           </div>
 
@@ -267,7 +267,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
               <dt style={{ fontSize: 15 }}>{es ? "Ficha de infraestructura" : "Infrastructure details"}</dt>
               <dd style={{ margin: 0, fontSize: 13, lineHeight: 1.55, color: "var(--texto)" }}>
                 {enVisita.map((f) => (es ? f.es : f.en)).join(" · ")}.{" "}
-                {es ? "Se levanta contigo en sitio y se entrega por escrito." : "Measured with you on site and confirmed in writing."}
+                {es ? "Se revisa contigo en la visita." : "Reviewed with you at the site visit."}
               </dd>
             </div>
           </dl>

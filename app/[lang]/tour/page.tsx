@@ -267,7 +267,7 @@ export default async function Landing({ params }: { params: Promise<{ lang: stri
         * se llena por llenar: se llena con lo único que le importa a quien está
         * decidiendo si escribe o cierra la pestaña, que es **qué le va a pasar
         * si escribe**. Nueve campos asustan aunque solo dos sean obligatorios;
-        * saber que la respuesta llega en un día y que no compromete a nada
+        * saber qué pasa después y que no compromete a nada
         * quita más fricción que quitar campos.
         *
         * El tercer punto contesta la pregunta que hace irse a la mitad de la
@@ -294,8 +294,8 @@ export default async function Landing({ params }: { params: Promise<{ lang: stri
               {(VENUE.whatsapp
                 ? [
                     es
-                      ? { titulo: "Sigues por WhatsApp", cuerpo: "Al enviar se abre WhatsApp con tu solicitud ya escrita, para hablar con una persona del equipo." }
-                      : { titulo: "You continue on WhatsApp", cuerpo: "WhatsApp opens with your request already written, so you can talk to someone on our team." },
+                      ? { titulo: "Sigues por WhatsApp", cuerpo: "Al enviar se abre WhatsApp con tu solicitud ya escrita, para seguir la conversación con el equipo." }
+                      : { titulo: "You continue on WhatsApp", cuerpo: "WhatsApp opens with your request already written, so you can keep the conversation going with our team." },
                     ...t.despues.pasos,
                   ]
                 : t.despues.pasos
@@ -351,13 +351,13 @@ const TEXTO = {
     lead: "Se alquila el espacio, no un paquete cerrado. Tú traes la producción, el catering y el equipo; nosotros entregamos el jardín, la estructura techada y el estacionamiento.",
     cta2: "Pedir disponibilidad",
     usosTitulo: "Dos usos, y un adicional.",
-    pieFoto: "Bajo el pabellón, con un montaje real: del techo cuelgan truss, focos y sonido. Todo eso lo trae la producción del evento.",
+    pieFoto: "Bajo el pabellón, con un montaje real de otra producción: truss, focos y sonido los trajo ella. Colgar carga del techo se revisa en la visita.",
     honesto: {
-      titulo: "Qué se alquila y qué no. Sin sorpresas en la visita.",
+      titulo: "Qué se alquila y qué no, antes de la visita.",
       siOjo: "Va incluido",
       si: [
         "El jardín al aire libre y la estructura techada, juntos o por separado.",
-        "Las cabañas amuebladas y las mesas de picnic, que ya están en el jardín.",
+        "Con el jardín, las seis cabañas amuebladas y las mesas de picnic.",
         "Área donde montar barra, con licencia de licor propia.",
         "Estacionamiento propio y portón de carga independiente.",
       ],
@@ -387,10 +387,10 @@ const TEXTO = {
     despues: {
       ojo: "Qué pasa cuando envías",
       pasos: [
-        { titulo: "Respondemos en 24 horas hábiles",
-          cuerpo: "Con la fecha libre o no, las condiciones y qué zonas encajan con lo que quieres montar. Sin compromiso." },
+        { titulo: "El equipo revisa tu solicitud",
+          cuerpo: "Y te escribe con la disponibilidad de la fecha, las condiciones y qué zonas encajan con lo que quieres montar. Sin compromiso." },
         { titulo: "Si encaja, visita técnica",
-          cuerpo: "Se recorre el recinto y se entrega por escrito lo que un montaje necesita saber: potencia, ancho del portón de carga, baños y aforo según tu plano." },
+          cuerpo: "Se recorre el recinto y se revisa contigo lo que un montaje necesita saber: potencia, ancho del portón de carga, baños y aforo según tu plano." },
         { titulo: "No publicamos tarifas, y hay un motivo",
           cuerpo: "El precio depende de la fecha, de las horas y de si usas el jardín, el pabellón o todo. Un número en la web sería falso para casi todos los eventos." },
       ],
@@ -402,13 +402,13 @@ const TEXTO = {
     lead: "You rent the space, not a package. You bring the production, catering and crew; we provide the Garden, the covered Pavilion and on-site parking.",
     cta2: "Request availability",
     usosTitulo: "Two ways to use it, plus one add-on.",
-    pieFoto: "Under the Pavilion with a real event setup: truss, lights and sound hung from the roof, all brought in by the event's production team.",
+    pieFoto: "Under the Pavilion with a real event setup: that production brought the truss, lights and sound. Hanging anything from the roof is reviewed at the site visit.",
     honesto: {
-      titulo: "What's included and what isn't. No surprises at the site visit.",
+      titulo: "What's included and what isn't, before the site visit.",
       siOjo: "Included",
       si: [
         "The open-air Garden and the covered Pavilion, together or separately.",
-        "The furnished cabanas and the picnic tables, already in the Garden.",
+        "With the Garden, the six furnished cabanas and the picnic tables.",
         "An area to set up a bar, and the venue's own liquor license.",
         "On-site parking and a separate freight gate.",
       ],
@@ -430,10 +430,10 @@ const TEXTO = {
     despues: {
       ojo: "What happens next",
       pasos: [
-        { titulo: "We reply within 24 business hours",
-          cuerpo: "We'll tell you whether your date is available, the terms, and which spaces fit what you want to build. No commitment." },
+        { titulo: "Our team reviews your request",
+          cuerpo: "Then we get back to you on whether your date is available, the terms, and which spaces fit what you want to build. No commitment." },
         { titulo: "If it's a fit, a site visit",
-          cuerpo: "We walk the venue with you and send you in writing what your production needs to know: power, freight gate width, restrooms and capacity for your layout." },
+          cuerpo: "We walk the venue with you and go through what your production needs to know: power, freight gate width, restrooms and capacity for your layout." },
         { titulo: "Why we don't publish rates",
           cuerpo: "The price depends on the date, the hours and whether you book the Garden, the Pavilion or both. A single number on the website would be wrong for almost every event." },
       ],

@@ -11,6 +11,8 @@ import { ENTORNO } from "@/lib/venue";
 import { grafo, breadcrumb, faqPage, localBusiness, eventVenue, webPage } from "@/lib/schema";
 import Calculadora from "@/components/Calculadora";
 import Residencia from "@/components/Residencia";
+import { heroeDe, fotosDeBloques, fotoEntorno, miniaturaDe, type FotoPagina } from "@/lib/fotosPagina";
+import "@/app/interior.css";
 
 /**
  * Una sola ruta dinámica para las seis páginas interiores.
@@ -74,7 +76,8 @@ export async function generateMetadata(
     title: p.title[lang].split(" | ")[0],
     description: p.description[lang],
     alternates: alternativas(clave, lang),
-    openGraph: { images: [{ url: p.foto.src }] },
+    // La misma foto que abre la página: dos de las de contenido.ts llevan el parche del logo borrado.
+    openGraph: { images: [{ url: heroeDe(clave, p.foto, lang)?.src ?? p.foto.src }] },
   };
 }
 
@@ -155,6 +158,10 @@ export default async function PaginaInterior(
   if (!p) notFound();
 
   const ld = grafo(localBusiness(lang), eventVenue(lang), breadcrumb(lang, p.h1[lang], url(clave, lang)));
+  const heroe = heroeDe(clave, p.foto, lang);
+  const fotos = fotosDeBloques(p.bloques, heroe?.id, lang);
+  const conFoto = p.bloques.slice(0, fotos.length);
+  const resto = p.bloques.slice(fotos.length);
 
   return (
     <>
@@ -164,60 +171,80 @@ export default async function PaginaInterior(
         <Migas lang={lang} nombre={p.h1[lang]} />
       </div>
 
-      <header className="reja" style={{ paddingBlock: "28px 64px" }}>
-        <div className="ojo" style={{ paddingBottom: 20 }}>{p.ojo[lang]}</div>
-        <h1 style={{ maxWidth: "16ch", marginBottom: 28 }}>{p.h1[lang]}</h1>
-        {/* Bloque de respuesta citable: 40-60 palabras, conclusión primero. */}
-        <p className="respuesta" style={{ fontSize: 18 }}>{p.respuesta[lang]}</p>
-        {/* 24-sep: la primera solicitud real entró por una página así
-            (/en/company-holiday-party) y tuvo que bajar cuatro pantallas para
-            encontrar dónde pedir fecha. El botón va donde ya decidió leer. */}
-        <a href="#disponibilidad" className="boton" style={{ marginTop: 8 }}>
-          {es ? "Consultar mi fecha" : "Check my date"} <span aria-hidden>→</span>
-        </a>
-      </header>
+      {/* ─── EL ORDEN DE UNA INTERIOR (29-sep-2026) ─────────────────────────
+          titular + foto → filas foto/texto → resto → cifras → entorno → pedir → relacionado
 
-      {/* ─── EL ORDEN DE UNA INTERIOR ───────────────────────────────────────
-          foto -> texto -> cifras -> calculadora -> pedir
+          Daniel, viendo /en/corporate-events: «no tienen nada visual, son solo texto vacío». La foto
+          ya no espera debajo del titular: va a su lado (en el teléfono, justo después del botón), y
+          los primeros bloques llevan cada uno la foto de lo que cuentan, elegida por su texto en
+          lib/fotosPagina.ts. Las cifras siguen después del texto, cuando ya hay dónde colgarlas: un
+          número sin marco no informa. */}
+      <div className="reja int-cabeza">
+        <div>
+          <div className="ojo" style={{ paddingBottom: 20 }}>{p.ojo[lang]}</div>
+          <h1>{p.h1[lang]}</h1>
+          {/* Bloque de respuesta citable: 40-60 palabras, conclusión primero. */}
+          <p className="respuesta" style={{ fontSize: 18 }}>{p.respuesta[lang]}</p>
+          {/* 24-sep: la primera solicitud real entró por una página así
+              (/en/company-holiday-party) y tuvo que bajar cuatro pantallas para
+              encontrar dónde pedir fecha. El botón va donde ya decidió leer. */}
+          <a href="#disponibilidad" className="boton" style={{ marginTop: 8 }}>
+            {es ? "Consultar mi fecha" : "Check my date"} <span aria-hidden>→</span>
+          </a>
+        </div>
+        {heroe && (
+          <figure className="int-heroe">
+            <div className="int-marco">
+              {/* «eager» para que no espere al scroll, pero sin prioridad alta: en el teléfono lo que
+                  manda es el texto y la foto no debe quitarle ancho de banda a su fuente. */}
+              <Image
+                src={heroe.src}
+                alt={heroe.alt}
+                fill
+                quality={70}
+                loading="eager"
+                sizes="(min-width: 1280px) 670px, (min-width: 900px) 52vw, 100vw"
+                style={{ objectFit: "cover", objectPosition: heroe.encuadre }}
+              />
+            </div>
+            <figcaption className="int-pie">{heroe.pie}</figcaption>
+          </figure>
+        )}
+      </div>
 
-          Antes las CIFRAS iban las primeras, justo debajo del titular. Es el
-          mismo fallo que tenía la portada y por el mismo motivo: un número sin
-          marco no informa. A quien acaba de aterrizar desde una búsqueda,
-          «~18 000 ft²» no le dice nada todavía — ni siquiera sabe si esto es un
-          jardín, una nave o una azotea.
-
-          Lo que sí contesta esa pregunta en un segundo es la FOTO, y estaba
-          enterrada debajo de una barra de estadísticas. Ahora abre.
-          Las cifras caen después del texto, cuando ya hay dónde colgarlas, y la
-          calculadora justo detrás porque es la herramienta que las usa. */}
-
-      <section style={{ borderBottom: "1px solid var(--regla)" }}>
-        <figure style={{ margin: "0 auto", maxWidth: "var(--reja)", padding: "48px 32px 40px" }}>
-          <div style={{ position: "relative", aspectRatio: "3/2", maxWidth: 1024 }}>
-            <Image
-              src={p.foto.src}
-              alt={p.foto.alt[lang]}
-              fill
-              sizes="(max-width: 1080px) 100vw, 1024px"
-              style={{ objectFit: "cover", filter: "saturate(.94) contrast(1.04)" }}
-            />
-          </div>
-          <figcaption className="ojo" style={{ paddingTop: 16 }}>{p.foto.pie[lang]}</figcaption>
-        </figure>
-      </section>
-
-      <section style={{ borderBottom: "1px solid var(--regla)" }}>
-        <div className="reja" style={{ paddingBlock: 76 }}>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: 44 }}>
-            {p.bloques.map((b) => (
-              <div key={b.titulo.es}>
-                <h2 style={{ fontSize: 19, fontFamily: "var(--cuerpo)", fontWeight: 600, letterSpacing: "-.01em", marginBottom: 14 }}>
-                  {b.titulo[lang]}
-                </h2>
-                <p style={{ margin: 0, fontSize: 15, lineHeight: 1.68, color: "#4a4335" }}>{b.cuerpo[lang]}</p>
+      <section className="int-bloques">
+        <div className="reja">
+          {conFoto.map((b, i) => (
+            <article key={b.titulo.es} className="int-fila">
+              <figure className="int-fila-foto">
+                <div className="int-marco">
+                  <Image
+                    src={fotos[i].src}
+                    alt={fotos[i].alt}
+                    fill
+                    quality={70}
+                    sizes="(min-width: 1280px) 700px, (min-width: 900px) 56vw, 100vw"
+                    style={{ objectFit: "cover", objectPosition: fotos[i].encuadre }}
+                  />
+                </div>
+                <figcaption className="int-pie">{fotos[i].pie}</figcaption>
+              </figure>
+              <div className="int-fila-texto">
+                <h2>{b.titulo[lang]}</h2>
+                <p>{b.cuerpo[lang]}</p>
               </div>
-            ))}
-          </div>
+            </article>
+          ))}
+          {resto.length > 0 && (
+            <div className="int-resto">
+              {resto.map((b) => (
+                <div key={b.titulo.es}>
+                  <h3>{b.titulo[lang]}</h3>
+                  <p>{b.cuerpo[lang]}</p>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
@@ -226,7 +253,7 @@ export default async function PaginaInterior(
           {p.cifras.map((c) => (
             <div key={c.etiqueta.es} style={{ flex: "1 1 200px", padding: "26px 24px", borderRight: "1px solid var(--regla)" }}>
               <div className="ojo" style={{ paddingBottom: 12 }}>{c.etiqueta[lang]}</div>
-              <div style={{ fontFamily: "var(--display)", fontWeight: 600, fontSize: 34, lineHeight: 1, letterSpacing: "-.02em" }}>
+              <div className="int-cifra" style={{ fontFamily: "var(--display)", fontWeight: 600, fontSize: 34, lineHeight: 1, letterSpacing: "-.02em" }}>
                 {typeof c.valor === "string" ? c.valor : c.valor[lang]}
               </div>
             </div>
@@ -235,7 +262,7 @@ export default async function PaginaInterior(
       </section>
 
       {/* El entorno en cifras, solo donde alguien lo está buscando. Ver ENTORNO. */}
-      {CON_ENTORNO.has(clave) && <Entorno lang={lang} />}
+      {CON_ENTORNO.has(clave) && <Entorno lang={lang} foto={fotoEntorno([heroe?.id, ...fotos.map((f) => f.id)], lang)} />}
 
       {/* La calculadora solo en /aforo-y-montajes/: es su sitio natural y
           repetirla por todo el sitio la convertiria en decoracion. */}
@@ -285,38 +312,55 @@ const CON_ENTORNO = new Set<ClaveRuta>(["corporativo", "swimWeek", "offsite", "p
  * de lo ajeno en todas partes. Decir de quién son las hace más creíbles, no
  * menos — quien las va a usar en una presentación necesita saber a quién citar.
  */
-function Entorno({ lang }: { lang: Idioma }) {
+function Entorno({ lang, foto }: { lang: Idioma; foto: FotoPagina }) {
   const es = lang === "es";
   return (
     <section style={{ borderBottom: "1px solid var(--regla)" }}>
-      <div className="reja" style={{ paddingBlock: 66 }}>
-        <div className="ojo" style={{ paddingBottom: 16 }}>
-          {es ? "El entorno · " : "The surroundings · "}
-          {es ? ENTORNO.radio.es : ENTORNO.radio.en}
-        </div>
-        <h2 style={{ fontSize: 19, fontFamily: "var(--cuerpo)", fontWeight: 600, letterSpacing: "-.01em", marginBottom: 8, maxWidth: "34ch" }}>
-          {es
-            ? "Quién vive y quién gasta alrededor del predio."
-            : "Who lives and spends money around the venue."}
-        </h2>
-        <p style={{ margin: "0 0 28px", fontSize: 15, lineHeight: 1.68, color: "#4a4335", maxWidth: "62ch" }}>
-          {es
-            ? "Wynwood no es solo un barrio de murales: es un distrito de bares, galerías y tiendas con público propio todo el año. Estas son las cifras del área inmediata, las mismas con las que se comercializa el inmueble."
-            : "Wynwood isn't just a mural district: it's a neighborhood of bars, galleries and shops with its own year-round crowd. These are the figures for the immediate area, the same ones used to market the property."}
-        </p>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(190px,1fr))", gap: "26px 32px" }}>
-          {ENTORNO.datos.map((d) => (
-            <div key={d.clave}>
-              <div style={{ fontFamily: "var(--display)", fontWeight: 600, fontSize: 27, lineHeight: 1.1, letterSpacing: "-.02em" }}>
-                {es ? d.valorEs : d.valorEn}
+      <div className="reja int-entorno">
+        {/* El predio señalado sobre su manzana: las cifras dicen quién hay alrededor, la foto dónde. */}
+        <figure className="int-entorno-foto">
+          <div className="int-marco int-marco--cuadro">
+            <Image
+              src={foto.src}
+              alt={foto.alt}
+              fill
+              quality={70}
+              sizes="(min-width: 1280px) 440px, (min-width: 900px) 34vw, 100vw"
+              style={{ objectFit: "cover", objectPosition: foto.encuadre }}
+            />
+          </div>
+          <figcaption className="int-pie">{foto.pie}</figcaption>
+        </figure>
+        <div>
+          <div className="ojo" style={{ paddingBottom: 16 }}>
+            {es ? "El entorno · " : "The surroundings · "}
+            {es ? ENTORNO.radio.es : ENTORNO.radio.en}
+          </div>
+          <h2 style={{ fontSize: 19, fontFamily: "var(--cuerpo)", fontWeight: 600, letterSpacing: "-.01em", marginBottom: 8, maxWidth: "34ch" }}>
+            {es
+              ? "Quién vive y quién gasta alrededor del predio."
+              : "Who lives and spends money around the venue."}
+          </h2>
+          <p style={{ margin: "0 0 28px", fontSize: 15, lineHeight: 1.68, color: "#4a4335", maxWidth: "62ch" }}>
+            {/* «área inmediata» decía más de lo que dice la fuente: el flyer da un radio de 2 millas. */}
+            {es
+              ? "Wynwood no es solo un barrio de murales: es un distrito de bares, galerías y tiendas con público propio todo el año. Estas son las cifras de un radio de 2 millas alrededor del predio, las mismas con las que se comercializa el inmueble."
+              : "Wynwood isn't just a mural district: it's a neighborhood of bars, galleries and shops with its own year-round crowd. These figures cover a 2-mile radius around the venue, the same ones used to market the property."}
+          </p>
+          <div className="int-entorno-cifras">
+            {ENTORNO.datos.map((d) => (
+              <div key={d.clave}>
+                <div style={{ fontFamily: "var(--display)", fontWeight: 600, fontSize: 27, lineHeight: 1.1, letterSpacing: "-.02em" }}>
+                  {es ? d.valorEs : d.valorEn}
+                </div>
+                <div className="ojo" style={{ paddingTop: 8 }}>{es ? d.es : d.en}</div>
               </div>
-              <div className="ojo" style={{ paddingTop: 8 }}>{es ? d.es : d.en}</div>
-            </div>
-          ))}
+            ))}
+          </div>
+          <p style={{ margin: "28px 0 0", fontSize: 13, color: "var(--texto)" }}>
+            {es ? "Fuente: " : "Source: "}{es ? ENTORNO.fuente : ENTORNO.fuenteEn}.
+          </p>
         </div>
-        <p style={{ margin: "28px 0 0", fontSize: 13, color: "var(--texto)" }}>
-          {es ? "Fuente: " : "Source: "}{es ? ENTORNO.fuente : ENTORNO.fuenteEn}.
-        </p>
       </div>
     </section>
   );
@@ -440,6 +484,8 @@ function Seguir({ lang, actual }: { lang: Idioma; actual: ClaveRuta }) {
   const elegidas = [...enRueda, ...espacios]
     .filter((p) => !vistos.has(p.clave) && vistos.add(p.clave))
     .slice(0, 5);
+  /** Fotos ya enseñadas en las tarjetas: ninguna se repite. */
+  const miniaturas = new Set<string>();
 
   return (
     <section style={{ borderBottom: "1px solid var(--regla)" }}>
@@ -447,18 +493,36 @@ function Seguir({ lang, actual }: { lang: Idioma; actual: ClaveRuta }) {
         <div className="ojo" style={{ marginBottom: 24 }}>
           {es ? "Relacionado" : "Related"}
         </div>
-        <div style={{ maxWidth: 640 }}>
-          {elegidas.map((o) => (
-            <a key={o.clave} href={href(o.clave, lang)} style={{ display: "block", padding: "15px 0", borderBottom: "1px solid var(--regla)", textDecoration: "none", fontSize: 15 }}>
-              {o.h1[lang]} <span style={{ color: "var(--ocre)" }}>→</span>
-            </a>
-          ))}
-          {actual !== "faq" && (
-            <a href={href("faq", lang)} style={{ display: "block", padding: "15px 0", borderBottom: "1px solid var(--regla)", textDecoration: "none", fontSize: 15 }}>
-              {es ? "Preguntas frecuentes" : "Frequently asked questions"} <span style={{ color: "var(--ocre)" }}>→</span>
-            </a>
-          )}
+        {/* Con la foto de cada página: se elige mirando, no leyendo trece títulos seguidos. */}
+        <div className="int-seguir">
+          {elegidas.map((o) => {
+            const f = miniaturaDe(o, lang, miniaturas);
+            return (
+              <a key={o.clave} href={href(o.clave, lang)} className="int-tarjeta">
+                <div className="int-marco int-marco--tarjeta">
+                  {f && (
+                    <Image
+                      src={f.src}
+                      alt=""
+                      fill
+                      quality={70}
+                      sizes="(min-width: 1280px) 400px, (min-width: 900px) 30vw, 50vw"
+                      style={{ objectFit: "cover", objectPosition: f.encuadre }}
+                    />
+                  )}
+                </div>
+                <span className="int-tarjeta-t">
+                  {o.h1[lang]} <span aria-hidden style={{ color: "var(--ocre)" }}>→</span>
+                </span>
+              </a>
+            );
+          })}
         </div>
+        {actual !== "faq" && (
+          <a href={href("faq", lang)} className="int-faq">
+            {es ? "Preguntas frecuentes" : "Frequently asked questions"} <span aria-hidden style={{ color: "var(--ocre)" }}>→</span>
+          </a>
+        )}
       </div>
     </section>
   );

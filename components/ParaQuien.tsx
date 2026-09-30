@@ -30,7 +30,7 @@ export default function ParaQuien({ lang }: { lang: Idioma }) {
         <div>
           <div className="ojo" style={{ marginBottom: 16 }}>{es ? "Miami Art Week 2026" : "Miami Art Week 2026"}</div>
           <h2 style={{ marginBottom: 14 }}>
-            {es ? <>30 de noviembre al 6 de diciembre.<br />Fechas abiertas.</> : <>November 30 to December 6.<br />Open dates.</>}
+            {es ? <>30 de noviembre al 6 de diciembre.<br />Consulta tu fecha.</> : <>November 30 to December 6.<br />Ask about your date.</>}
           </h2>
           <p style={{ margin: "0 0 18px", fontSize: 15, lineHeight: 1.65, color: "var(--texto)", maxWidth: "46ch" }}>
             {es
@@ -39,8 +39,8 @@ export default function ParaQuien({ lang }: { lang: Idioma }) {
           </p>
           <p style={{ margin: "0 0 22px", fontSize: 13.5, lineHeight: 1.6, color: "var(--texto)", maxWidth: "46ch" }}>
             {es
-              ? "El permiso de evento especial de la City of Miami para esa semana cierra el 11 de octubre: si tu activación lo necesita, la conversación útil es ahora."
-              : "The City of Miami's special-event permit deadline for that week is October 11. If your activation needs a permit, now is the time to talk."}
+              ? "Si tu activación necesita permiso de evento especial de la City of Miami, conviene empezar pronto: el equipo lo revisa contigo."
+              : "If your activation needs a City of Miami special-event permit, it's best to start early: our team will go through it with you."}
           </p>
           <a href="#disponibilidad" className="boton">
             {es ? "Pedir fechas de Art Week" : "Ask for Art Week dates"} <span aria-hidden>→</span>

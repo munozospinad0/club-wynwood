@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
+import { memo, startTransition, useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
 import { crearPerspectiva, type GeoPerspectiva } from "@/lib/perspectiva";
 import type { Idioma } from "@/lib/i18n";
 import { ev } from "@/lib/medicion";
@@ -1594,6 +1594,21 @@ export default function LaminaRecinto({
   const raiz = useRef<HTMLDivElement>(null);
   const quieto = useRef(false);
 
+  /*
+   * EL DIBUJO SE PINTA EN EL NAVEGADOR, NO EN EL SERVIDOR (29-sep).
+   * Son ~780 KB de SVG y 15.000 elementos: casi todo el HTML de /tour (853 KB) y de la
+   * portada. Los anuncios llevan ahí, y en móvil solo 6 de 11 clics de Meta llegaban a ver
+   * la página. El servidor manda todo lo demás —cabecera, rótulos, mandos, el panel del
+   * recorrido, las zonas— y el dibujo entra justo después de hidratar, como transición para
+   * no bloquear el primer toque. La caja ya tiene su proporción, así que nada salta, y el
+   * dibujo arranca en blanco de todos modos: la animación de trazos lo dibuja al entrar.
+   * El intento anterior (next/dynamic sobre toda la lámina, revertido en d482c0b) se llevaba
+   * el panel del recorrido, que vive aquí dentro; este solo difiere el SVG.
+   * Sin JavaScript no hay dibujo: el texto, los rótulos y las zonas siguen llegando.
+   */
+  const [conDibujo, setConDibujo] = useState(false);
+  useEffect(() => { startTransition(() => setConDibujo(true)); }, []);
+
   const [vertical, setVertical] = useState(false);
   useEffect(() => {
     const mq = window.matchMedia("(max-aspect-ratio: 9/15)");
@@ -1745,7 +1760,7 @@ export default function LaminaRecinto({
           <div className="lam-escenario">
             <figure className="lam-fig" style={{ aspectRatio: String(ratioCaja) }}>
               <div className="lam-lienzo" style={camara}>
-                <Dibujo lang={lang} zona={zona} aforo={aforo} vista={vista} alEntrar={alEntrar} alSalir={alSalir} alTocar={alTocar} />
+                {conDibujo && <Dibujo lang={lang} zona={zona} aforo={aforo} vista={vista} alEntrar={alEntrar} alSalir={alSalir} alTocar={alTocar} />}
 
                 {dirigiendo && puntoDirigido && (
                   <div className={`lam-guia-punto${fracCaja(p(puntoDirigido[0], puntoDirigido[1], 0))[0] > 0.66 ? " izq" : ""}`} style={pctCaja(p(puntoDirigido[0], puntoDirigido[1], 0))} aria-hidden="true">

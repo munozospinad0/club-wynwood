@@ -90,6 +90,51 @@ gtag('set','ads_data_redaction',true);
 gtag('set','url_passthrough',true);
 `.trim();
 
+/**
+ * EL CONTENEDOR ENTRA DESPUÉS DE LA PÁGINA (29-sep).
+ *
+ * Medido en producción con un celular medio simulado: las etiquetas eran ~710 KB de ~1.090 y ~4,6 s de
+ * procesador (gtag.js dos veces, GA4 y Ads; gtm.js; el píxel de Meta), contra 0,8 s de la página. Se
+ * cargaban «afterInteractive», compitiendo con lo primero que ve la persona. Google Ads califica la
+ * experiencia de la página de destino por debajo del promedio en 42 de 43 palabras.
+ *
+ * Lo que NO cambia, y por qué no se pierde nada:
+ *  · El evento `gtm.js` se empuja al `dataLayer` AQUÍ, en el HTML, antes que cualquier evento del sitio.
+ *    Todo lo que el sitio empuja después (view_plate, form_start, generate_lead…) espera en la cola y
+ *    GTM lo procesa en orden al llegar: primero la vista de página, luego los eventos.
+ *  · El consentimiento sigue declarándose antes que todo (el script de arriba).
+ *  · El gclid, los UTM y el fbclid los guarda el propio sitio al aterrizar (lib/atribucion.ts) y viajan
+ *    con la solicitud al CRM, cargue cuando cargue el contenedor.
+ *
+ * Cuándo entra: al primer toque o tecla (antes de que la persona haga nada que medir), o al terminar
+ * de cargar la página. Si la visita viene de un anuncio (gclid, gbraid, wbraid, fbclid) entra en cuanto
+ * termina la carga y como mucho a los 3 s, porque la etiqueta de Google y el píxel leen ese
+ * identificador de la URL para escribir sus cookies (_gcl_aw, _fbc) y una navegación interna lo borraría.
+ * Sin anuncio: 2 s después de la carga, como mucho a los 5 s.
+ *
+ * El costo, dicho: quien se va en los primeros segundos deja de contar en GA4 y en las vistas de página
+ * de Meta. Esas visitas no pedían nada; las que sí, llegan igual.
+ */
+const cargadorGtm = (id: string) => `
+(function(w,d){
+  w.dataLayer=w.dataLayer||[];
+  w.dataLayer.push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+  var hecho=false,evs=['pointerdown','keydown','touchstart'];
+  function cargar(){
+    if(hecho)return;hecho=true;
+    for(var k=0;k<evs.length;k++)w.removeEventListener(evs[k],cargar,true);
+    var j=d.createElement('script');j.async=true;
+    j.src='https://www.googletagmanager.com/gtm.js?id=${id}';
+    d.head.appendChild(j);
+  }
+  for(var k=0;k<evs.length;k++)w.addEventListener(evs[k],cargar,{capture:true,passive:true});
+  var anuncio=/[?&](gclid|gbraid|wbraid|fbclid)=/.test(w.location.search);
+  var espera=anuncio?0:2000,tope=anuncio?3000:5000;
+  function trasCarga(){setTimeout(cargar,espera);}
+  if(d.readyState==='complete')trasCarga();else w.addEventListener('load',trasCarga,{once:true});
+  setTimeout(cargar,tope);
+})(window,document);`.trim();
+
 export default function Medicion() {
   const gtm = process.env.NEXT_PUBLIC_GTM_ID;
   const ga4 = process.env.NEXT_PUBLIC_GA4_ID;
@@ -126,12 +171,8 @@ export default function Medicion() {
 
       {gtm ? (
         <>
-          <Script id="gtm" strategy="afterInteractive">
-            {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
-var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
-j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','${gtm}');`}
-          </Script>
+          {/* Plano y síncrono, como el consentimiento: la cola arranca antes que cualquier evento del sitio. */}
+          <script dangerouslySetInnerHTML={{ __html: cargadorGtm(gtm.replace(/[^A-Za-z0-9-]/g, "")) }} />
           <noscript>
             <iframe
               src={`https://www.googletagmanager.com/ns.html?id=${gtm}`}

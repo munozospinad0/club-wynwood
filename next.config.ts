@@ -43,6 +43,26 @@ const nextConfig: NextConfig = {
    * Google, los enlaces de sitio de Google Ads y quien la haya guardado: redirige
    * permanente (308) para no perder a nadie ni lo indexado.
    */
+  /**
+   * CABECERAS DE SEGURIDAD (30-sep, auditoría de calidad). Las seis que marcaba como ausentes, menos dos a
+   * propósito:
+   *  · HSTS sin includeSubDomains: clubwynwood.com tiene subdominios de correo de GoDaddy y Microsoft 365
+   *    (email., autodiscover.) que no controlamos; forzarles HTTPS podría dejarlos sin servicio.
+   *  · Sin Content-Security-Policy completa: GTM, GA4, Google Ads y el píxel cargan scripts de varios
+   *    dominios y una política estricta los rompería en silencio. Solo se fija frame-ancestors.
+   */
+  async headers() {
+    return [{
+      source: "/:path*",
+      headers: [
+        { key: "X-Content-Type-Options", value: "nosniff" },
+        { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+        { key: "X-Frame-Options", value: "SAMEORIGIN" },
+        { key: "Content-Security-Policy", value: "frame-ancestors 'self'" },
+        { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), payment=()" },
+      ],
+    }];
+  },
   async redirects() {
     return [
       { source: "/es/tiki-hut", destination: "/es/el-pabellon", permanent: true },

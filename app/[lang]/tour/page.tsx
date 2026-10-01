@@ -203,9 +203,11 @@ export default async function Landing({ params }: { params: Promise<{ lang: stri
           { src: "/assets/cabanas-fila.jpg", w: 930, h: 614,
             es: "La hilera de cabañas: pérgolas blancas, cortinas y sofás contra el muro verde",
             en: "The cabana row: white pergolas, curtains and sofas against the green wall" },
-          { src: "/assets/edificio-calle.jpg", w: 2047, h: 1365,
-            es: "El portón de carga sobre NW 1st Ct: el camión descarga aquí, no en la entrada de invitados",
-            en: "The freight gate on NW 1st Ct: the truck unloads here, not at the guest entrance" },
+          /* Aquí iba edificio-calle.jpg (el portón de carga): lleva la marca de agua de un portal inmobiliario,
+             es de un listado de terceros. Fuera el 30-sep. */
+          { src: "/assets/recinto-noche.jpg", w: 1920, h: 1080,
+            es: "El recinto al anochecer durante un evento: la alfombra y la luz las trajo esa producción",
+            en: "The venue at dusk during an event: the carpet and lighting came with that production" },
         ].map((f) => (
           <figure key={f.src}>
             <Image src={f.src} alt={es ? f.es : f.en} width={f.w} height={f.h}

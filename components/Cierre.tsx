@@ -30,7 +30,7 @@ import type { Idioma } from "@/lib/i18n";
  * pantallas hablando de bodas se lee como si el sitio hubiera dejado de
  * escuchar.
  */
-export default function Cierre({ lang, tema }: { lang: Idioma; tema?: string }) {
+export default function Cierre({ lang, tema, tipo }: { lang: Idioma; tema?: string; tipo?: string }) {
   const es = lang === "es";
 
   return (
@@ -52,7 +52,7 @@ export default function Cierre({ lang, tema }: { lang: Idioma; tema?: string }) 
             : "Send us your date and guest count; our team checks availability and gets back to you with a quote. No commitment."}
         </p>
 
-        <Formulario lang={lang} />
+        <Formulario lang={lang} tipoInicial={tipo} />
       </div>
     </section>
   );

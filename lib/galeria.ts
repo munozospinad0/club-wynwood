@@ -58,9 +58,11 @@ export const GALERIA: FotoGaleria[] = [
    * propiedad, es de la calle, y **no lleva el rótulo del operador en cuadro**,
    * que es la condición que hacía inservibles a casi todas las anteriores.
    */
-  { id: "edificio-calle", src: "/assets/edificio-calle.jpg", w: 2047, h: 1365, fuente: CALLE,
+  // 30-sep: FUERA edificio-calle.jpg. Lleva la marca de agua de un portal inmobiliario en la esquina inferior
+  // derecha: es de un listado de terceros, no «de la propiedad». No volver a ponerla.
+  /* { id: "edificio-calle", src: "/assets/edificio-calle.jpg", w: 2047, h: 1365, fuente: CALLE,
     alt: { es: "El edificio desde NW 1st Ct: nave de dos niveles, portón de carga abierto y el mural en la esquina",
-           en: "The building from NW 1st Ct: a two-level warehouse, the freight gate open and the mural on the corner" } },
+           en: "The building from NW 1st Ct: a two-level warehouse, the freight gate open and the mural on the corner" } }, */
   { id: "aerea", src: "/assets/aerea-predio.jpg", w: 1024, h: 683, fuente: DRON,
     alt: { es: "El predio desde el aire: el pabellón, el paseo entre las palmeras y el jardín", en: "The venue from the air: the Pavilion, the walkway between the palms and the Garden" } },
   { id: "cenital", src: "/assets/flyer-cenital.jpg", w: 935, h: 506, fuente: FLYER,

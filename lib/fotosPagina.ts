@@ -14,6 +14,7 @@ import type { ClaveRuta, Idioma } from "./i18n";
  *    marca del operador (ver lib/galeria.ts). Eran la foto principal de once páginas y la tarjeta al
  *    compartirlas; ahora cada una tiene una limpia.
  *  · FUERA `edificio-fachada.jpg`: lleva el logo de otra empresa (USJ International) en la fachada.
+ *  · FUERA `edificio-calle.jpg` (30-sep): marca de agua de un portal inmobiliario; es de un listado ajeno.
  *  · `palapa-sonido` es la misma toma que `montaje`, y `cabanas` la misma que `cabanas-fila`: se usa
  *    una de cada par para que la misma foto no salga dos veces en una página.
  *  · `coctel` es muy vertical (548×1434) y no cabe en un marco apaisado sin perder casi todo.
@@ -24,7 +25,7 @@ import type { ClaveRuta, Idioma } from "./i18n";
 
 const USABLES = [
   "puerta", "palmeras", "cenital", "aerea-palapa", "bajo-palapa", "lounge", "montaje",
-  "cabanas-fila", "noche", "edificio-calle", "contexto", "edificio-salon", "edificio-cocina",
+  "cabanas-fila", "noche", "contexto", "edificio-salon", "edificio-cocina",
 ] as const;
 type Uso = (typeof USABLES)[number];
 
@@ -43,7 +44,7 @@ const HEROE: Partial<Record<ClaveRuta, Uso>> = {
   jardin: "puerta",
   bodas: "aerea-palapa",
   corporativo: "montaje",
-  produccion: "edificio-calle",
+  produccion: "puerta",
   guia: "cenital",
   quinces: "noche",
   aforos: "aerea-palapa",
@@ -63,8 +64,8 @@ const HEROE: Partial<Record<ClaveRuta, Uso>> = {
 const TEMAS: Array<[RegExp, Uso[]]> = [
   [/lluvi|techad|cubierta|pabell|paja|sombra/i, ["aerea-palapa", "bajo-palapa", "montaje"]],
   [/cabañ/i, ["cabanas-fila"]],
-  [/carga|load-in|portón|camion|camión|nw 1st|montaje y desmontaje|rodaje|filma|set\b/i, ["edificio-calle", "puerta"]],
-  [/barrio|wynwood walls|mural|mana|i-95|galer|entorno|ubicaci|dónde/i, ["contexto", "edificio-calle"]],
+  [/carga|load-in|portón|camion|camión|nw 1st|montaje y desmontaje|rodaje|filma|set\b/i, ["puerta", "cenital"]],
+  [/barrio|wynwood walls|mural|mana|i-95|galer|entorno|ubicaci|dónde/i, ["contexto", "palmeras"]],
   [/sonido|dj|escenario|truss|luces|iluminaci|rigging|colgar|producci/i, ["montaje"]],
   [/barra|licor|cóctel|coctel|lounge|mobiliario|catering|proveedor/i, ["lounge", "bajo-palapa"]],
   [/cocina/i, ["edificio-cocina", "edificio-salon"]],
@@ -152,7 +153,7 @@ const PREGUNTAS: Array<[RegExp, Uso]> = [
   [/qué incluye/i, "cabanas-fila"],
   [/catering/i, "edificio-cocina"],
   [/por separado/i, "palmeras"],
-  [/potencia|parking|baños/i, "edificio-calle"],
+  [/potencia|parking|baños/i, "cenital"],
   [/oficina/i, "edificio-salon"],
   [/dónde queda/i, "contexto"],
 ];
@@ -169,7 +170,7 @@ export function fotoFaq(lang: Idioma): FotoPagina {
 /** La foto que acompaña al entorno en cifras: el predio sobre la manzana, o la primera que no salga ya en la página. */
 export function fotoEntorno(usadas: Iterable<string | undefined>, lang: Idioma): FotoPagina {
   const ya = new Set(usadas);
-  const id = (["contexto", "edificio-calle", "cenital", "palmeras", "puerta"] as const).find((x) => !ya.has(x)) ?? "contexto";
+  const id = (["contexto", "cenital", "palmeras", "puerta"] as const).find((x) => !ya.has(x)) ?? "contexto";
   return aFoto(porId.get(id)!, lang);
 }
 

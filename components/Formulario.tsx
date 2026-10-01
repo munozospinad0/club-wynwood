@@ -105,7 +105,10 @@ const PREFIJOS: Array<{ cc: string; iso: string; es: string; en: string }> = [
 const TIPOS = [
   { valor: "Activación de marca", es: "Activación de marca", en: "Brand activation" },
   { valor: "Corporativo", es: "Corporativo", en: "Corporate" },
-  { valor: "Fiesta privada", es: "Fiesta privada", en: "Private party" },
+  /* El valor que viaja al CRM no cambia; la etiqueta dice qué cabe aquí. El 29-sep no había «boda» en la lista y
+     quien llegaba desde /bodas tenía que adivinar entre «Fiesta privada» y «Otro» (ley de Hick: una decisión que no
+     debería existir). */
+  { valor: "Fiesta privada", es: "Celebración privada (boda, quince, cumpleaños)", en: "Private celebration (wedding, quinceañera, birthday)" },
   { valor: "Rodaje / producción", es: "Rodaje / producción", en: "Film or photo shoot" },
   { valor: "Otro", es: "Otro", en: "Other" },
 ];
@@ -288,7 +291,13 @@ async function entregar(cuerpo: Record<string, unknown>): Promise<Respuesta | nu
  * También rompe el lector de pantalla, que anuncia la etiqueta de un campo que
  * no es el que va a rellenar.
  */
-export default function Formulario({ lang, idPrefijo, invitadosInicial }: { lang: Idioma; idPrefijo?: string; invitadosInicial?: number }) {
+export default function Formulario({ lang, idPrefijo, invitadosInicial, tipoInicial }: {
+  lang: Idioma;
+  idPrefijo?: string;
+  invitadosInicial?: number;
+  /** El tipo que ya dice la página (bodas → celebración privada). Se puede cambiar; lo normal es que no haga falta. */
+  tipoInicial?: string;
+}) {
   const es = lang === "es";
   const ide = (n: string) => (idPrefijo ? `${idPrefijo}-${n}` : n);
   const [estado, setEstado] = useState<Estado>("idle");
@@ -549,7 +558,7 @@ export default function Formulario({ lang, idPrefijo, invitadosInicial }: { lang
       <div style={rejilla}>
         <div>
           <label style={etiqueta} htmlFor={ide("tipo")}>{es ? "Qué vas a hacer" : "Type of event"}<Falta /></label>
-          <select style={campo} id={ide("tipo")} name="tipo" defaultValue="" required>
+          <select style={campo} id={ide("tipo")} name="tipo" defaultValue={TIPOS.some((t) => t.valor === tipoInicial) ? tipoInicial : ""} required>
             <option value="">{es ? "Elige una opción" : "Pick one"}</option>
             {TIPOS.map((t) => (
               <option key={t.valor} value={t.valor}>{es ? t.es : t.en}</option>
@@ -589,7 +598,7 @@ export default function Formulario({ lang, idPrefijo, invitadosInicial }: { lang
             <option value="">{es ? "Elige una opción" : "Pick one"}</option>
             <option value="sin-definir">{es ? "Todavía no lo sé" : "I don't know yet"}</option>
             <option value="bajo">{es ? "Menos de 6 000 USD" : "Under 6,000 USD"}</option>
-            <option value="medio">6 000 – 15 000 USD</option>
+            <option value="medio">{es ? "6 000 – 15 000 USD" : "6,000 – 15,000 USD"}</option>
             <option value="alto">{es ? "Más de 15 000 USD" : "Over 15,000 USD"}</option>
           </select>
           <p style={pista}>

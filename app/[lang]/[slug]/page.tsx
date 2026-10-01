@@ -327,7 +327,7 @@ export default async function PaginaInterior(
       {/* El cierre va ANTES de «Relacionado». Quien acaba de leer la página
           está en su punto de más intención: ofrecerle primero más lectura y
           después el formulario es pedirle que se enfríe antes de escribir. */}
-      <Cierre lang={lang} tema={TEMA[clave]?.[lang]} />
+      <Cierre lang={lang} tema={TEMA[clave]?.[lang]} tipo={TIPO[clave]} />
 
       <Seguir lang={lang} actual={clave} />
     </>
@@ -458,6 +458,20 @@ const TEMA: Partial<Record<string, { es: string; en: string }>> = {
   artbasel:     { es: "Art Basel",                  en: "Art Basel" },
   finDeAno:     { es: "la fiesta de fin de año",    en: "the holiday party" },
   pequenos:     { es: "tu evento",                  en: "your event" },
+};
+
+/**
+ * EL TIPO DE EVENTO QUE YA DICE LA PÁGINA (ley de Hick, 30-sep). Quien llega a /bodas no tiene que volver a
+ * decir que es una boda: el formulario llega con la opción elegida y se puede cambiar. Donde la página no lo
+ * sabe (los espacios, la guía, el barrio, la FAQ) se deja vacío. Los valores son los de TIPOS en Formulario.tsx.
+ */
+const TIPO: Partial<Record<string, string>> = {
+  bodas: "Fiesta privada", bodasIntimas: "Fiesta privada", finDeSemanaBoda: "Fiesta privada", showers: "Fiesta privada",
+  quinces: "Fiesta privada", sweet16: "Fiesta privada", cumpleanosAdultos: "Fiesta privada", graduaciones: "Fiesta privada",
+  salonVsJardin: "Fiesta privada", pequenos: "Fiesta privada",
+  corporativo: "Corporativo", offsite: "Corporativo", finDeAno: "Corporativo",
+  popups: "Activación de marca", artbasel: "Activación de marca", swimWeek: "Activación de marca",
+  produccion: "Rodaje / producción",
 };
 
 const FAMILIA: Record<string, "espacio" | "ocasion" | "referencia"> = {

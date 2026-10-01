@@ -129,7 +129,7 @@ export function GET() {
     bloque("Recorrido guiado: las ocho preguntas de un productor, respondidas",
       // La voz grabada todavía dice «contestamos en veinticuatro horas hábiles»; aquí no se repite esa promesa.
       guion.capitulos.flatMap((c) => [`### ${c.pregunta.es}`,
-        textoVisible(c.texto.es).replace(/[^.]*veinticuatro horas h[aá]biles[^.]*\.\s*/gi, "").trim(), ""])),
+        textoVisible(c.texto.es).replace(/[^.]*veinticuatro horas[^.]*\.\s*/gi, "").trim(), ""])),
 
     bloque("Tarifas", [
       "No se publican. Los paquetes se arman contra cada evento porque el precio",

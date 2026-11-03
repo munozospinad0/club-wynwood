@@ -536,7 +536,7 @@ export default function Formulario({ lang, idPrefijo, invitadosInicial, tipoInic
               ))}
             </select>
             <input style={campo} id={ide("telefono")} name="telefono" type="tel" inputMode="tel" required
-                   minLength={7} autoComplete="tel-national" placeholder="305 970 7486" />
+                   minLength={7} autoComplete="tel-national" placeholder="305 555 0123" />
           </div>
           <p style={pista}>
             {/* Obligatorio desde el 28-sep: la confirmación y la respuesta van por
@@ -643,9 +643,9 @@ export default function Formulario({ lang, idPrefijo, invitadosInicial, tipoInic
             info@clubwynwood.com
           </a>
           {" · "}
-          <a href="tel:+13059707486"
+          <a href="tel:+17869423171"
              onClick={() => ev("contact_click", { method: "telefono", desde: "fallo_envio" })}>
-            (305) 970-7486
+            (786) 942-3171
           </a>
         </p>
       )}

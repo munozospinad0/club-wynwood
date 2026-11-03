@@ -38,9 +38,10 @@ export const VENUE = {
    * OJO: aquí decía +1-786-360-1766. Ese es el teléfono de FunDimension, el
    * operador que hoy arrienda el local — verificado el 2026-08-13 leyendo
    * playawynwood.com. Venía en el diseño original y llegó a estar publicado.
-   * El número de Club Wynwood es este.
+   * El número de Club Wynwood es este. Daniel, 3-nov-2026: pasa a ser el de
+   * Marta (antes el de Rene, (305) 970-7486), que es quien atiende las llamadas.
    */
-  telefono: "+1-305-970-7486",
+  telefono: "+1-786-942-3171",
   email: "info@clubwynwood.com",
   /**
    * WhatsApp de consultas. Daniel, 11-sep-2026: «+1 (305) 970-7486, mira el

@@ -293,7 +293,7 @@ export default async function Layout(
                 <p style={{ margin: "16px 0 0", fontSize: 14, lineHeight: 1.7 }}>
                   {VENUE.direccion.calle}<br />
                   {VENUE.direccion.ciudad}, {VENUE.direccion.region} {VENUE.direccion.cp}<br />
-                  <a href="tel:+13059707486" style={{ color: "var(--papel)", textDecoration: "none" }}>(305) 970-7486</a><br />
+                  <a href="tel:+17869423171" style={{ color: "var(--papel)", textDecoration: "none" }}>(786) 942-3171</a><br />
                   <a href={`mailto:${VENUE.email}`} style={{ color: "var(--papel)", textDecoration: "none" }}>{VENUE.email}</a>
                 </p>
               </div>

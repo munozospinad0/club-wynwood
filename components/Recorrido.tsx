@@ -1232,7 +1232,7 @@ export default function Recorrido({ lang }: { lang: Idioma }) {
               <div className="cine-tarjeta-nombre">{t.tarjeta.nombre}</div>
               <div className="cine-tarjeta-linea">{t.tarjeta.linea}</div>
               <div className="cine-tarjeta-cta">{t.tarjeta.cta}</div>
-              <div className="cine-tarjeta-pie">2129 NW 1st Ct, Miami FL 33127 · (305) 970-7486 · info@clubwynwood.com</div>
+              <div className="cine-tarjeta-pie">2129 NW 1st Ct, Miami FL 33127 · (786) 942-3171 · info@clubwynwood.com</div>
             </div>
           )}
         </>

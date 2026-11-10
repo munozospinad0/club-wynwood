@@ -133,7 +133,7 @@ export default function Galeria({ lang }: { lang: Idioma }) {
             <li key={f.id} className="gal-item" hidden={recortar && i >= VISIBLES}>
               <button type="button" className="gal-boton" onClick={() => abrir(i)} aria-label={`${t.abrir}: ${f.alt[lang]}`}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={optimizada(f.src, ANCHO.miniatura)} width={f.w} height={f.h} alt={f.alt[lang]} loading="lazy" decoding="async" />
+                <img src={optimizada(f.src, ANCHO.miniatura)} width={f.w} height={f.h} alt={f.alt[lang]} loading="lazy" decoding="async" style={{ objectPosition: f.encuadre ?? "50% 50%" }} />
                 {f.tipo === "visualizacion" && <span className="gal-viz">{ROTULO_VISUALIZACION[lang]}</span>}
               </button>
               <div className="gal-pie">
@@ -177,10 +177,10 @@ export default function Galeria({ lang }: { lang: Idioma }) {
               <div className="gal-visor-escena">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img key={foto.id} src={optimizada(foto.src, ANCHO.visor, 78)} width={foto.w} height={foto.h} alt={foto.alt[lang]} decoding="async" />
-                {foto.tipo === "visualizacion" && <span className="gal-viz gal-viz-grande">{ROTULO_VISUALIZACION[lang]}</span>}
               </div>
               <div className="gal-visor-barra">
                 <div className="gal-visor-pie">
+                  {foto.tipo === "visualizacion" && <span className="gal-viz-barra">{ROTULO_VISUALIZACION[lang]}</span>}
                   <span className="gal-n">{String((abierta ?? 0) + 1).padStart(2, "0")} / {String(lista.length).padStart(2, "0")} · {nombreZona(foto.zona)}</span>
                   <span className="gal-visor-alt">{foto.alt[lang]}</span>
                   <span className="gal-fuente">

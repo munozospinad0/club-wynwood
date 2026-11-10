@@ -179,9 +179,11 @@
   .ap-foto {
     position: relative;
     inset: auto;
-    height: 62svh;
-    min-height: 300px;
-    max-height: 560px;
+    /* 50svh y no más: con el texto, los mandos y la barra fija de «Consultar mi fecha», a más alto
+       los botones quedaban debajo de la barra en un iPhone de 844 px. */
+    height: 50svh;
+    min-height: 280px;
+    max-height: 440px;
   }
   .ap-completa { display: grid; grid-template-rows: 1fr auto auto auto; height: 100dvh; }
   .ap-completa .ap-foto { height: 100%; max-height: none; min-height: 0; }

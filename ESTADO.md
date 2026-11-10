@@ -8,6 +8,47 @@ y se archiva cuando el dominio se mueva.
 
 ---
 
+## 10 de noviembre de 2026: fotos de la sesión profesional, galería por zonas y recorrido a pie
+
+Rama `fotos-nuevas` (sin publicar en `next-app` hasta que Daniel lo apruebe).
+
+- **Una sola lista de fotos: `lib/fotos.ts`.** Cada foto lleva:
+  - zona (jardín, pabellón, pérgolas, estacionamiento, edificio, aéreas);
+  - `tipo` (`real` o `visualizacion`), fuente y encuadre;
+  - si es un montaje de otra producción;
+  - punto en el plano (pies de `lib/recinto.geo.ts`) con el rumbo de la cámara.
+
+  La leen la galería, el recorrido a pie, `fotosPagina.ts`, el schema, la portada, `/tour` y las postales del modo cine. Se borraron `lib/galeria.ts` y `components/Foto.tsx` (estaba muerto); `FOTOS.md` queda como histórico.
+- **Fotos nuevas en `public/fotos/cw-NN-*.webp`**, a 1920 px y calidad 72, unos 7 MB en total. El optimizador de Next sirve 640, 1200 y 1920 (`lib/imagen.ts`). Los originales y los PNG de la IA viven en la carpeta del cliente, nunca en el repo, que es público.
+  - **Reales:** aéreas 1, 2 y 50 (la 50 recortada para dejar fuera la columna de escalada); paseo 42; Pabellón 43 y 45; estacionamiento 49; cocina 38.
+  - **Reales sin los nombres comerciales:** 03, 04, 05, 06, 44 y 47. Conservan el grafiti, por decisión de Sandra.
+  - **Visualizaciones del interior en blanco**, 22 en total: 07-18, 20, 28-33 y 36. Siempre llevan el rótulo «Visualización: así quedará pintado» / «Rendering: freshly painted».
+- **Fuera:**
+  - `aerea-predio.jpg` y `venue-exterior.webp`, con parche de delogo; estaban en la portada, en 10 páginas y en el schema.
+  - `palapa-sonido.jpg`, duplicado byte a byte de `palapa-montaje`.
+  - `edificio-fachada.jpg` y `edificio-calle.jpg`.
+  - `edificio-salon.jpg`, `edificio-cocina.jpg` y `edificio-recepcion.jpg`, que ya no se usaban.
+  - De la sesión nueva no entran: el laser tag y los juegos (19, 21-27), la 41 (escalada), la 46 (letrero de ron) y la 48 (letreros del operador).
+- **Portada:** el dron sobre el Pabellón (50). Las tarjetas «Espacios» usan la misma foto que encabeza cada página.
+- **Galería por zonas** (`components/Galeria.tsx`):
+  - filtros por zona, con 9 fotos a la vista en «Todas»;
+  - visor a pantalla completa sobre tinta, con flechas del teclado, deslizar en el móvil, Esc o clic fuera para cerrar y precarga de las vecinas;
+  - íconos SVG propios en `components/Iconos.tsx`.
+- **Recorrido a pie en /tour** (`components/RecorridoAPie.tsx` y `app/recorrido-a-pie.css`):
+  - 16 pasos, en este orden: llegada (47) → entrada (04) → paseo → Pabellón → bajo el Pabellón → apron → fachada → al entrar (07) → salón (12) → mostrador (10) → cocina (38) → baños (17) → altillo (29) → sala (31) → dron → Wynwood.
+  - Plano mínimo con un punto y un abanico de visión; las fotos del interior marcan el edificio entero.
+  - Flechas, deslizar, regla de pasos y pantalla completa por CSS (el iPhone no admite la Fullscreen API sobre un elemento).
+  - No carga el SVG ni el audio del modo cine. Reemplaza la tira de tres fotos que había después del cine.
+- **Páginas interiores:** `fotosPagina.ts` elige entre las fotos nuevas, y los pies de las visualizaciones llevan el rótulo. En `contenido.ts`, las rutas con parche ahora apuntan a 50, 42 y 05, con los textos alternativos corregidos para que describan lo que se ve.
+
+Pendiente:
+- La 48 sigue con los letreros del operador.
+- La foto de pérgolas de la sesión (46) tiene la marca de ron; las pérgolas siguen con `cabanas-fila`.
+- `next lint` no está configurado: pide elegir configuración y queda sin correr.
+- Sitemap de imágenes y `ImageObject` en el schema: punto 2.5 del plan.
+
+---
+
 ## Lo que se construyó el 6 de septiembre
 
 Daniel: «mejorar el diseño y ese video, darle más calidad, mejor voz y que en

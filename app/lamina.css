@@ -2034,6 +2034,7 @@
 }
 .gal-item { break-inside: avoid; margin: 0 0 18px; }
 .gal-boton {
+  position: relative;
   display: block;
   width: 100%;
   padding: 0;
@@ -2056,46 +2057,122 @@
 }
 .gal-n { color: var(--ocre); flex: none; }
 
+/* Filtro por zonas: etiquetas en mono, la activa en tinta. */
+.gal-zonas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-bottom: 22px;
+}
+.gal-zonas button {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  padding: 9px 12px;
+  border: 1px solid var(--regla);
+  background: var(--papel);
+  color: var(--tinta);
+  cursor: pointer;
+  min-height: 36px;
+}
+.gal-zonas button span { color: var(--texto); margin-left: 4px; }
+.gal-zonas button:hover { border-color: var(--ocre); }
+.gal-zonas button:focus-visible { outline: 1px solid var(--ocre); outline-offset: 2px; }
+.gal-zonas button[aria-pressed="true"] { background: var(--tinta); border-color: var(--tinta); color: var(--papel); }
+.gal-zonas button[aria-pressed="true"] span { color: var(--ocre); }
+
+/* Rótulo de visualización: obligatorio en toda foto pintada con IA (lib/fotos.ts). */
+.gal-viz {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  padding: 5px 8px;
+  background: rgba(33, 28, 21, .82);
+  color: var(--papel);
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+.gal-viz-grande { left: 12px; top: 12px; bottom: auto; font-size: 10px; padding: 7px 10px; border-left: 2px solid var(--ocre); }
+
+/* El visor: pantalla completa sobre tinta, la foto contenida, mandos abajo. Sin sombras. */
 .gal-visor {
   border: 0;
   padding: 0;
-  background: transparent;
-  max-width: 96vw;
-  max-height: 96vh;
-  overflow: visible;
-}
-.gal-visor::backdrop { background: rgba(33, 28, 21, .9); }
-.gal-visor-marco {
   margin: 0;
-  background: var(--papel);
-  padding: 10px 10px 12px;
-  box-shadow: 0 18px 50px rgba(0, 0, 0, .35);
-  animation: lam-peso .5s cubic-bezier(.2, .8, .3, 1.05) both;
+  width: 100vw;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  background: var(--tinta);
+  color: var(--papel);
+  overflow: hidden;
 }
-.gal-visor-marco img {
+.gal-visor[open] { display: grid; grid-template-rows: 1fr auto; }
+.gal-visor::backdrop { background: var(--tinta); }
+.gal-visor-escena {
+  position: relative;
+  min-height: 0;
+  display: grid;
+  place-items: center;
+  padding: 12px;
+  touch-action: pan-y;
+}
+.gal-visor-escena img {
   display: block;
+  max-width: 100%;
+  max-height: 100%;
   width: auto;
   height: auto;
-  max-width: min(92vw, 100%);
-  max-height: 76vh;
+  object-fit: contain;
+  animation: gal-entra .35s var(--ease-out) both;
+}
+@keyframes gal-entra { from { opacity: 0; } to { opacity: 1; } }
+.gal-visor-barra {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 16px calc(14px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--regla-osc);
 }
 .gal-visor-pie {
   display: flex;
-  flex-wrap: wrap;
-  gap: 6px 14px;
-  padding-top: 10px;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
   font-family: var(--mono);
   font-size: 10px;
   letter-spacing: .12em;
   text-transform: uppercase;
-  color: var(--texto);
-  max-width: 92vw;
+  line-height: 1.5;
+  color: var(--texto-3);
 }
-.gal-fuente { color: var(--texto-3, var(--texto)); }
-.gal-visor-mandos { display: flex; gap: 8px; padding-top: 12px; }
+.gal-visor-alt { color: var(--papel); }
+.gal-fuente { color: var(--texto-3); }
+.gal-visor-mandos { display: flex; gap: 6px; flex: none; }
+.gal-icono {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid var(--regla-osc);
+  background: transparent;
+  color: var(--papel);
+  cursor: pointer;
+}
+.gal-icono:hover { border-color: var(--ocre); color: var(--ocre); }
+.gal-icono:focus-visible { outline: 1px solid var(--ocre); outline-offset: 2px; }
 @media (max-width: 620px) {
   .gal { columns: 2 150px; column-gap: 12px; }
   .gal-item { margin-bottom: 12px; }
   .gal-pie { font-size: 9px; }
+  .gal-visor-escena { padding: 0; }
+  .gal-visor-barra { flex-direction: column; align-items: stretch; }
+  .gal-visor-mandos { justify-content: flex-end; }
 }
-@media (prefers-reduced-motion: reduce) { .gal-visor-marco { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .gal-visor-escena img { animation: none; } }

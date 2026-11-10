@@ -1,0 +1,202 @@
+/* ─────────────────────────────────────────────────────────────────────────
+   RECORRIDO A PIE (components/RecorridoAPie.tsx), 10-nov-2026.
+
+   La foto manda: ocupa todo el ancho y casi todo el alto de la pantalla, y
+   lo demás (texto del paso, plano, mandos) va encima, en placas de tinta con
+   filete de un píxel. Sin sombras, sin degradados, esquinas rectas.
+   En el móvil la foto queda arriba y el texto debajo, sobre tinta: encima de
+   una foto vertical recortada el texto taparía justo lo que se quiere ver.
+   ───────────────────────────────────────────────────────────────────────── */
+
+.ap { border-top: 1px solid var(--regla); background: var(--papel); }
+.ap-cabeza { padding-block: clamp(36px, 6vw, 64px) 22px; }
+.ap-cabeza h2 { margin: 6px 0 10px; max-width: 22ch; }
+.ap-intro { margin: 0; max-width: 56ch; color: var(--texto); font-size: 15px; line-height: 1.6; }
+
+.ap-escena {
+  position: relative;
+  height: min(86svh, 64vw);
+  min-height: 420px;
+  background: var(--tinta);
+  color: var(--papel);
+  overflow: hidden;
+  outline: none;
+  touch-action: pan-y;
+}
+.ap-escena:focus-visible { outline: 2px solid var(--ocre); outline-offset: -2px; }
+.ap-completa {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  height: 100dvh;
+  min-height: 0;
+}
+
+.ap-foto {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: ap-entra .45s var(--ease-out) both;
+}
+@keyframes ap-entra { from { opacity: 0; } to { opacity: 1; } }
+
+.ap-viz {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  padding: 7px 10px;
+  background: rgba(33, 28, 21, .84);
+  border-left: 2px solid var(--ocre);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+/* El plano: arriba a la derecha, sobre papel para que se lea encima de cualquier foto. */
+.ap-plano {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  margin: 0;
+  width: clamp(84px, 9vw, 118px);
+  padding: 6px;
+  background: var(--papel);
+  border: 1px solid var(--tinta);
+}
+.ap-plano svg { display: block; width: 100%; height: auto; }
+.ap-p-calle { fill: none; stroke: var(--regla); stroke-width: 1.5; }
+.ap-p-lote { fill: var(--papel-2); stroke: var(--tinta); stroke-width: 1.4; }
+.ap-p-parking { fill: none; stroke: var(--texto-3); stroke-width: 1; stroke-dasharray: 3 3; }
+.ap-p-paseo { fill: var(--papel-3); stroke: var(--texto-3); stroke-width: .8; }
+.ap-p-cabana { fill: none; stroke: var(--texto); stroke-width: .9; }
+.ap-p-pabellon { fill: var(--papel-3); stroke: var(--tinta); stroke-width: 1.2; }
+.ap-p-cumbrera { fill: none; stroke: var(--tinta); stroke-width: .8; }
+.ap-p-edif { fill: var(--papel-3); stroke: var(--tinta); stroke-width: 1.4; }
+.ap-p-puerta { stroke: var(--ocre); stroke-width: 3; }
+.ap-p-activo { fill: rgba(196, 119, 43, .28); stroke: var(--ocre); stroke-width: 2.4; }
+.ap-p-abanico { fill: rgba(196, 119, 43, .32); stroke: var(--ocre); stroke-width: 1; }
+.ap-p-punto { fill: var(--ocre); stroke: var(--papel); stroke-width: 2; }
+.ap-p-norte { fill: none; stroke: var(--tinta); stroke-width: 1.2; }
+
+/* El texto del paso: abajo a la izquierda. */
+.ap-texto {
+  position: absolute;
+  left: 14px;
+  bottom: 30px;
+  max-width: min(440px, calc(100% - 180px));
+  padding: 16px 18px 18px;
+  background: rgba(33, 28, 21, .88);
+  border: 1px solid var(--regla-osc);
+}
+.ap-texto h3 {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(22px, 2.3vw, 30px);
+  line-height: 1.1;
+  margin: 4px 0 8px;
+  color: var(--papel);
+}
+.ap-texto p { margin: 0; font-size: 14.5px; line-height: 1.55; color: var(--papel-3); }
+.ap-texto .ap-n {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--ocre);
+}
+.ap-texto .ap-n span { color: var(--texto-3); }
+
+.ap-mandos {
+  position: absolute;
+  right: 14px;
+  bottom: 30px;
+  display: flex;
+  gap: 6px;
+}
+.ap-icono {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 1px solid var(--regla-osc);
+  background: rgba(33, 28, 21, .88);
+  color: var(--papel);
+  cursor: pointer;
+}
+.ap-icono:hover:not(:disabled) { border-color: var(--ocre); color: var(--ocre); }
+.ap-icono:focus-visible { outline: 1px solid var(--ocre); outline-offset: 2px; }
+.ap-icono:disabled { opacity: .35; cursor: default; }
+
+/* La regla de pasos: una raya por paso, la actual en ocre. Sirve para saltar. */
+.ap-regla {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: var(--tinta);
+}
+.ap-regla li { flex: 1; }
+.ap-regla button {
+  display: block;
+  width: 100%;
+  height: 16px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+}
+.ap-regla button::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 6px;
+  height: 3px;
+  background: var(--regla-osc);
+}
+.ap-regla button[aria-current="step"]::after { background: var(--ocre); }
+.ap-regla button:hover::after { background: var(--texto-3); }
+.ap-regla button:focus-visible { outline: 1px solid var(--ocre); outline-offset: -1px; }
+
+/* Móvil: foto arriba, texto y mandos debajo, sobre tinta. */
+@media (max-width: 720px) {
+  .ap-escena {
+    height: auto;
+    min-height: 0;
+    display: grid;
+    grid-template-rows: auto auto auto auto;
+  }
+  .ap-foto {
+    position: relative;
+    inset: auto;
+    height: 62svh;
+    min-height: 300px;
+    max-height: 560px;
+  }
+  .ap-completa { display: grid; grid-template-rows: 1fr auto auto auto; height: 100dvh; }
+  .ap-completa .ap-foto { height: 100%; max-height: none; min-height: 0; }
+  .ap-plano { width: 76px; top: 10px; right: 10px; }
+  .ap-viz { top: 10px; left: 10px; font-size: 9px; }
+  .ap-texto {
+    position: static;
+    max-width: none;
+    border: 0;
+    border-top: 1px solid var(--regla-osc);
+    background: var(--tinta);
+    padding: 14px 16px 6px;
+  }
+  .ap-mandos { position: static; padding: 8px 16px 12px; justify-content: flex-end; }
+  .ap-regla { position: static; padding: 0 16px calc(10px + env(safe-area-inset-bottom)); }
+}
+
+@media (prefers-reduced-motion: reduce) { .ap-foto { animation: none; } }

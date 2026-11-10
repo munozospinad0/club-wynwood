@@ -54,7 +54,7 @@ export const PAGINAS: Pagina[] = [
       { etiqueta: { es: "De pie (recinto completo)", en: "Standing (whole venue)" }, valor: "~600" },
     ],
     foto: {
-      src: "/assets/venue-exterior.webp",
+      src: "/fotos/cw-42-paseo-pabellon.webp",
       alt: {
         es: "El paseo pavimentado entre las dos hileras de palmeras, con el pabellón al fondo",
         en: "The paved walkway between two rows of palms, with the Pavilion in the background",
@@ -168,14 +168,14 @@ export const PAGINAS: Pagina[] = [
       { etiqueta: { es: "Plan de lluvia", en: "Rain plan" }, valor: { es: "~4 000 ft²", en: "~4,000 sq ft" } },
     ],
     foto: {
-      src: "/assets/aerea-predio.jpg",
+      src: "/fotos/cw-50-pabellon-dron.webp",
       alt: {
-        es: "Vista aérea del predio completo: el pabellón techado, el paseo central y el jardín",
-        en: "Aerial view of the whole site: the covered pavilion, the central walk and the garden",
+        es: "Vista aérea del pabellón techado entre las palmeras reales del jardín",
+        en: "Aerial view of the covered Pavilion among the Garden's royal palms",
       },
       pie: {
-        es: "El predio completo: pabellón, paseo central y jardín.",
-        en: "The whole property: the Pavilion, the central walkway and the Garden.",
+        es: "El pabellón techado y las palmeras del jardín, desde el aire.",
+        en: "The covered Pavilion and the Garden's palms, from the air.",
       },
     },
     bloques: [
@@ -225,7 +225,7 @@ export const PAGINAS: Pagina[] = [
       { etiqueta: { es: "Techado", en: "Covered" }, valor: { es: "~4 000 ft²", en: "~4,000 sq ft" } },
     ],
     foto: {
-      src: "/assets/aerea-predio.jpg",
+      src: "/fotos/cw-50-pabellon-dron.webp",
       alt: {
         es: "Vista aérea del predio con el pabellón techado al centro",
         en: "Aerial view of the venue with the covered Pavilion at the center",
@@ -282,7 +282,7 @@ export const PAGINAS: Pagina[] = [
       { etiqueta: { es: "Cabañas amuebladas", en: "Furnished cabanas" }, valor: "6" },
     ],
     foto: {
-      src: "/assets/venue-exterior.webp",
+      src: "/fotos/cw-42-paseo-pabellon.webp",
       alt: {
         es: "Palmeras, césped y paseo pavimentado en el mismo encuadre",
         en: "Palms, turf and the paved walkway in one frame",
@@ -339,7 +339,7 @@ export const PAGINAS: Pagina[] = [
       { etiqueta: { es: "El resto", en: "The rest" }, valor: { es: "En la visita", en: "Site visit" } },
     ],
     foto: {
-      src: "/assets/aerea-predio.jpg",
+      src: "/fotos/cw-50-pabellon-dron.webp",
       alt: {
         es: "Vista aérea de un recinto de eventos al aire libre en Wynwood, Miami",
         en: "Aerial view of an open-air event site in Wynwood, Miami",
@@ -424,7 +424,7 @@ export const PAGINAS: Pagina[] = [
       { etiqueta: { es: "Cabañas", en: "Cabanas" }, valor: "6" },
     ],
     foto: {
-      src: "/assets/venue-exterior.webp",
+      src: "/fotos/cw-42-paseo-pabellon.webp",
       alt: {
         es: "El paseo pavimentado entre palmeras, recorrido de entrada para una quinceañera",
         en: "The paved walkway between the palms, a ready-made entrance aisle for a quinceañera",
@@ -481,14 +481,14 @@ export const PAGINAS: Pagina[] = [
       { etiqueta: { es: "Superficie", en: "Area" }, valor: { es: "~22 000 ft²", en: "~22,000 sq ft" } },
     ],
     foto: {
-      src: "/assets/aerea-predio.jpg",
+      src: "/fotos/cw-50-pabellon-dron.webp",
       alt: {
-        es: "Vista aérea del recinto completo, con el pabellón techado y el jardín",
-        en: "Aerial view of the whole site, with the covered pavilion and the garden",
+        es: "Vista aérea del pabellón techado y el jardín",
+        en: "Aerial view of the covered Pavilion and the Garden",
       },
       pie: {
-        es: "El recinto completo: ~22.000 ft² entre jardín y pabellón.",
-        en: "The whole venue: ~22,000 sq ft between the Garden and the Pavilion.",
+        es: "~22.000 ft² entre jardín y pabellón; aquí, el pabellón desde el aire.",
+        en: "~22,000 sq ft between the Garden and the Pavilion; here, the Pavilion from the air.",
       },
     },
     bloques: [
@@ -538,7 +538,7 @@ export const PAGINAS: Pagina[] = [
       { etiqueta: { es: "De pie", en: "Standing" }, valor: "~600" },
     ],
     foto: {
-      src: "/assets/venue-exterior.webp",
+      src: "/fotos/cw-42-paseo-pabellon.webp",
       alt: {
         es: "Paseo pavimentado entre palmeras, apto para montar módulos de un mercado",
         en: "The paved walkway between the palms, ready for vendor booths",
@@ -606,14 +606,14 @@ export const PAGINAS: Pagina[] = [
       { etiqueta: { es: "Techado", en: "Covered" }, valor: { es: "~4 000 ft²", en: "~4,000 sq ft" } },
     ],
     foto: {
-      src: "/assets/aerea-predio.jpg",
+      src: "/fotos/cw-50-pabellon-dron.webp",
       alt: {
-        es: "Vista aérea del recinto completo, con el pabellón techado y el jardín",
-        en: "Aerial view of the whole site, with the covered pavilion and the garden",
+        es: "Vista aérea del pabellón techado y el jardín",
+        en: "Aerial view of the covered Pavilion and the Garden",
       },
       pie: {
-        es: "El recinto completo, con el pabellón al centro.",
-        en: "The whole property, with the Pavilion at the center.",
+        es: "El pabellón techado desde el aire: el plan de lluvia.",
+        en: "The covered Pavilion from the air: the rain plan.",
       },
     },
     bloques: [
@@ -873,10 +873,10 @@ export const PAGINAS: Pagina[] = [
       { etiqueta: { es: "A Miami Beach", en: "To Miami Beach" }, valor: "18 min" },
     ],
     foto: {
-      src: "/assets/venue-exterior.webp",
+      src: "/fotos/cw-05-fachada.webp",
       alt: {
-        es: "El paseo entre palmeras hacia el edificio, con el mural de su fachada al fondo",
-        en: "The walkway between the palms toward the building, with the mural on its façade in the background",
+        es: "El paseo hacia el edificio, con el mural de su fachada al fondo",
+        en: "The walkway toward the building, with the mural on its façade in the background",
       },
       pie: {
         es: "El paseo y el mural de la fachada del edificio; Wynwood Walls queda a 4 min a pie.",

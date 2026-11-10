@@ -32,7 +32,7 @@ import { Contraer, Expandir, FlechaDer, FlechaIzq } from "./Iconos";
 const T = {
   es: {
     ojo: "Recorrido a pie",
-    titulo: "Camina el lugar, de la calle al salón.",
+    titulo: "Camina el lugar, de la calle al altillo.",
     intro: "Desliza o usa las flechas. El plano de la esquina marca dónde estás parado y hacia dónde miras.",
     aria: "Recorrido a pie por el recinto",
     anterior: "Paso anterior",
@@ -45,7 +45,7 @@ const T = {
   },
   en: {
     ojo: "Walk-through",
-    titulo: "Walk the venue, from the street to the hall.",
+    titulo: "Walk the venue, from the street to the mezzanine.",
     intro: "Swipe or use the arrows. The plan in the corner shows where you're standing and which way you're looking.",
     aria: "Walk-through of the venue",
     anterior: "Previous step",
@@ -129,6 +129,7 @@ export default function RecorridoAPie({ lang }: { lang: Idioma }) {
 
       <div
         ref={escena}
+        data-aparta-barra=""
         className={`ap-escena${completa ? " ap-completa" : ""}`}
         tabIndex={0}
         role="region"

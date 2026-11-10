@@ -60,7 +60,10 @@ export default function BarraFija({ lang }: { lang: Idioma }) {
      */
     let pasoElInicio = false;
     let formularioALaVista = false;
-    const pintar = () => setVisible(pasoElInicio && !formularioALaVista);
+    // Bloques que se adueñan de la pantalla (el recorrido a pie): mientras se
+    // ven, la barra les taparía el texto del paso y los mandos (10-nov-2026).
+    const apartan = new Set<Element>();
+    const pintar = () => setVisible(pasoElInicio && !formularioALaVista && apartan.size === 0);
 
     // Centinela invisible a una pantalla de altura: al dejarlo atrás, aparece.
     const centinela = document.createElement("div");
@@ -83,9 +86,19 @@ export default function BarraFija({ lang }: { lang: Idioma }) {
       oForm.observe(destino);
     }
 
+    const oAparta = new IntersectionObserver((entradas) => {
+      for (const e of entradas) {
+        if (e.isIntersecting) apartan.add(e.target);
+        else apartan.delete(e.target);
+      }
+      pintar();
+    }, { threshold: 0.25 });
+    document.querySelectorAll("[data-aparta-barra]").forEach((el) => oAparta.observe(el));
+
     return () => {
       oInicio.disconnect();
       oForm?.disconnect();
+      oAparta.disconnect();
       centinela.remove();
     };
   }, []);

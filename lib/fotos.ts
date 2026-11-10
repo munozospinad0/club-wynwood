@@ -226,6 +226,12 @@ export const FOTOS: Foto[] = [
     punto: { x: 74, y: 104, rumbo: 225 }, encuadre: "48% 55%",
     alt: { es: "El Pabellón desde el dron: la pirámide de paja entre palmeras reales, en la esquina de dos calles de Wynwood",
            en: "The Pavilion from the drone: the thatch pyramid among royal palms, on a Wynwood street corner" } },
+  // Portada (10-nov-2026): la 50 recortada sin la calle de arriba y con la columna de escalada sin sus
+  // agarres (retoque con IA, como en 05 y 06). Solo para la portada; en la galería va la 50 completa.
+  { id: "portada-dron", src: "/fotos/cw-50-portada.webp", w: 1920, h: 1275, zona: "aereas", tipo: "real", fuente: SESION, galeria: false,
+    encuadre: "50% 50%",
+    alt: { es: "El Pabellón desde el dron: la pirámide de paja entre palmeras reales, con el césped y el paseo de losas",
+           en: "The Pavilion from the drone: the thatch pyramid among royal palms, with the lawn and the paved walk" } },
   { id: "lote", src: "/fotos/cw-01-lote-senalado.webp", w: 1920, h: 1438, zona: "aereas", tipo: "real", fuente: SESION,
     alt: { es: "Cenital del predio señalado: el edificio al norte, el Pabellón y el jardín al sur, sobre la manzana",
            en: "Overhead view with the property outlined: the building to the north, the Pavilion and Garden to the south" } },
@@ -255,7 +261,7 @@ export const fotoPorSrc = (src: string) => POR_SRC.get(src);
 export const GALERIA: Foto[] = ZONAS.flatMap((z) => FOTOS.filter((f) => f.zona === z.clave && f.galeria !== false));
 
 /** La foto de la portada: el dron sobre el Pabellón. */
-export const PORTADA = "pabellon-dron";
+export const PORTADA = "portada-dron";
 
 /**
  * EL RECORRIDO A PIE: el orden en que alguien conoce el lugar llegando en coche. Cada paso es una foto y

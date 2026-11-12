@@ -1,0 +1,16 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Club Wynwood//Exclusive Brokers Preview//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:brokers-preview-2026-11-18@clubwynwood.com
+DTSTAMP:20261112T000000Z
+DTSTART:20261118T190000Z
+DTEND:20261118T230000Z
+SUMMARY:Club Wynwood · Exclusive Brokers Preview
+LOCATION:Club Wynwood\, 2129 NW 1st Ct\, Miami\, FL 33127
+DESCRIPTION:An exclusive first look at Wynwood's next landmark opportunity. Light bites\, refreshments and private tours. Drop by anytime between 2:00 and 6:00 PM. RSVP: events@clubwynwood.com · https://clubwynwood.com/en/preview
+URL:https://clubwynwood.com/en/preview
+END:VEVENT
+END:VCALENDAR

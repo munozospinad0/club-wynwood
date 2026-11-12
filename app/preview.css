@@ -1,0 +1,249 @@
+/*
+ * Página del «Exclusive Brokers Preview» (app/[lang]/preview).
+ *
+ * Lleva el sistema de la invitación del 18-nov, no el del sitio: blanco con el
+ * logo dorado, la tinta «noche», los cinco colores del mural de la fachada y
+ * Fraunces en cursiva. Es el mismo lenguaje de los videos y de la imagen que
+ * ve la gente antes de llegar aquí.
+ *
+ * La tira de cinco colores es la firma: abre la página, la cierra y nombra los
+ * cinco usos del arriendo. Todo lo demás se queda quieto.
+ */
+
+/* Un solo camino: sin la navegación, el pie ni la barra del sitio. */
+body:has(.pv) > nav,
+body:has(.pv) > footer,
+body:has(.pv) .barra-fija { display: none; }
+body:has(.pv) { background: #fefefe; }
+
+.pv {
+  --blanco: #fefefe;
+  --galeria: #f6f5f1;
+  --noche: #0e1b2e;
+  --gris: #4b5568;
+  --linea: #dfe2e8;
+  --rojo: #e0352f;
+  --rojo-texto: #c5241f;
+  --coral: #f28c78;
+  --cian: #12b5d4;
+  --cobalto: #1466c0;
+  --uva: #5b3a78;
+  --cursiva: var(--f-cursiva), var(--f-display), Georgia, serif;
+  --ancho: 1240px;
+  --aire: clamp(20px, 4.6vw, 56px);
+
+  background: var(--blanco);
+  color: var(--noche);
+  font-family: var(--cuerpo);
+  font-size: 17px;
+  line-height: 1.55;
+  overflow-x: clip;
+}
+.pv *, .pv *::before, .pv *::after { box-sizing: border-box; }
+.pv img, .pv video { display: block; width: 100%; height: auto; }
+.pv p, .pv h1, .pv h2, .pv h3, .pv dl, .pv dd, .pv ul, .pv ol, .pv figure { margin: 0; padding: 0; }
+.pv ul, .pv ol { list-style: none; }
+.pv a { color: inherit; }
+.pv a:focus-visible, .pv video:focus-visible { outline: 3px solid var(--cobalto); outline-offset: 3px; }
+
+.pv h1, .pv h2, .pv h3 {
+  font-family: var(--cursiva);
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "SOFT" 0, "WONK" 1;
+  letter-spacing: -0.022em;
+  text-wrap: balance;
+}
+.pv h1 { font-size: clamp(38px, 5.4vw, 74px); line-height: 1.04; }
+.pv h2 { font-size: clamp(30px, 3.9vw, 54px); line-height: 1.08; }
+.pv-ceja {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+  color: var(--gris);
+}
+.pv-parrafo { font-size: clamp(17px, 1.5vw, 20px); color: var(--gris); max-width: 58ch; text-wrap: pretty; }
+
+/* La tira de cinco colores */
+.pv-tiras { display: flex; height: 14px; width: 100%; }
+.pv-tiras i { flex: 1; transform-origin: left center; }
+.pv-tiras i:nth-child(1) { background: var(--rojo); }
+.pv-tiras i:nth-child(2) { background: var(--coral); }
+.pv-tiras i:nth-child(3) { background: var(--cian); }
+.pv-tiras i:nth-child(4) { background: var(--cobalto); }
+.pv-tiras i:nth-child(5) { background: var(--uva); }
+
+/* Botones */
+.pv-boton {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 52px; padding: 0 26px;
+  background: var(--noche); color: var(--blanco) !important;
+  border: 1.5px solid var(--noche);
+  font-family: var(--cuerpo); font-size: 16px; font-weight: 500; letter-spacing: 0.01em;
+  text-decoration: none; white-space: nowrap;
+  transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
+}
+.pv-boton--linea { background: transparent; color: var(--noche) !important; }
+.pv-boton--claro { background: var(--blanco); color: var(--noche) !important; border-color: var(--blanco); }
+.pv-boton--linea-clara { background: transparent; color: var(--blanco) !important; border-color: rgba(254, 254, 254, 0.55); }
+@media (hover: hover) {
+  .pv-boton:hover { background: var(--cobalto); border-color: var(--cobalto); color: var(--blanco) !important; }
+  .pv-boton--claro:hover { background: var(--coral); border-color: var(--coral); color: var(--noche) !important; }
+  .pv-boton--linea-clara:hover { background: var(--blanco); border-color: var(--blanco); color: var(--noche) !important; }
+}
+.pv-acciones { display: flex; flex-wrap: wrap; gap: 12px; }
+
+/* Cuándo y dónde: la hora manda */
+.pv-cuando { display: grid; gap: 2px; }
+.pv-fecha { font-size: clamp(19px, 1.9vw, 24px); font-weight: 500; letter-spacing: -0.01em; }
+.pv-hora {
+  font-family: var(--cursiva); font-style: italic; font-variation-settings: "SOFT" 0, "WONK" 1;
+  font-size: clamp(40px, 5vw, 66px); line-height: 1.06; color: var(--rojo-texto); letter-spacing: -0.02em;
+}
+.pv-lugar { font-size: 16px; color: var(--gris); margin-top: 6px; }
+
+/* ── 1. La invitación ── */
+.pv-hero { display: grid; grid-template-columns: 1fr; background: var(--blanco); }
+.pv-hero__foto { overflow: hidden; }
+.pv-hero__foto img { height: 100%; min-height: 240px; object-fit: cover; }
+.pv-hero__tarjeta { display: grid; gap: 22px; align-content: center; padding: 30px var(--aire) 44px; }
+.pv-hero__arriba { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.pv .pv-logo { width: clamp(124px, 13vw, 172px); margin-left: -8px; }
+.pv-idioma {
+  font-family: var(--mono); font-size: 12.5px; letter-spacing: 0.14em; text-transform: uppercase;
+  text-decoration: none; padding: 12px 14px; border: 1px solid var(--linea); color: var(--gris) !important;
+}
+.pv-incluye { font-family: var(--mono); font-size: 12.5px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gris); }
+.pv-hero .pv-tiras { grid-column: 1 / -1; }
+@media (min-width: 960px) {
+  .pv-hero { grid-template-columns: minmax(0, 46fr) minmax(0, 54fr); min-height: min(88vh, 860px); }
+  .pv-hero__foto { order: 2; }
+  .pv-hero__tarjeta { order: 1; padding: 56px clamp(40px, 5vw, 84px); gap: 26px; }
+  .pv-hero .pv-tiras { order: 3; }
+}
+
+/* ── Bloques ── */
+.pv-bloque { max-width: var(--ancho); margin-inline: auto; padding: clamp(64px, 9vw, 124px) var(--aire) 0; }
+.pv-cabeza { display: grid; gap: 16px; max-width: 880px; }
+.pv-cabeza .pv-boton { justify-self: start; margin-top: 6px; }
+
+/* ── 2. Qué es, y el video ── */
+.pv-intro, .pv-dentro { display: grid; gap: 36px; align-items: center; }
+.pv-intro__texto { display: grid; gap: 16px; }
+.pv-video video { aspect-ratio: 1; background: var(--noche); }
+.pv-video figcaption, .pv-galeria figcaption, .pv-donde figcaption { font-size: 14px; color: var(--gris); padding-top: 10px; }
+@media (min-width: 960px) {
+  .pv-intro, .pv-dentro { grid-template-columns: minmax(0, 1fr) minmax(0, 460px); gap: 72px; }
+}
+
+/* ── 3. Los espacios: la escena del video, quieta ── */
+.pv-escenas { display: grid; gap: 22px; margin-top: 44px; }
+.pv-escena { display: flex; flex-direction: column; }
+.pv-escena img { aspect-ratio: 3 / 2; object-fit: cover; }
+.pv-escena__franja { flex: 1; padding: 22px 24px 26px; display: grid; gap: 8px; align-content: start; }
+.pv-escena h3 { font-size: clamp(34px, 3.4vw, 46px); line-height: 1.04; }
+.pv-escena p { font-family: var(--mono); font-size: 12.5px; letter-spacing: 0.13em; text-transform: uppercase; line-height: 1.55; }
+.pv-escena--cian .pv-escena__franja { background: var(--cian); color: var(--noche); }
+.pv-escena--coral .pv-escena__franja { background: var(--coral); color: var(--noche); }
+.pv-escena--cobalto .pv-escena__franja { background: var(--cobalto); color: var(--blanco); }
+@media (min-width: 960px) { .pv-escenas { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+/* ── 4. La ficha ── */
+.pv-ficha dl { margin-top: 40px; border-top: 1.5px solid var(--noche); display: grid; }
+.pv-ficha dl > div { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2px; padding: 15px 0; border-bottom: 1px solid var(--linea); }
+.pv-ficha dt { font-family: var(--mono); font-size: 12.5px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gris); padding-top: 4px; }
+.pv-ficha dd { font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+.pv-ficha dd small { display: block; font-size: 14px; font-weight: 400; letter-spacing: 0; color: var(--gris); }
+.pv-fuente { font-size: 14px; color: var(--gris); padding-top: 16px; }
+@media (min-width: 720px) {
+  .pv-ficha dl { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 56px; }
+  .pv-ficha dl > div { grid-template-columns: 190px minmax(0, 1fr); gap: 18px; }
+}
+
+/* ── 5. Los cinco usos, uno por color del mural ── */
+.pv-usos ul { margin-top: 40px; display: grid; gap: 0; }
+.pv-usos li {
+  font-family: var(--cursiva); font-style: italic; font-variation-settings: "SOFT" 0, "WONK" 1;
+  font-size: clamp(26px, 2.5vw, 34px); line-height: 1.12; letter-spacing: -0.015em;
+  padding: 20px 0 20px 22px; border-left: 14px solid var(--rojo); border-bottom: 1px solid var(--linea);
+}
+.pv-usos li:nth-child(2) { border-left-color: var(--coral); }
+.pv-usos li:nth-child(3) { border-left-color: var(--cian); }
+.pv-usos li:nth-child(4) { border-left-color: var(--cobalto); }
+.pv-usos li:nth-child(5) { border-left-color: var(--uva); }
+@media (min-width: 960px) {
+  .pv-usos ul { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .pv-usos li { border-left: 0; border-bottom: 0; border-top: 14px solid var(--rojo); padding: 20px 18px 0 0; }
+  .pv-usos li:nth-child(2) { border-top-color: var(--coral); }
+  .pv-usos li:nth-child(3) { border-top-color: var(--cian); }
+  .pv-usos li:nth-child(4) { border-top-color: var(--cobalto); }
+  .pv-usos li:nth-child(5) { border-top-color: var(--uva); }
+}
+
+/* ── 6. Por dentro ── */
+.pv-galeria { display: grid; gap: 22px; grid-column: 1 / -1; }
+.pv-galeria img { aspect-ratio: 4 / 3; object-fit: cover; }
+.pv-galeria figcaption b { color: var(--noche); font-weight: 500; }
+@media (min-width: 960px) { .pv-galeria { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 8px; } }
+
+/* ── 7. El día ── */
+.pv-dia ol { margin-top: 40px; display: grid; gap: 0; border-top: 1.5px solid var(--noche); }
+.pv-dia li { display: grid; gap: 4px; padding: 20px 0; border-bottom: 1px solid var(--linea); }
+.pv-dia li b { font-size: 21px; font-weight: 500; letter-spacing: -0.01em; }
+.pv-dia li span { color: var(--gris); }
+@media (min-width: 720px) {
+  .pv-dia ol { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 40px; }
+  .pv-dia li { border-bottom: 0; }
+}
+
+/* ── 8. Dónde ── */
+.pv-donde { display: grid; gap: 40px; padding-bottom: clamp(64px, 9vw, 124px); }
+.pv-direccion { display: grid; font-size: 19px; }
+.pv-direccion b { font-weight: 500; }
+.pv-donde__fotos { display: grid; gap: 22px; }
+.pv-donde__fotos img { aspect-ratio: 4 / 3; object-fit: cover; }
+@media (min-width: 720px) { .pv-donde__fotos { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* ── 9. Confirmar ── */
+.pv-cierre { background: var(--noche); color: var(--blanco); }
+.pv-cierre__dentro { max-width: var(--ancho); margin-inline: auto; padding: clamp(60px, 8vw, 108px) var(--aire); display: grid; gap: 26px; justify-items: start; }
+.pv-cierre .pv-ceja, .pv-cierre .pv-lugar { color: rgba(254, 254, 254, 0.72); }
+.pv-cierre .pv-hora { color: var(--coral); }
+.pv-cierre h2 { font-size: clamp(38px, 5.6vw, 78px); }
+.pv-correo { font-size: 19px; }
+.pv-correo a { text-underline-offset: 4px; }
+.pv-alianza { font-family: var(--mono); font-size: 12.5px; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(254, 254, 254, 0.72); }
+
+.pv-pie {
+  background: var(--noche); color: rgba(254, 254, 254, 0.72); font-size: 14px;
+  border-top: 1px solid rgba(254, 254, 254, 0.16);
+  padding: 22px var(--aire) 104px; display: flex; flex-wrap: wrap; gap: 8px 28px; justify-content: space-between;
+}
+.pv-pie p:last-child { display: flex; gap: 22px; }
+
+/* Barra del móvil */
+.pv-barra {
+  position: fixed; inset: auto 0 0 0; z-index: 40;
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+  background: var(--blanco); border-top: 1px solid var(--linea);
+}
+.pv-barra p { font-size: 15px; line-height: 1.25; }
+.pv-barra b { font-weight: 500; }
+.pv-barra .pv-boton { min-height: 46px; padding: 0 20px; }
+@media (min-width: 960px) {
+  .pv-barra { display: none; }
+  .pv-pie { padding-bottom: 22px; }
+}
+
+/* Movimiento: la tira se despliega una vez al entrar. Nada más. */
+@media (prefers-reduced-motion: no-preference) {
+  .pv-hero .pv-tiras i { animation: pv-tira 700ms cubic-bezier(0.23, 1, 0.32, 1) both; }
+  .pv-hero .pv-tiras i:nth-child(2) { animation-delay: 70ms; }
+  .pv-hero .pv-tiras i:nth-child(3) { animation-delay: 140ms; }
+  .pv-hero .pv-tiras i:nth-child(4) { animation-delay: 210ms; }
+  .pv-hero .pv-tiras i:nth-child(5) { animation-delay: 280ms; }
+}
+@keyframes pv-tira { from { transform: scaleX(0); } to { transform: scaleX(1); } }

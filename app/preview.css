@@ -54,7 +54,7 @@ body:has(.pv) { background: #fefefe; }
   letter-spacing: -0.022em;
   text-wrap: balance;
 }
-.pv h1 { font-size: clamp(38px, 5.4vw, 74px); line-height: 1.04; }
+.pv h1 { font-size: clamp(36px, 4.5vw, 62px); line-height: 1.05; }
 .pv h2 { font-size: clamp(30px, 3.9vw, 54px); line-height: 1.08; }
 .pv-ceja {
   font-family: var(--mono);
@@ -118,9 +118,10 @@ body:has(.pv) { background: #fefefe; }
 .pv-incluye { font-family: var(--mono); font-size: 12.5px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gris); }
 .pv-hero .pv-tiras { grid-column: 1 / -1; }
 @media (min-width: 960px) {
-  .pv-hero { grid-template-columns: minmax(0, 46fr) minmax(0, 54fr); min-height: min(88vh, 860px); }
+  .pv-hero { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); min-height: min(86vh, 780px); }
   .pv-hero__foto { order: 2; }
-  .pv-hero__tarjeta { order: 1; padding: 56px clamp(40px, 5vw, 84px); gap: 26px; }
+  .pv-hero__tarjeta { order: 1; padding: 40px clamp(40px, 5vw, 84px); gap: 20px; }
+  .pv-hero .pv-hora { font-size: clamp(40px, 4.2vw, 56px); }
   .pv-hero .pv-tiras { order: 3; }
 }
 
@@ -231,6 +232,11 @@ body:has(.pv) { background: #fefefe; }
   background: var(--blanco); border-top: 1px solid var(--linea);
 }
 .pv-barra p { font-size: 15px; line-height: 1.25; }
+/* Aparece al dejar atrás la invitación, donde ya hay un botón igual. Sin soporte, se queda siempre visible. */
+@supports (animation-timeline: scroll()) {
+  .pv-barra { animation: pv-barra linear both; animation-timeline: scroll(root); animation-range: 520px 700px; }
+}
+@keyframes pv-barra { from { transform: translateY(110%); } to { transform: translateY(0); } }
 .pv-barra b { font-weight: 500; }
 .pv-barra .pv-boton { min-height: 46px; padding: 0 20px; }
 @media (min-width: 960px) {

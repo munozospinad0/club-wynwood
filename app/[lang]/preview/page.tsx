@@ -109,7 +109,7 @@ export default async function Preview({ params }: { params: Promise<{ lang: stri
       {/* ── 1. La invitación ─────────────────────────────────────────────── */}
       <header className="pv-hero">
         <div className="pv-hero__foto">
-          <Image src={`${F}/pabellon-desde-el-aire.jpg`} alt={t.alt.aire} width={1440} height={956} priority sizes="(min-width: 960px) 54vw, 100vw" />
+          <Image src={`${F}/pabellon-desde-el-aire.jpg`} alt={t.alt.aire} width={1440} height={956} priority sizes="100vw" />
         </div>
         <div className="pv-hero__tarjeta">
           <div className="pv-hero__arriba">
@@ -368,8 +368,8 @@ const TEXTO: Record<Idioma, {
       fuente: "Figures from the Club Wynwood leasing brochure, November 2026.",
     },
     usos: {
-      ceja: "Exceptional leasing potential",
-      titulo: "From short-term activations to long-term flagship concepts.",
+      ceja: "Leasing",
+      titulo: "Exceptional leasing potential.",
       texto: "From short-term activations to long-term flagship hospitality, entertainment, and experiential retail concepts.",
       lista: ["Flagship retail", "Hospitality & lifestyle", "Private club & membership", "Boutique office", "Mixed-use development"],
     },
@@ -472,8 +472,8 @@ const TEXTO: Record<Idioma, {
       fuente: "Cifras del folleto de arriendo de Club Wynwood, noviembre de 2026.",
     },
     usos: {
-      ceja: "Un potencial de arriendo excepcional",
-      titulo: "De activaciones cortas a conceptos insignia de largo plazo.",
+      ceja: "Arriendo",
+      titulo: "Un potencial de arriendo excepcional.",
       texto: "Desde activaciones de corto plazo hasta conceptos insignia de hospitalidad, entretenimiento y comercio experiencial a largo plazo.",
       lista: ["Tienda insignia", "Hospitalidad y estilo de vida", "Club privado y membresías", "Oficina boutique", "Desarrollo de uso mixto"],
     },

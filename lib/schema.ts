@@ -1,5 +1,5 @@
 import { VENUE, ESPACIOS, FICHA, NO_INCLUIDO } from "./venue";
-import { GALERIA } from "./galeria";
+import { foto } from "./fotos";
 import { BASE, url, type Idioma } from "./i18n";
 
 /**
@@ -28,10 +28,16 @@ const ID_VENUE = `${BASE}/#venue`;
  * generativos las citan al describir el sitio. Una sola imagen es lo mínimo;
  * varias, de distintas partes del recinto, es lo que se recomienda.
  *
- * Salen de `lib/galeria.ts`, la misma lista que ve el visitante, así que
- * ninguna lleva la marca del operador en cuadro.
+ * Salen de `lib/fotos.ts`, la misma lista que ve el visitante, así que
+ * ninguna lleva la marca del operador en cuadro. Desde el 10-nov-2026 son las
+ * de la sesión de noviembre, **solo reales**: una visualización (el interior
+ * pintado con IA) no se declara como foto del lugar ante un buscador. Las dos
+ * con parche (`aerea-predio`, `venue-exterior`) estaban aquí y ya no existen.
  */
-const FOTOS = GALERIA.slice(0, 8).map((f) => `${BASE}${f.src}`);
+const FOTOS = ["pabellon-dron", "pabellon-frente", "paseo-pabellon", "bajo-pabellon", "lote", "fachada", "estacionamiento", "skyline"]
+  .map(foto)
+  .filter((f) => f.tipo === "real")
+  .map((f) => `${BASE}${f.src}`);
 
 /** El enlace al mapa, sin inventar coordenadas: se busca por la dirección exacta. */
 const MAPA = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(

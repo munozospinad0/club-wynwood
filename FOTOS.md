@@ -1,5 +1,10 @@
 # Fotos del sitio — qué hay y qué falta
 
+> **Histórico (10-nov-2026).** Este encargo es de agosto. Las fotos del sitio viven ahora en
+> [`lib/fotos.ts`](lib/fotos.ts), la lista única (zona, real o visualización, punto en el plano), y
+> salen de la sesión profesional del 6-nov-2026. Lo que dice abajo de `existe: true` y del marcador
+> ya no aplica: ese sistema se retiró con `components/Foto.tsx`.
+
 Estado a 2026-08-14. **3 fotos cubriendo 17 huecos.**
 
 Este documento es el encargo. Cada foto que llegue se deja en

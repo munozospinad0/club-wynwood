@@ -2,6 +2,8 @@ import Image from "next/image";
 import { asIdioma, href } from "@/lib/i18n";
 import { FICHA, TIEMPOS, VENUE } from "@/lib/venue";
 import { PAGINAS, FAQ } from "@/lib/contenido";
+import { foto, PORTADA } from "@/lib/fotos";
+import { heroeDe } from "@/lib/fotosPagina";
 import { grafo, faqPage, localBusiness, eventVenue, webPage } from "@/lib/schema";
 import Formulario from "@/components/Formulario";
 import LaminaEdificio from "@/components/LaminaEdificio";
@@ -29,6 +31,7 @@ import ParaQuien from "@/components/ParaQuien";
 export default async function Home({ params }: { params: Promise<{ lang: string }> }) {
   const lang = asIdioma((await params).lang);
   const es = lang === "es";
+  const portada = foto(PORTADA);
   const verificados = FICHA.filter((f) => f.estado === "verificado");
 
   /**
@@ -104,15 +107,15 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         </div>
 
         <figure style={{ margin: 0, position: "relative", minHeight: "clamp(320px,62vh,660px)" }}>
+          {/* 10-nov-2026: el dron de noviembre sobre el Pabellón, en lugar de la aérea con parche
+              (aerea-predio.jpg). Sale de lib/fotos.ts; va recortado para dejar fuera la columna de escalada. */}
           <Image
-            src="/assets/aerea-predio.jpg"
-            alt={es
-              ? "Vista aérea del predio: el pabellón techado, el paseo central y el jardín"
-              : "Aerial view of the venue: the covered Pavilion, the central walkway and the Garden"}
+            src={portada.src}
+            alt={portada.alt[lang]}
             fill
             priority
             sizes="(max-width: 880px) 100vw, 46vw"
-            style={{ objectFit: "cover", objectPosition: "52% 54%", filter: "saturate(.94) contrast(1.05)" }}
+            style={{ objectFit: "cover", objectPosition: portada.encuadre ?? "50% 50%", filter: "saturate(.96) contrast(1.04)" }}
           />
           <figcaption
             className="ojo"
@@ -122,8 +125,8 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             }}
           >
             {es
-              ? "El predio completo · el edificio del fondo se alquila aparte"
-              : "The whole venue · the building in the back is rented separately"}
+              ? "El Pabellón y el jardín desde el aire · noviembre de 2026"
+              : "The Pavilion and the Garden from the air · November 2026"}
           </figcaption>
         </figure>
       </header>
@@ -154,12 +157,15 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         <div className="reja" style={{ paddingBlock: 76 }}>
           <div className="ojo" style={{ marginBottom: 30 }}>{es ? "Espacios" : "Spaces"}</div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(320px,1fr))", gap: 44 }}>
-            {PAGINAS.filter((p) => p.clave === "jardin" || p.clave === "tikiHut").map((p) => (
+            {PAGINAS.filter((p) => p.clave === "jardin" || p.clave === "tikiHut").map((p) => {
+              /* La misma foto que encabeza la página del espacio (lib/fotosPagina.ts), no una tercera. */
+              const f = heroeDe(p.clave, p.foto, lang);
+              return (
               <article key={p.clave}>
                 <div style={{ position: "relative", aspectRatio: "3/2", marginBottom: 20 }}>
                   <Image
-                    src={p.foto.src}
-                    alt={p.foto.alt[lang]}
+                    src={f?.src ?? p.foto.src}
+                    alt={f?.alt ?? p.foto.alt[lang]}
                     fill
                     sizes="(max-width: 880px) 100vw, 44vw"
                     style={{ objectFit: "cover", filter: "saturate(.94) contrast(1.03)" }}
@@ -172,7 +178,8 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                   {es ? "Ver el espacio" : "See the space"} →
                 </a>
               </article>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>

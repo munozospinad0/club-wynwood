@@ -6,7 +6,10 @@ import Recorrido from "@/components/Recorrido";
 import Formulario from "@/components/Formulario";
 import BotonRecorrido from "@/components/BotonRecorrido";
 import { Simbolo } from "@/components/Marca";
+import RecorridoAPie from "@/components/RecorridoAPie";
+import { foto } from "@/lib/fotos";
 import "@/app/landing.css";
+import "@/app/recorrido-a-pie.css";
 
 /**
  * LA PÁGINA A LA QUE LLEGAN LOS ANUNCIOS.
@@ -145,8 +148,9 @@ export default async function Landing({ params }: { params: Promise<{ lang: stri
           * de carga intacto.
           */}
         <figure className="lp-foto">
+          {/* palapa-sonido.jpg era el mismo archivo que palapa-montaje.jpg; queda uno (lib/fotos.ts). */}
           <Image
-            src="/assets/palapa-sonido.jpg"
+            src={foto("montaje").src}
             alt={es
               ? "Un evento montado bajo el pabellón: cabina de DJ, congas, torres de altavoces y truss con focos colgado de los cabios"
               : "An event rigged under the Pavilion: a DJ booth, congas, speaker stacks and a lighting truss hung from the rafters"}
@@ -164,58 +168,16 @@ export default async function Landing({ params }: { params: Promise<{ lang: stri
       <Recorrido lang={lang} />
 
       {/**
-        * TRES FOTOS, NO UNA GALERÍA, Y LAS TRES DEL EXTERIOR.
+        * EL RECORRIDO A PIE (10-nov-2026), en lugar de la tira de tres fotos.
         *
-        * Después del recorrido la persona ya entiende el sitio; lo que le falta
-        * es creérselo. Tres fotografías reales bastan y una galería sobra: cada
-        * foto de más es una razón más para quedarse mirando en vez de escribir.
-        *
-        * Las tres cuentan una frase entera: **el conjunto** (la cenital, que
-        * en un segundo explica una distribución que un párrafo no explica en
-        * cinco), **el detalle** (las cabañas a ras de suelo, que es lo que
-        * nadie más publica) y **la logística** (la fachada y el portón de
-        * carga, que contesta la primera pregunta de quien tiene que meter un
-        * camión).
-        *
-        * Aquí estuvo el recinto de noche, y se quitó: es una cenital nocturna y
-        * al recortarla a 3:2 se quedaba en un primer plano de palmeras y una
-        * franja roja indescifrable. Una foto que hay que explicar no está
-        * ayudando. Sigue entera en la galería, donde se ve completa.
-        *
-        * ⚠️ **Aquí no entra ni una foto del edificio.** El material del
-        * inmueble avisa de algo que es fácil de romper sin darse cuenta: el
-        * exterior y el edificio son dos activos con dos públicos, y mezclarlos
-        * en la misma pieza quema el mensaje. Quien llega desde un anuncio de
-        * eventos viene a ver un jardín; una nave industrial por dentro, puesta
-        * en medio, le hace dudar de si llegó al sitio correcto. El edificio
-        * aparece más abajo, en «los dos usos», donde ya está dicho que es otra
-        * cosa que se alquila aparte.
+        * La tira (cenital, cabañas, recinto de noche) estaba para que, después del recorrido narrado, la
+        * persona se creyera el lugar con fotos reales. Con la sesión de noviembre eso se hace mejor
+        * caminándolo: diez fotos a pantalla completa, de la calle al salón, con un plano que dice dónde
+        * estás. Los pasos del edificio llevan «se alquila aparte» en el rótulo, que es lo que evitaba
+        * mezclar los dos activos sin avisar. El salón es una visualización y lo dice encima de la foto.
+        * Lista y orden en lib/fotos.ts (RECORRIDO_A_PIE).
         */}
-      <section className="lp-tira">
-        {[
-          /* El pie describe lo que se ve DESPUÉS del recorte a 3:2, no lo que hay
-             en la foto entera: mencionaba el paseo y el área de arena, que el
-             encuadre deja fuera. Un pie que promete lo que no está hace dudar
-             del resto. */
-          { src: "/assets/flyer-cenital.jpg", w: 935, h: 506,
-            es: "Desde arriba: el pabellón en el centro, las palmeras y las pérgolas alrededor, y el estacionamiento propio al fondo",
-            en: "From above: the Pavilion at the center, with palms and pergolas around it and the on-site parking behind" },
-          { src: "/assets/cabanas-fila.jpg", w: 930, h: 614,
-            es: "La hilera de cabañas: pérgolas blancas, cortinas y sofás contra el muro verde",
-            en: "The cabana row: white pergolas, curtains and sofas against the green wall" },
-          /* Aquí iba edificio-calle.jpg (el portón de carga): lleva la marca de agua de un portal inmobiliario,
-             es de un listado de terceros. Fuera el 30-sep. */
-          { src: "/assets/recinto-noche.jpg", w: 1920, h: 1080,
-            es: "El recinto al anochecer durante un evento: la alfombra y la luz las trajo esa producción",
-            en: "The venue at dusk during an event: the carpet and lighting came with that production" },
-        ].map((f) => (
-          <figure key={f.src}>
-            <Image src={f.src} alt={es ? f.es : f.en} width={f.w} height={f.h}
-                   quality={70} sizes="(max-width: 860px) 78vw, 33vw" />
-            <figcaption className="ojo">{es ? f.es : f.en}</figcaption>
-          </figure>
-        ))}
-      </section>
+      <RecorridoAPie lang={lang} />
 
       {/* ── lo que NO se incluye, antes de pedir nada ───────────────────── */}
       <section className="lp-honesto">
@@ -329,15 +291,17 @@ export default async function Landing({ params }: { params: Promise<{ lang: stri
  * debajo del rótulo «Oficina».
  */
 const FOTO_USO: Record<(typeof USOS)[number]["clave"], { src: string; w: number; h: number; es: string; en: string }> = {
-  evento: { src: "/assets/flyer-palapa-lounge.jpg", w: 935, h: 614,
+  evento: { ...foto("lounge"),
     es: "Bajo el pabellón, montado como lounge, con barra y guirnaldas",
     en: "Under the Pavilion, set up as a lounge, with a bar and string lights" },
-  oficina: { src: "/assets/edificio-doble-altura.jpg", w: 3214, h: 1924,
+  oficina: { ...foto("edificio-salon"),
     es: "Dentro del edificio: planta diáfana de doble altura y despachos acristalados al fondo",
     en: "Inside the building: an open double-height floor and glass-walled offices at the back" },
-  cocina: { src: "/assets/edificio-cocina.jpg", w: 740, h: 428,
-    es: "La cocina del edificio: isla de cuarzo, nevera de dos puertas y alacenas",
-    en: "The building's kitchen: a quartz island, a two-door fridge and cabinets" },
+  /* 10-nov-2026: la cocina de la sesión de noviembre (campana, acero). La de antes, del listado del
+     broker, era una cocina doméstica de 740 px que no se sabía si era esta. */
+  cocina: { ...foto("cocina"),
+    es: "La cocina del edificio: campana de extracción, mesas de acero inoxidable y lavamanos",
+    en: "The building's kitchen: an extraction hood, stainless-steel tables and hand sinks" },
 };
 
 /**

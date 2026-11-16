@@ -1,4 +1,4 @@
-import { GALERIA, type FotoGaleria } from "./galeria";
+import { FOTOS, ROTULO_VISUALIZACION, fotoPorSrc, type Foto } from "./fotos";
 import type { ClaveRuta, Idioma } from "./i18n";
 
 /**
@@ -19,41 +19,37 @@ import type { ClaveRuta, Idioma } from "./i18n";
  *    una de cada par para que la misma foto no salga dos veces en una página.
  *  · `coctel` es muy vertical (548×1434) y no cabe en un marco apaisado sin perder casi todo.
  *
+ *  · 10-nov-2026: todo sale de `lib/fotos.ts` (la lista única). Entran las de la sesión de noviembre, y las
+ *    visualizaciones (interior pintado de blanco) llevan el rótulo en el pie, siempre.
+ *
  * Las fotos de eventos anteriores llevan la nota de que ese montaje lo trajo otra producción: el sitio
  * alquila el espacio, no el mobiliario ni el sonido, y una foto también es una promesa.
  */
 
 const USABLES = [
   "puerta", "palmeras", "cenital", "aerea-palapa", "bajo-palapa", "lounge", "montaje",
-  "cabanas-fila", "noche", "contexto", "edificio-salon", "edificio-cocina",
+  "cabanas-fila", "noche", "contexto", "edificio-salon",
+  "paseo-pabellon", "patio-mural", "pabellon-frente", "bajo-pabellon", "estacionamiento",
+  "fachada", "fachada-diagonal", "mural-lateral", "salon-blanco", "cocina", "pabellon-dron", "lote", "skyline",
 ] as const;
 type Uso = (typeof USABLES)[number];
 
-/** Montajes de producciones anteriores: el mobiliario, la luz y el sonido no vienen con el recinto. */
-const MONTAJE_AJENO = new Set<string>(["lounge", "montaje", "noche", "bajo-palapa"]);
-
-/** Encuadre dentro del marco, para fotos que no son apaisadas. */
-const ENCUADRE: Partial<Record<string, string>> = {
-  "aerea-palapa": "50% 58%",
-  contexto: "50% 82%", // el rótulo del predio está abajo; arriba solo hay cielo y la bahía
-  palmeras: "50% 60%",
-};
-
 /** La foto principal de cada página, cuando la de contenido.ts no sirve o se repetía demasiado. */
 const HEROE: Partial<Record<ClaveRuta, Uso>> = {
-  jardin: "puerta",
+  jardin: "paseo-pabellon",
+  tikiHut: "pabellon-frente",
   bodas: "aerea-palapa",
   corporativo: "montaje",
-  produccion: "puerta",
-  guia: "cenital",
+  produccion: "patio-mural",
+  guia: "lote",
   quinces: "noche",
-  aforos: "aerea-palapa",
+  aforos: "pabellon-dron",
   popups: "puerta",
   graduaciones: "lounge",
-  barrio: "contexto",
+  barrio: "skyline",
   bodasIntimas: "bajo-palapa",
   showers: "cabanas-fila",
-  salonVsJardin: "aerea-palapa",
+  salonVsJardin: "fachada",
   sweet16: "montaje",
 };
 
@@ -62,21 +58,22 @@ const HEROE: Partial<Record<ClaveRuta, Uso>> = {
  * inglés) y gana el primer tema que aparece en el título; si el título no dice nada, el cuerpo.
  */
 const TEMAS: Array<[RegExp, Uso[]]> = [
-  [/lluvi|techad|cubierta|pabell|paja|sombra/i, ["aerea-palapa", "bajo-palapa", "montaje"]],
+  [/lluvi|techad|cubierta|pabell|paja|sombra/i, ["pabellon-frente", "bajo-pabellon", "aerea-palapa", "montaje"]],
   [/cabañ/i, ["cabanas-fila"]],
-  [/carga|load-in|portón|camion|camión|nw 1st|montaje y desmontaje|rodaje|filma|set\b/i, ["puerta", "cenital"]],
-  [/barrio|wynwood walls|mural|mana|i-95|galer|entorno|ubicaci|dónde/i, ["contexto", "palmeras"]],
+  [/carga|load-in|portón|camion|camión|nw 1st|montaje y desmontaje|rodaje|filma|set\b/i, ["patio-mural", "estacionamiento", "puerta"]],
+  [/barrio|wynwood walls|mural|mana|i-95|galer|entorno|ubicaci|dónde/i, ["skyline", "mural-lateral", "contexto"]],
   [/sonido|dj|escenario|truss|luces|iluminaci|rigging|colgar|producci/i, ["montaje"]],
   [/barra|licor|cóctel|coctel|lounge|mobiliario|catering|proveedor/i, ["lounge", "bajo-palapa"]],
-  [/cocina/i, ["edificio-cocina", "edificio-salon"]],
-  [/edificio|baños|oficina|interior/i, ["edificio-salon", "edificio-cocina"]],
+  [/cocina/i, ["cocina", "salon-blanco"]],
+  [/edificio|baños|oficina|interior/i, ["salon-blanco", "fachada", "cocina"]],
+  [/estacionamiento|parking|aparcamiento|valet/i, ["estacionamiento"]],
   [/noche|fiesta|baile|celebra|cumplea|quince|graduaci/i, ["noche", "montaje"]],
-  [/aforo|invitados|mesas|sentad|de pie|capacidad|plano|cabe/i, ["cenital", "aerea-palapa"]],
-  [/suelo|paseo|césped|arena|superficie|palmeras|pasarela|desfile/i, ["puerta", "palmeras", "cenital"]],
-  [/ceremonia|boda|novi|ensayo|shower/i, ["aerea-palapa", "lounge", "cabanas-fila"]],
+  [/aforo|invitados|mesas|sentad|de pie|capacidad|plano|cabe/i, ["lote", "cenital", "pabellon-dron"]],
+  [/suelo|paseo|césped|arena|superficie|palmeras|pasarela|desfile/i, ["paseo-pabellon", "puerta", "palmeras"]],
+  [/ceremonia|boda|novi|ensayo|shower/i, ["pabellon-frente", "aerea-palapa", "lounge", "cabanas-fila"]],
 ];
 /** Si ningún tema encaja, se rellena en este orden (lo que mejor explica el lugar primero). */
-const RELLENO: Uso[] = ["cenital", "palmeras", "cabanas-fila", "aerea-palapa", "puerta", "bajo-palapa", "noche"];
+const RELLENO: Uso[] = ["pabellon-dron", "paseo-pabellon", "cenital", "cabanas-fila", "pabellon-frente", "puerta", "bajo-pabellon", "noche"];
 
 export interface FotoPagina {
   id: string;
@@ -89,16 +86,15 @@ export interface FotoPagina {
   encuadre: string;
 }
 
-const porId = new Map(GALERIA.map((f) => [f.id, f]));
-const porSrc = new Map(GALERIA.map((f) => [f.src, f]));
+const porId = new Map(FOTOS.map((f) => [f.id, f]));
 
-function aFoto(f: FotoGaleria, lang: Idioma, texto?: { alt: string; pie: string }): FotoPagina {
-  const nota = MONTAJE_AJENO.has(f.id)
+function aFoto(f: Foto, lang: Idioma, texto?: { alt: string; pie: string }): FotoPagina {
+  const nota = f.montaje
     ? lang === "es" ? " Montaje de una producción anterior: cada evento trae el suyo." : " Set up by a previous production; each event brings its own."
-    : "";
+    : f.tipo === "visualizacion" ? ` ${ROTULO_VISUALIZACION[lang]}.` : "";
   const alt = texto?.alt ?? f.alt[lang];
   const pie = (texto?.pie ?? alt).replace(/\.$/, "");
-  return { id: f.id, src: f.src, w: f.w, h: f.h, alt, pie: `${pie}.${nota}`, encuadre: ENCUADRE[f.id] ?? "50% 50%" };
+  return { id: f.id, src: f.src, w: f.w, h: f.h, alt, pie: `${pie}.${nota}`, encuadre: f.encuadre ?? "50% 50%" };
 }
 
 /**
@@ -111,7 +107,7 @@ export function heroeDe(
   lang: Idioma,
 ): FotoPagina | null {
   if (HEROE[clave]) return aFoto(porId.get(HEROE[clave]!)!, lang);
-  const f = porSrc.get(foto.src);
+  const f = fotoPorSrc(foto.src);
   return f ? aFoto(f, lang, { alt: foto.alt[lang], pie: foto.pie[lang] }) : null;
 }
 
@@ -148,16 +144,16 @@ export function fotosDeBloques(
  * enseñar y forzarla sería decoración.
  */
 const PREGUNTAS: Array<[RegExp, Uso]> = [
-  [/cuánta gente/i, "cenital"],
-  [/llueve/i, "aerea-palapa"],
+  [/cuánta gente/i, "lote"],
+  [/llueve/i, "bajo-pabellon"],
   [/qué incluye/i, "cabanas-fila"],
-  [/catering/i, "edificio-cocina"],
-  [/por separado/i, "palmeras"],
-  [/potencia|parking|baños/i, "cenital"],
-  [/oficina/i, "edificio-salon"],
-  [/dónde queda/i, "contexto"],
+  [/catering/i, "cocina"],
+  [/por separado/i, "paseo-pabellon"],
+  [/potencia|parking|baños/i, "estacionamiento"],
+  [/oficina/i, "salon-blanco"],
+  [/dónde queda/i, "skyline"],
 ];
-export const HEROE_FAQ: Uso = "puerta";
+export const HEROE_FAQ: Uso = "pabellon-frente";
 
 export function fotoDePregunta(preguntaEs: string, lang: Idioma): FotoPagina | null {
   const id = PREGUNTAS.find(([re]) => re.test(preguntaEs))?.[1];
@@ -170,7 +166,7 @@ export function fotoFaq(lang: Idioma): FotoPagina {
 /** La foto que acompaña al entorno en cifras: el predio sobre la manzana, o la primera que no salga ya en la página. */
 export function fotoEntorno(usadas: Iterable<string | undefined>, lang: Idioma): FotoPagina {
   const ya = new Set(usadas);
-  const id = (["contexto", "cenital", "palmeras", "puerta"] as const).find((x) => !ya.has(x)) ?? "contexto";
+  const id = (["skyline", "contexto", "lote", "palmeras"] as const).find((x) => !ya.has(x)) ?? "skyline";
   return aFoto(porId.get(id)!, lang);
 }
 

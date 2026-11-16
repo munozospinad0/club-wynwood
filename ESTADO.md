@@ -10,7 +10,8 @@ y se archiva cuando el dominio se mueva.
 
 ## 10 de noviembre de 2026: fotos de la sesión profesional, galería por zonas y recorrido a pie
 
-Rama `fotos-nuevas` (sin publicar en `next-app` hasta que Daniel lo apruebe).
+Rama `fotos-nuevas`, **publicada en `next-app` el 16-nov-2026** junto con la invitación nueva del 18-nov
+(`/[lang]/preview`: portada a sangre, un mosaico por espacio, franja de noche, seis interiores y `components/VisorPreview.tsx`).
 
 - **Una sola lista de fotos: `lib/fotos.ts`.** Cada foto lleva:
   - zona (jardín, pabellón, pérgolas, estacionamiento, edificio, aéreas);

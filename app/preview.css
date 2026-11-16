@@ -104,11 +104,20 @@ body:has(.pv) { background: #fefefe; }
 }
 .pv-lugar { font-size: 16px; color: var(--gris); margin-top: 6px; }
 
-/* ── 1. La invitación ── */
-.pv-hero { display: grid; grid-template-columns: 1fr; background: var(--blanco); }
-.pv-hero__foto { overflow: hidden; }
-.pv-hero__foto img { height: 100%; min-height: 240px; object-fit: cover; }
-.pv-hero__tarjeta { display: grid; gap: 22px; align-content: center; padding: 30px var(--aire) 44px; }
+/* ── 1. La invitación: la foto del lugar a sangre y la tarjeta encima, como una invitación impresa ── */
+.pv-hero { position: relative; display: grid; background: var(--noche); }
+.pv-hero__foto { height: 58svh; min-height: 300px; overflow: hidden; }
+.pv-hero__foto img { width: 100%; height: 100%; object-fit: cover; object-position: 40% 55%; }
+.pv-hero__tarjeta {
+  position: relative; z-index: 1; display: grid; gap: 22px; align-content: center;
+  margin: -64px 12px 0; padding: 0 clamp(22px, 5vw, 44px) 34px; background: var(--blanco);
+  box-shadow: 0 30px 70px -20px rgba(8, 14, 24, 0.55), 0 8px 18px rgba(8, 14, 24, 0.18);
+}
+.pv-hero__tarjeta > .pv-tiras { margin: 0 calc(-1 * clamp(22px, 5vw, 44px)) 4px; width: auto; height: 10px; }
+.pv-hero__pie {
+  font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: rgba(254, 254, 254, 0.78); padding: 16px var(--aire) 18px;
+}
 .pv-hero__arriba { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
 .pv .pv-logo { width: clamp(124px, 13vw, 172px); margin-left: -8px; }
 .pv-idioma {
@@ -116,13 +125,20 @@ body:has(.pv) { background: #fefefe; }
   text-decoration: none; padding: 12px 14px; border: 1px solid var(--linea); color: var(--gris) !important;
 }
 .pv-incluye { font-family: var(--mono); font-size: 12.5px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gris); }
-.pv-hero .pv-tiras { grid-column: 1 / -1; }
 @media (min-width: 960px) {
-  .pv-hero { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); min-height: min(86vh, 780px); }
-  .pv-hero__foto { order: 2; }
-  .pv-hero__tarjeta { order: 1; padding: 40px clamp(40px, 5vw, 84px); gap: 20px; }
-  .pv-hero .pv-hora { font-size: clamp(40px, 4.2vw, 56px); }
-  .pv-hero .pv-tiras { order: 3; }
+  .pv-hero { display: block; min-height: max(100svh, 760px); }
+  .pv-hero__foto { position: absolute; inset: 0; height: auto; }
+  .pv-hero__foto::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(90deg, rgba(8, 14, 24, 0) 40%, rgba(8, 14, 24, 0.38) 100%), linear-gradient(0deg, rgba(8, 14, 24, 0.55) 0%, rgba(8, 14, 24, 0) 22%);
+  }
+  .pv-hero__tarjeta {
+    position: absolute; right: clamp(32px, 5vw, 88px); top: 50%; transform: translateY(-50%);
+    width: min(560px, 44vw); margin: 0; padding: 0 clamp(36px, 3.4vw, 52px) 40px; gap: 20px;
+  }
+  .pv-hero__tarjeta > .pv-tiras { margin-inline: calc(-1 * clamp(36px, 3.4vw, 52px)); }
+  .pv-hero .pv-hora { font-size: clamp(40px, 3.8vw, 54px); }
+  .pv-hero__pie { position: absolute; left: var(--aire); bottom: 0; }
 }
 
 /* ── Bloques ── */
@@ -139,17 +155,56 @@ body:has(.pv) { background: #fefefe; }
   .pv-intro, .pv-dentro { grid-template-columns: minmax(0, 1fr) minmax(0, 460px); gap: 72px; }
 }
 
-/* ── 3. Los espacios: la escena del video, quieta ── */
-.pv-escenas { display: grid; gap: 22px; margin-top: 44px; }
-.pv-escena { display: flex; flex-direction: column; }
-.pv-escena img { aspect-ratio: 3 / 2; object-fit: cover; }
-.pv-escena__franja { flex: 1; padding: 22px 24px 26px; display: grid; gap: 8px; align-content: start; }
-.pv-escena h3 { font-size: clamp(34px, 3.4vw, 46px); line-height: 1.04; }
-.pv-escena p { font-family: var(--mono); font-size: 12.5px; letter-spacing: 0.13em; text-transform: uppercase; line-height: 1.55; }
-.pv-escena--cian .pv-escena__franja { background: var(--cian); color: var(--noche); }
-.pv-escena--coral .pv-escena__franja { background: var(--coral); color: var(--noche); }
-.pv-escena--cobalto .pv-escena__franja { background: var(--cobalto); color: var(--blanco); }
-@media (min-width: 960px) { .pv-escenas { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+/* Toda foto se abre en grande (VisorPreview). El rótulo de visualización o montaje va sobre la foto. */
+.pv-foto {
+  position: relative; display: block; width: 100%; padding: 0; border: 0; background: var(--galeria);
+  cursor: zoom-in; overflow: hidden;
+}
+.pv-foto img { width: 100%; height: 100%; object-fit: cover; transition: transform 600ms cubic-bezier(0.23, 1, 0.32, 1); }
+@media (hover: hover) { .pv-foto:hover img { transform: scale(1.035); } }
+.pv-foto:focus-visible { outline: 3px solid var(--cobalto); outline-offset: 3px; }
+.pv-etiqueta {
+  position: absolute; left: 10px; bottom: 10px; max-width: calc(100% - 20px);
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; line-height: 1.35;
+  color: var(--blanco); background: rgba(14, 27, 46, 0.78); padding: 5px 8px; text-align: left;
+}
+
+/* ── 3. Los espacios: un capítulo por espacio, con su color del mural y su mosaico de fotos ── */
+.pv-capitulo { margin-top: clamp(44px, 6vw, 72px); }
+.pv-capitulo__cabeza {
+  display: grid; gap: 6px; padding-top: 18px; margin-bottom: 18px; border-top: 14px solid var(--cian);
+}
+.pv-capitulo--coral .pv-capitulo__cabeza { border-top-color: var(--coral); }
+.pv-capitulo--cobalto .pv-capitulo__cabeza { border-top-color: var(--cobalto); }
+.pv-capitulo h3 { font-size: clamp(36px, 4vw, 56px); line-height: 1.02; }
+.pv-capitulo__cabeza p { font-family: var(--mono); font-size: 12.5px; letter-spacing: 0.13em; text-transform: uppercase; color: var(--gris); max-width: 60ch; }
+.pv-mosaico { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.pv-mosaico .pv-foto { aspect-ratio: 1; }
+.pv-mosaico .pv-mosaico__grande { grid-column: 1 / -1; aspect-ratio: 4 / 3; }
+.pv-toca { font-size: 14px; color: var(--gris); padding-top: 18px; }
+@media (min-width: 960px) {
+  .pv-capitulo__cabeza { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: end; gap: 40px; }
+  .pv-mosaico { grid-template-columns: 2fr 1fr; grid-template-rows: 1fr 1fr; gap: 14px; height: clamp(460px, 42vw, 600px); }
+  .pv-mosaico .pv-foto, .pv-mosaico .pv-mosaico__grande { aspect-ratio: auto; height: 100%; }
+  .pv-mosaico .pv-mosaico__grande { grid-column: 1; grid-row: 1 / 3; }
+  .pv-capitulo--coral .pv-mosaico { grid-template-columns: 1fr 2fr; }
+  .pv-capitulo--coral .pv-mosaico__grande { grid-column: 2; }
+}
+
+/* ── 3b. De noche: la única foto a sangre después de la portada ── */
+.pv-noche { position: relative; margin-top: clamp(64px, 9vw, 124px); background: var(--noche); color: var(--blanco); }
+.pv-noche .pv-noche__foto { aspect-ratio: 16 / 10; cursor: zoom-in; }
+.pv-noche__texto { display: grid; gap: 14px; padding: 28px var(--aire) 40px; }
+.pv-noche .pv-ceja { color: rgba(254, 254, 254, 0.72); }
+.pv-noche__texto p:last-child { font-size: clamp(17px, 1.5vw, 20px); color: rgba(254, 254, 254, 0.86); max-width: 52ch; }
+@media (min-width: 960px) {
+  .pv-noche .pv-noche__foto { aspect-ratio: auto; height: min(92vh, 860px); }
+  .pv-noche .pv-noche__foto .pv-etiqueta { left: auto; right: var(--aire); bottom: 24px; }
+  .pv-noche__texto {
+    position: absolute; left: var(--aire); bottom: clamp(32px, 5vw, 64px); max-width: 560px;
+    padding: 30px 34px 32px; background: rgba(14, 27, 46, 0.86);
+  }
+}
 
 /* ── 4. La ficha ── */
 .pv-ficha dl { margin-top: 40px; border-top: 1.5px solid var(--noche); display: grid; }
@@ -184,10 +239,10 @@ body:has(.pv) { background: #fefefe; }
 }
 
 /* ── 6. Por dentro ── */
-.pv-galeria { display: grid; gap: 22px; grid-column: 1 / -1; }
-.pv-galeria img { aspect-ratio: 4 / 3; object-fit: cover; }
+.pv-galeria { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 10px; grid-column: 1 / -1; }
+.pv-galeria .pv-foto { aspect-ratio: 4 / 3; }
 .pv-galeria figcaption b { color: var(--noche); font-weight: 500; }
-@media (min-width: 960px) { .pv-galeria { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 8px; } }
+@media (min-width: 960px) { .pv-galeria { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 26px 14px; margin-top: 8px; } }
 
 /* ── 7. El día ── */
 .pv-dia ol { margin-top: 40px; display: grid; gap: 0; border-top: 1.5px solid var(--noche); }
@@ -204,12 +259,16 @@ body:has(.pv) { background: #fefefe; }
 .pv-direccion { display: grid; font-size: 19px; }
 .pv-direccion b { font-weight: 500; }
 .pv-donde__fotos { display: grid; gap: 22px; }
-.pv-donde__fotos img { aspect-ratio: 4 / 3; object-fit: cover; }
+.pv-donde__fotos .pv-foto { aspect-ratio: 4 / 3; }
 @media (min-width: 720px) { .pv-donde__fotos { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
 /* ── 9. Confirmar ── */
-.pv-cierre { background: var(--noche); color: var(--blanco); }
-.pv-cierre__dentro { max-width: var(--ancho); margin-inline: auto; padding: clamp(60px, 8vw, 108px) var(--aire); display: grid; gap: 26px; justify-items: start; }
+.pv-cierre { position: relative; background: var(--noche); color: var(--blanco); overflow: hidden; }
+.pv-cierre__foto { position: absolute; inset: 0; }
+.pv-cierre__foto img { width: 100%; height: 100%; object-fit: cover; }
+.pv-cierre__foto::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(14, 27, 46, 0.80), rgba(14, 27, 46, 0.94)); }
+.pv-cierre .pv-tiras { position: relative; }
+.pv-cierre__dentro { position: relative; max-width: var(--ancho); margin-inline: auto; padding: clamp(72px, 10vw, 140px) var(--aire); display: grid; gap: 26px; justify-items: start; }
 .pv-cierre .pv-ceja, .pv-cierre .pv-lugar { color: rgba(254, 254, 254, 0.72); }
 .pv-cierre .pv-hora { color: var(--coral); }
 .pv-cierre h2 { font-size: clamp(38px, 5.6vw, 78px); }
@@ -253,3 +312,37 @@ body:has(.pv) { background: #fefefe; }
   .pv-hero .pv-tiras i:nth-child(5) { animation-delay: 280ms; }
 }
 @keyframes pv-tira { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+/* El visor: la foto entera sobre la tinta de la invitación */
+.pv-visor {
+  border: 0; padding: 0; margin: 0; width: 100vw; height: 100dvh; max-width: none; max-height: none;
+  background: var(--noche); color: var(--blanco); font-family: var(--cuerpo);
+}
+.pv-visor[open] { display: grid; grid-template-rows: minmax(0, 1fr) auto; }
+.pv-visor::backdrop { background: var(--noche); }
+.pv-visor__escena { position: relative; min-height: 0; touch-action: pan-y; }
+.pv-visor__escena img {
+  position: absolute; inset: 16px; width: calc(100% - 32px); height: calc(100% - 32px); object-fit: contain;
+  animation: pv-visor 260ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+@keyframes pv-visor { from { opacity: 0; transform: scale(0.985); } to { opacity: 1; transform: none; } }
+.pv-visor__barra { display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; padding: 4px 16px 16px; }
+.pv-visor__barra p { display: grid; gap: 4px; font-size: 14px; line-height: 1.4; color: rgba(254, 254, 254, 0.86); max-width: 80ch; }
+.pv-visor__n { font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.14em; color: rgba(254, 254, 254, 0.6); }
+.pv-visor__etiqueta { font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--coral); }
+.pv-visor__mandos { display: flex; gap: 6px; flex: none; }
+.pv-visor__mandos button {
+  display: grid; place-items: center; width: 46px; height: 46px; padding: 0; cursor: pointer;
+  background: transparent; color: var(--blanco); border: 1px solid rgba(254, 254, 254, 0.35);
+}
+.pv-visor__mandos button:focus-visible { outline: 3px solid var(--cian); outline-offset: 2px; }
+@media (hover: hover) { .pv-visor__mandos button:hover { background: var(--blanco); color: var(--noche); } }
+@media (max-width: 719px) {
+  .pv-visor__escena img { inset: 0; width: 100%; height: 100%; }
+  .pv-visor__barra { flex-direction: column; align-items: stretch; }
+  .pv-visor__mandos { justify-content: flex-end; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pv-visor__escena img { animation: none; }
+  .pv-foto img { transition: none; }
+}

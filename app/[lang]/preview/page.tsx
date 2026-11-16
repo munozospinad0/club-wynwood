@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { Fraunces } from "next/font/google";
 import { asIdioma, BASE, BCP47, IDIOMAS, href, type Idioma } from "@/lib/i18n";
 import AccionPreview from "@/components/AccionPreview";
+import VisorPreview from "@/components/VisorPreview";
+import { foto as fotoDe, ROTULO_VISUALIZACION } from "@/lib/fotos";
 import "@/app/preview.css";
 
 /**
@@ -39,7 +41,8 @@ export function generateStaticParams() {
   return IDIOMAS.map((lang) => ({ lang }));
 }
 
-const F = "/evento-nov18";
+const F_DIR = "/evento-nov18";
+type F = { src: string; w: number; h: number; alt: string; etiqueta: string; encuadre?: string };
 const CORREO = "events@clubwynwood.com";
 const DIRECCION = "2129 NW 1st Ct, Miami, FL 33127";
 const MAPA = "https://www.google.com/maps/search/?api=1&query=Club+Wynwood+2129+NW+1st+Ct+Miami+FL+33127";
@@ -57,7 +60,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
       canonical: `${BASE}/${lang}/preview`,
       languages: Object.fromEntries(IDIOMAS.map((l) => [BCP47[l], `${BASE}/${l}/preview`])),
     },
-    openGraph: { title: t.meta.titulo, description: t.meta.descripcion, images: [{ url: `${F}/og.jpg`, width: 1200, height: 630 }] },
+    openGraph: { title: t.meta.titulo, description: t.meta.descripcion, images: [{ url: `${F_DIR}/og.jpg`, width: 1200, height: 630 }] },
   };
 }
 
@@ -83,7 +86,7 @@ export default async function Preview({ params }: { params: Promise<{ lang: stri
     eventStatus: "https://schema.org/EventScheduled",
     eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
     inLanguage: BCP47[lang],
-    image: [`${BASE}${F}/og.jpg`],
+    image: [`${BASE}${F_DIR}/og.jpg`],
     url: `${BASE}/${lang}/preview`,
     location: {
       "@type": "Place",
@@ -92,6 +95,41 @@ export default async function Preview({ params }: { params: Promise<{ lang: stri
     },
     organizer: { "@type": "Organization", name: "Club Wynwood", url: BASE, email: CORREO },
   };
+
+  // Cada foto se abre en grande (components/VisorPreview.tsx). Las visualizaciones y los montajes de
+  // otras producciones llevan su rótulo en la foto y en el visor: la foto no promete lo que no hay.
+  const de = (id: string): F => {
+    const x = fotoDe(id);
+    const etiqueta = x.tipo === "visualizacion" ? ROTULO_VISUALIZACION[lang] : x.montaje ? t.rotulos.montaje : "";
+    return { src: x.src, w: x.w, h: x.h, alt: x.alt[lang], etiqueta, encuadre: x.encuadre };
+  };
+  const propia = (archivo: string, w: number, h: number, alt: string, etiqueta = ""): F => ({ src: `${F_DIR}/${archivo}.jpg`, w, h, alt, etiqueta });
+  const Foto = ({ f, sizes, priority, className }: { f: F; sizes: string; priority?: boolean; className?: string }) => (
+    <button
+      type="button"
+      className={`pv-foto${className ? ` ${className}` : ""}`}
+      data-visor=""
+      data-src={f.src}
+      data-alt={f.alt}
+      data-etiqueta={f.etiqueta}
+      data-w={f.w}
+      data-h={f.h}
+      aria-label={`${t.verGrande}: ${f.alt}`}
+    >
+      <Image src={f.src} alt={f.alt} width={f.w} height={f.h} sizes={sizes} priority={priority} style={f.encuadre ? { objectPosition: f.encuadre } : undefined} />
+      {f.etiqueta && <span className="pv-etiqueta">{f.etiqueta}</span>}
+    </button>
+  );
+
+  const capitulos: F[][] = [
+    [de("entrada-jardin"), de("cabanas-fila"), propia("jardin-montaje", 1440, 958, t.alt.jardinMontaje, t.rotulos.ejemplo)],
+    [de("pabellon-frente"), de("bajo-pabellon"), de("lounge")],
+    [de("mural-lateral"), propia("edificio-fachada", 1440, 1080, t.alt.fachada), de("salon-blanco")],
+  ];
+  const interiores: F[] = [
+    ...t.dentro.fotos.map((x) => propia(x.foto, 1440, 1080, x.alt, t.rotulos.ejemplo)),
+    de("salon-doble-altura"), de("altillo-sala-1"), de("cocina"),
+  ];
 
   const Tiras = () => <div className="pv-tiras" aria-hidden="true"><i /><i /><i /><i /><i /></div>;
   const Cuando = () => (
@@ -109,11 +147,12 @@ export default async function Preview({ params }: { params: Promise<{ lang: stri
       {/* ── 1. La invitación ─────────────────────────────────────────────── */}
       <header className="pv-hero">
         <div className="pv-hero__foto">
-          <Image src={`${F}/pabellon-desde-el-aire.jpg`} alt={t.alt.aire} width={1440} height={956} priority sizes="100vw" />
+          <Image src={fotoDe("paseo-pabellon").src} alt={fotoDe("paseo-pabellon").alt[lang]} width={1920} height={1277} priority sizes="100vw" />
         </div>
         <div className="pv-hero__tarjeta">
+          <Tiras />
           <div className="pv-hero__arriba">
-            <Image className="pv-logo" src={`${F}/logo-club-wynwood.png`} alt="Club Wynwood" width={722} height={630} priority sizes="170px" />
+            <Image className="pv-logo" src={`${F_DIR}/logo-club-wynwood.png`} alt="Club Wynwood" width={722} height={630} priority sizes="170px" />
             <a className="pv-idioma" href={`/${otro}/preview`} hrefLang={BCP47[otro]} lang={BCP47[otro]}>{t.otroIdioma}</a>
           </div>
           <p className="pv-ceja">{t.hero.ceja}</p>
@@ -121,11 +160,11 @@ export default async function Preview({ params }: { params: Promise<{ lang: stri
           <Cuando />
           <div className="pv-acciones">
             <AccionPreview href={correo} metodo="email" className="pv-boton">{t.accion.rsvp}</AccionPreview>
-            <AccionPreview href={`${F}/club-wynwood-brokers-preview.ics`} metodo="calendario" className="pv-boton pv-boton--linea" descarga="club-wynwood-brokers-preview.ics">{t.accion.calendario}</AccionPreview>
+            <AccionPreview href={`${F_DIR}/club-wynwood-brokers-preview.ics`} metodo="calendario" className="pv-boton pv-boton--linea" descarga="club-wynwood-brokers-preview.ics">{t.accion.calendario}</AccionPreview>
           </div>
           <p className="pv-incluye">{t.incluye.join(" · ")}</p>
         </div>
-        <Tiras />
+        <p className="pv-hero__pie">{t.hero.pie}</p>
       </header>
 
       {/* ── 2. Qué es, y el video ────────────────────────────────────────── */}
@@ -136,8 +175,8 @@ export default async function Preview({ params }: { params: Promise<{ lang: stri
           <p className="pv-parrafo">{t.intro.texto}</p>
         </div>
         <figure className="pv-video">
-          <video controls playsInline preload="none" poster={`${F}/${t.video.invitacion}.jpg`} aria-label={t.video.etiqueta}>
-            <source src={`${F}/${t.video.invitacion}.mp4`} type="video/mp4" />
+          <video controls playsInline preload="none" poster={`${F_DIR}/${t.video.invitacion}.jpg`} aria-label={t.video.etiqueta}>
+            <source src={`${F_DIR}/${t.video.invitacion}.mp4`} type="video/mp4" />
           </video>
           <figcaption>{t.video.pie}</figcaption>
         </figure>
@@ -150,17 +189,29 @@ export default async function Preview({ params }: { params: Promise<{ lang: stri
           <h2>{t.espacios.titulo}</h2>
           <p className="pv-parrafo">{t.espacios.texto}</p>
         </div>
-        <div className="pv-escenas">
-          {t.espacios.lista.map((e) => (
-            <article key={e.palabra} className={`pv-escena pv-escena--${e.color}`}>
-              <Image src={`${F}/${e.foto}.jpg`} alt={e.alt} width={1440} height={e.alto} sizes="(min-width: 960px) 33vw, 100vw" />
-              <div className="pv-escena__franja">
-                <h3>{e.palabra}</h3>
-                <p>{e.dato}</p>
-                {e.nota && <p className="pv-nota">{e.nota}</p>}
-              </div>
-            </article>
-          ))}
+        {t.espacios.lista.map((e, n) => (
+          <article key={e.palabra} className={`pv-capitulo pv-capitulo--${e.color}`}>
+            <div className="pv-capitulo__cabeza">
+              <h3>{e.palabra}</h3>
+              <p>{e.dato}</p>
+            </div>
+            <div className="pv-mosaico">
+              <Foto f={capitulos[n][0]} className="pv-mosaico__grande" sizes="(min-width: 960px) 820px, 100vw" />
+              <Foto f={capitulos[n][1]} sizes="(min-width: 960px) 400px, 50vw" />
+              <Foto f={capitulos[n][2]} sizes="(min-width: 960px) 400px, 50vw" />
+            </div>
+          </article>
+        ))}
+        <p className="pv-toca">{t.toca}</p>
+      </section>
+
+      {/* ── 3b. De noche, con una producción montada ─────────────────────── */}
+      <section className="pv-noche">
+        <Foto f={de("noche")} sizes="100vw" className="pv-noche__foto" />
+        <div className="pv-noche__texto">
+          <p className="pv-ceja">{t.noche.ceja}</p>
+          <h2>{t.noche.titulo}</h2>
+          <p>{t.noche.texto}</p>
         </div>
       </section>
 
@@ -201,15 +252,15 @@ export default async function Preview({ params }: { params: Promise<{ lang: stri
           <p className="pv-parrafo">{t.dentro.texto}</p>
         </div>
         <figure className="pv-video">
-          <video controls playsInline preload="none" poster={`${F}/${t.video.interior}.jpg`} aria-label={t.video.etiquetaInterior}>
-            <source src={`${F}/${t.video.interior}.mp4`} type="video/mp4" />
+          <video controls playsInline preload="none" poster={`${F_DIR}/${t.video.interior}.jpg`} aria-label={t.video.etiquetaInterior}>
+            <source src={`${F_DIR}/${t.video.interior}.mp4`} type="video/mp4" />
           </video>
         </figure>
         <div className="pv-galeria">
-          {t.dentro.fotos.map((f) => (
-            <figure key={f.foto}>
-              <Image src={`${F}/${f.foto}.jpg`} alt={f.alt} width={1440} height={1080} sizes="(min-width: 960px) 33vw, 100vw" />
-              <figcaption><b>{f.nombre}</b> {t.dentro.rotulo}</figcaption>
+          {interiores.map((f, n) => (
+            <figure key={f.src}>
+              <Foto f={f} sizes="(min-width: 960px) 400px, 50vw" />
+              <figcaption><b>{t.dentro.nombres[n]}</b></figcaption>
             </figure>
           ))}
         </div>
@@ -243,11 +294,11 @@ export default async function Preview({ params }: { params: Promise<{ lang: stri
         </div>
         <div className="pv-donde__fotos">
           <figure>
-            <Image src={`${F}/predio-desde-el-aire.jpg`} alt={t.alt.predio} width={1440} height={1080} sizes="(min-width: 960px) 44vw, 100vw" />
+            <Foto f={de("pabellon-dron")} sizes="(min-width: 960px) 560px, 100vw" />
             <figcaption>{t.donde.piePredio}</figcaption>
           </figure>
           <figure>
-            <Image src={`${F}/wynwood-y-miami.jpg`} alt={t.alt.ciudad} width={1440} height={1080} sizes="(min-width: 960px) 44vw, 100vw" />
+            <Foto f={propia("wynwood-y-miami", 1440, 1080, t.alt.ciudad)} sizes="(min-width: 960px) 560px, 100vw" />
             <figcaption>{t.donde.pieCiudad}</figcaption>
           </figure>
         </div>
@@ -255,6 +306,9 @@ export default async function Preview({ params }: { params: Promise<{ lang: stri
 
       {/* ── 9. Confirmar ─────────────────────────────────────────────────── */}
       <section className="pv-cierre" id="rsvp">
+        <div className="pv-cierre__foto" aria-hidden="true">
+          <Image src={fotoDe("bajo-pabellon").src} alt="" width={1920} height={1277} sizes="100vw" />
+        </div>
         <Tiras />
         <div className="pv-cierre__dentro">
           <p className="pv-ceja">{t.cierre.ceja}</p>
@@ -278,6 +332,8 @@ export default async function Preview({ params }: { params: Promise<{ lang: stri
         </p>
       </footer>
 
+      <VisorPreview textos={t.visor} />
+
       {/* Barra del móvil: la fecha y el RSVP siempre a mano. */}
       <div className="pv-barra">
         <p><b>{t.barra}</b>{t.hora}</p>
@@ -287,14 +343,18 @@ export default async function Preview({ params }: { params: Promise<{ lang: stri
   );
 }
 
-type Escena = { palabra: string; dato: string; nota?: string; foto: string; alto: number; alt: string; color: "cian" | "coral" | "cobalto" };
+type Escena = { palabra: string; dato: string; color: "cian" | "coral" | "cobalto" };
 
 const TEXTO: Record<Idioma, {
   meta: { titulo: string; descripcion: string };
   otroIdioma: string;
   fecha: string; hora: string; barra: string;
   incluye: string[];
-  hero: { ceja: string; titulo: string };
+  hero: { ceja: string; titulo: string; pie: string };
+  toca: string; verGrande: string;
+  visor: { cerrar: string; anterior: string; siguiente: string };
+  rotulos: { montaje: string; ejemplo: string };
+  noche: { ceja: string; titulo: string; texto: string };
   accion: { rsvp: string; calendario: string; google: string; mapa: string };
   rsvp: { asunto: string; cuerpo: string };
   intro: { ceja: string; titulo: string; texto: string };
@@ -302,11 +362,11 @@ const TEXTO: Record<Idioma, {
   espacios: { ceja: string; titulo: string; texto: string; lista: Escena[] };
   ficha: { ceja: string; titulo: string; filas: Array<[string, string, string?]>; fuente: string };
   usos: { ceja: string; titulo: string; texto: string; lista: string[] };
-  dentro: { ceja: string; titulo: string; texto: string; rotulo: string; fotos: Array<{ foto: string; nombre: string; alt: string }> };
+  dentro: { ceja: string; titulo: string; texto: string; fotos: Array<{ foto: string; alt: string }>; nombres: string[] };
   dia: { ceja: string; titulo: string; texto: string; lista: Array<[string, string]> };
   donde: { ceja: string; titulo: string; texto: string; piePredio: string; pieCiudad: string };
   cierre: { ceja: string; titulo: string; alianza: string };
-  alt: { aire: string; predio: string; ciudad: string };
+  alt: { ciudad: string; jardinMontaje: string; fachada: string };
   privacidad: string;
 }> = {
   en: {
@@ -322,6 +382,16 @@ const TEXTO: Record<Idioma, {
     hero: {
       ceja: "You're invited · Exclusive Brokers Preview",
       titulo: "An exclusive first look at Wynwood's next landmark opportunity.",
+      pie: "The palm-lined walk and the Pavilion · photo of the venue, November 2026",
+    },
+    toca: "Tap any photo to see it full size.",
+    verGrande: "View larger",
+    visor: { cerrar: "Close", anterior: "Previous photo", siguiente: "Next photo" },
+    rotulos: { montaje: "Set up by a previous production", ejemplo: "Rendering · sample setup" },
+    noche: {
+      ceja: "With an event in",
+      titulo: "After dark, with a production in place.",
+      texto: "Lighting, carpet and furniture from a previous production on the site. Every producer brings their own.",
     },
     accion: { rsvp: "RSVP by email", calendario: "Add to calendar", google: "Add to Google Calendar", mapa: "Get directions" },
     rsvp: {
@@ -344,9 +414,9 @@ const TEXTO: Record<Idioma, {
       titulo: "A garden, a pavilion and a building, on one site.",
       texto: "Featuring a two-level building, expansive tropical garden, covered tiki pavilion, private cabanas, and existing hospitality infrastructure.",
       lista: [
-        { palabra: "The garden", dato: "± 18,000 SF outdoors, among royal palms, with private cabanas along the walk", foto: "jardin-y-cabanas", alto: 1080, alt: "Paved garden walk lined with royal palms leading to the building's mural entrance, with white cabanas on the right", color: "cian" },
-        { palabra: "The pavilion", dato: "± 4,000 SF under a thatched roof, open on all four sides", foto: "pabellon", alto: 958, alt: "The thatched-roof pavilion seen from the paved forecourt, with artificial turf around it", color: "coral" },
-        { palabra: "The building", dato: "Two-level indoor venue behind the mural façade", foto: "edificio-fachada", alto: 1080, alt: "The building's façade, covered by a colorful mural, with glass doors at the center", color: "cobalto" },
+        { palabra: "The garden", dato: "± 18,000 SF outdoors, among royal palms, with private cabanas along the walk", color: "cian" },
+        { palabra: "The pavilion", dato: "± 4,000 SF under a thatched roof, open on all four sides", color: "coral" },
+        { palabra: "The building", dato: "Two-level indoor venue behind the mural façade", color: "cobalto" },
       ],
     },
     ficha: {
@@ -377,12 +447,12 @@ const TEXTO: Record<Idioma, {
       ceja: "Inside the building",
       titulo: "Wide halls with high ceilings, and private rooms.",
       texto: "A building available for long-term lease: room for a gallery, a showroom or your next project, plus private rooms for meetings or offices.",
-      rotulo: "Rendering · paint and sample setup",
       fotos: [
-        { foto: "interior-salon", nombre: "Main hall.", alt: "Rendering of the main hall painted white, with a seating group and plants" },
-        { foto: "interior-galeria", nombre: "Gallery.", alt: "Rendering of a hall set up as a gallery, with large paintings and benches" },
-        { foto: "interior-sala", nombre: "Private room.", alt: "Rendering of a private room set up with a meeting table and chairs" },
+        { foto: "interior-salon", alt: "Rendering of the main hall painted white, with a seating group and plants" },
+        { foto: "interior-galeria", alt: "Rendering of a hall set up as a gallery, with large paintings and benches" },
+        { foto: "interior-sala", alt: "Rendering of a private room set up with a meeting table and chairs" },
       ],
+      nombres: ["Main hall", "Gallery", "Private room", "Double-height hall", "Mezzanine room", "Kitchen"],
     },
     dia: {
       ceja: "The day",
@@ -398,7 +468,7 @@ const TEXTO: Record<Idioma, {
       ceja: "Location",
       titulo: "In the heart of Miami's Wynwood Arts District.",
       texto: "The site sits among Wynwood's murals, a short drive from Downtown Miami.",
-      piePredio: "The site from the air: the building with its mural, the pavilion and the garden.",
+      piePredio: "The Pavilion from the air, on a Wynwood corner.",
       pieCiudad: "Wynwood, with the Miami skyline behind it.",
     },
     cierre: {
@@ -407,9 +477,9 @@ const TEXTO: Record<Idioma, {
       alianza: "Miami Style Realty in partnership with TopEvents",
     },
     alt: {
-      aire: "Aerial view of Club Wynwood's thatched-roof pavilion among royal palms",
-      predio: "Aerial view of the whole site in Wynwood: building, pavilion, garden and parking",
       ciudad: "Aerial view of the Wynwood neighborhood with the Miami skyline in the background",
+      jardinMontaje: "Rendering of the garden with a sample setup: lounge seating and cocktail tables along the walk, with the Pavilion behind",
+      fachada: "The building's façade, covered by a colorful mural, with glass doors at the center",
     },
     privacidad: "Privacy",
   },
@@ -426,6 +496,16 @@ const TEXTO: Record<Idioma, {
     hero: {
       ceja: "Estás invitado · Presentación exclusiva para brokers",
       titulo: "Un primer vistazo exclusivo a la próxima gran oportunidad de Wynwood.",
+      pie: "El paseo entre palmeras reales y el Pabellón · foto del lugar, noviembre de 2026",
+    },
+    toca: "Toca cualquier foto para verla en grande.",
+    verGrande: "Ver en grande",
+    visor: { cerrar: "Cerrar", anterior: "Foto anterior", siguiente: "Foto siguiente" },
+    rotulos: { montaje: "Montaje de una producción anterior", ejemplo: "Visualización · montaje de ejemplo" },
+    noche: {
+      ceja: "Con un evento montado",
+      titulo: "Así se ve de noche, con la producción puesta.",
+      texto: "Luces, alfombra y mobiliario de una producción anterior en el predio. Cada productor trae los suyos.",
     },
     accion: { rsvp: "Confirmar por correo", calendario: "Guardar en el calendario", google: "Guardar en Google Calendar", mapa: "Cómo llegar" },
     rsvp: {
@@ -448,9 +528,9 @@ const TEXTO: Record<Idioma, {
       titulo: "Un jardín, un pabellón y un edificio, en un mismo predio.",
       texto: "Con un edificio de dos niveles, un amplio jardín tropical, un pabellón techado, cabañas privadas e infraestructura de hospitalidad ya instalada.",
       lista: [
-        { palabra: "El jardín", dato: "± 18,000 pies cuadrados al aire libre, entre palmeras reales, con cabañas privadas junto al paseo", foto: "jardin-y-cabanas", alto: 1080, alt: "Paseo pavimentado del jardín entre palmeras reales hacia la entrada del edificio con su mural, con cabañas blancas a la derecha", color: "cian" },
-        { palabra: "El Pabellón", dato: "± 4,000 pies cuadrados bajo techo de paja, abierto por los cuatro costados", foto: "pabellon", alto: 958, alt: "El pabellón con techo de paja visto desde la explanada pavimentada, rodeado de césped artificial", color: "coral" },
-        { palabra: "El edificio", dato: "Recinto interior de dos niveles, detrás de la fachada con mural", foto: "edificio-fachada", alto: 1080, alt: "La fachada del edificio, cubierta por un mural de colores, con puertas de vidrio en el centro", color: "cobalto" },
+        { palabra: "El jardín", dato: "± 18,000 pies cuadrados al aire libre, entre palmeras reales, con cabañas privadas junto al paseo", color: "cian" },
+        { palabra: "El Pabellón", dato: "± 4,000 pies cuadrados bajo techo de paja, abierto por los cuatro costados", color: "coral" },
+        { palabra: "El edificio", dato: "Recinto interior de dos niveles, detrás de la fachada con mural", color: "cobalto" },
       ],
     },
     ficha: {
@@ -481,12 +561,12 @@ const TEXTO: Record<Idioma, {
       ceja: "El edificio por dentro",
       titulo: "Salones amplios, de techos altos, y salas privadas.",
       texto: "Un edificio disponible para arriendo a largo plazo: espacio para una galería, un showroom o tu próximo proyecto, y salas privadas para reuniones u oficinas.",
-      rotulo: "Visualización · pintura y montaje de ejemplo",
       fotos: [
-        { foto: "interior-salon", nombre: "Salón principal.", alt: "Visualización del salón principal pintado de blanco, con una sala de estar y plantas" },
-        { foto: "interior-galeria", nombre: "Galería.", alt: "Visualización de un salón montado como galería, con cuadros grandes y bancas" },
-        { foto: "interior-sala", nombre: "Sala privada.", alt: "Visualización de una sala privada montada con mesa de reuniones y sillas" },
+        { foto: "interior-salon", alt: "Visualización del salón principal pintado de blanco, con una sala de estar y plantas" },
+        { foto: "interior-galeria", alt: "Visualización de un salón montado como galería, con cuadros grandes y bancas" },
+        { foto: "interior-sala", alt: "Visualización de una sala privada montada con mesa de reuniones y sillas" },
       ],
+      nombres: ["Salón principal", "Galería", "Sala privada", "Salón a doble altura", "Sala del altillo", "Cocina"],
     },
     dia: {
       ceja: "El día",
@@ -502,7 +582,7 @@ const TEXTO: Record<Idioma, {
       ceja: "Ubicación",
       titulo: "En el corazón del distrito de arte de Wynwood, en Miami.",
       texto: "El predio está entre los murales de Wynwood, a pocos minutos en carro del centro de Miami.",
-      piePredio: "El predio desde el aire: el edificio con su mural, el Pabellón y el jardín.",
+      piePredio: "El Pabellón desde el aire, en una esquina de Wynwood.",
       pieCiudad: "Wynwood, con los edificios de Miami al fondo.",
     },
     cierre: {
@@ -511,9 +591,9 @@ const TEXTO: Record<Idioma, {
       alianza: "Miami Style Realty en alianza con TopEvents",
     },
     alt: {
-      aire: "Vista aérea del pabellón con techo de paja de Club Wynwood entre palmeras reales",
-      predio: "Vista aérea de todo el predio en Wynwood: edificio, pabellón, jardín y estacionamiento",
       ciudad: "Vista aérea del barrio de Wynwood con los edificios de Miami al fondo",
+      jardinMontaje: "Visualización del jardín con un montaje de ejemplo: salas lounge y mesas altas junto al paseo, con el Pabellón al fondo",
+      fachada: "La fachada del edificio, cubierta por un mural de colores, con puertas de vidrio en el centro",
     },
     privacidad: "Privacidad",
   },

@@ -122,8 +122,8 @@ export default async function Preview({ params }: { params: Promise<{ lang: stri
   );
 
   const capitulos: F[][] = [
-    [de("entrada-jardin"), de("cabanas-fila"), propia("jardin-montaje", 1440, 958, t.alt.jardinMontaje, t.rotulos.ejemplo)],
-    [de("pabellon-frente"), de("bajo-pabellon"), de("lounge")],
+    [propia("jardin-montaje", 1440, 958, t.alt.jardinMontaje, t.rotulos.ejemplo), de("cabanas-fila"), de("palmeras")],
+    [propia("pabellon", 1440, 958, t.alt.pabellon), de("bajo-pabellon"), de("lounge")],
     [de("mural-lateral"), propia("edificio-fachada", 1440, 1080, t.alt.fachada), de("salon-blanco")],
   ];
   const interiores: F[] = [
@@ -147,7 +147,7 @@ export default async function Preview({ params }: { params: Promise<{ lang: stri
       {/* ── 1. La invitación ─────────────────────────────────────────────── */}
       <header className="pv-hero">
         <div className="pv-hero__foto">
-          <Image src={fotoDe("paseo-pabellon").src} alt={fotoDe("paseo-pabellon").alt[lang]} width={1920} height={1277} priority sizes="100vw" />
+          <Image src={fotoDe("entrada-jardin").src} alt={fotoDe("entrada-jardin").alt[lang]} width={1920} height={1440} priority sizes="100vw" />
         </div>
         <div className="pv-hero__tarjeta">
           <Tiras />
@@ -366,7 +366,7 @@ const TEXTO: Record<Idioma, {
   dia: { ceja: string; titulo: string; texto: string; lista: Array<[string, string]> };
   donde: { ceja: string; titulo: string; texto: string; piePredio: string; pieCiudad: string };
   cierre: { ceja: string; titulo: string; alianza: string };
-  alt: { ciudad: string; jardinMontaje: string; fachada: string };
+  alt: { ciudad: string; jardinMontaje: string; fachada: string; pabellon: string };
   privacidad: string;
 }> = {
   en: {
@@ -382,7 +382,7 @@ const TEXTO: Record<Idioma, {
     hero: {
       ceja: "You're invited · Exclusive Brokers Preview",
       titulo: "An exclusive first look at Wynwood's next landmark opportunity.",
-      pie: "The palm-lined walk and the Pavilion · photo of the venue, November 2026",
+      pie: "The way into the garden, toward the mural façade · photo of the venue, November 2026",
     },
     toca: "Tap any photo to see it full size.",
     verGrande: "View larger",
@@ -480,6 +480,7 @@ const TEXTO: Record<Idioma, {
       ciudad: "Aerial view of the Wynwood neighborhood with the Miami skyline in the background",
       jardinMontaje: "Rendering of the garden with a sample setup: lounge seating and cocktail tables along the walk, with the Pavilion behind",
       fachada: "The building's façade, covered by a colorful mural, with glass doors at the center",
+      pabellon: "The Pavilion head-on: a hipped thatch roof on timber posts, open on every side, with the paved forecourt",
     },
     privacidad: "Privacy",
   },
@@ -496,7 +497,7 @@ const TEXTO: Record<Idioma, {
     hero: {
       ceja: "Estás invitado · Presentación exclusiva para brokers",
       titulo: "Un primer vistazo exclusivo a la próxima gran oportunidad de Wynwood.",
-      pie: "El paseo entre palmeras reales y el Pabellón · foto del lugar, noviembre de 2026",
+      pie: "La entrada al jardín, hacia la fachada con mural · foto del lugar, noviembre de 2026",
     },
     toca: "Toca cualquier foto para verla en grande.",
     verGrande: "Ver en grande",
@@ -594,6 +595,7 @@ const TEXTO: Record<Idioma, {
       ciudad: "Vista aérea del barrio de Wynwood con los edificios de Miami al fondo",
       jardinMontaje: "Visualización del jardín con un montaje de ejemplo: salas lounge y mesas altas junto al paseo, con el Pabellón al fondo",
       fachada: "La fachada del edificio, cubierta por un mural de colores, con puertas de vidrio en el centro",
+      pabellon: "El Pabellón de frente: techo de paja a cuatro aguas sobre postes de madera, abierto por los costados, con la explanada de losas",
     },
     privacidad: "Privacidad",
   },

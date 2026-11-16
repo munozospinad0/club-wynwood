@@ -107,7 +107,7 @@ body:has(.pv) { background: #fefefe; }
 /* ── 1. La invitación: la foto del lugar a sangre y la tarjeta encima, como una invitación impresa ── */
 .pv-hero { position: relative; display: grid; background: var(--noche); }
 .pv-hero__foto { height: 58svh; min-height: 300px; overflow: hidden; }
-.pv-hero__foto img { width: 100%; height: 100%; object-fit: cover; object-position: 40% 55%; }
+.pv-hero__foto img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 62%; }
 .pv-hero__tarjeta {
   position: relative; z-index: 1; display: grid; gap: 22px; align-content: center;
   margin: -64px 12px 0; padding: 0 clamp(22px, 5vw, 44px) 34px; background: var(--blanco);
@@ -127,19 +127,19 @@ body:has(.pv) { background: #fefefe; }
 .pv-incluye { font-family: var(--mono); font-size: 12.5px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gris); }
 @media (min-width: 960px) {
   .pv-hero {
-    display: flex; justify-content: flex-end; align-items: center;
+    display: flex; justify-content: flex-start; align-items: center;
     min-height: max(100svh, 760px); padding: 56px clamp(32px, 5vw, 88px) 72px;
   }
   .pv-hero__foto { position: absolute; inset: 0; height: auto; }
   .pv-hero__foto::after {
     content: ""; position: absolute; inset: 0;
-    background: linear-gradient(90deg, rgba(8, 14, 24, 0) 40%, rgba(8, 14, 24, 0.38) 100%), linear-gradient(0deg, rgba(8, 14, 24, 0.55) 0%, rgba(8, 14, 24, 0) 22%);
+    background: linear-gradient(270deg, rgba(8, 14, 24, 0) 40%, rgba(8, 14, 24, 0.38) 100%), linear-gradient(0deg, rgba(8, 14, 24, 0.55) 0%, rgba(8, 14, 24, 0) 22%);
   }
   .pv-hero__tarjeta { width: min(620px, 46vw); margin: 0; padding: 0 clamp(36px, 3.4vw, 52px) 40px; gap: 18px; }
   .pv-hero h1 { font-size: clamp(36px, 3.3vw, 50px); }
   .pv-hero__tarjeta > .pv-tiras { margin-inline: calc(-1 * clamp(36px, 3.4vw, 52px)); }
   .pv-hero .pv-hora { font-size: clamp(40px, 3.8vw, 54px); }
-  .pv-hero__pie { position: absolute; left: var(--aire); bottom: 0; }
+  .pv-hero__pie { position: absolute; right: var(--aire); bottom: 0; text-align: right; }
 }
 
 /* ── Bloques ── */
